@@ -1,21 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { RootStack } from './states/main';
+
+const navigationPersistenceKey = __DEV__ ? 'NavigationStateDEV' : null;
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Hello ugly app!</Text>
-      </View>
+      <RootStack persistenceKey={navigationPersistenceKey}/>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -1,8 +1,21 @@
 {
-  "presets": ["babel-preset-expo"],
+  "presets": ["react-native"],
   "env": {
     "development": {
       "plugins": ["transform-react-jsx-source"]
     }
-  }
+  },
+  "plugins": [
+    [
+      "module-resolver", {
+        "alias": {
+          "react-native-vector-icons": "@expo/vector-icons",
+          "views": "./build/views"
+        }
+      }
+    ],
+    "transform-decorators-legacy",
+    "transform-exponentiation-operator",
+    "transform-export-extensions"
+  ]
 }

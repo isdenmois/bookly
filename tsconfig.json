@@ -6,7 +6,7 @@
       "rootDir": "src",
       "outDir": "build",
       "allowSyntheticDefaultImports": true,
-      "noImplicitAny": true,
+      "noImplicitAny": false,
       "sourceMap": true,
       "experimentalDecorators": true,
       "preserveConstEnums": true,
@@ -15,7 +15,8 @@
       "noUnusedParameters": true,
       "noImplicitReturns": true,
       "skipLibCheck": true,
-      "moduleResolution":"Node"
+      "moduleResolution":"Node",
+      "baseUrl": "./src"
   },
   "filesGlob": [
       "typings/index.d.ts",
@@ -29,13 +30,13 @@
     "react-native"
   ],
   "exclude":[
-      "build", 
+      "build",
       "node_modules",
       "jest.config.js",
       "src/**/*.test.ts",
       "src/**/*.test.tsx",
       "App.js"
-      
+
   ],
   "compileOnSave": false
 }
