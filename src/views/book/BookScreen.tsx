@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, View, Text, ActivityIndicator, Image } from 'react-native';
+import { observer, inject } from 'mobx-react';
+import { BookStore } from './BookStore';
 
+@inject('bookStore')
+@observer
 export class BookScreen extends React.Component<any> {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -9,24 +13,25 @@ export class BookScreen extends React.Component<any> {
     }
 
     render() {
-        const bookId = this.props.navigation.getParam('bookId', 'NO-ID');
+        const bookStore: BookStore = this.props.bookStore;
+
+        if (bookStore.isLoading) {
+            return <ActivityIndicator/>;
+        }
+
+        if (!bookStore.book) {
+            return <View><Text>Книга не найдена</Text></View>;
+        }
 
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Book Screen</Text>
-                <Text>bookId: {JSON.stringify(bookId)}</Text>
-                <Button
-                    title='Go to Book... again'
-                    onPress={() => this.props.navigation.navigate('Book', {bookId: 2})}
-                />
-                <Button
-                    title='Go to Home'
-                    onPress={() => this.props.navigation.navigate('Home')}
-                />
-                <Button
-                    title='Go back'
-                    onPress={() => this.props.navigation.goBack()}
-                />
+                <Text>Название: {bookStore.book.title}</Text>
+                <Text>Автор: {bookStore.book.author}</Text>
+                {bookStore.book.thumbnail &&
+                    <Image style={{width: 140, height: 140}} source={{uri: bookStore.book.thumbnail}}/>
+                }
+                <Text>{bookStore.book.rating} / 10</Text>
+                <Text>{bookStore.book.description}</Text>
                 <Button
                     title='Update the title'
                     onPress={() => this.props.navigation.setParams({otherParam: 'Updated!'})}
@@ -34,4 +39,20 @@ export class BookScreen extends React.Component<any> {
             </View>
         );
     }
+
+    componentWillUnmount() {
+        this.listener.remove();
+    }
+
+    loadBook = () => {
+        const bookId = this.props.navigation.getParam('bookId', 'NO-ID'),
+            bookStore: BookStore = this.props.bookStore;
+
+        if (bookStore.bookId !== bookId) {
+            bookStore.loadBook(bookId);
+            console.warn('Load book');
+        }
+    }
+
+    private listener = this.props.navigation.addListener('willFocus', this.loadBook);
 }

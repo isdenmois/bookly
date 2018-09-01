@@ -11,9 +11,6 @@
       "experimentalDecorators": true,
       "preserveConstEnums": true,
       "allowJs": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noImplicitReturns": true,
       "skipLibCheck": true,
       "moduleResolution":"Node",
       "baseUrl": "./src"

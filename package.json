@@ -12,6 +12,7 @@
     "@types/react-test-renderer": "^16.0.2",
     "concurrently": "^4.0.1",
     "jest-expo": "~27.0.0",
+    "react-devtools": "^3.3.2",
     "react-native-scripts": "1.14.0",
     "react-test-renderer": "16.3.1",
     "rimraf": "^2.6.2",
@@ -36,15 +37,18 @@
     "watchAndRunIOS": "concurrently \"yarn run watch\" \"yarn run ios\"",
     "buildRunIOS": "yarn run build && yarn run watchAndRunIOS ",
     "watchAndStart": "concurrently \"yarn run watch\" \"yarn run start\"",
-    "buildAndStart": "yarn run build && yarn run watchAndStart "
+    "buildAndStart": "yarn run build && yarn run watchAndStart ",
+    "devtools": "react-devtools"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.116",
     "expo": "^27.0.1",
-    "mobx": "^5.1.0",
-    "mobx-react": "^5.2.5",
+    "lodash": "^4.17.10",
+    "mobx": "^4.4.0",
+    "mobx-react": "~5.1.0",
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-navigation": "^2.12.1",
