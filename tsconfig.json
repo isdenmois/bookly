@@ -32,8 +32,8 @@
       "jest.config.js",
       "src/**/*.test.ts",
       "src/**/*.test.tsx",
-      "App.js"
-
+      "App.js",
+      "test/**.js"
   ],
   "compileOnSave": false
 }
