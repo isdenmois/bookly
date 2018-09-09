@@ -4,6 +4,9 @@ module.exports = {
       "^.+\\.tsx?$": "ts-jest"
   },
   "preset": "jest-expo",
+  "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|sentry-expo|native-base))"
+  ],
   "testRegex": "(/__tests__/.*|/src/.*\\.(test|spec))\\.(jsx?|tsx?)$",
   "moduleFileExtensions": [
     "ts",
@@ -15,5 +18,6 @@ module.exports = {
     "ios.tsx",
     "android.ts",
     "android.tsx"
-  ]
+  ],
+  "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js"
 }

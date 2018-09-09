@@ -1,16 +1,21 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Container, Header, Content, Card, CardItem, Body, Text, Button } from 'native-base';
+import { StatusBar } from '../../components/StatusBar';
+
+import { CurrentBook } from './components/CurrentBook';
 
 export class HomeScreen extends React.Component<any> {
+    static navigationOptions = () => ({header: null});
+
     render() {
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Home Screen</Text>
-                <Button
-                    title='Go to Book'
-                    onPress={() => this.props.navigation.navigate('Book', {bookId: '1000454008'})}
-                />
-            </View>
+            <Container>
+                <StatusBar/>
+
+                <Content>
+                    <CurrentBook/>
+                </Content>
+            </Container>
         );
     }
 }

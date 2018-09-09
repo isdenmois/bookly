@@ -16,6 +16,7 @@
     ],
     "transform-decorators-legacy",
     "transform-exponentiation-operator",
-    "transform-export-extensions"
+    "transform-export-extensions",
+    "styled-components"
   ]
 }

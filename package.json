@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@types/enzyme": "^3.1.13",
     "@types/jest": "^23.3.1",
     "@types/react": "^16.4.13",
     "@types/react-dom": "^16.0.7",
@@ -10,9 +11,13 @@
     "@types/react-navigation": "^2.0.19",
     "@types/react-navigation-material-bottom-tabs": "^0.3.0",
     "@types/react-test-renderer": "^16.0.2",
+    "babel-plugin-styled-components": "^1.6.4",
     "concurrently": "^4.0.1",
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
     "jest-expo": "~27.0.0",
     "react-devtools": "^3.3.2",
+    "react-dom": "16",
     "react-native-scripts": "1.14.0",
     "react-test-renderer": "16.3.1",
     "rimraf": "^2.6.2",
@@ -44,14 +49,17 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/vector-icons": "^6.3.1",
     "@types/lodash": "^4.14.116",
     "expo": "^27.0.1",
     "lodash": "^4.17.10",
     "mobx": "^4.4.0",
     "mobx-react": "~5.1.0",
+    "native-base": "^2.8.0",
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-navigation": "^2.12.1",
-    "react-navigation-material-bottom-tabs": "^0.3.0"
+    "react-navigation-material-bottom-tabs": "^0.3.0",
+    "styled-components": "^3.4.5"
   }
 }
