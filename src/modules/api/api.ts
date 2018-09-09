@@ -1,9 +1,8 @@
 import { AsyncStorage } from 'react-native';
+import { USER_AGENT, API_KEY } from 'react-native-dotenv';
 import { ApiBase, endpoint } from './utlis';
 
-const USER_AGENT = 'LiveLib/4.0.5/15040005 (SM-G965F; Android 8.0.0; API 26)';
 const SESSION_ID_KEY = 'SESSION_ID';
-const API_KEY = 'and7mpp4ss';
 
 class Api extends ApiBase {
     @endpoint('/books') books;

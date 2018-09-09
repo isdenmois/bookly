@@ -1,10 +1,9 @@
 import * as _ from 'lodash';
+import { BASE_URL } from 'react-native-dotenv';
 
 export interface QueryParams {
     [index: string]: any
 }
-
-const BASE_URL = 'https://www.livelib.ru/apiapp/v2.0';
 
 function queryParams(data: QueryParams = {}) {
     return Object.keys(data).map((key) => {
