@@ -4,7 +4,7 @@ export interface QueryParams {
     [index: string]: any
 }
 
-const BASE_URL = 'https://livelib.ru/' + 'apiapp/v2.0';
+const BASE_URL = 'https://www.livelib.ru/apiapp/v2.0';
 
 function queryParams(data: QueryParams = {}) {
     return Object.keys(data).map((key) => {
@@ -49,6 +49,7 @@ export function endpoint(url: string) {
             get: function () {
                 return {
                     get: (query) => fetchFn(this.fetch, 'GET', url, this.headers, {...query, ...this.query}),
+                    post: (query) => fetchFn(this.fetch, 'POST', url, this.headers, {...query, ...this.query}),
                 };
             },
         });
