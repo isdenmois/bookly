@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { SafeAreaView } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import { Container, Header, Content, Card, CardItem, Body, Text, Button } from 'native-base';
 import { StatusBar } from '../../components/StatusBar';
-import { TextS, TextM, TextL } from '../../components/Text';
+import { NavigationLinks } from './components/NavigationLinks';
 
 import { CurrentBook } from './components/CurrentBook';
 
-export class HomeScreen extends React.Component<any> {
+export class HomeScreen extends React.Component<NavigationScreenProps> {
     static navigationOptions = () => ({header: null});
 
     render() {
@@ -15,7 +15,7 @@ export class HomeScreen extends React.Component<any> {
                 <StatusBar/>
 
                 <Content>
-                    <CurrentBook/>
+                    <CurrentBook navigation={this.props.navigation}/>
 
                     <Card>
                         <CardItem>
@@ -26,6 +26,8 @@ export class HomeScreen extends React.Component<any> {
                             </Body>
                         </CardItem>
                     </Card>
+
+                    <NavigationLinks navigation={this.props.navigation}/>
                 </Content>
             </Container>
         );

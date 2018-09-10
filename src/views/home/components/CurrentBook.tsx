@@ -6,7 +6,7 @@ import { notImplemented } from '../../../constants/not-implemented-yet';
 interface Props extends NavigationScreenProps {
 }
 
-export class CurrentBook extends React.Component<any> {
+export class CurrentBook extends React.Component<Props> {
     render() {
         return (
             <EmptyBook onChooseBook={notImplemented}/>
