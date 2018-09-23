@@ -1,22 +1,22 @@
 import * as React from 'react'
-import { shallow } from 'enzyme'
-import { AsyncStorage } from 'react-native'
+import * as renderer from 'react-test-renderer'
 import { Button } from 'native-base'
 import { ProfileScreen } from '../ProfileScreen'
 
 describe('ProfileScreen', function () {
   it('should logout on button click', function () {
-    const navigation: any = {
+    const sessionStore: any = {
+            stopSession: jest.fn(),
+          },
+          navigation: any = {
             popToTop: jest.fn(),
             replace: jest.fn(),
           },
-          component       = shallow(<ProfileScreen navigation={navigation}/>)
+          component       = renderer.create(<ProfileScreen sessionStore={sessionStore} navigation={navigation}/>).root
 
-    spyOn(AsyncStorage, 'setItem')
+    component.findByType(Button).props.onPress()
 
-    component.find(Button).simulate('press')
-
-    expect(AsyncStorage.setItem).toHaveBeenCalledWith('SESSION_ID', null)
+    expect(sessionStore.stopSession).toHaveBeenCalled()
     expect(navigation.popToTop).toHaveBeenCalled()
     expect(navigation.replace).toHaveBeenCalledWith('Login')
   })
