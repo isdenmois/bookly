@@ -1,8 +1,11 @@
 import { observable, action } from 'mobx';
 import { commonApi } from '../../modules/api/commonApi';
-import { setSessionId } from '../../modules/api/api';
+import { SessionStore } from '../../services/SessionStore';
 
 export class LoginStore {
+    constructor(private sessionStore: SessionStore) {
+    }
+
     @observable login: string = '';
     @observable password: string = '';
     @observable isLoading: boolean = false;
@@ -22,11 +25,11 @@ export class LoginStore {
         const params = {
           login: this.login,
           password: this.password,
-          fields: 'session_id',
+          fields: 'session_id,user(login)',
         };
 
         return commonApi.login.post(params)
-            .then(data => setSessionId(data.session_id))
+            .then(data => this.sessionStore.setSession(data.session_id, data.user.login))
             .then(() => {
               this.login = '';
               this.password = '';

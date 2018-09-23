@@ -1,10 +1,19 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Container, Header, Content, Card, CardItem, Body, Text, Button } from 'native-base';
-import { setSessionId } from '../../modules/api/api';
 import { StatusBar } from '../../components/StatusBar';
+import { SessionStore } from '../../services/SessionStore';
+import {inject, observer} from 'mobx-react';
 
-export class ProfileScreen extends React.Component<NavigationScreenProps> {
+interface Props extends NavigationScreenProps {
+    sessionStore: SessionStore;
+}
+
+@inject('sessionStore')
+@observer
+export class ProfileScreen extends React.Component<Props> {
+    static navigationOptions = { headerTitle: 'Профиль' };
+
     render() {
         return (
             <Container>
@@ -20,7 +29,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
     }
 
     logout = () => {
-        setSessionId(null);
+        this.props.sessionStore.stopSession();
         this.props.navigation.popToTop();
         this.props.navigation.replace('Login');
     }

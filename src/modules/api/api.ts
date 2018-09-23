@@ -1,37 +1,17 @@
-import { AsyncStorage } from 'react-native';
 import { USER_AGENT, API_KEY } from 'react-native-dotenv';
 import { ApiBase, endpoint } from './utlis';
 
-const SESSION_ID_KEY = 'SESSION_ID';
-
 class Api extends ApiBase {
+    headers = {
+        'User-Agent': USER_AGENT,
+    };
+    query: any = {
+        andyll: API_KEY,
+    };
+
     @endpoint('/books') books;
     @endpoint('/books/:bookId') book;
+    @endpoint('/users/:user/books/:type') userBooks;
 }
 
-const privateHeaders = {
-        'User-Agent': USER_AGENT,
-      },
-      privateQuery = {
-        andyll: API_KEY,
-      },
-      api = new Api(privateHeaders, privateQuery);
-
-export { api };
-
-export async function loadSessionId() {
-    try {
-        const sessionId = await AsyncStorage.getItem(SESSION_ID_KEY);
-
-        if (sessionId) {
-            api.query.session_id = sessionId;
-        }
-    } catch (e) {
-        // Do nothing.
-    }
-}
-
-export function setSessionId(session_id: string) {
-    api.query.session_id = session_id;
-    return AsyncStorage.setItem(SESSION_ID_KEY, session_id);
-}
+export const api = new Api();

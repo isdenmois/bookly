@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { Alert } from 'react-native';
 import { BASE_URL } from 'react-native-dotenv';
 
 export interface QueryParams {
@@ -35,10 +36,15 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query) {
         .then(res => res.json())
         .then(res => {
             if (res.status.message !== 'OK') {
-                return Promise.reject(res);
+                return Promise.reject(JSON.stringify(res));
             }
 
             return res.data;
+        })
+        .catch(error => {
+            Alert.alert(`Ошибка при выполнении запроса: ${url}`, error.toString());
+
+            return Promise.reject(error);
         });
 }
 
@@ -57,7 +63,6 @@ export function endpoint(url: string) {
 
 export class ApiBase {
     fetch = fetch;
-
-    constructor(public headers: any = {}, public query: any = {}) {
-    }
+    headers: any = {};
+    query: any = {};
 }

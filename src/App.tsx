@@ -2,15 +2,19 @@ import * as React from 'react';
 import { Font } from 'expo';
 import { Provider } from 'mobx-react';
 import { ActivityIndicator } from 'react-native';
-import { loadSessionId } from './modules/api/api';
 import { RootStack } from './states/main';
+import { SessionStore } from './services/SessionStore';
 import { BookStore } from './views/book/BookStore';
 import { LoginStore } from './views/login/LoginStore';
+import { HomeStore } from './views/home/services/HomeStore';
 
-const store = {
-  bookStore: new BookStore(),
-  loginStore: new LoginStore(),
-};
+const sessionStore = new SessionStore(),
+      store = {
+        sessionStore,
+        bookStore: new BookStore(),
+        loginStore: new LoginStore(sessionStore),
+        homeStore: new HomeStore(sessionStore),
+      };
 
 interface State {
     isLoaded: boolean;
@@ -26,7 +30,7 @@ export default class App extends React.Component {
                 'Roboto': require('native-base/Fonts/Roboto.ttf'),
                 'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
               }),
-              session = loadSessionId();
+              session = sessionStore.loadSession();
 
         Promise.all([font, session])
             .catch(() => true)
