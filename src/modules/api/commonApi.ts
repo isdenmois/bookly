@@ -1,15 +1,15 @@
-import { USER_AGENT, API_KEY } from 'react-native-dotenv';
-import { ApiBase, endpoint } from './utlis';
+import { API_KEY, USER_AGENT } from 'react-native-dotenv'
+import { ApiBase, endpoint } from './utlis'
 
 class CommonApi extends ApiBase {
-    headers = {
-        'User-Agent': USER_AGENT,
-    };
-    query = {
-        andyll: API_KEY,
-    };
+  headers = {
+    'User-Agent': USER_AGENT,
+  }
+  query   = {
+    andyll: API_KEY,
+  }
 
-    @endpoint('/login') login;
+  @endpoint('/login') login
 }
 
-export const commonApi = new CommonApi();
+export const commonApi = new CommonApi()

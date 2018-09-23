@@ -44,7 +44,8 @@
     "buildRunIOS": "yarn run build && yarn run watchAndRunIOS ",
     "watchAndStart": "concurrently \"yarn run watch\" \"yarn run start\"",
     "buildAndStart": "yarn run build && yarn run watchAndStart ",
-    "devtools": "react-devtools"
+    "devtools": "react-devtools",
+    "tsfix": "tslint --fix --project tsconfig.json"
   },
   "jest": {
     "preset": "jest-expo"

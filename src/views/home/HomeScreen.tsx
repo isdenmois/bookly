@@ -1,79 +1,79 @@
-import * as React from 'react';
-import { RefreshControl, View } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
-import { inject, observer } from 'mobx-react';
-import { Container, Header, Content, Card, CardItem, Body, Text, Button } from 'native-base';
+import * as React from 'react'
+import { RefreshControl, View } from 'react-native'
+import { NavigationScreenProps } from 'react-navigation'
+import { inject, observer } from 'mobx-react'
+import { Body, Button, Card, CardItem, Container, Content, Text } from 'native-base'
 
-import { StatusBar } from '../../components/StatusBar';
-import { NavigationLinks } from './components/NavigationLinks';
-import { CurrentBook } from './components/CurrentBook';
-import { HomeStore } from './services/HomeStore';
+import { StatusBar } from '../../components/StatusBar'
+import { NavigationLinks } from './components/NavigationLinks'
+import { CurrentBook } from './components/CurrentBook'
+import { HomeStore } from './services/HomeStore'
 
 interface Props extends NavigationScreenProps {
-    homeStore: HomeStore
+  homeStore: HomeStore
 }
 
 interface State {
-    isLoaded: boolean;
-    refreshing: boolean;
+  isLoaded: boolean;
+  refreshing: boolean;
 }
 
 @inject('homeStore')
 @observer
 export class HomeScreen extends React.Component<Props, State> {
-    static navigationOptions = () => ({header: null});
+  static navigationOptions = () => ({header: null})
 
-    state: State = {
-        isLoaded: false,
-        refreshing: true,
-    };
+  state: State = {
+    isLoaded: false,
+    refreshing: true,
+  }
 
-    componentWillMount() {
-        this.loadData();
-    }
+  componentWillMount() {
+    this.loadData()
+  }
 
-    getRefresh() {
-        return <RefreshControl refreshing={this.state.refreshing} onRefresh={this.loadData}/>;
-    }
+  getRefresh() {
+    return <RefreshControl refreshing={this.state.refreshing} onRefresh={this.loadData}/>
+  }
 
-    render() {
-        return (
-            <Container>
-                <StatusBar/>
+  render() {
+    return (
+      <Container>
+        <StatusBar/>
 
-                <Content refreshControl={this.getRefresh()}>
-                    {this.state.isLoaded &&
-                        <View>
-                            <CurrentBook navigation={this.props.navigation}/>
-                        </View>
-                    }
+        <Content refreshControl={this.getRefresh()}>
+          {this.state.isLoaded &&
+           <View>
+             <CurrentBook navigation={this.props.navigation}/>
+           </View>
+          }
 
-                    {__DEV__ &&
-                        <Card>
-                            <CardItem>
-                                <Body>
-                                    <Button onPress={() => this.props.navigation.navigate('Book', {bookId: '1000454008'})}>
-                                        <Text>open some Book</Text>
-                                    </Button>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    }
+          {__DEV__ &&
+           <Card>
+             <CardItem>
+               <Body>
+               <Button onPress={() => this.props.navigation.navigate('Book', {bookId: '1000454008'})}>
+                 <Text>open some Book</Text>
+               </Button>
+               </Body>
+             </CardItem>
+           </Card>
+          }
 
-                    <NavigationLinks navigation={this.props.navigation}/>
-                </Content>
-            </Container>
-        );
-    }
+          <NavigationLinks navigation={this.props.navigation}/>
+        </Content>
+      </Container>
+    )
+  }
 
-    loadData = () => {
-        const promises = [
-            this.props.homeStore.loadCurrentBooks(),
-        ];
+  loadData = () => {
+    const promises = [
+      this.props.homeStore.loadCurrentBooks(),
+    ]
 
-        this.setState({refreshing: true});
+    this.setState({refreshing: true})
 
-        return Promise.all(promises)
-            .then(() => this.setState({refreshing: false, isLoaded: true}));
-    }
+    return Promise.all(promises)
+      .then(() => this.setState({refreshing: false, isLoaded: true}))
+  }
 }

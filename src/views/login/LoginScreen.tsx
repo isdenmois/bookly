@@ -1,59 +1,59 @@
-import * as React from 'react';
-import { Container, Header, Content, Form, Item, Input, Label, Button } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { observer, inject } from 'mobx-react';
-import { TextM } from '../../components/Text';
-import { api } from '../../modules/api/api';
-import { LoginStore } from './LoginStore';
+import * as React from 'react'
+import { Button, Container, Content, Form, Input, Item, Label } from 'native-base'
+import { NavigationScreenProps } from 'react-navigation'
+import { inject, observer } from 'mobx-react'
+import { TextM } from '../../components/Text'
+import { api } from '../../modules/api/api'
+import { LoginStore } from './LoginStore'
 
 interface Props extends NavigationScreenProps {
-    loginStore: LoginStore
+  loginStore: LoginStore
 }
 
 @inject('loginStore')
 @observer
 export class LoginScreen extends React.Component<Props> {
-    componentWillMount() {
-        if (api.query.session_id) {
-            this.props.navigation.replace('Home');
-        }
+  componentWillMount() {
+    if (api.query.session_id) {
+      this.props.navigation.replace('Home')
     }
+  }
 
-    render() {
-        const { login, password } = this.props.loginStore;
+  render() {
+    const {login, password} = this.props.loginStore
 
-        return (
-            <Container>
-                <Content>
-                    <Form>
-                        <Item floatingLabel>
-                            <Label>Имя пользователя</Label>
-                            <Input value={login} onChangeText={this.onLoginChange}/>
-                        </Item>
-                        <Item floatingLabel last>
-                            <Label>Пароль</Label>
-                            <Input value={password} onChangeText={this.onPasswordChange}/>
-                        </Item>
-                    </Form>
-                    <Button onPress={this.submit}>
-                        <TextM>Войти</TextM>
-                    </Button>
-                </Content>
-            </Container>
-        );
-    }
+    return (
+      <Container>
+        <Content>
+          <Form>
+            <Item floatingLabel>
+              <Label>Имя пользователя</Label>
+              <Input value={login} onChangeText={this.onLoginChange}/>
+            </Item>
+            <Item floatingLabel last>
+              <Label>Пароль</Label>
+              <Input value={password} onChangeText={this.onPasswordChange}/>
+            </Item>
+          </Form>
+          <Button onPress={this.submit}>
+            <TextM>Войти</TextM>
+          </Button>
+        </Content>
+      </Container>
+    )
+  }
 
-    submit = () => {
-        return this.props.loginStore
-            .submit()
-            .then(() => this.props.navigation.replace('Home'));
-    }
+  submit = () => {
+    return this.props.loginStore
+      .submit()
+      .then(() => this.props.navigation.replace('Home'))
+  }
 
-    onLoginChange = (login: string) => {
-        this.props.loginStore.setLogin(login);
-    }
+  onLoginChange = (login: string) => {
+    this.props.loginStore.setLogin(login)
+  }
 
-    onPasswordChange = (password: string) => {
-        this.props.loginStore.setPassword(password);
-    }
+  onPasswordChange = (password: string) => {
+    this.props.loginStore.setPassword(password)
+  }
 }

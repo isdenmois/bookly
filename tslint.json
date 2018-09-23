@@ -2,24 +2,13 @@
   "rules": {
     "member-access": false,
     "no-any": false,
-    "no-inferrable-types": [false],
+    "no-inferrable-types": [
+      false
+    ],
     "no-internal-module": true,
     "no-var-requires": true,
-    "typedef": [false],
-    "typedef-whitespace": [
-      true, {
-        "call-signature": "nospace",
-        "index-signature": "nospace",
-        "parameter": "nospace",
-        "property-declaration": "nospace",
-        "variable-declaration": "nospace"
-      }, {
-        "call-signature": "space",
-        "index-signature": "space",
-        "parameter": "space",
-        "property-declaration": "space",
-        "variable-declaration": "space"
-      }
+    "typedef": [
+      false
     ],
     "ban": false,
     "curly": false,
@@ -36,16 +25,16 @@
       "timeEnd",
       "trace"
     ],
+    "import-spacing": true,
     "no-construct": true,
     "no-debugger": true,
+    "no-duplicate-imports": true,
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
     "no-shadowed-variable": true,
     "no-string-literal": true,
     "no-switch-case-fall-through": true,
-    "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "radix": true,
     "switch-default": true,
@@ -56,7 +45,8 @@
     "eofline": false,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "max-line-length": [
       true,
@@ -66,19 +56,24 @@
     "no-trailing-whitespace": true,
     "object-literal-sort-keys": false,
     "trailing-comma": [
-      true, {
-        "multiline":  "always"
+      true,
+      {
+        "multiline": "always"
       }
     ],
-    "align": [true],
+    "align": [true, "statements", "members", "elements"],
     "class-name": true,
     "comment-format": [
       true,
       "check-space"
     ],
-    "interface-name": [false],
+    "interface-name": [
+      false
+    ],
     "jsdoc-format": true,
-    "no-consecutive-blank-lines": [true],
+    "no-consecutive-blank-lines": [
+      true
+    ],
     "no-parameter-properties": false,
     "one-line": [
       true,
@@ -95,7 +90,7 @@
     ],
     "semicolon": [
       true,
-      "always",
+      "never",
       "ignore-interfaces"
     ],
     "variable-name": [
@@ -108,8 +103,11 @@
       "check-branch",
       "check-decl",
       "check-operator",
+      "check-module",
       "check-separator",
-      "check-type"
+      "check-rest-spread",
+      "check-type",
+      "check-preblock"
     ]
   }
 }
