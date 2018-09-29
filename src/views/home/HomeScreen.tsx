@@ -9,6 +9,7 @@ import { SearchHeader } from './components/SearchHeader';
 import { NavigationLinks } from './components/NavigationLinks'
 import { CurrentBook } from './components/CurrentBook'
 import { HomeStore } from './services/HomeStore'
+import { BookChallenge } from './components/BookChallenge'
 
 interface Props extends NavigationScreenProps {
   homeStore: HomeStore
@@ -44,9 +45,11 @@ export class HomeScreen extends React.Component<Props, State> {
 
         <Content refreshControl={this.getRefresh()}>
           {this.state.isLoaded &&
-           <View>
-             <CurrentBook navigation={this.props.navigation}/>
-           </View>
+            <CurrentBook navigation={this.props.navigation}/>
+          }
+
+          {this.state.isLoaded && this.props.homeStore.challenge &&
+            <BookChallenge challenge={this.props.homeStore.challenge}/>
           }
 
           {__DEV__ &&
@@ -70,6 +73,7 @@ export class HomeScreen extends React.Component<Props, State> {
   loadData = () => {
     const promises = [
       this.props.homeStore.loadCurrentBooks(),
+      this.props.homeStore.loadCurrentChallenge(),
     ]
 
     this.setState({refreshing: true})
