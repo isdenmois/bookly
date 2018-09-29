@@ -21,8 +21,9 @@ function queryParams(data: QueryParams = {}) {
   }).join('&')
 }
 
-function fetchFn(fetch: Function, method, baseUrl, headers, query) {
-  const params = (baseUrl.match(/:([\w]+)/g) || []).map(str => str.slice(1))
+function fetchFn(fetch: Function, method, baseUrl, headers, query, body) {
+  const params = (baseUrl.match(/:([\w]+)/g) || []).map(str => str.slice(1)),
+        fetchParams: RequestInit = {headers, method}
 
   let urlStr = baseUrl
 
@@ -32,7 +33,11 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query) {
 
   const url = `${BASE_URL}${urlStr}?${queryParams(_.omit(query, params))}`
 
-  return fetch(url, {headers, method})
+  if (body) {
+    fetchParams.body = body
+  }
+
+  return fetch(url, fetchParams)
     .then(res => res.json())
     .then(res => {
       if (res.status.message !== 'OK') {
@@ -48,14 +53,17 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query) {
     })
 }
 
-export function endpoint(url: string) {
+export function endpoint(url: string, methods: string[] = ['get']) {
   return function (target: any, propertyKey: string) {
     Object.defineProperty(target, propertyKey, {
       get: function () {
-        return {
-          get: (query) => fetchFn(this.fetch, 'GET', url, this.headers, {...query, ...this.query}),
-          post: (query) => fetchFn(this.fetch, 'POST', url, this.headers, {...query, ...this.query}),
-        }
+        const result: any = {}
+
+        _.forEach(methods, method => {
+          result[method.toLowerCase()] = (query, body) => fetchFn(this.fetch, method.toUpperCase(), url, this.headers, {...query, ...this.query}, body)
+        })
+
+        return result
       },
     })
   }
