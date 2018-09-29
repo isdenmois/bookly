@@ -9,7 +9,7 @@ class CommonApi extends ApiBase {
     andyll: API_KEY,
   }
 
-  @endpoint('/login') login
+  @endpoint('/login', ['post']) login
 }
 
 export const commonApi = new CommonApi()
