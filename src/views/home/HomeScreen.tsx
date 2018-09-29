@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react'
 import { Body, Button, Card, CardItem, Container, Content, Text } from 'native-base'
 
 import { StatusBar } from '../../components/StatusBar'
+import { SearchHeader } from './components/SearchHeader';
 import { NavigationLinks } from './components/NavigationLinks'
 import { CurrentBook } from './components/CurrentBook'
 import { HomeStore } from './services/HomeStore'
@@ -39,7 +40,7 @@ export class HomeScreen extends React.Component<Props, State> {
   render() {
     return (
       <Container>
-        <StatusBar/>
+        <SearchHeader/>
 
         <Content refreshControl={this.getRefresh()}>
           {this.state.isLoaded &&
