@@ -1,7 +1,9 @@
 import * as React from 'react'
-import { Button, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
+import { Image, ImageStyle, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
+import { Button, DatePicker, Item, Label } from 'native-base'
 import { Dialog } from '../../components/Dialog'
 import { TextL, TextM } from '../../components/Text'
+import { Rating } from '../../components/Rating'
 
 interface Props {
   book: any
@@ -9,22 +11,65 @@ interface Props {
   onClose: () => void
 }
 
-export class ChangeStatusModal extends React.PureComponent<Props> {
+interface State {
+  date: Date
+  rating: number
+}
+
+export class ChangeStatusModal extends React.PureComponent<Props, State> {
+  state = {
+    date: new Date(),
+    rating: 0,
+  }
+
   render() {
+    const { book, onClose, visible } = this.props
+
     return (
-      <Dialog visible={this.props.visible} onClose={this.props.onClose} header='Прочитано'>
-        <TextL style={s.title}>{this.props.book.name}</TextL>
-        <TextM style={s.author}>{this.props.book.author_name}</TextM>
-        <Button
-          onPress={this.props.onClose}
-          title='Закрыть'
-        />
+      <Dialog visible={visible} onClose={onClose} header='Прочитано'>
+        <View style={s.info}>
+          {book.pic_100 &&
+            <View style={s.imageContainer}>
+              <Image style={s.image}
+                     source={{uri: book.pic_100}}>
+              </Image>
+            </View>
+          }
+
+          <View style={s.contentContainer}>
+            <TextL style={s.title}>{book.name}</TextL>
+            <TextM style={s.author}>{book.author_name}</TextM>
+
+            <DatePicker defaultDate={this.state.date}
+                        locale='ru'
+                        onDateChange={this.selectDate}/>
+          </View>
+        </View>
+
+        <Rating value={this.state.rating}
+                onChange={this.setRating}/>
+
+        <Button style={s.button} success onPress={onClose} disabled={!this.state.rating}>
+          <TextM style={s.buttonText}>Сохранить</TextM>
+        </Button>
       </Dialog>
     )
   }
+
+  selectDate = date => this.setState({date})
+  setRating = rating => this.setState({rating})
 }
 
 const s = StyleSheet.create({
+  info: {
+    flexDirection: 'row',
+  } as ViewStyle,
+  imageContainer: {
+    marginRight: 10,
+  },
+  contentContainer: {
+    flex: 1,
+  } as ViewStyle,
   title: {
     color: '#4A4A4A',
     fontWeight: 'bold',
@@ -34,4 +79,20 @@ const s = StyleSheet.create({
     color: '#828281',
     marginBottom: 10,
   } as TextStyle,
+  image: {
+    width: 100,
+    flex: 1,
+    alignSelf: 'stretch',
+  } as ImageStyle,
+  button: {
+    width: '100%',
+    justifyContent: 'center',
+  } as ViewStyle,
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  } as TextStyle,
+  footer: {
+    flexDirection: 'row',
+  } as ViewStyle,
 })

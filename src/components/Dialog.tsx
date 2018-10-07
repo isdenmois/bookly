@@ -49,13 +49,18 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   modalView: {
-    borderRadius: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
   } as ViewStyle,
   header: {
-    backgroundColor: 'grey',
+    backgroundColor: '#F5F5F5',
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    alignItems: 'center',
   } as ViewStyle,
   content: {
-    backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 20,
   } as ViewStyle,
