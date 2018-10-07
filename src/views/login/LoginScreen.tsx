@@ -28,11 +28,15 @@ export class LoginScreen extends React.Component<Props> {
           <Form>
             <Item floatingLabel>
               <Label>Имя пользователя</Label>
-              <Input value={login} onChangeText={this.onLoginChange}/>
+              <Input textContentType='username'
+                     value={login}
+                     onChangeText={this.onLoginChange}/>
             </Item>
             <Item floatingLabel last>
               <Label>Пароль</Label>
-              <Input value={password} onChangeText={this.onPasswordChange}/>
+              <Input textContentType='password'
+                     value={password}
+                     onChangeText={this.onPasswordChange}/>
             </Item>
           </Form>
           <Button onPress={this.submit}>

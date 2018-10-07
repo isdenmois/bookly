@@ -8,19 +8,11 @@ export class SessionStore {
   @observable sessionId: string = null
   @observable userId: string    = null
 
-  @action
-  async loadSession() {
-    try {
-      let session: any = await AsyncStorage.getItem(SESSION_KEY)
-
-      if (session) {
-        session = JSON.parse(session)
-
-        return this.setSession(session.sessionId, session.userId)
-      }
-    } catch (e) {
-      // Do nothing.
-    }
+  @action loadSession() {
+    return AsyncStorage.getItem(SESSION_KEY)
+      .then(session => JSON.parse(session))
+      .then(session => this.setSession(session.sessionId, session.userId))
+      .catch(error => console.warn(error))
   }
 
   @action setSession(sessionId: string, userId: string = null) {

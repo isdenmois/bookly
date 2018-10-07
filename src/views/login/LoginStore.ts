@@ -10,18 +10,15 @@ export class LoginStore {
   @observable password: string   = ''
   @observable isLoading: boolean = false
 
-  @action
-  setLogin(login: string) {
+  @action setLogin(login: string) {
     this.login = login
   }
 
-  @action
-  setPassword(password: string) {
+  @action setPassword(password: string) {
     this.password = password
   }
 
-  @action
-  submit() {
+  @action submit() {
     const params = {
       login: this.login,
       password: this.password,
