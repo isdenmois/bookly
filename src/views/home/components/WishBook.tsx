@@ -2,13 +2,21 @@ import * as React from 'react'
 import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Button, Card, CardItem } from 'native-base'
 import { TextL, TextM } from '../../../components/Text'
-import { notImplemented } from '../../../constants/not-implemented-yet'
+import { ChangeStatusModal } from '../../change-status/ChangeStatusModal'
 
 interface Props {
   book: any;
 }
 
-export class WishBook extends React.Component<Props> {
+interface State {
+  changeStatusVisible: boolean
+}
+
+export class WishBook extends React.Component<Props, State> {
+  state = {
+    changeStatusVisible: false,
+  }
+
   render() {
     const book = this.props.book
 
@@ -28,16 +36,23 @@ export class WishBook extends React.Component<Props> {
               <TextL style={s.title}>{book.name}</TextL>
               <TextM style={s.author}>{book.author_name}</TextM>
               <View style={s.buttonContainer}>
-                <Button success style={s.readButton} onPress={notImplemented}>
+                <Button success style={s.readButton} onPress={this.openChangeStatus}>
                   <TextM>Прочитано</TextM>
                 </Button>
               </View>
             </View>
           </View>
         </CardItem>
+        <ChangeStatusModal book={this.props.book}
+                           visible={this.state.changeStatusVisible}
+                           onClose={this.closeChangeStatus}/>
       </Card>
     )
   }
+
+  openChangeStatus = () => this.setState({changeStatusVisible: true})
+
+  closeChangeStatus = () => this.setState({changeStatusVisible: false})
 }
 
 const s = StyleSheet.create({
