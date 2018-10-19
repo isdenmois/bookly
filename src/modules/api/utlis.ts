@@ -1,6 +1,6 @@
 import * as _ from 'lodash'
 import { Alert } from 'react-native'
-import { BASE_URL } from 'react-native-dotenv'
+import { BASE_URL, DEV_URL } from 'react-native-dotenv'
 
 export interface QueryParams {
   [index: string]: any
@@ -31,7 +31,7 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query, body) {
     urlStr = urlStr.replace(`:${param}`, query[param])
   })
 
-  const url = `${BASE_URL}${urlStr}?${queryParams(_.omit(query, params))}`
+  const url = `${__DEV__ ? DEV_URL : BASE_URL}${urlStr}?${queryParams(_.omit(query, params))}`
 
   if (body) {
     fetchParams.body = body

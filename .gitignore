@@ -13,6 +13,8 @@
 .env.production.local
 .idea
 .env
+books.db
+books.db-journal
 
 # typesript result
 build

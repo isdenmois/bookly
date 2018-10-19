@@ -29,6 +29,7 @@
   "exclude": [
     "build",
     "node_modules",
+    "server",
     "jest.config.js",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
