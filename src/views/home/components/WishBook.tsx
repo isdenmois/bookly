@@ -1,17 +1,21 @@
 import * as React from 'react'
 import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { inject } from 'mobx-react'
 import { Button, Card, CardItem } from 'native-base'
 import { TextL, TextM } from '../../../components/Text'
 import { ChangeStatusModal } from '../../change-status/ChangeStatusModal'
+import { HomeStore } from '../services/HomeStore'
 
 interface Props {
   book: any;
+  homeStore?: HomeStore;
 }
 
 interface State {
   changeStatusVisible: boolean
 }
 
+@inject('homeStore')
 export class WishBook extends React.Component<Props, State> {
   state = {
     changeStatusVisible: false,
@@ -45,7 +49,8 @@ export class WishBook extends React.Component<Props, State> {
         </CardItem>
         <ChangeStatusModal book={this.props.book}
                            visible={this.state.changeStatusVisible}
-                           onClose={this.closeChangeStatus}/>
+                           onClose={this.closeChangeStatus}
+                           onSave={this.changeStatus}/>
       </Card>
     )
   }
@@ -53,6 +58,13 @@ export class WishBook extends React.Component<Props, State> {
   openChangeStatus = () => this.setState({changeStatusVisible: true})
 
   closeChangeStatus = () => this.setState({changeStatusVisible: false})
+
+  changeStatus = (params) => {
+    const { book, homeStore } = this.props
+
+    this.closeChangeStatus()
+    homeStore.updateBookStatus(book, params)
+  }
 }
 
 const s = StyleSheet.create({

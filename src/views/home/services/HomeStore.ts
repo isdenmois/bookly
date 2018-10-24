@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import { action, observable } from 'mobx'
+import { action, computed, observable } from 'mobx'
 import { api } from '../../../modules/api/api'
 import { SessionStore } from '../../../services/SessionStore'
 
@@ -10,8 +10,12 @@ export interface UserChallenge {
 }
 
 export class HomeStore {
-  @observable currentBooks: any[]
+  @observable books: any[]
   @observable challenge: UserChallenge = null
+
+  @computed get currentBooks() {
+    return this.books.filter(book => +_.get(book, 'user_book_partial.book_read') === 2)
+  }
 
   constructor(private sessionStore: SessionStore) {
   }
@@ -27,8 +31,7 @@ export class HomeStore {
             fields,
           }
 
-    this.currentBooks = await api.userBooks.get(params).catch(() => [])
-    this.currentBooks = this.currentBooks.filter(book => +_.get(book, 'user_book_partial.book_read') === 2)
+    this.books = await api.userBooks.get(params).catch(() => [])
   }
 
   @action
@@ -50,6 +53,13 @@ export class HomeStore {
     } else {
       this.challenge = null
     }
+  }
+
+  @action
+  async updateBookStatus(book, params) {
+    _.set(book, 'user_book_partial.book_read', params.book_read)
+
+    await api.myBook.patch({...params, bookId: book.id})
   }
 
   private get currentYear() {

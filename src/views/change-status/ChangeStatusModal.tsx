@@ -9,6 +9,7 @@ interface Props {
   book: any
   visible: boolean
   onClose: () => void
+  onSave: (params) => void
 }
 
 interface State {
@@ -49,7 +50,7 @@ export class ChangeStatusModal extends React.PureComponent<Props, State> {
         <Rating value={this.state.rating}
                 onChange={this.setRating}/>
 
-        <Button style={s.button} success onPress={onClose} disabled={!this.state.rating}>
+        <Button style={s.button} success onPress={this.save} disabled={!this.state.rating}>
           <TextM style={s.buttonText}>Сохранить</TextM>
         </Button>
       </Dialog>
@@ -58,6 +59,26 @@ export class ChangeStatusModal extends React.PureComponent<Props, State> {
 
   selectDate = date => this.setState({date})
   setRating = rating => this.setState({rating})
+
+  save = () => {
+    const { date, rating } = this.state,
+          params = {
+            book_read: 1,
+            date_day: date.getDate(),
+            date_month: date.getMonth() + 1,
+            date_year: date.getFullYear(),
+            fields: 'id',
+            rating,
+          }
+
+    this.props.onSave(params)
+    this.resetState()
+  }
+
+  resetState = () => this.setState({
+    date: new Date(),
+    rating: 0,
+  })
 }
 
 const s = StyleSheet.create({
