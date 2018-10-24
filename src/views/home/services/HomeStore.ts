@@ -60,6 +60,7 @@ export class HomeStore {
     _.set(book, 'user_book_partial.book_read', params.book_read)
 
     await api.myBook.patch({...params, bookId: book.id})
+    await this.loadCurrentChallenge()
   }
 
   private get currentYear() {
