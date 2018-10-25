@@ -1,0 +1,32 @@
+schema {
+    query: Query
+}
+
+type UserChallenge {
+    count_books_forecast: Int
+    count_books_read: Int
+    status_id: Int
+    count_books_total: Int
+}
+
+type UserBookPartial {
+    book_read: Int
+}
+
+type Book {
+    id: ID
+    author_id: Int
+    author_name: String
+    name: String
+    avg_mark: Float
+    pic_70: String
+    pic_100: String
+    pic_140: String
+    pic_200: String
+    user_book_partial: UserBookPartial
+}
+
+type Query {
+    challenge: UserChallenge
+    userBooks(params: [String]): [Book]
+}

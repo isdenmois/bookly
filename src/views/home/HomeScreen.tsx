@@ -10,6 +10,7 @@ import { NavigationLinks } from './components/NavigationLinks'
 import { CurrentBook } from './components/CurrentBook'
 import { HomeStore } from './services/HomeStore'
 import { BookChallenge } from './components/BookChallenge'
+import { gql, api } from '../../modules/api/query'
 
 interface Props extends NavigationScreenProps {
   homeStore: HomeStore
@@ -22,6 +23,29 @@ interface State {
 
 @inject('homeStore')
 @observer
+@api({
+  query: gql`
+    query {
+      challenge {
+        count_books_forecast
+        count_books_read
+        status_id
+        count_books_total
+      }
+
+      userBooks(params: ["start", "count"]) {
+        id
+        author_name
+        name
+        pic_100
+        user_book_partial {
+          book_read
+        }
+      }
+    }
+  `,
+  params: mapParams,
+})
 export class HomeScreen extends React.Component<Props, State> {
   static navigationOptions = () => ({header: null})
 
@@ -81,4 +105,18 @@ export class HomeScreen extends React.Component<Props, State> {
     return Promise.all(promises)
       .then(() => this.setState({refreshing: false, isLoaded: true}))
   }
+}
+
+function mapParams(props, params, session) {
+  return {
+    user: session.userId,
+    type: 'wish',
+    start: 1,
+    count: 24,
+    year: currentYear(),
+  }
+}
+
+function currentYear() {
+  return new Date().getFullYear()
 }

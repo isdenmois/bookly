@@ -6,6 +6,7 @@
     "@types/enzyme": "^3.1.14",
     "@types/jest": "^23.3.3",
     "@types/lodash": "^4.14.116",
+    "@types/nearley": "^2.11.0",
     "@types/react": "^16.4.13",
     "@types/react-dom": "^16.0.7",
     "@types/react-native": "^0.56.15",
@@ -17,6 +18,7 @@
     "enzyme-adapter-react-16": "^1.6.0",
     "express": "^4.16.4",
     "jest-expo": "~30.0.0",
+    "nearley": "^2.15.1",
     "react-devtools": "^3.4.0",
     "react-dom": "16",
     "react-native-dotenv": "^0.2.0",
@@ -47,7 +49,8 @@
     "watchAndStart": "concurrently \"yarn run watch\" \"yarn run start\"",
     "buildAndStart": "yarn run build && yarn run watchAndStart ",
     "devtools": "react-devtools",
-    "tsfix": "tslint --fix --project tsconfig.json"
+    "tsfix": "tslint --fix --project tsconfig.json",
+    "query-parcerc": "nearleyc src/modules/api/query-parser.ne -o src/modules/api/query-parser.js"
   },
   "jest": {
     "preset": "jest-expo"
