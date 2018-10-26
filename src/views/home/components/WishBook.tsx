@@ -1,23 +1,22 @@
 import * as React from 'react'
+import * as _ from 'lodash'
 import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { inject } from 'mobx-react'
 import { Button, Card, CardItem } from 'native-base'
 
+import * as query from 'modules/api/query'
 import { TextL, TextM } from 'components/Text'
 import { ChangeStatusModal } from 'views/change-status/ChangeStatusModal'
 
-import { HomeStore } from '../services/HomeStore'
+import { BookStatusMutation } from '../mutations/BookStatusMutation'
 
 interface Props {
   book: any;
-  homeStore?: HomeStore;
 }
 
 interface State {
   changeStatusVisible: boolean
 }
 
-@inject('homeStore')
 export class WishBook extends React.Component<Props, State> {
   state = {
     changeStatusVisible: false,
@@ -62,10 +61,11 @@ export class WishBook extends React.Component<Props, State> {
   closeChangeStatus = () => this.setState({changeStatusVisible: false})
 
   changeStatus = (params) => {
-    const { book, homeStore } = this.props
+    const { book } = this.props,
+          mutation = new BookStatusMutation(book, params)
 
     this.closeChangeStatus()
-    homeStore.updateBookStatus(book, params)
+    query.update(mutation)
   }
 }
 

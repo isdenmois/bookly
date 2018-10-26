@@ -1,19 +1,21 @@
 import * as React from 'react'
 import { RefreshControl } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
-import { inject, observer } from 'mobx-react'
 import { Body, Button, Card, CardItem, Container, Content, Text } from 'native-base'
 
 import { gql, api } from 'modules/api/query'
 
-import { SearchHeader } from './components/SearchHeader';
+import { SearchHeader } from './components/SearchHeader'
 import { NavigationLinks } from './components/NavigationLinks'
 import { CurrentBook } from './components/CurrentBook'
-import { HomeStore } from './services/HomeStore'
 import { BookChallenge } from './components/BookChallenge'
 
 interface Props extends NavigationScreenProps {
-  homeStore: HomeStore
+  refresh?: () => void
+  loading?: boolean
+  isLoaded?: boolean
+  user_challenge?: any
+  userBooks?: any
 }
 
 interface State {
@@ -21,16 +23,13 @@ interface State {
   refreshing: boolean;
 }
 
-@inject('homeStore')
-@observer
 @api({
   query: gql`
     query {
-      challenge {
-        count_books_forecast
+      user_challenge {
         count_books_read
-        status_id
         count_books_total
+        count_books_forecast
       }
 
       userBooks(params: ["start", "count"]) {
@@ -49,17 +48,8 @@ interface State {
 export class HomeScreen extends React.Component<Props, State> {
   static navigationOptions = () => ({header: null})
 
-  state: State = {
-    isLoaded: false,
-    refreshing: true,
-  }
-
-  componentWillMount() {
-    this.loadData()
-  }
-
   getRefresh() {
-    return <RefreshControl refreshing={this.state.refreshing} onRefresh={this.loadData}/>
+    return <RefreshControl refreshing={this.props.loading} onRefresh={this.props.refresh}/>
   }
 
   render() {
@@ -68,12 +58,12 @@ export class HomeScreen extends React.Component<Props, State> {
         <SearchHeader/>
 
         <Content refreshControl={this.getRefresh()}>
-          {this.state.isLoaded &&
-            <CurrentBook navigation={this.props.navigation}/>
+          {this.props.isLoaded &&
+            <CurrentBook navigation={this.props.navigation} books={this.props.userBooks}/>
           }
 
-          {this.state.isLoaded && this.props.homeStore.challenge &&
-            <BookChallenge challenge={this.props.homeStore.challenge}/>
+          {this.props.isLoaded && this.props.user_challenge &&
+            <BookChallenge challenge={this.props.user_challenge}/>
           }
 
           {__DEV__ &&
@@ -92,18 +82,6 @@ export class HomeScreen extends React.Component<Props, State> {
         </Content>
       </Container>
     )
-  }
-
-  loadData = () => {
-    const promises = [
-      this.props.homeStore.loadCurrentBooks(),
-      this.props.homeStore.loadCurrentChallenge(),
-    ]
-
-    this.setState({refreshing: true})
-
-    return Promise.all(promises)
-      .then(() => this.setState({refreshing: false, isLoaded: true}))
   }
 }
 

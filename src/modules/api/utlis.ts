@@ -59,6 +59,8 @@ export function endpoint(url: string, methods: string[] = ['get']) {
       get: function () {
         const result: any = {}
 
+        result.urlParams = url.match(/:(\w)+/g).map(s => s.slice(1))
+
         _.forEach(methods, method => {
           result[method.toLowerCase()] = (query, body) => fetchFn(this.fetch, method.toUpperCase(), url, this.headers, {...query, ...this.query}, body)
         })

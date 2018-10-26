@@ -27,6 +27,6 @@ type Book {
 }
 
 type Query {
-    challenge: UserChallenge
+    user_challenge: UserChallenge
     userBooks(params: [String]): [Book]
 }

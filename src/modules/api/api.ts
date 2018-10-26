@@ -12,7 +12,7 @@ class Api extends ApiBase {
   @endpoint('/books') books
   @endpoint('/books/:bookId') book
   @endpoint('/users/:user/books/:type') userBooks
-  @endpoint('/challenges/:year/readers/:user') challenge
+  @endpoint('/challenges/:year/readers/:user') user_challenge
   @endpoint('/me/books/:bookId', ['patch']) myBook
 }
 
