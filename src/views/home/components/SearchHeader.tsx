@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Container, Header, Item, Input, Icon, Button, Text } from 'native-base'
+import { Header, Item, Input, Icon, Button, Text } from 'native-base'
 
 interface Props {
 }

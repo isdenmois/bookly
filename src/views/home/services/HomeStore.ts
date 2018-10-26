@@ -1,7 +1,8 @@
 import * as _ from 'lodash'
 import { action, computed, observable } from 'mobx'
-import { api } from '../../../modules/api/api'
-import { SessionStore } from '../../../services/SessionStore'
+
+import { api } from 'modules/api/api'
+import { SessionStore } from 'services/SessionStore'
 
 export interface UserChallenge {
   booksCountForecast: number

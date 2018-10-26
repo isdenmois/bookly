@@ -2,8 +2,10 @@ import * as React from 'react'
 import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { inject } from 'mobx-react'
 import { Button, Card, CardItem } from 'native-base'
-import { TextL, TextM } from '../../../components/Text'
-import { ChangeStatusModal } from '../../change-status/ChangeStatusModal'
+
+import { TextL, TextM } from 'components/Text'
+import { ChangeStatusModal } from 'views/change-status/ChangeStatusModal'
+
 import { HomeStore } from '../services/HomeStore'
 
 interface Props {

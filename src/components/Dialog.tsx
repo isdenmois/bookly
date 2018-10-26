@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Modal, Button, StyleSheet, Text, TouchableWithoutFeedback, ViewStyle } from 'react-native'
+import { View, Modal, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native'
 import { TextL } from './Text'
 
 interface Props {

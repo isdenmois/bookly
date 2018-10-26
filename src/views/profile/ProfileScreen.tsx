@@ -1,9 +1,10 @@
 import * as React from 'react'
+import { inject, observer } from 'mobx-react'
 import { NavigationScreenProps } from 'react-navigation'
 import { Button, Container, Content, Text } from 'native-base'
-import { StatusBar } from '../../components/StatusBar'
-import { SessionStore } from '../../services/SessionStore'
-import { inject, observer } from 'mobx-react'
+
+import { StatusBar } from 'components/StatusBar'
+import { SessionStore } from 'services/SessionStore'
 
 interface Props extends NavigationScreenProps {
   sessionStore?: SessionStore;

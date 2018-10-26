@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { Image, ImageStyle, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
-import { Button, DatePicker, Item, Label } from 'native-base'
-import { Dialog } from '../../components/Dialog'
-import { TextL, TextM } from '../../components/Text'
-import { Rating } from '../../components/Rating'
+import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { Button, DatePicker } from 'native-base'
+
+import { Dialog } from 'components/Dialog'
+import { TextL, TextM } from 'components/Text'
+import { Rating } from 'components/Rating'
 
 interface Props {
   book: any

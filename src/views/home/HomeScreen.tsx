@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { RefreshControl, View } from 'react-native'
+import { RefreshControl } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { inject, observer } from 'mobx-react'
 import { Body, Button, Card, CardItem, Container, Content, Text } from 'native-base'
 
-import { StatusBar } from '../../components/StatusBar'
+import { gql, api } from 'modules/api/query'
+
 import { SearchHeader } from './components/SearchHeader';
 import { NavigationLinks } from './components/NavigationLinks'
 import { CurrentBook } from './components/CurrentBook'
 import { HomeStore } from './services/HomeStore'
 import { BookChallenge } from './components/BookChallenge'
-import { gql, api } from '../../modules/api/query'
 
 interface Props extends NavigationScreenProps {
   homeStore: HomeStore

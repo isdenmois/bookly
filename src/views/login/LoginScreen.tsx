@@ -2,8 +2,10 @@ import * as React from 'react'
 import { Button, Container, Content, Form, Input, Item, Label } from 'native-base'
 import { NavigationScreenProps } from 'react-navigation'
 import { inject, observer } from 'mobx-react'
-import { TextM } from '../../components/Text'
-import { api } from '../../modules/api/api'
+
+import { TextM } from 'components/Text'
+import { api } from 'modules/api/api'
+
 import { LoginStore } from './LoginStore'
 
 interface Props extends NavigationScreenProps {

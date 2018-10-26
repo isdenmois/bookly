@@ -8,10 +8,11 @@
   "plugins": [
     [
       "module-resolver", {
+        "root": ["./build"],
         "alias": {
-          "react-native-vector-icons": "@expo/vector-icons",
-          "views": "./build/views"
-        }
+          "react-native-vector-icons": "@expo/vector-icons"
+        },
+        "cwd": "packagejson"
       }
     ],
     "transform-decorators-legacy",

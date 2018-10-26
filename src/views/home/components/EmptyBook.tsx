@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
 import { Body, Button, Card, CardItem, Text } from 'native-base'
-import { TextL } from '../../../components/Text'
-import { marginM } from '../../../constants/theme'
+
+import { TextL } from 'components/Text'
+import { marginM } from 'constants/theme'
 
 interface Props {
   onChooseBook: () => void;

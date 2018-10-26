@@ -2,9 +2,11 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
 import { inject, observer } from 'mobx-react'
-import { EmptyBook } from './EmptyBook'
-import { notImplemented } from '../../../constants/not-implemented-yet'
+
+import { notImplemented } from 'constants/not-implemented-yet'
+
 import { HomeStore } from '../services/HomeStore'
+import { EmptyBook } from './EmptyBook'
 import { WishBook } from './WishBook'
 
 interface Props extends NavigationScreenProps {

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { textL, textM, textS } from '../constants/theme'
+import { textL, textM, textS } from 'constants/theme'
 
 export const TextS = styled.Text`
     font-size: ${textS};

@@ -12,7 +12,7 @@
     "preserveConstEnums": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "baseUrl": "./src"
   },
   "filesGlob": [

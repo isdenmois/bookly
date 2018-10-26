@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Font } from 'expo'
 import { Provider } from 'mobx-react'
 import { ActivityIndicator } from 'react-native'
-import { RootStack } from './states/main'
-import { SessionStore } from './services/SessionStore'
-import { BookStore } from './views/book/BookStore'
-import { LoginStore } from './views/login/LoginStore'
-import { HomeStore } from './views/home/services/HomeStore'
+import { RootStack } from 'states/main'
+import { SessionStore } from 'services/SessionStore'
+import { BookStore } from 'views/book/BookStore'
+import { LoginStore } from 'views/login/LoginStore'
+import { HomeStore } from 'views/home/services/HomeStore'
 
 const sessionStore = new SessionStore(),
       store        = {

@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx'
-import { commonApi } from '../../modules/api/commonApi'
-import { SessionStore } from '../../services/SessionStore'
+import { commonApi } from 'modules/api/commonApi'
+import { SessionStore } from 'services/SessionStore'
 
 export class LoginStore {
   constructor(private sessionStore: SessionStore) {
