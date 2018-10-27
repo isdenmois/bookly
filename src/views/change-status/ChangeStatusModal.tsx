@@ -29,31 +29,35 @@ export class ChangeStatusModal extends React.PureComponent<Props, State> {
 
     return (
       <Dialog visible={visible} onClose={onClose} header='Прочитано'>
-        <View style={s.info}>
-          {book.pic_100 &&
-            <View style={s.imageContainer}>
-              <Image style={s.image}
-                     source={{uri: book.pic_100}}>
-              </Image>
+        <View style={s.content}>
+          <View style={s.info}>
+            {book.pic_100 &&
+              <View style={s.imageContainer}>
+                <Image style={s.image}
+                       source={{uri: book.pic_100}}>
+                </Image>
+              </View>
+            }
+
+            <View style={s.contentContainer}>
+              <TextL style={s.title}>{book.name}</TextL>
+              <TextM style={s.author}>{book.author_name}</TextM>
+
+              <DatePicker defaultDate={this.state.date}
+                          locale='ru'
+                          onDateChange={this.selectDate}/>
             </View>
-          }
-
-          <View style={s.contentContainer}>
-            <TextL style={s.title}>{book.name}</TextL>
-            <TextM style={s.author}>{book.author_name}</TextM>
-
-            <DatePicker defaultDate={this.state.date}
-                        locale='ru'
-                        onDateChange={this.selectDate}/>
           </View>
+
+          <Rating value={this.state.rating}
+                  onChange={this.setRating}/>
         </View>
 
-        <Rating value={this.state.rating}
-                onChange={this.setRating}/>
-
-        <Button style={s.button} success onPress={this.save} disabled={!this.state.rating}>
-          <TextM style={s.buttonText}>Сохранить</TextM>
-        </Button>
+        <View style={s.button}>
+          <Button full success onPress={this.save} disabled={!this.state.rating}>
+            <TextM style={s.buttonText}>Сохранить</TextM>
+          </Button>
+        </View>
       </Dialog>
     )
   }
@@ -85,6 +89,7 @@ export class ChangeStatusModal extends React.PureComponent<Props, State> {
 const s = StyleSheet.create({
   info: {
     flexDirection: 'row',
+    paddingVertical: 20,
   } as ViewStyle,
   imageContainer: {
     marginRight: 10,
@@ -106,9 +111,11 @@ const s = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
   } as ImageStyle,
+  content: {
+    paddingHorizontal: 20,
+  } as ViewStyle,
   button: {
-    width: '100%',
-    justifyContent: 'center',
+    padding: 20,
   } as ViewStyle,
   buttonText: {
     color: 'white',

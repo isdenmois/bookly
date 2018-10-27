@@ -6,7 +6,8 @@ import { TextL } from 'components/Text'
 import { marginM } from 'constants/theme'
 
 interface Props {
-  onChooseBook: () => void;
+  onChooseBook: () => void
+  chooseBookAvailable: boolean
 }
 
 export class EmptyBook extends React.Component<Props> {
@@ -17,9 +18,11 @@ export class EmptyBook extends React.Component<Props> {
           <Body style={s.centered}>
           <TextL>Нет текущей читаемой книги</TextL>
 
-          <Button small bordered block style={s.withMargin} onPress={this.props.onChooseBook}>
-            <Text>Добавить</Text>
-          </Button>
+          {this.props.chooseBookAvailable &&
+            <Button small bordered block style={s.withMargin} onPress={this.props.onChooseBook}>
+              <Text>Добавить</Text>
+            </Button>
+          }
           </Body>
         </CardItem>
       </Card>

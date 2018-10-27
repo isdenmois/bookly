@@ -44,9 +44,12 @@ const s = StyleSheet.create({
     backgroundColor: 'black',
   } as ViewStyle,
   modal: {
-    flex: 1,
+    top: '5%',
+    left: '5%',
+    right: '5%',
+    bottom: '5%',
+    position: 'absolute',
     justifyContent: 'center',
-    alignItems: 'center',
   } as ViewStyle,
   modalView: {
     borderRadius: 5,
@@ -61,7 +64,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   content: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    flexDirection: 'column',
+    alignItems: 'stretch',
   } as ViewStyle,
 })

@@ -1,16 +1,13 @@
 import * as React from 'react'
-import * as _ from 'lodash'
 import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Button, Card, CardItem } from 'native-base'
 
-import * as query from 'modules/api/query'
 import { TextL, TextM } from 'components/Text'
 import { ChangeStatusModal } from 'views/change-status/ChangeStatusModal'
 
-import { BookStatusMutation } from '../mutations/BookStatusMutation'
-
 interface Props {
-  book: any;
+  book: any
+  changeBookStatus: (book, params) => void
 }
 
 interface State {
@@ -61,11 +58,8 @@ export class WishBook extends React.Component<Props, State> {
   closeChangeStatus = () => this.setState({changeStatusVisible: false})
 
   changeStatus = (params) => {
-    const { book } = this.props,
-          mutation = new BookStatusMutation(book, params)
-
     this.closeChangeStatus()
-    query.update(mutation)
+    this.props.changeBookStatus(this.props.book, params)
   }
 }
 
