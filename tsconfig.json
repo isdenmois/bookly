@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "es2015",
-    "target": "es2015",
+    "target": "es2018",
     "jsx": "react",
     "rootDir": "src",
     "outDir": "build",
@@ -31,6 +31,7 @@
     "node_modules",
     "server",
     "jest.config.js",
+    "babel.config.js",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "App.js",
