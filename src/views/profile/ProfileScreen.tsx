@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
-import { NavigationScreenProps } from 'react-navigation'
+import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation'
 import { Button, Container, Content, Text } from 'native-base'
 
 import { StatusBar } from 'components/StatusBar'
@@ -31,7 +31,6 @@ export class ProfileScreen extends React.Component<Props> {
 
   logout = () => {
     this.props.sessionStore.stopSession()
-    this.props.navigation.popToTop()
-    this.props.navigation.replace('Login')
+    this.props.navigation.navigate('Login')
   }
 }

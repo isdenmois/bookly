@@ -27,6 +27,7 @@ export class SessionStore {
   }
 
   @action stopSession() {
+    api.query.session_id = null
     return AsyncStorage.removeItem(SESSION_KEY)
   }
 }

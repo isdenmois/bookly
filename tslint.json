@@ -6,7 +6,7 @@
       false
     ],
     "no-internal-module": true,
-    "no-var-requires": true,
+    "no-var-requires": false,
     "typedef": [
       false
     ],
