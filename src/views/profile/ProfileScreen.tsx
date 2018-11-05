@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
-import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation'
+import { NavigationScreenProps } from 'react-navigation'
 import { Button, Container, Content, Text } from 'native-base'
 
 import { StatusBar } from 'components/StatusBar'
@@ -21,7 +21,7 @@ export class ProfileScreen extends React.Component<Props> {
         <StatusBar/>
 
         <Content>
-          <Button onPress={this.logout}>
+          <Button full onPress={this.logout}>
             <Text>Выйти</Text>
           </Button>
         </Content>
