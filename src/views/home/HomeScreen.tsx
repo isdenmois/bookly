@@ -27,9 +27,11 @@ interface State {
   query: gql`
     query {
       user_challenge {
-        count_books_read
-        count_books_total
-        count_books_forecast
+        user_challenge {
+          count_books_read
+          count_books_total
+          count_books_forecast
+        }
       }
 
       userBooks(params: ["start", "count"]) {

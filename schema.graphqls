@@ -2,6 +2,10 @@ schema {
     query: Query
 }
 
+type Challenge {
+    user_challenge: UserChallenge
+}
+
 type UserChallenge {
     count_books_forecast: Int
     count_books_read: Int
@@ -27,6 +31,6 @@ type Book {
 }
 
 type Query {
-    user_challenge: UserChallenge
+    user_challenge: Challenge
     userBooks(params: [String]): [Book]
 }
