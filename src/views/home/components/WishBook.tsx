@@ -3,7 +3,7 @@ import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react
 import { Button, Card, CardItem } from 'native-base'
 
 import { TextL, TextM } from 'components/Text'
-import { ChangeStatusModal } from 'views/change-status/ChangeStatusModal'
+import { ChangeStatusDialog } from 'views/home/components/ChangeStatusDialog'
 
 interface Props {
   book: any
@@ -45,10 +45,10 @@ export class WishBook extends React.Component<Props, State> {
             </View>
           </View>
         </CardItem>
-        <ChangeStatusModal book={this.props.book}
-                           visible={this.state.changeStatusVisible}
-                           onClose={this.closeChangeStatus}
-                           onSave={this.changeStatus}/>
+        <ChangeStatusDialog book={this.props.book}
+                            visible={this.state.changeStatusVisible}
+                            onClose={this.closeChangeStatus}
+                            onSave={this.changeStatus}/>
       </Card>
     )
   }

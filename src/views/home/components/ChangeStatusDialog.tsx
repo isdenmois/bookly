@@ -18,7 +18,7 @@ interface State {
   rating: number
 }
 
-export class ChangeStatusModal extends React.PureComponent<Props, State> {
+export class ChangeStatusDialog extends React.PureComponent<Props, State> {
   state = {
     date: new Date(),
     rating: 0,
