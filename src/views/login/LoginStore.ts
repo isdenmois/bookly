@@ -8,7 +8,7 @@ export class LoginStore {
 
   @observable login: string      = ''
   @observable password: string   = ''
-  @observable isLoading: boolean = false
+  @observable submitting: boolean = false
 
   @action setLogin(login: string) {
     this.login = login
@@ -25,11 +25,14 @@ export class LoginStore {
       fields: 'session_id,user(login)',
     }
 
+    this.submitting = true
+
     return commonApi.login.post(params)
       .then(data => this.sessionStore.setSession(data.session_id, data.user.login))
       .then(() => {
         this.login    = ''
         this.password = ''
       })
+      .finally(() => this.submitting = false)
   }
 }

@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { Dimensions, KeyboardAvoidingView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { Body, Button, Card, CardItem, Container, Content, Form, Icon, Input, Item, Label } from 'native-base'
+import { ActivityIndicator, KeyboardAvoidingView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { Button, Container, Form, Icon, Item } from 'native-base'
 import { NavigationScreenProps } from 'react-navigation'
 import { inject, observer } from 'mobx-react'
 
 import { TextM, TextL } from 'components/Text'
+import { Field } from 'components/Field'
 import { api } from 'modules/api/api'
 
 import { LoginStore } from './LoginStore'
@@ -19,6 +20,8 @@ interface Props extends NavigationScreenProps {
 export class LoginScreen extends React.Component<Props> {
   static navigationOptions = () => ({header: null})
 
+  private passwordField: Field
+
   componentWillMount() {
     if (api.query.session_id) {
       this.props.navigation.navigate('App')
@@ -26,7 +29,7 @@ export class LoginScreen extends React.Component<Props> {
   }
 
   render() {
-    const {login, password} = this.props.loginStore
+    const { login, password, submitting } = this.props.loginStore
 
     return (
       <Container style={s.container}>
@@ -39,30 +42,41 @@ export class LoginScreen extends React.Component<Props> {
 
           <View style={s.card}>
             <Form style={s.form}>
-              <Item>
+              <Item style={s.item}>
                 <Icon name='ios-person' style={s.icon}/>
-                <Input placeholder='Имя пользователя'
+                <Field placeholder='Имя пользователя'
                        textContentType='username'
                        autoCapitalize='none'
                        autoCorrect={false}
                        value={login}
+                       returnKeyType='next'
+                       next={this.passwordField}
                        onChangeText={this.onLoginChange}/>
               </Item>
-              <Item>
+              <Item style={s.item}>
                 <Icon name='ios-lock' style={s.icon}/>
-                <Input placeholder='Пароль'
+                <Field placeholder='Пароль'
                        textContentType='password'
                        autoCapitalize='none'
                        autoCorrect={false}
                        secureTextEntry={true}
+                       returnKeyType='done'
+                       ref={field => this.passwordField = field}
                        value={password}
+                       onSubmitEditing={this.submit}
                        onChangeText={this.onPasswordChange}/>
               </Item>
             </Form>
 
-            <Button full disabled={this.isDisabled} onPress={this.submit}>
-              <TextM style={s.buttonText}>Войти</TextM>
-            </Button>
+            {submitting &&
+              <ActivityIndicator size='large'/>
+            }
+
+            {!submitting &&
+              <Button full disabled={this.isDisabled} onPress={this.submit}>
+                <TextM style={s.buttonText}>Войти</TextM>
+              </Button>
+            }
           </View>
         </KeyboardAvoidingView>
 
@@ -119,4 +133,7 @@ const s = StyleSheet.create({
   buttonText: {
     color: 'white',
   } as TextStyle,
+  item: {
+    marginLeft: 0,
+  } as ViewStyle,
 })
