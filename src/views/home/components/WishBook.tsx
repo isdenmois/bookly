@@ -37,11 +37,9 @@ export class WishBook extends React.Component<Props, State> {
             <View style={s.contentContainer}>
               <TextL style={s.title}>{book.name}</TextL>
               <TextM style={s.author}>{book.author_name}</TextM>
-              <View style={s.buttonContainer}>
-                <Button success style={s.readButton} onPress={this.openChangeStatus}>
-                  <TextM>Прочитано</TextM>
-                </Button>
-              </View>
+              <Button success full onPress={this.openChangeStatus}>
+                <TextM style={s.readButtonText}>Прочитано</TextM>
+              </Button>
             </View>
           </View>
         </CardItem>
@@ -73,7 +71,7 @@ const s = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-  },
+  } as ViewStyle,
   image: {
     width: 100,
     flex: 1,
@@ -88,12 +86,7 @@ const s = StyleSheet.create({
     color: '#828281',
     marginBottom: 10,
   } as TextStyle,
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  } as ViewStyle,
-  readButton: {
-    paddingHorizontal: 20,
-  },
+  readButtonText: {
+    color: 'white',
+  } as TextStyle,
 })
