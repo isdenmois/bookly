@@ -12,7 +12,7 @@ class Api extends ApiBase {
   books = endpoint(this, '/books')
   book = endpoint(this, '/books/:bookId')
   userBooks = endpoint(this, '/users/:user/books/:type')
-  user_challenge = endpoint(this, '/challenges/:year/readers/:user')
+  userChallenge = endpoint(this, '/challenges/:year/readers/:user')
   myBook = endpoint(this, '/me/books/:bookId', ['patch'])
 }
 

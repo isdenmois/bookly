@@ -38,7 +38,7 @@ export class WishBook extends React.Component<Props, State> {
               <TextL style={s.title}>{book.name}</TextL>
               <TextM style={s.author}>{book.author_name}</TextM>
               <Button success full onPress={this.openChangeStatus}>
-                <TextM style={s.readButtonText}>Прочитано</TextM>
+                <TextM style={s.readButtonText}>Прочитано!</TextM>
               </Button>
             </View>
           </View>

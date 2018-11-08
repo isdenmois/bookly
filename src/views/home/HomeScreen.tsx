@@ -3,18 +3,20 @@ import { RefreshControl } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { Body, Button, Card, CardItem, Container, Content, Text } from 'native-base'
 
-import { gql, api } from 'modules/api/query'
+import { api } from 'modules/api/query'
 
 import { SearchHeader } from './components/SearchHeader'
 import { NavigationLinks } from './components/NavigationLinks'
 import { CurrentBook } from './components/CurrentBook'
 import { BookChallenge } from './components/BookChallenge'
+import { HOME_SCREEN_QUERY } from './userBooksFragement'
+import { client } from 'services/apollo-client-bridge'
 
 interface Props extends NavigationScreenProps {
-  refresh?: () => void
+  refetch?: () => void
   loading?: boolean
   isLoaded?: boolean
-  user_challenge?: any
+  userChallenge?: any
   userBooks?: any
 }
 
@@ -23,35 +25,12 @@ interface State {
   refreshing: boolean;
 }
 
-@api({
-  query: gql`
-    query {
-      user_challenge {
-        user_challenge {
-          count_books_read
-          count_books_total
-          count_books_forecast
-        }
-      }
-
-      userBooks(params: ["start", "count"]) {
-        id
-        author_name
-        name
-        pic_100
-        user_book_partial {
-          book_read
-        }
-      }
-    }
-  `,
-  params: mapParams,
-})
+@api(HOME_SCREEN_QUERY, mapParams)
 export class HomeScreen extends React.Component<Props, State> {
   static navigationOptions = () => ({header: null})
 
   getRefresh() {
-    return <RefreshControl refreshing={this.props.loading} onRefresh={this.props.refresh}/>
+    return <RefreshControl refreshing={this.props.loading} onRefresh={() => client.reFetchObservableQueries()}/>
   }
 
   render() {
@@ -60,12 +39,12 @@ export class HomeScreen extends React.Component<Props, State> {
         <SearchHeader/>
 
         <Content refreshControl={this.getRefresh()}>
-          {this.props.isLoaded &&
+          {!this.props.loading &&
             <CurrentBook navigation={this.props.navigation} books={this.props.userBooks}/>
           }
 
-          {this.props.isLoaded && this.props.user_challenge &&
-            <BookChallenge challenge={this.props.user_challenge}/>
+          {!this.props.loading && this.props.userChallenge &&
+            <BookChallenge challenge={this.props.userChallenge}/>
           }
 
           {__DEV__ &&
@@ -87,7 +66,7 @@ export class HomeScreen extends React.Component<Props, State> {
   }
 }
 
-function mapParams(props, params, session) {
+function mapParams(props, session) {
   return {
     user: session.userId,
     type: 'wish',

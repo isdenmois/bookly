@@ -19,6 +19,7 @@ books.db-journal
 # typesript result
 build
 src/**/*.js
+src/services/schema.ts
 
 npm-debug.log*
 yarn-debug.log*

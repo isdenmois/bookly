@@ -1,9 +1,6 @@
 schema {
     query: Query
-}
-
-type Challenge {
-    user_challenge: UserChallenge
+    mutation: Mutation
 }
 
 type UserChallenge {
@@ -18,7 +15,7 @@ type UserBookPartial {
 }
 
 type Book {
-    id: ID
+    id: ID!
     author_id: Int
     author_name: String
     name: String
@@ -30,7 +27,15 @@ type Book {
     user_book_partial: UserBookPartial
 }
 
+type ChangeStatusParams {
+    id: ID!
+}
+
 type Query {
-    user_challenge: Challenge
-    userBooks(params: [String]): [Book]
+    userChallenge(user: ID!, year: Int!): UserChallenge
+    userBooks(user: ID!, start: Int, count:  Int, type: String): [Book]
+}
+
+type Mutation {
+    changeStatus(bookId: ID!, book_read: Int!, date_day: Int, date_month: Int, date_year: Int, rating: Int): Book!
 }

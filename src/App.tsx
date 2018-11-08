@@ -2,8 +2,10 @@ import * as React from 'react'
 import { Font } from 'expo'
 import { Provider } from 'mobx-react'
 import { ActivityIndicator } from 'react-native'
+import { ApolloProvider } from 'react-apollo'
 import { RootStack } from 'states/main'
 import { store, sessionStore } from 'services/store'
+import { client } from 'services/apollo-client-bridge'
 
 interface State {
   isLoaded: boolean;
@@ -32,9 +34,11 @@ export default class App extends React.Component {
     }
 
     return (
-      <Provider {...store}>
-        <RootStack/>
-      </Provider>
+      <ApolloProvider client={client}>
+        <Provider {...store}>
+          <RootStack/>
+        </Provider>
+      </ApolloProvider>
     )
   }
 }

@@ -11,7 +11,7 @@ const WHERE_TYPES = {
 const s = (user, type) => `
   SELECT * FROM books b
   LEFT JOIN user_book_partial p ON b.id = p.book_id
-  WHERE p.user = "${user}" AND ${WHERE_TYPES[type]}
+  WHERE p.user = "${user}" AND (${WHERE_TYPES[type]})
 `;
 
 router.get('/', (req, res) => {
