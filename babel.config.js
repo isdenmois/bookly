@@ -2,17 +2,25 @@ module.exports = function(api) {
   api.cache(false);
 
   return {
-    presets: ['module:metro-react-native-babel-preset', 'module:react-native-dotenv'],
+    presets: ['babel-preset-expo', 'module:react-native-dotenv'],
     plugins: [
-      ['@babel/plugin-proposal-decorators', { legacy: true }],
       [
         'babel-plugin-module-resolver',
         {
-          root: ['./build'],
+          root: ['./src'],
           alias: {
             'react-native-vector-icons': '@expo/vector-icons',
           },
-          extensions: ['.js', '.ts', '.tsx', '.ios.js', '.android.js']
+          extensions: [
+            '.js',
+            '.jsx',
+            '.ts',
+            '.tsx',
+            '.android.js',
+            '.android.tsx',
+            '.ios.js',
+            '.ios.tsx',
+          ]
         },
       ],
       ['babel-plugin-styled-components', { ssr: false }],

@@ -2,10 +2,13 @@
   "compilerOptions": {
     "module": "es2015",
     "target": "es2018",
-    "jsx": "react",
+    "jsx": "react-native",
     "rootDir": "src",
     "outDir": "build",
     "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
     "noImplicitAny": false,
     "sourceMap": true,
     "experimentalDecorators": true,
@@ -13,6 +16,8 @@
     "allowJs": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
+    "noEmit": true,
+    "lib": [ "es2017" ],
     "baseUrl": "./src"
   },
   "filesGlob": [

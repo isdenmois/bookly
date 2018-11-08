@@ -9,11 +9,11 @@ class Api extends ApiBase {
     andyll: API_KEY,
   }
 
-  @endpoint('/books') books
-  @endpoint('/books/:bookId') book
-  @endpoint('/users/:user/books/:type') userBooks
-  @endpoint('/challenges/:year/readers/:user') user_challenge
-  @endpoint('/me/books/:bookId', ['patch']) myBook
+  books = endpoint(this, '/books')
+  book = endpoint(this, '/books/:bookId')
+  userBooks = endpoint(this, '/users/:user/books/:type')
+  user_challenge = endpoint(this, '/challenges/:year/readers/:user')
+  myBook = endpoint(this, '/me/books/:bookId', ['patch'])
 }
 
 export const api = new Api()

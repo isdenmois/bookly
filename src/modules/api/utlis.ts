@@ -53,22 +53,16 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query, body) {
     })
 }
 
-export function endpoint(url: string, methods: string[] = ['get']) {
-  return function (target: any, propertyKey: string) {
-    Object.defineProperty(target, propertyKey, {
-      get: function () {
-        const result: any = {}
-
-        result.urlParams = (url.match(/:(\w)+/g) || []).map(s => s.slice(1))
-
-        _.forEach(methods, method => {
-          result[method.toLowerCase()] = (query, body) => fetchFn(this.fetch, method.toUpperCase(), url, this.headers, {...query, ...this.query}, body)
-        })
-
-        return result
-      },
-    })
+export function endpoint(t: any, url: string, methods: string[] = ['get']): any {
+  const result = {
+    urlParams: (url.match(/:(\w)+/g) || []).map(s => s.slice(1)),
   }
+
+  _.forEach(methods, method => {
+    result[method.toLowerCase()] = (query, body) => fetchFn(t.fetch, method.toUpperCase(), url, t.headers, {...query, ...t.query}, body)
+  })
+
+  return result
 }
 
 export class ApiBase {
