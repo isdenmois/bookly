@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "noEmit": true,
-    "lib": [ "es2017" ],
+    "lib": [ "es2017", "dom" ],
     "baseUrl": "./src"
   },
   "filesGlob": [
@@ -36,11 +36,12 @@
     "node_modules",
     "server",
     "jest.config.js",
-    "babel.config.js",
+    "babel.*.js",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "App.js",
-    "test/**.js"
+    "test/**.js",
+    "webpack.config.js"
   ],
   "compileOnSave": false
 }

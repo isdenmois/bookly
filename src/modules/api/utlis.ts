@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import { Alert } from 'react-native'
+// import { Alert } from 'react-native'
 import { BASE_URL, DEV_URL } from 'react-native-dotenv'
 
 export interface QueryParams {
@@ -47,7 +47,8 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query, body) {
       return res.data
     })
     .catch(error => {
-      Alert.alert(`Ошибка при выполнении запроса: ${url}`, error.toString())
+      // TODO: вынести в отдельный модуль
+      // Alert.alert(`Ошибка при выполнении запроса: ${url}`, error.toString())
 
       return Promise.reject(error)
     })
