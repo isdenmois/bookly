@@ -12,6 +12,10 @@ type UserChallenge {
 
 type UserBookPartial {
     book_read: Int
+    rating: Int
+    date_day: Int
+    date_month: Int
+    date_year: Int
 }
 
 type Book {

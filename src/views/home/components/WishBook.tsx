@@ -7,7 +7,7 @@ import { ChangeStatusDialog } from 'views/home/components/ChangeStatusDialog'
 
 interface Props {
   book: any
-  changeBookStatus: (book, params) => void
+  onSave: () => void
 }
 
 interface State {
@@ -46,7 +46,7 @@ export class WishBook extends React.Component<Props, State> {
         <ChangeStatusDialog book={this.props.book}
                             visible={this.state.changeStatusVisible}
                             onClose={this.closeChangeStatus}
-                            onSave={this.changeStatus}/>
+                            onSave={this.props.onSave}/>
       </Card>
     )
   }
@@ -54,11 +54,6 @@ export class WishBook extends React.Component<Props, State> {
   openChangeStatus = () => this.setState({changeStatusVisible: true})
 
   closeChangeStatus = () => this.setState({changeStatusVisible: false})
-
-  changeStatus = (params) => {
-    this.closeChangeStatus()
-    this.props.changeBookStatus(this.props.book, params)
-  }
 }
 
 const s = StyleSheet.create({

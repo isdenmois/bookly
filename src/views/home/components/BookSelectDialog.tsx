@@ -1,7 +1,10 @@
 import * as _ from 'lodash'
 import * as React from 'react'
+import gql from 'graphql-tag'
 import { Body, Button, Radio, Content, Left, List, ListItem, Right, Text, Thumbnail } from 'native-base'
 import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+
+import { client } from 'services/apollo-client-bridge'
 
 import { Dialog } from 'components/Dialog'
 import { TextM } from 'components/Text'
@@ -9,13 +12,23 @@ import { TextM } from 'components/Text'
 interface Props {
   visible: boolean
   books: any[]
-  onSelect: (book: any) => void
   onClose: () => void
 }
 
 interface State {
   selected: any
 }
+
+const mutation = gql`
+  mutation ChangeStatus($bookId: ID!, $book_read: Int!) {
+    changeStatus(bookId: $bookId, book_read: $book_read) {
+      id
+      user_book_partial {
+        book_read
+      }
+    }
+  }
+`
 
 export class BookSelectDialog extends React.Component<Props, State> {
   state = {
@@ -75,8 +88,11 @@ export class BookSelectDialog extends React.Component<Props, State> {
   }
 
   save = () => {
+    const { selected } = this.state,
+          variables = {bookId: selected.id, book_read: 2}
+
+    client.mutate({mutation, variables})
     this.close()
-    this.props.onSelect(this.state.selected)
   }
 }
 

@@ -1,6 +1,9 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
 import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Button, DatePicker } from 'native-base'
+
+import { client } from 'services/apollo-client-bridge'
 
 import { Dialog } from 'components/Dialog'
 import { TextL, TextM } from 'components/Text'
@@ -10,13 +13,28 @@ interface Props {
   book: any
   visible: boolean
   onClose: () => void
-  onSave: (params) => void
+  onSave: () => void
 }
 
 interface State {
   date: Date
   rating: number
 }
+
+const mutation = gql`
+  mutation markAsRead($bookId: ID!, $date_day: Int!, $date_month: Int!, $date_year: Int!, $rating: Int!) {
+    changeStatus(bookId: $bookId, book_read: 1, date_day: $date_day, date_month: $date_month, date_year: $date_year, rating: $rating) {
+      id
+      user_book_partial {
+        book_read
+        date_day
+        date_month
+        date_year
+        rating
+      }
+    }
+  }
+`
 
 export class ChangeStatusDialog extends React.PureComponent<Props, State> {
   state = {
@@ -67,16 +85,18 @@ export class ChangeStatusDialog extends React.PureComponent<Props, State> {
 
   save = () => {
     const { date, rating } = this.state,
-          params = {
-            book_read: 1,
+          { book } = this.props,
+          variables = {
+            bookId: book.id,
             date_day: date.getDate(),
             date_month: date.getMonth() + 1,
             date_year: date.getFullYear(),
-            fields: 'id',
             rating,
           }
 
-    this.props.onSave(params)
+    this.props.onClose()
+    this.props.onSave()
+    client.mutate({mutation, variables, refetchQueries: ['home']})
     this.resetState()
   }
 
