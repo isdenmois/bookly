@@ -21,7 +21,7 @@ function queryParams(data: QueryParams = {}) {
   }).join('&')
 }
 
-function fetchFn(fetch: Function, method, baseUrl, headers, query, body) {
+function fetchFn(fetch: Function, method, baseUrl, headers, query, body, list) {
   const params = (baseUrl.match(/:([\w]+)/g) || []).map(str => str.slice(1)),
         fetchParams: RequestInit = {headers, method}
 
@@ -44,7 +44,7 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query, body) {
         return Promise.reject(JSON.stringify(res))
       }
 
-      return res.data
+      return list ? {data: res.data, count: res.count} : res.data
     })
     .catch(error => {
       // TODO: вынести в отдельный модуль
@@ -54,13 +54,13 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query, body) {
     })
 }
 
-export function endpoint(t: any, url: string, methods: string[] = ['get']): any {
+export function endpoint(t: any, url: string, methods: string[] = ['get'], list = false): any {
   const result = {
     urlParams: (url.match(/:(\w)+/g) || []).map(s => s.slice(1)),
   }
 
   _.forEach(methods, method => {
-    result[method.toLowerCase()] = (query, body) => fetchFn(t.fetch, method.toUpperCase(), url, t.headers, {...query, ...t.query}, body)
+    result[method.toLowerCase()] = (query, body) => fetchFn(t.fetch, method.toUpperCase(), url, t.headers, {...query, ...t.query}, body, list)
   })
 
   return result

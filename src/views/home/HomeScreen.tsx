@@ -41,7 +41,7 @@ export class HomeScreen extends React.Component<Props, State> {
 
     return (
       <Container>
-        <SearchHeader/>
+        <SearchHeader navigation={this.props.navigation}/>
 
         <Content refreshControl={this.renderRefresh()}>
           <Query query={USER_BOOKS_QUERY} variables={variables}>

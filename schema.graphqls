@@ -35,9 +35,15 @@ type ChangeStatusParams {
     id: ID!
 }
 
+type BookSearchResult {
+    count: Int!
+    books: [Book]
+}
+
 type Query {
     userChallenge(user: ID!, year: Int!): UserChallenge
     userBooks(user: ID!, start: Int, count:  Int, type: String): [Book]
+    searchBooks(q: String!, start: Int!, count: Int!): BookSearchResult
 }
 
 type Mutation {

@@ -31,6 +31,7 @@ export default {
   Query: {
     userChallenge: rest(api.userChallenge, f => `user_challenge(${f})`, r => _.get(r, 'user_challenge')),
     userBooks: rest(api.userBooks),
+    searchBooks: rest(api.books, f => f.replace(/count,books\(/, '').replace(/\)$/, ''), r => ({count: r.count, books: r.data})),
   },
   Mutation: {
     changeStatus: rest(api.myBook, f => f.replace('user_book_partial', 'user_book'), result => ({id: result.id, user_book_partial: result.user_book}), 'patch'),
