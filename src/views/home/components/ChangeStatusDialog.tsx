@@ -96,7 +96,7 @@ export class ChangeStatusDialog extends React.PureComponent<Props, State> {
 
     this.props.onClose()
     this.props.onSave()
-    client.mutate({mutation, variables, refetchQueries: ['home']})
+    client.mutate({mutation, variables, refetchQueries: ['userChallenge']})
     this.resetState()
   }
 

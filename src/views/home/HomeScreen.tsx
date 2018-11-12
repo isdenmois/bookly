@@ -1,16 +1,17 @@
 import * as React from 'react'
-import { RefreshControl } from 'react-native'
+import { ActivityIndicator, RefreshControl } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
-import { Body, Button, Card, CardItem, Container, Content, Text } from 'native-base'
+import { Query } from 'react-apollo'
+import { Container, Content } from 'native-base'
 
-import { api } from 'modules/api/query'
+import { sessionStore } from 'services/store'
+import { client } from 'services/apollo-client-bridge'
 
 import { SearchHeader } from './components/SearchHeader'
 import { NavigationLinks } from './components/NavigationLinks'
 import { CurrentBook } from './components/CurrentBook'
 import { BookChallenge } from './components/BookChallenge'
-import { HOME_SCREEN_QUERY } from './userBooksFragement'
-import { client } from 'services/apollo-client-bridge'
+import { USER_BOOKS_QUERY, USER_CHALLENGE_QUERY } from './queries'
 
 interface Props extends NavigationScreenProps {
   refetch?: () => void
@@ -21,58 +22,66 @@ interface Props extends NavigationScreenProps {
 }
 
 interface State {
-  isLoaded: boolean;
   refreshing: boolean;
 }
 
-@api(HOME_SCREEN_QUERY, mapParams)
 export class HomeScreen extends React.Component<Props, State> {
   static navigationOptions = () => ({header: null})
 
-  getRefresh() {
-    return <RefreshControl refreshing={this.props.loading} onRefresh={() => client.reFetchObservableQueries()}/>
-  }
+  state: State = {refreshing: false}
 
   render() {
+    const variables = {
+      user: sessionStore.userId,
+      type: 'wish',
+      start: 1,
+      count: 24,
+      year: currentYear(),
+    }
+
     return (
       <Container>
         <SearchHeader/>
 
-        <Content refreshControl={this.getRefresh()}>
-          {!this.props.loading &&
-            <CurrentBook navigation={this.props.navigation} books={this.props.userBooks}/>
-          }
+        <Content refreshControl={this.renderRefresh()}>
+          <Query query={USER_BOOKS_QUERY} variables={variables}>
+            {this.renderCurrentBook}
+          </Query>
 
-          {!this.props.loading && this.props.userChallenge &&
-            <BookChallenge challenge={this.props.userChallenge}/>
-          }
-
-          {__DEV__ &&
-           <Card>
-             <CardItem>
-               <Body>
-               <Button onPress={() => this.props.navigation.navigate('Book', {bookId: '1000454008'})}>
-                 <Text>open some Book</Text>
-               </Button>
-               </Body>
-             </CardItem>
-           </Card>
-          }
+          <Query query={USER_CHALLENGE_QUERY} variables={variables}>
+            {this.renderBookChallenge}
+          </Query>
 
           <NavigationLinks navigation={this.props.navigation}/>
         </Content>
       </Container>
     )
   }
-}
 
-function mapParams(props, session) {
-  return {
-    user: session.userId,
-    type: 'wish',
-    start: 1,
-    count: 24,
-    year: currentYear(),
+  renderRefresh() {
+    return <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>
+  }
+
+  renderCurrentBook = ({ loading, data }) => {
+    if (loading) {
+      return <ActivityIndicator/>
+    }
+
+    return <CurrentBook navigation={this.props.navigation} books={data.userBooks}/>
+  }
+
+  renderBookChallenge = ({ loading, data }) => {
+    if (loading || !data.userChallenge) return null
+
+    return <BookChallenge challenge={data.userChallenge}/>
+  }
+
+  refresh = async () => {
+    this.setState({refreshing: true})
+
+    await client.reFetchObservableQueries()
+
+    this.setState({refreshing: false})
   }
 }
 
