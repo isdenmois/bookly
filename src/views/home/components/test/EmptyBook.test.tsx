@@ -9,7 +9,7 @@ describe('EmptyBook', function () {
 
   beforeEach(function () {
     onChooseBook = jest.fn()
-    component    = shallow(<EmptyBook onChooseBook={onChooseBook}/>)
+    component    = shallow(<EmptyBook onChooseBook={onChooseBook} chooseBookAvailable={true}/>)
   })
 
   it('should show text', function () {

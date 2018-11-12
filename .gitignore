@@ -15,6 +15,7 @@
 .env
 books.db
 books.db-journal
+coverage
 
 # typesript result
 build

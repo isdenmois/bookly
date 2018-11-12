@@ -1,23 +1,23 @@
 module.exports = {
-  "transform": {
-      "^.+\\.jsx?$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.tsx?$": "ts-jest"
+  cache: false,
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
   },
-  "preset": "jest-expo",
-  "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|sentry-expo|native-base))"
+  preset: 'jest-expo',
+  transformIgnorePatterns: [
+      'node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|sentry-expo|native-base))'
   ],
-  "testRegex": "(/__tests__/.*|/src/.*\\.(test|spec))\\.(jsx?|tsx?)$",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "ios.ts",
-    "ios.tsx",
-    "android.ts",
-    "android.tsx"
+  testMatch: ['**/*.test.ts?(x)'],
+  moduleFileExtensions: [
+    'ts',
+    'tsx',
+    'js',
+    'jsx',
+    'json',
+    'ios.ts',
+    'ios.tsx',
+    'android.ts',
+    'android.tsx'
   ],
-  "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js"
+  setupTestFrameworkScriptFile: '<rootDir>/test/setup.js'
 }
