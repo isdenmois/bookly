@@ -21,6 +21,7 @@ coverage
 build
 src/**/*.js
 src/services/schema.ts
+src/**/*.css.d.ts
 
 npm-debug.log*
 yarn-debug.log*

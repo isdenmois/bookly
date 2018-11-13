@@ -41,7 +41,9 @@
     "src/**/*.test.tsx",
     "App.js",
     "test/**.js",
-    "webpack.config.js"
+    "webpack.config.js",
+    "metro.config.js",
+    "rn-transformer.js"
   ],
   "compileOnSave": false
 }

@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { View } from 'react-native'
 import { Body, Card, CardItem } from 'native-base'
+import s from './styles/book-challenge.css'
 
 import { TextS, TextL } from 'components/Text'
 
@@ -18,18 +19,18 @@ export class BookChallenge extends React.Component<Props> {
       <Card>
         <CardItem>
           <Body>
-            <View style={s.container}>
-              <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{count_books_read}</TextL>
-                <TextS style={s.challengeLabel}>Прочтено</TextS>
+            <View className={s.container}>
+              <View className={s.challengeItem}>
+                <TextL className={s.challengeValue}>{count_books_read}</TextL>
+                <TextS className={s.challengeLabel}>Прочтено</TextS>
               </View>
-              <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{count_books_total}</TextL>
-                <TextS style={s.challengeLabel}>Запланировано</TextS>
+              <View className={s.challengeItem}>
+                <TextL className={s.challengeValue}>{count_books_total}</TextL>
+                <TextS className={s.challengeLabel}>Запланировано</TextS>
               </View>
-              <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{count_books_forecast}</TextL>
-                <TextS style={s.challengeLabel}>Опережение</TextS>
+              <View className={s.challengeItem}>
+                <TextL className={s.challengeValue}>{count_books_forecast}</TextL>
+                <TextS className={s.challengeLabel}>Опережение</TextS>
               </View>
             </View>
           </Body>
@@ -38,22 +39,3 @@ export class BookChallenge extends React.Component<Props> {
     )
   }
 }
-
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  } as ViewStyle,
-  challengeItem: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  } as ViewStyle,
-  challengeValue: {
-    fontWeight: 'bold',
-  } as TextStyle,
-  challengeLabel: {
-    color: '#424242',
-  } as TextStyle,
-})
