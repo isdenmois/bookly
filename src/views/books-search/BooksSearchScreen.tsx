@@ -48,7 +48,7 @@ export class BooksSearchScreen extends React.Component<Props, State> {
         <SearchBar value={this.state.search} onChange={this.onSearch}/>
 
         <Content>
-          <Query query={SEARCH_BOOKS_QUERY} variables={variables} fetchPolicy='cache-and-network'>
+          <Query query={SEARCH_BOOKS_QUERY} variables={variables} fetchPolicy='network-only'>
             {this.renderList}
           </Query>
         </Content>

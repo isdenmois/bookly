@@ -9,7 +9,7 @@ const s = (q, limit, offset, count = false) => `
   ${count ? '' : `LIMIT ${limit} OFFSET ${offset}`}
 `;
 
-router.get('/api', (req, res) => {
+router.get('/', (req, res) => {
   const { q, start, count } = req.query;
 
   db.get(s(q.toLowerCase(), count, start - 1, true), (e, total) => {

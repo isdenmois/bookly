@@ -5,10 +5,10 @@ Reactotron
   .configure({host})
   .useReactNative({
     networking: {
-      ignoreUrls: new RegExp(`(${host}:19000|symbolicate)`),
+      ignoreUrls: new RegExp(`(${host}:1900|symbolicate)`),
     },
     overlay: false,
   })
   .connect()
 
-Reactotron.log('Hello world')
+Reactotron.clear()
