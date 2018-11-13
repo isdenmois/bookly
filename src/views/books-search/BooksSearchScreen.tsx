@@ -1,12 +1,13 @@
 import * as _ from 'lodash'
 import * as React from 'react'
-import { ActivityIndicator, Text, View } from 'react-native'
+import { ActivityIndicator, Text } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 
-import { Button, Container, Content } from 'native-base'
+import { Button, Container, Content, List, ListItem } from 'native-base'
 import { SearchBar } from './components/SearchBar'
+import { BookSearchItem } from './components/BookSearchItem'
 
 interface Props extends NavigationScreenProps {
 }
@@ -61,12 +62,16 @@ export class BooksSearchScreen extends React.Component<Props, State> {
     if (!loading && _.isEmpty(data.searchBooks)) return <Text>Нет монет</Text>
 
     return (
-      <View>
-        {_.map(data.searchBooks.books, book => <Text key={book.id}>{book.name}</Text>)}
+      <List>
+        {_.map(data.searchBooks.books, book =>
+          <ListItem key={book.id}>
+            <BookSearchItem book={book}/>
+          </ListItem>
+        )}
 
         {loading && <ActivityIndicator size='large'/>}
         {!loading && this.renderFetchMore(fetchMore, data.searchBooks)}
-      </View>
+      </List>
     )
   }
 
