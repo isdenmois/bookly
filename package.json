@@ -36,6 +36,7 @@
     "react-native-scripts": "1.14.0",
     "react-native-typescript-transformer": "^1.2.10",
     "react-test-renderer": "16.5.0",
+    "reactotron-react-native": "^2.1.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2",

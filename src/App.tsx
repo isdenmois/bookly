@@ -11,6 +11,10 @@ interface State {
   isLoaded: boolean;
 }
 
+if (__DEV__) {
+  require('./services/ReactotronConfig')
+}
+
 export default class App extends React.Component {
   state: State = {
     isLoaded: false,
