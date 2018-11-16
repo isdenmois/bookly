@@ -1,11 +1,10 @@
-import * as _ from 'lodash'
 import * as React from 'react'
-import { ActivityIndicator, Text } from 'react-native'
+import { Text } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import gql from 'graphql-tag'
-import { Query } from 'react-apollo'
 
-import { Button, Container, Content, List, ListItem } from 'native-base'
+import { Container, Content } from 'native-base'
+import { QueryList } from 'components/QueryList'
 import { SearchBar } from './components/SearchBar'
 import { BookSearchItem } from './components/BookSearchItem'
 
@@ -49,58 +48,16 @@ export class BooksSearchScreen extends React.Component<Props, State> {
         <SearchBar value={this.state.search} onChange={this.onSearch}/>
 
         <Content>
-          <Query query={SEARCH_BOOKS_QUERY} variables={variables} fetchPolicy='network-only'>
-            {this.renderList}
-          </Query>
+          <QueryList query={SEARCH_BOOKS_QUERY}
+                     variables={variables}
+                     itemComponent={BookSearchItem}
+                     emptyComponent={() => <Text>Ничего не найдено</Text>}
+                     request='searchBooks'
+                     field='books'/>
         </Content>
       </Container>
     )
   }
 
-  renderList = ({ loading, data, fetchMore }) => {
-    if (loading && !_.has(data, 'searchBooks.books')) return <ActivityIndicator size='large'/>
-    if (!loading && _.isEmpty(data.searchBooks)) return <Text>Нет монет</Text>
-
-    return (
-      <List>
-        {_.map(data.searchBooks.books, book =>
-          <ListItem key={book.id}>
-            <BookSearchItem book={book}/>
-          </ListItem>
-        )}
-
-        {loading && <ActivityIndicator size='large'/>}
-        {!loading && this.renderFetchMore(fetchMore, data.searchBooks)}
-      </List>
-    )
-  }
-
-  renderFetchMore(fetchMore, data) {
-    if (_.size(data.books) >= data.count) return null
-
-    return (
-      <Button full onPress={() => this.fetchMoreParams(fetchMore, _.size(data.books) + 1)}>
-        <Text>Загрузить еще</Text>
-      </Button>
-    )
-  }
-
-  fetchMoreParams = (fetchMore, start) => fetchMore({
-    variables: {start},
-    updateQuery: updateQueryList('searchBooks', 'books'),
-  })
-
   onSearch = search => this.setState({search})
-}
-
-function updateQueryList(request, field) {
-  return function (prev, { fetchMoreResult }) {
-    return Object.assign({}, prev, {
-      [request]: {
-        count: prev[request].count,
-        [field]: [...prev[request][field], ...fetchMoreResult[request][field]],
-        __typename: prev[request].__typename,
-      },
-    })
-  }
 }

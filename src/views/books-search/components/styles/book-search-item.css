@@ -7,3 +7,11 @@
     flex-direction: row;
 }
 
+.imageContainer {
+    margin-right: 10px;
+}
+
+.infoContainer {
+    flex-direction: column;
+    flex: 1;
+}
