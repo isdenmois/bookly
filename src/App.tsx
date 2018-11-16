@@ -3,7 +3,7 @@ import { Font } from 'expo'
 import { Provider } from 'mobx-react'
 import { ActivityIndicator } from 'react-native'
 import { ApolloProvider } from 'react-apollo'
-import { RootStack } from 'states/main'
+import { RootStack } from 'states'
 import { store, sessionStore } from 'services/store'
 import { client } from 'services/apollo-client-bridge'
 
