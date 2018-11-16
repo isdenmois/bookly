@@ -2,7 +2,7 @@ import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 
 import { LoginScreen } from 'views/login/LoginScreen'
 import { MainStack, MainStackOptions } from './main'
-import { ModalStack, ModalStackOptions } from './modal'
+import { ModalStack } from './modal'
 
 export const RootStack = createSwitchNavigator(
   {
@@ -10,7 +10,7 @@ export const RootStack = createSwitchNavigator(
     App: createStackNavigator(
       {
         MainStack: createStackNavigator(MainStack, MainStackOptions),
-        ModalStack: createStackNavigator(ModalStack, ModalStackOptions),
+        ...ModalStack,
       },
       {
         initialRouteName: 'MainStack',

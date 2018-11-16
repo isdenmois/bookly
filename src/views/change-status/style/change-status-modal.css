@@ -1,0 +1,36 @@
+.content {
+  padding-horizontal: 20px;
+}
+
+.info {
+  flex-direction: row;
+  padding-vertical: 20px;
+}
+
+.imageContainer {
+  margin-right: 10px;
+}
+
+.contentContainer {
+  flex: 1;
+}
+
+.title {
+  color: #4A4A4A;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.author {
+  color: #828281;
+  margin-bottom: 10px;
+}
+
+.button {
+  padding: 20px;
+}
+
+.buttonText {
+  color: white;
+  font-weight: bold;
+}

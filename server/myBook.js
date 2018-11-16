@@ -14,7 +14,17 @@ const updateChallenge = `
       count_books_forecast = count_books_forecast + 1
 `;
 
-router.patch('/:bookId', (req, res) => {
+const searchPartial = (bookId) => `
+  SELECT book_id
+  FROM user_book_partial
+  WHERE book_id = ${bookId}
+`;
+
+const createPartial = (bookId) => `
+  INSERT INTO user_book_partial(book_id, user) VALUES(${bookId}, "imray")
+`;
+
+function updateBookPartial(req, res) {
   const params = [];
 
   if (req.query.book_read) {
@@ -51,6 +61,16 @@ router.patch('/:bookId', (req, res) => {
       rating: req.query.rating
     }
   }))
+}
+
+router.patch('/:bookId', (req, res) => {
+  db.get(searchPartial(req.params.bookId), (err, row) => {
+    if (row && row.book_id) {
+      return updateBookPartial(req, res);
+    }
+
+    db.run(createPartial(req.params.bookId), () => updateBookPartial(req, res))
+  })
 });
 
 module.exports = router;

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { View, Modal, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native'
+import { NavigationScreenProps } from 'react-navigation'
 import { TextL } from './Text'
 
 interface Props {
@@ -29,6 +30,35 @@ export class Dialog extends React.PureComponent<Props> {
           </View>
         </View>
       </Modal>
+    )
+  }
+}
+
+interface ModalProps extends NavigationScreenProps {
+  header?: string
+}
+
+export class DialogModal extends React.Component<ModalProps> {
+  render() {
+    return (
+      <View style={{flex: 1}}>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
+          <View style={s.backdrop}/>
+        </TouchableWithoutFeedback>
+
+        <View style={s.modal}>
+          <View style={s.modalView}>
+            {this.props.header &&
+             <View style={s.header}>
+               <TextL>{this.props.header}</TextL>
+             </View>
+            }
+            <View style={s.content}>
+              {this.props.children}
+            </View>
+          </View>
+        </View>
+      </View>
     )
   }
 }
