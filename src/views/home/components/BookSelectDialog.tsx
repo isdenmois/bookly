@@ -5,13 +5,14 @@ import { Body, Button, Radio, Content, Left, List, ListItem, Right, Text, Thumbn
 import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
 import { client } from 'services/apollo-client-bridge'
+import { Book } from 'models/Book'
 
 import { Dialog } from 'components/Dialog'
 import { TextM } from 'components/Text'
 
 interface Props {
   visible: boolean
-  books: any[]
+  books: Book[]
   onClose: () => void
 }
 
@@ -20,11 +21,11 @@ interface State {
 }
 
 const mutation = gql`
-  mutation ChangeStatus($bookId: ID!, $book_read: Int!) {
-    changeStatus(bookId: $bookId, book_read: $book_read) {
+  mutation ChangeStatus($bookId: ID!, $bookRead: Int!) {
+    changeStatus(bookId: $bookId, bookRead: $bookRead) {
       id
-      user_book_partial {
-        book_read
+      userBookPartial {
+        bookRead
       }
     }
   }
@@ -61,15 +62,15 @@ export class BookSelectDialog extends React.Component<Props, State> {
     )
   }
 
-  renderBook = (book, rowId) => (
+  renderBook = (book: Book, rowId) => (
     <ListItem key={book.id} first={!rowId} last={rowId === this.bookLast} onPress={() => this.selectBook(book)}>
       <Left style={s.left}>
-        <Thumbnail source={{uri: book.pic_100}}/>
+        <Thumbnail source={{uri: book.pic100}}/>
       </Left>
 
       <Body>
         <Text>{book.name}</Text>
-        <Text note>{book.author_name}</Text>
+        <Text note>{book.authorName}</Text>
       </Body>
 
       <Right style={s.right}>
@@ -89,7 +90,7 @@ export class BookSelectDialog extends React.Component<Props, State> {
 
   save = () => {
     const { selected } = this.state,
-          variables = {bookId: selected.id, book_read: 2}
+          variables = {bookId: selected.id, bookRead: 2}
 
     client.mutate({mutation, variables})
     this.close()

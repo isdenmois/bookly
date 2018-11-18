@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react'
 
 import { TextM, TextL } from 'components/Text'
 import { Field } from 'components/Field'
-import { api } from 'modules/api/api'
+import { api } from 'api/api'
 
 import { LoginStore } from './LoginStore'
 import { LoginTriangles } from './LoginTriangles'

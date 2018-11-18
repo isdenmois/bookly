@@ -26,10 +26,10 @@ const SEARCH_BOOKS_QUERY = gql`
       books {
         id
         name
-        author_name
-        pic_100
-        user_book_partial {
-          book_read
+        authorName
+        pic100
+        userBookPartial {
+          bookRead
           rating
         }
       }

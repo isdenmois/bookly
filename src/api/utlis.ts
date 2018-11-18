@@ -1,6 +1,8 @@
 import * as _ from 'lodash'
 import { Alert } from 'react-native'
 import { API_KEY, USER_AGENT, BASE_URL, DEV_URL } from 'react-native-dotenv'
+import snakeCase from 'snakecase-keys'
+import camelCase from 'camelcase-keys'
 
 export interface QueryParams {
   [index: string]: any
@@ -49,7 +51,8 @@ function fetchFn(t: any, point: Endpoint, query, fields?: string) {
 
   query.fields = point.fields ? point.fields(fields) : fields
 
-  const queryString = queryParamsT({..._.omit(query, point.queryParams), ...t.query}),
+  const queryParams = snakeCase({..._.omit(query, point.queryParams), ...t.query}, {deep: true}),
+        queryString = queryParamsT(queryParams),
         url = `${__DEV__ ? DEV_URL : BASE_URL}${urlStr}?${queryString}`
 
   return fetch(url, fetchParams)
@@ -59,7 +62,7 @@ function fetchFn(t: any, point: Endpoint, query, fields?: string) {
         return Promise.reject(res.error)
       }
 
-      const data = point.list ? {data: res.data, count: res.count} : res.data
+      const data = camelCase(point.list ? {data: res.data, count: res.count} : res.data, {deep: true})
 
       return point.transform ? point.transform(data) : data
     })
@@ -94,4 +97,26 @@ export class ApiBase {
       this[key].method = point.method
     })
   }
+}
+
+function findFields(node, first?: boolean): string {
+  const name = _.snakeCase(_.get(node, 'name.value')),
+        children = _.get(node, 'selectionSet.selections')
+
+  if (!_.isEmpty(children)) {
+    let fields: any = children.map(n => findFields(n))
+
+    fields = _.without(fields, '__typename').join(',')
+
+    return first ? fields : `${name}(${fields})`
+  }
+
+  return name
+}
+
+export const rest = (e) => (root, args, ctx, info) => {
+  let node = _.get(info, 'fieldNodes[0]'),
+      fields = findFields(node, true)
+
+  return e.method === 'GET' ? e(args, fields).catch(() => null) : e(args, fields)
 }

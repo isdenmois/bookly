@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx'
-import { commonApi } from 'modules/api/commonApi'
+import { commonApi } from 'api/commonApi'
 import { SessionStore } from 'services/SessionStore'
 
 export class LoginStore {
@@ -27,7 +27,7 @@ export class LoginStore {
     this.submitting = true
 
     const promise = commonApi.login(params, 'session_id,user(login)')
-      .then(data => this.sessionStore.setSession(data.session_id, data.user.login))
+      .then(data => this.sessionStore.setSession(data.sessionId, data.user.login))
       .then(() => {
         this.login    = ''
         this.password = ''

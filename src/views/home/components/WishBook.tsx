@@ -4,12 +4,13 @@ import { NavigationScreenProps } from 'react-navigation'
 import { Button, Card, CardItem } from 'native-base'
 import AutoHeightImage from 'react-native-auto-height-image'
 
+import { Book } from 'models/Book'
 import * as color from 'constants/colors'
 
 import { TextL, TextM } from 'components/Text'
 
 interface Props extends NavigationScreenProps {
-  book: any
+  book: Book
 }
 
 export class WishBook extends React.Component<Props> {
@@ -20,15 +21,15 @@ export class WishBook extends React.Component<Props> {
       <Card>
         <CardItem>
           <View style={s.container}>
-            {book.pic_100 &&
+            {book.pic100 &&
              <View style={s.imageContainer}>
-               <AutoHeightImage width={100} source={{uri: book.pic_100}}/>
+               <AutoHeightImage width={100} source={{uri: book.pic100}}/>
              </View>
             }
 
             <View style={s.contentContainer}>
               <TextL style={s.title}>{book.name}</TextL>
-              <TextM style={s.author}>{book.author_name}</TextM>
+              <TextM style={s.author}>{book.authorName}</TextM>
               <Button style={s.readButton} full onPress={this.openChangeStatus}>
                 <TextM style={s.readButtonText}>Прочитано</TextM>
               </Button>

@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx'
-import { api } from 'modules/api/api'
+import { api } from 'api/api'
 
 interface Book {
   title: string;
@@ -26,9 +26,9 @@ export class BookStore {
         this.isLoading = false
         this.book      = {
           title: data.name,
-          author: data.author_name,
-          thumbnail: data.pic_140,
-          rating: data.user_book.rating,
+          author: data.authorName,
+          thumbnail: data.pic140,
+          rating: data.userBook.rating,
           description: data.description,
         }
       })

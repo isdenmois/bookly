@@ -3,19 +3,16 @@ import * as _ from 'lodash'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
-import { TextS, TextM } from 'components/Text'
+
+import { Book, BOOK_READ_STATUS } from 'models/Book'
 import * as color from 'constants/colors'
+
+import { TextS, TextM } from 'components/Text'
 
 const { NavigationConsumer } = require('react-navigation')
 
 interface Props {
-  item: any
-}
-
-enum BOOK_READ_STATUS {
-  WANT_TO_READ = 0,
-  HAVE_READ,
-  NOW_READING,
+  item: Book
 }
 
 export class BookSearchItem extends React.Component<Props> {
@@ -24,16 +21,16 @@ export class BookSearchItem extends React.Component<Props> {
 
     return (
       <View style={s.container}>
-        {book.pic_100 &&
+        {book.pic100 &&
           <View style={s.imageContainer}>
             <AutoHeightImage width={100}
-                             source={{uri: book.pic_100}}
+                             source={{uri: book.pic100}}
             />
           </View>
         }
         <View style={s.infoContainer}>
           <TextM>{this.props.item.name}</TextM>
-          <TextS style={s.author}>{this.props.item.author_name}</TextS>
+          <TextS style={s.author}>{this.props.item.authorName}</TextS>
           {this.renderButton()}
         </View>
       </View>
@@ -41,10 +38,10 @@ export class BookSearchItem extends React.Component<Props> {
   }
 
   renderButton() {
-    const status = _.get(this.props.item, 'user_book_partial.book_read')
+    const status = _.get(this.props.item, 'userBookPartial.bookRead')
 
     if (status === BOOK_READ_STATUS.HAVE_READ) {
-      return <TextM>{this.props.item.user_book_partial.rating} / 10</TextM>
+      return <TextM>{this.props.item.userBookPartial.rating} / 10</TextM>
     }
 
     return (
@@ -61,13 +58,13 @@ export class BookSearchItem extends React.Component<Props> {
   }
 
   get bookButtonTitle() {
-    const status = _.get(this.props.item, 'user_book_partial.book_read', null)
+    const status = _.get(this.props.item, 'userBookPartial.bookRead', null)
 
     return status === null ? 'Хочу прочитать' : 'В прочитанные'
   }
 
   get nextStatus() {
-    const status = _.get(this.props.item, 'user_book_partial.book_read', null)
+    const status = _.get(this.props.item, 'userBookPartial.bookRead', null)
 
     return status === null ? BOOK_READ_STATUS.WANT_TO_READ : BOOK_READ_STATUS.HAVE_READ
   }

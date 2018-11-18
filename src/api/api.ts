@@ -11,7 +11,7 @@ class Api extends ApiBase {
   userChallenge = endpoint('/challenges/:year/readers/:user', {
     method: 'GET',
     fields: f => `user_challenge(${f}`,
-    transform: t => _.get(t, 'user_challenge'),
+    transform: t => _.get(t, 'userChallenge'),
   })
 
   /**
@@ -35,7 +35,7 @@ class Api extends ApiBase {
   updateBook = endpoint('/me/books/:bookId', {
     method: 'PATCH',
     fields: f => f.replace('user_book_partial', 'user_book'),
-    transform: t => ({id: t.id, user_book_partial: t.user_book}),
+    transform: t => ({id: t.id, userBookPartial: t.userBook}),
   })
 }
 

@@ -60,15 +60,15 @@ export class ChangeStatusModal extends React.Component<Props, State> {
       <Dialog navigation={this.props.navigation} header={statusMap[status]}>
         <View style={s.content}>
           <View style={s.info}>
-            {book.pic_100 &&
+            {book.pic100 &&
              <View style={s.imageContainer}>
-               <AutoHeightImage width={100} source={{uri: book.pic_100}}/>
+               <AutoHeightImage width={100} source={{uri: book.pic100}}/>
              </View>
             }
 
             <View style={s.contentContainer}>
               <TextL style={s.title}>{book.name}</TextL>
-              <TextM style={s.author}>{book.author_name}</TextM>
+              <TextM style={s.author}>{book.authorName}</TextM>
 
               {status === BOOK_READ_STATUS.HAVE_READ &&
                 <DatePicker defaultDate={this.state.date} locale='ru' onDateChange={this.selectDate}/>
@@ -110,9 +110,9 @@ export class ChangeStatusModal extends React.Component<Props, State> {
           mutation = mutations[status],
           variables = {
             bookId: book.id,
-            date_day: date.getDate(),
-            date_month: date.getMonth() + 1,
-            date_year: date.getFullYear(),
+            dateDay: date.getDate(),
+            dateMonth: date.getMonth() + 1,
+            dateYear: date.getFullYear(),
             status,
             rating,
           },
@@ -126,11 +126,11 @@ export class ChangeStatusModal extends React.Component<Props, State> {
     return {
       changeStatus: {
         id: vars.bookId,
-        user_book_partial: {
-          book_read: vars.status,
-          date_day: vars.date_day,
-          date_month: vars.date_month,
-          date_year: vars.date_year,
+        userBookPartial: {
+          bookRead: vars.status,
+          dateDay: vars.dateDay,
+          dateMonth: vars.dateMonth,
+          dateYear: vars.dateYear,
           rating: vars.rating,
           __typename: 'UserBookPartial',
         },

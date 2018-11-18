@@ -4,31 +4,31 @@ schema {
 }
 
 type UserChallenge {
-    count_books_forecast: Int
-    count_books_read: Int
-    status_id: Int
-    count_books_total: Int
+    statusId: Int
+    countBooksForecast: Int
+    countBooksRead: Int
+    countBooksTotal: Int
 }
 
 type UserBookPartial {
-    book_read: Int
+    bookRead: Int
     rating: Int
-    date_day: Int
-    date_month: Int
-    date_year: Int
+    dateDay: Int
+    dateMonth: Int
+    dateYear: Int
 }
 
 type Book {
     id: ID!
-    author_id: Int
-    author_name: String
+    authorId: Int
+    authorName: String
     name: String
-    avg_mark: Float
-    pic_70: String
-    pic_100: String
-    pic_140: String
-    pic_200: String
-    user_book_partial: UserBookPartial
+    avgMark: Float
+    pic70: String
+    pic100: String
+    pic140: String
+    pic200: String
+    userBookPartial: UserBookPartial
 }
 
 type ChangeStatusParams {
@@ -47,5 +47,5 @@ type Query {
 }
 
 type Mutation {
-    changeStatus(bookId: ID!, book_read: Int!, date_day: Int, date_month: Int, date_year: Int, rating: Int): Book!
+    changeStatus(bookId: ID!, bookRead: Int!, dateDay: Int, dateMonth: Int, dateYear: Int, rating: Int): Book!
 }

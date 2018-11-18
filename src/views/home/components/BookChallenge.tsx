@@ -4,7 +4,7 @@ import { Body, Card, CardItem } from 'native-base'
 
 import { TextS, TextL } from 'components/Text'
 
-import { UserChallenge } from '../HomeModels'
+import { UserChallenge } from 'models/UserChallenge'
 
 interface Props {
   challenge: UserChallenge
@@ -12,7 +12,7 @@ interface Props {
 
 export class BookChallenge extends React.Component<Props> {
   render() {
-    const { count_books_read, count_books_total, count_books_forecast} = this.props.challenge
+    const { countBooksRead, countBooksTotal, countBooksForecast} = this.props.challenge
 
     return (
       <Card>
@@ -20,15 +20,15 @@ export class BookChallenge extends React.Component<Props> {
           <Body>
             <View style={s.container}>
               <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{count_books_read}</TextL>
+                <TextL style={s.challengeValue}>{countBooksRead}</TextL>
                 <TextS style={s.challengeLabel}>Прочтено</TextS>
               </View>
               <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{count_books_total}</TextL>
+                <TextL style={s.challengeValue}>{countBooksTotal}</TextL>
                 <TextS style={s.challengeLabel}>Запланировано</TextS>
               </View>
               <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{count_books_forecast}</TextL>
+                <TextL style={s.challengeValue}>{countBooksForecast}</TextL>
                 <TextS style={s.challengeLabel}>Опережение</TextS>
               </View>
             </View>

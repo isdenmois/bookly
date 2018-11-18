@@ -3,12 +3,14 @@ import * as React from 'react'
 import { View } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 
+import { Book } from 'models/Book'
+
 import { EmptyBook } from './EmptyBook'
 import { WishBook } from './WishBook'
 import { BookSelectDialog } from './BookSelectDialog'
 
 interface Props extends NavigationScreenProps {
-  books: any
+  books: Book[]
 }
 
 interface State {
@@ -43,12 +45,12 @@ export class CurrentBook extends React.Component<Props, State> {
     )
   }
 
-  get currentBooks() {
-    return _.filter(this.props.books, book => +_.get(book, 'user_book_partial.book_read') === 2)
+  get currentBooks(): Book[] {
+    return _.filter(this.props.books, book => +_.get(book, 'userBookPartial.bookRead') === 2)
   }
 
-  get wantToRead() {
-    return _.filter(this.props.books, book => +_.get(book, 'user_book_partial.book_read') === 0)
+  get wantToRead(): Book[] {
+    return _.filter(this.props.books, book => +_.get(book, 'userBookPartial.bookRead') === 0)
   }
 
   openBookSelectDialog = () => this.setState({bookSelectDialogVisible: true})

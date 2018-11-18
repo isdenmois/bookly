@@ -1,7 +1,7 @@
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createBridgeLink } from 'apollo-bridge-link'
-import resolvers from 'modules/api/resolvers'
+import resolvers from 'api/resolvers'
 import schema from './schema'
 
 const link = createBridgeLink({
