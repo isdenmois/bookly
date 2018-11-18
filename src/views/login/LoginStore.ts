@@ -27,12 +27,15 @@ export class LoginStore {
 
     this.submitting = true
 
-    return commonApi.login.post(params)
+    const promise = commonApi.login.post(params)
       .then(data => this.sessionStore.setSession(data.session_id, data.user.login))
       .then(() => {
         this.login    = ''
         this.password = ''
       })
-      .finally(() => this.submitting = false)
+
+    promise.finally(() => this.submitting = false)
+
+    return promise
   }
 }
