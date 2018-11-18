@@ -12,6 +12,8 @@ import { MARK_AS_READ_MUTATION, CHANGE_STATUS_MUTATION } from './mutations'
 
 import { client } from '../../services/apollo-client-bridge'
 
+import tron from 'reactotron-react-native'
+
 interface Props extends NavigationScreenProps {
 }
 
@@ -118,8 +120,27 @@ export class ChangeStatusModal extends React.Component<Props, State> {
           },
           refetchQueries = status === BOOK_READ_STATUS.HAVE_READ ? ['userChallenge'] : ['userBooks', 'userChallenge']
 
-    client.mutate({mutation, variables, refetchQueries})
+    client.mutate({mutation, variables, refetchQueries, optimisticResponse: this.optimisticResponse})
     this.props.navigation.goBack()
+  }
+
+  optimisticResponse = (vars) => {
+    tron.log(vars)
+
+    return {
+      changeStatus: {
+        id: vars.bookId,
+        user_book_partial: {
+          book_read: vars.status,
+          date_day: vars.date_day,
+          date_month: vars.date_month,
+          date_year: vars.date_year,
+          rating: vars.rating,
+          __typename: 'UserBookPartial',
+        },
+        __typename: 'Book',
+      },
+    }
   }
 }
 

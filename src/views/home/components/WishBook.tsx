@@ -1,24 +1,15 @@
 import * as React from 'react'
 import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { NavigationScreenProps } from 'react-navigation'
 import { Button, Card, CardItem } from 'native-base'
 
 import { TextL, TextM } from 'components/Text'
-import { ChangeStatusDialog } from 'views/home/components/ChangeStatusDialog'
 
-interface Props {
+interface Props extends NavigationScreenProps {
   book: any
-  onSave: () => void
 }
 
-interface State {
-  changeStatusVisible: boolean
-}
-
-export class WishBook extends React.Component<Props, State> {
-  state = {
-    changeStatusVisible: false,
-  }
-
+export class WishBook extends React.Component<Props> {
   render() {
     const book = this.props.book
 
@@ -43,17 +34,11 @@ export class WishBook extends React.Component<Props, State> {
             </View>
           </View>
         </CardItem>
-        <ChangeStatusDialog book={this.props.book}
-                            visible={this.state.changeStatusVisible}
-                            onClose={this.closeChangeStatus}
-                            onSave={this.props.onSave}/>
       </Card>
     )
   }
 
-  openChangeStatus = () => this.setState({changeStatusVisible: true})
-
-  closeChangeStatus = () => this.setState({changeStatusVisible: false})
+  openChangeStatus = () => this.props.navigation.navigate('ChangeStatus', {book: this.props.book, status: 1})
 }
 
 const s = StyleSheet.create({

@@ -27,7 +27,7 @@ export class CurrentBook extends React.Component<Props, State> {
     return (
       <View>
         {currentBooks.length > 0 &&
-          <WishBook book={currentBooks[0]} onSave={this.openBookSelectDialog}/>
+          <WishBook book={currentBooks[0]} navigation={this.props.navigation}/>
         }
 
         {currentBooks.length === 0 &&
@@ -35,7 +35,7 @@ export class CurrentBook extends React.Component<Props, State> {
         }
 
         {!_.isEmpty(wantToRead) &&
-         < BookSelectDialog visible={this.state.bookSelectDialogVisible}
+         <BookSelectDialog visible={this.state.bookSelectDialogVisible}
                             books={wantToRead}
                             onClose={this.closeBookSelectDialog}/>
         }
