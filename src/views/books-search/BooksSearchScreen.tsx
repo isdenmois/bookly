@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Text } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import gql from 'graphql-tag'
 
@@ -7,6 +6,7 @@ import { Container, Content } from 'native-base'
 import { QueryList } from 'components/QueryList'
 import { SearchBar } from './components/SearchBar'
 import { BookSearchItem } from './components/BookSearchItem'
+import { EmptyResult } from './components/EmptyResult'
 
 interface Props extends NavigationScreenProps {
 }
@@ -51,7 +51,7 @@ export class BooksSearchScreen extends React.Component<Props, State> {
           <QueryList query={SEARCH_BOOKS_QUERY}
                      variables={variables}
                      itemComponent={BookSearchItem}
-                     emptyComponent={() => <Text>Ничего не найдено</Text>}
+                     emptyComponent={EmptyResult}
                      request='searchBooks'
                      field='books'/>
         </Content>

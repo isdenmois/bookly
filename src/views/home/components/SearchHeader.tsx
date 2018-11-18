@@ -15,10 +15,8 @@ export class SearchHeader extends React.Component<Props, State> {
   state: State = {value: ''}
 
   render() {
-    const HeaderComponent = Header as any
-
     return (
-      <HeaderComponent searchBar transparent>
+      <Header searchBar transparent>
         <Item rounded>
           <Icon name='ios-search'/>
           <Field placeholder='Поиск книг'
@@ -30,7 +28,7 @@ export class SearchHeader extends React.Component<Props, State> {
         <Button transparent onPress={this.openBooksSearchScreen}>
           <Text>Найти</Text>
         </Button>
-      </HeaderComponent>
+      </Header>
     )
   }
 

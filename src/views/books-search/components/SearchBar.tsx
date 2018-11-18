@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Constants } from 'expo'
 import { Button, Header, Icon, Input, Item, Text } from 'native-base'
 
 interface Props {
@@ -15,7 +16,7 @@ export class SearchBar extends React.Component<Props, State> {
 
   render() {
     return (
-      <Header searchBar rounded>
+      <Header searchBar style={{marginTop: Constants.statusBarHeight}}>
         <Item>
           <Icon name='ios-search'/>
           <Input placeholder='Поиск книг'
