@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
-import { Image, Text, View } from 'react-native'
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { DialogModal as Dialog } from 'components/Dialog'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
@@ -10,7 +10,6 @@ import { Switcher, SwitchOption } from 'components/Switcher'
 
 import { MARK_AS_READ_MUTATION, CHANGE_STATUS_MUTATION } from './mutations'
 
-import s from './style/change-status-modal.css'
 import { client } from '../../services/apollo-client-bridge'
 
 interface Props extends NavigationScreenProps {
@@ -59,15 +58,15 @@ export class ChangeStatusModal extends React.Component<Props, State> {
 
     return (
       <Dialog navigation={this.props.navigation} header={statusMap[status]}>
-        <View className={s.content}>
-          <View className={s.info}>
+        <View style={s.content}>
+          <View style={s.info}>
             {book.pic_100 &&
-             <View className={s.imageContainer}>
+             <View style={s.imageContainer}>
                <AutoHeightImage width={100} source={{uri: book.pic_100}}/>
              </View>
             }
 
-            <View className={s.contentContainer}>
+            <View style={s.contentContainer}>
               <TextL style={s.title}>{book.name}</TextL>
               <TextM style={s.author}>{book.author_name}</TextM>
 
@@ -84,7 +83,7 @@ export class ChangeStatusModal extends React.Component<Props, State> {
           }
         </View>
 
-        <View className={s.button}>
+        <View style={s.button}>
           <Button full success onPress={this.save} disabled={this.disabled}>
             <TextM style={s.buttonText}>Сохранить</TextM>
           </Button>
@@ -122,3 +121,42 @@ export class ChangeStatusModal extends React.Component<Props, State> {
     this.props.navigation.goBack()
   }
 }
+
+const s = StyleSheet.create({
+  content: {
+    paddingHorizontal: 20,
+  } as ViewStyle,
+
+  info: {
+    flexDirection: 'row',
+    paddingVertical: 20,
+  } as ViewStyle,
+
+  imageContainer: {
+    marginRight: 10,
+  } as ViewStyle,
+
+  contentContainer: {
+    flex: 1,
+  } as ViewStyle,
+
+  title: {
+    color: '#4A4A4A',
+    fontWeight: 'bold',
+    marginBottom: 10,
+  } as TextStyle,
+
+  author: {
+    color: '#828281',
+    marginBottom: 10,
+  } as TextStyle,
+
+  button: {
+    padding: 20,
+  } as ViewStyle,
+
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  } as TextStyle,
+})

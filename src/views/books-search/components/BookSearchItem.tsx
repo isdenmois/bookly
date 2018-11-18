@@ -1,12 +1,10 @@
 import * as React from 'react'
 import * as _ from 'lodash'
-import { View } from 'react-native'
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { NavigationConsumer } from 'react-navigation'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button } from 'native-base'
 import { TextS, TextM } from 'components/Text'
-
-import s from './styles/book-search-item.css'
 
 interface Props {
   item: any
@@ -23,17 +21,17 @@ export class BookSearchItem extends React.Component<Props> {
     const book = this.props.item
 
     return (
-      <View className={s.container}>
+      <View style={s.container}>
         {book.pic_100 &&
-          <View className={s.imageContainer}>
+          <View style={s.imageContainer}>
             <AutoHeightImage width={100}
                              source={{uri: book.pic_100}}
             />
           </View>
         }
-        <View className={s.infoContainer}>
+        <View style={s.infoContainer}>
           <TextM>{this.props.item.name}</TextM>
-          <TextS className={s.author}>{this.props.item.author_name}</TextS>
+          <TextS style={s.author}>{this.props.item.author_name}</TextS>
           {this.renderButton()}
         </View>
       </View>
@@ -70,3 +68,23 @@ export class BookSearchItem extends React.Component<Props> {
     return status === null ? BOOK_READ_STATUS.WANT_TO_READ : BOOK_READ_STATUS.HAVE_READ
   }
 }
+
+const s = StyleSheet.create({
+  author: {
+    color: '#424242',
+  } as TextStyle,
+
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+  } as ViewStyle,
+
+  imageContainer: {
+    marginRight: 10,
+  } as ViewStyle,
+
+  infoContainer: {
+    flexDirection: 'column',
+    flex: 1,
+  } as ViewStyle,
+})

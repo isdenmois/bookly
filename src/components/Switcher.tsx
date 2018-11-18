@@ -12,14 +12,13 @@ interface Props {
   options: SwitchOption[]
   value: number | string
   onChange: (value: number | string) => void
-  className?: string
   style?: any
 }
 
 export class Switcher extends React.Component<Props> {
   render() {
     return (
-      <View className={this.props.className} style={[s.container, this.props.style]}>
+      <View style={[s.container, this.props.style]}>
         {this.props.options.map(option =>
           <TouchableOpacity style={cn(s, ['option', {selected: option.key === this.props.value}])}
                             key={option.key}
