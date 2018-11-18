@@ -62,9 +62,6 @@
     "tsfix": "tslint --fix --project tsconfig.json",
     "web": "webpack-dev-server"
   },
-  "jest": {
-    "preset": "jest-expo"
-  },
   "dependencies": {
     "@expo/vector-icons": "^8.0.0",
     "apollo-bridge-link": "^2.0.2",

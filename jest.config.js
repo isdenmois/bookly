@@ -1,5 +1,6 @@
 module.exports = {
-  cache: false,
+  automock: false,
+  cache: true,
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
   },
