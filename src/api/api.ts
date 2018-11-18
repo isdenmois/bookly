@@ -10,7 +10,7 @@ class Api extends ApiBase {
    */
   userChallenge = endpoint('/challenges/:year/readers/:user', {
     method: 'GET',
-    fields: f => `user_challenge(${f}`,
+    fields: f => `user_challenge(${f})`,
     transform: t => _.get(t, 'userChallenge'),
   })
 

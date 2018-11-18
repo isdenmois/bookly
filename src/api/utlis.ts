@@ -49,7 +49,8 @@ function fetchFn(t: any, point: Endpoint, query, fields?: string) {
     urlStr = urlStr.replace(`:${param}`, query[param])
   })
 
-  query.fields = point.fields ? point.fields(fields) : fields
+  query.fields = (point.fields ? point.fields(fields) : fields) || ''
+  query.fields = query.fields.replace(/pic(\d+)/g, 'pic_$1')
 
   const queryParams = snakeCase({..._.omit(query, point.queryParams), ...t.query}, {deep: true}),
         queryString = queryParamsT(queryParams),
@@ -68,7 +69,7 @@ function fetchFn(t: any, point: Endpoint, query, fields?: string) {
     })
     .catch(error => {
       // TODO: вынести в отдельный модуль
-      Alert.alert(`Ошибка при выполнении запроса: ${urlStr}`, JSON.stringify(error))
+      Alert.alert(`Ошибка при выполнении запроса: ${urlStr}`, JSON.stringify({error, fields}))
 
       return Promise.reject(error)
     })
@@ -106,7 +107,7 @@ function findFields(node, first?: boolean): string {
   if (!_.isEmpty(children)) {
     let fields: any = children.map(n => findFields(n))
 
-    fields = _.without(fields, '__typename').join(',')
+    fields = _.without(fields, 'typename').join(',')
 
     return first ? fields : `${name}(${fields})`
   }
