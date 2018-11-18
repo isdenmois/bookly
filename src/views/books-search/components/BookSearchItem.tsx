@@ -57,13 +57,13 @@ export class BookSearchItem extends React.Component<Props> {
   }
 
   get bookButtonTitle() {
-    const status = _.get(this.props.item, 'user_book_partial.book_read')
+    const status = _.get(this.props.item, 'user_book_partial.book_read', null)
 
     return status === null ? 'Хочу прочитать' : 'В прочитанные'
   }
 
   get nextStatus() {
-    const status = _.get(this.props.item, 'user_book_partial.book_read')
+    const status = _.get(this.props.item, 'user_book_partial.book_read', null)
 
     return status === null ? BOOK_READ_STATUS.WANT_TO_READ : BOOK_READ_STATUS.HAVE_READ
   }

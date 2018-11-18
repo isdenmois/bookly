@@ -3,7 +3,7 @@ const db = require('./db');
 const response = require('./response');
 
 const s = (q, limit, offset, count = false) => `
-  SELECT ${count ? 'COUNT(*) as count' : '*'} FROM books b
+  SELECT ${count ? 'COUNT(*) as count' : '*, p.book_id AS pid'} FROM books b
   LEFT JOIN user_book_partial p ON b.id = p.book_id
   WHERE lower(name) LIKE "%${q}%" or lower(author_name) LIKE "%${q}%" OR lower(description) LIKE "%${q}%"
   ${count ? '' : `LIMIT ${limit} OFFSET ${offset}`}
@@ -25,10 +25,10 @@ router.get('/', (req, res) => {
       pic_200: r.pic_200,
       description: r.description,
       isbn: r.isbn,
-      user_book_partial: {
+      user_book_partial: r.pid ? {
         book_read: r.book_read,
         rating: r.rating
-      }
+      } : null
     })), total.count))
   });
 });

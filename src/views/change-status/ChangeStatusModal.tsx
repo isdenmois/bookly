@@ -115,9 +115,10 @@ export class ChangeStatusModal extends React.Component<Props, State> {
             date_year: date.getFullYear(),
             status,
             rating,
-          }
+          },
+          refetchQueries = status === BOOK_READ_STATUS.HAVE_READ ? ['userChallenge'] : ['userBooks', 'userChallenge']
 
-    client.mutate({mutation, variables, refetchQueries: ['userChallenge']})
+    client.mutate({mutation, variables, refetchQueries})
     this.props.navigation.goBack()
   }
 }
