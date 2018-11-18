@@ -4,6 +4,8 @@ import gql from 'graphql-tag'
 
 import { Container, Content } from 'native-base'
 import { QueryList } from 'components/QueryList'
+import { FoundResults } from 'components/FoundResults'
+
 import { SearchBar } from './components/SearchBar'
 import { BookSearchItem } from './components/BookSearchItem'
 import { EmptyResult } from './components/EmptyResult'
@@ -52,6 +54,7 @@ export class BooksSearchScreen extends React.Component<Props, State> {
                      variables={variables}
                      itemComponent={BookSearchItem}
                      emptyComponent={EmptyResult}
+                     resultCountComponent={FoundResults}
                      request='searchBooks'
                      field='books'/>
         </Content>

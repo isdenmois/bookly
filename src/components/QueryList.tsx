@@ -10,6 +10,7 @@ interface Props {
     variables?: any
     emptyComponent: any
     itemComponent: any
+    resultCountComponent?: any
     request: string
     field: string
 }
@@ -24,7 +25,7 @@ export class QueryList extends React.Component<Props> {
     }
 
     renderResult = ({ loading, data, fetchMore }) => {
-      const { emptyComponent: Empty, itemComponent: Item, request, field } = this.props,
+      const { emptyComponent: Empty, itemComponent: Item, resultCountComponent: ResultCount, request, field } = this.props,
             items = _.get(data, [request, field])
 
       if (loading && !items) return <ActivityIndicator size='large'/>
@@ -32,6 +33,11 @@ export class QueryList extends React.Component<Props> {
 
       return (
         <List>
+          {ResultCount &&
+            <ListItem first>
+              <ResultCount count={_.get(data, [request, 'count'])}/>
+            </ListItem>
+          }
           {_.map(items, item =>
             <ListItem key={item.id}>
               <Item item={item}/>

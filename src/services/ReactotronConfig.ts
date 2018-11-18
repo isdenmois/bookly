@@ -1,6 +1,8 @@
 import Reactotron from 'reactotron-react-native'
 import host from './host'
 
+(console as any).tron = Reactotron
+
 Reactotron
   .configure({host})
   .useReactNative({

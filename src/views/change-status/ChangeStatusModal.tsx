@@ -12,8 +12,6 @@ import { MARK_AS_READ_MUTATION, CHANGE_STATUS_MUTATION } from './mutations'
 
 import { client } from '../../services/apollo-client-bridge'
 
-import tron from 'reactotron-react-native'
-
 interface Props extends NavigationScreenProps {
 }
 
@@ -125,8 +123,6 @@ export class ChangeStatusModal extends React.Component<Props, State> {
   }
 
   optimisticResponse = (vars) => {
-    tron.log(vars)
-
     return {
       changeStatus: {
         id: vars.bookId,
