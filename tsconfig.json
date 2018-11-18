@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "noEmit": true,
-    "lib": [ "es2017", "dom" ],
+    "lib": [ "es2017", "dom", "es2018" ],
     "baseUrl": "./src"
   },
   "filesGlob": [

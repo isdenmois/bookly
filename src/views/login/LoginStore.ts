@@ -22,12 +22,11 @@ export class LoginStore {
     const params = {
       login: this.login,
       password: this.password,
-      fields: 'session_id,user(login)',
     }
 
     this.submitting = true
 
-    const promise = commonApi.login.post(params)
+    const promise = commonApi.login(params, 'session_id,user(login)')
       .then(data => this.sessionStore.setSession(data.session_id, data.user.login))
       .then(() => {
         this.login    = ''

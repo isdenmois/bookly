@@ -1,11 +1,12 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { NavigationConsumer } from 'react-navigation'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
 import { TextS, TextM } from 'components/Text'
 import * as color from 'constants/colors'
+
+const { NavigationConsumer } = require('react-navigation')
 
 interface Props {
   item: any

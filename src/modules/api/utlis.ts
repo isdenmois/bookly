@@ -1,12 +1,26 @@
 import * as _ from 'lodash'
 import { Alert } from 'react-native'
-import { BASE_URL, DEV_URL } from 'react-native-dotenv'
+import { API_KEY, USER_AGENT, BASE_URL, DEV_URL } from 'react-native-dotenv'
 
 export interface QueryParams {
   [index: string]: any
 }
 
-function queryParams(data: QueryParams = {}) {
+interface EndpointParams {
+  method: 'GET' | 'POST' | 'PATCH'
+  list?: boolean
+  fields?: (f: string) => string
+  transform?: (r: any) => any
+}
+
+interface Endpoint extends EndpointParams {
+  url: string
+  queryParams: string[]
+}
+
+type Query<R, Q> = (query: Q, fields?: string) => Promise<R>
+
+function queryParamsT(data: QueryParams = {}) {
   return Object.keys(data).map((key) => {
     const value = data[key]
 
@@ -21,21 +35,22 @@ function queryParams(data: QueryParams = {}) {
   }).join('&')
 }
 
-function fetchFn(fetch: Function, method, baseUrl, headers, query, body, list) {
-  const params = (baseUrl.match(/:([\w]+)/g) || []).map(str => str.slice(1)),
-        fetchParams: RequestInit = {headers, method}
+function fetchFn(t: any, point: Endpoint, query, fields?: string) {
+  const fetchParams: RequestInit = {
+    method: point.method,
+    headers: t.headers,
+  }
 
-  let urlStr = baseUrl
+  let urlStr = point.url
 
-  _.forEach(params, param => {
+  _.forEach(point.queryParams, param => {
     urlStr = urlStr.replace(`:${param}`, query[param])
   })
 
-  const url = `${__DEV__ ? DEV_URL : BASE_URL}${urlStr}?${queryParams(_.omit(query, params))}`
+  query.fields = point.fields ? point.fields(fields) : fields
 
-  if (body) {
-    fetchParams.body = body
-  }
+  const queryString = queryParamsT({..._.omit(query, point.queryParams), ...t.query}),
+        url = `${__DEV__ ? DEV_URL : BASE_URL}${urlStr}?${queryString}`
 
   return fetch(url, fetchParams)
     .then(res => res.json())
@@ -44,7 +59,9 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query, body, list) {
         return Promise.reject(res.error)
       }
 
-      return list ? {data: res.data, count: res.count} : res.data
+      const data = point.list ? {data: res.data, count: res.count} : res.data
+
+      return point.transform ? point.transform(data) : data
     })
     .catch(error => {
       // TODO: вынести в отдельный модуль
@@ -54,20 +71,27 @@ function fetchFn(fetch: Function, method, baseUrl, headers, query, body, list) {
     })
 }
 
-export function endpoint(t: any, url: string, methods: string[] = ['get'], list = false): any {
-  const result = {
-    urlParams: (url.match(/:(\w)+/g) || []).map(s => s.slice(1)),
-  }
+export function endpoint<Q = any, R = any>(url: string, params: EndpointParams = {method: 'GET'}): Query<Q, R> {
+  const queryParams = (url.match(/:([\w]+)/g) || []).map(str => str.slice(1))
 
-  _.forEach(methods, method => {
-    result[method.toLowerCase()] = (query, body) => fetchFn(t.fetch, method.toUpperCase(), url, t.headers, {...query, ...t.query}, body, list)
-  })
-
-  return result
+  return {...params, url, queryParams} as any
 }
 
 export class ApiBase {
-  fetch        = fetch
-  headers: any = {}
-  query: any   = {}
+  headers = {
+    'User-Agent': USER_AGENT,
+  }
+
+  query: any = {
+    andyll: API_KEY,
+  }
+
+  build() {
+    _.forEach(this as any, (point, key) => {
+      if (!point || !point.url) return undefined
+
+      this[key] = (query, fields) => fetchFn(this, point, query, fields)
+      this[key].method = point.method
+    })
+  }
 }

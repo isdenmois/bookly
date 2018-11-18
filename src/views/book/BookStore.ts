@@ -21,7 +21,7 @@ export class BookStore {
 
     const fields = 'id,name,author_name,description,pic_140,user_book(book_read,rating)'
 
-    api.book.get({bookId, fields})
+    api.getBook({bookId}, fields)
       .then(data => {
         this.isLoading = false
         this.book      = {
