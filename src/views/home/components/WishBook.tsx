@@ -1,7 +1,10 @@
 import * as React from 'react'
-import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { Button, Card, CardItem } from 'native-base'
+import AutoHeightImage from 'react-native-auto-height-image'
+
+import * as color from 'constants/colors'
 
 import { TextL, TextM } from 'components/Text'
 
@@ -19,17 +22,15 @@ export class WishBook extends React.Component<Props> {
           <View style={s.container}>
             {book.pic_100 &&
              <View style={s.imageContainer}>
-               <Image style={s.image}
-                      source={{uri: book.pic_100}}>
-               </Image>
+               <AutoHeightImage width={100} source={{uri: book.pic_100}}/>
              </View>
             }
 
             <View style={s.contentContainer}>
               <TextL style={s.title}>{book.name}</TextL>
               <TextM style={s.author}>{book.author_name}</TextM>
-              <Button success full onPress={this.openChangeStatus}>
-                <TextM style={s.readButtonText}>Прочитано!</TextM>
+              <Button style={s.readButton} full onPress={this.openChangeStatus}>
+                <TextM style={s.readButtonText}>Прочитано</TextM>
               </Button>
             </View>
           </View>
@@ -52,11 +53,6 @@ const s = StyleSheet.create({
   contentContainer: {
     flex: 1,
   } as ViewStyle,
-  image: {
-    width: 100,
-    flex: 1,
-    alignSelf: 'stretch',
-  } as ImageStyle,
   title: {
     color: '#4A4A4A',
     fontWeight: 'bold',
@@ -66,6 +62,9 @@ const s = StyleSheet.create({
     color: '#828281',
     marginBottom: 10,
   } as TextStyle,
+  readButton: {
+    backgroundColor: color.green,
+  } as ViewStyle,
   readButtonText: {
     color: 'white',
   } as TextStyle,

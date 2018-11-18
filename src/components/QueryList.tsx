@@ -55,7 +55,7 @@ export class QueryList extends React.Component<Props> {
 
       return (
         <Button full onPress={() => this.fetchMoreParams(fetchMore, _.size(items) + 1)}>
-          <Text>Загрузить еще</Text>
+          <Text style={{color: 'white'}}>Загрузить еще</Text>
         </Button>
       )
     }

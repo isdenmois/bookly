@@ -3,8 +3,9 @@ import * as _ from 'lodash'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { NavigationConsumer } from 'react-navigation'
 import AutoHeightImage from 'react-native-auto-height-image'
-import { Button } from 'native-base'
+import { Button, Icon } from 'native-base'
 import { TextS, TextM } from 'components/Text'
+import * as color from 'constants/colors'
 
 interface Props {
   item: any
@@ -48,8 +49,10 @@ export class BookSearchItem extends React.Component<Props> {
     return (
       <NavigationConsumer>
         {navigation => (
-          <Button onPress={() => navigation.navigate('ChangeStatus', {book: this.props.item, status: this.nextStatus})}>
-            <TextS>{this.bookButtonTitle}</TextS>
+          <Button iconLeft style={s.button}
+                  onPress={() => navigation.navigate('ChangeStatus', {book: this.props.item, status: this.nextStatus})}>
+            <Icon name='book'/>
+            <TextM style={s.buttonText}>{this.bookButtonTitle}</TextM>
           </Button>
         )}
       </NavigationConsumer>
@@ -87,4 +90,14 @@ const s = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
   } as ViewStyle,
+
+  button: {
+    backgroundColor: color.green,
+    marginTop: 10,
+  },
+
+  buttonText: {
+    padding: 10,
+    color: 'white',
+  } as TextStyle,
 })
