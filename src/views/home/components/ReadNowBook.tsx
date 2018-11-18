@@ -13,7 +13,7 @@ interface Props extends NavigationScreenProps {
   book: Book
 }
 
-export class WishBook extends React.Component<Props> {
+export class ReadNowBook extends React.Component<Props> {
   render() {
     const book = this.props.book
 

@@ -7,14 +7,8 @@ import schema from './schema'
 const link = createBridgeLink({
   schema,
   resolvers,
-  mock: true,
 })
 
 const cache = new InMemoryCache({ addTypename: true })
 
-export const client = new ApolloClient({
-  link,
-  cache,
-  connectToDevTools: true,
-  queryDeduplication: true,
-})
+export const client = new ApolloClient({ link, cache })

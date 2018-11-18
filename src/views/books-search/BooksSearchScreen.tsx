@@ -3,6 +3,10 @@ import { NavigationScreenProps } from 'react-navigation'
 import gql from 'graphql-tag'
 
 import { Container, Content } from 'native-base'
+
+import * as color from 'constants/colors'
+
+import { StatusBar } from 'components/StatusBar'
 import { QueryList } from 'components/QueryList'
 import { FoundResults } from 'components/FoundResults'
 
@@ -47,6 +51,8 @@ export class BooksSearchScreen extends React.Component<Props, State> {
 
     return (
       <Container>
+        <StatusBar color={color.green}/>
+
         <SearchBar value={this.state.search} onChange={this.onSearch}/>
 
         <Content>

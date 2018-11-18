@@ -4,13 +4,15 @@ import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { DialogModal as Dialog } from 'components/Dialog'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
+
+import { Book, BOOK_READ_STATUS } from 'models/Book'
+import { client } from 'services/client'
+
 import { Rating } from 'components/Rating'
 import { TextL, TextM } from 'components/Text'
 import { Switcher, SwitchOption } from 'components/Switcher'
 
 import { MARK_AS_READ_MUTATION, CHANGE_STATUS_MUTATION } from './mutations'
-
-import { client } from '../../services/apollo-client-bridge'
 
 interface Props extends NavigationScreenProps {
 }
@@ -19,12 +21,6 @@ interface State {
   date: Date
   rating: number
   status: BOOK_READ_STATUS
-}
-
-enum BOOK_READ_STATUS {
-  WANT_TO_READ = 0,
-  HAVE_READ,
-  NOW_READING,
 }
 
 const statusOptions: SwitchOption[] = [
@@ -53,8 +49,8 @@ export class ChangeStatusModal extends React.Component<Props, State> {
   }
 
   render() {
-    const status = this.state.status,
-          book   = this.props.navigation.getParam('book', {})
+    const status     = this.state.status,
+          book: Book = this.props.navigation.getParam('book', {})
 
     return (
       <Dialog navigation={this.props.navigation} header={statusMap[status]}>
@@ -92,7 +88,7 @@ export class ChangeStatusModal extends React.Component<Props, State> {
     )
   }
 
-  get disabled() {
+  get disabled(): boolean {
     if (this.state.status === BOOK_READ_STATUS.HAVE_READ) {
       return !this.state.rating
     }
@@ -106,7 +102,7 @@ export class ChangeStatusModal extends React.Component<Props, State> {
 
   save = () => {
     const { date, rating, status } = this.state,
-          book = this.props.navigation.getParam('book', {}),
+          book: Book = this.props.navigation.getParam('book', {}),
           mutation = mutations[status],
           variables = {
             bookId: book.id,
@@ -122,7 +118,7 @@ export class ChangeStatusModal extends React.Component<Props, State> {
     this.props.navigation.goBack()
   }
 
-  optimisticResponse = (vars) => {
+  optimisticResponse = (vars: any) => {
     return {
       changeStatus: {
         id: vars.bookId,

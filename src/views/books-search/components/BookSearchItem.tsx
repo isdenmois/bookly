@@ -3,13 +3,12 @@ import * as _ from 'lodash'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
+const { NavigationConsumer } = require('react-navigation')
 
 import { Book, BOOK_READ_STATUS } from 'models/Book'
 import * as color from 'constants/colors'
 
 import { TextS, TextM } from 'components/Text'
-
-const { NavigationConsumer } = require('react-navigation')
 
 interface Props {
   item: Book

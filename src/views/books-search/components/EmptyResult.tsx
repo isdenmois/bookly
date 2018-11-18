@@ -2,8 +2,7 @@ import * as React from 'react'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { TextM } from 'components/Text'
 
-interface Props {
-}
+interface Props {}
 
 export class EmptyResult extends React.Component<Props> {
   render() {

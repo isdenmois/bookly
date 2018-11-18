@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { shallow, ShallowWrapper } from 'enzyme'
 import { RefreshControl } from 'react-native'
-import { client } from 'services/apollo-client-bridge'
+import { client } from 'services/client'
 import { HomeScreen } from '../HomeScreen'
 
 describe('HomeScreen', function () {

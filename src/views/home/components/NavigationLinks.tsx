@@ -15,7 +15,7 @@ export class NavigationLinks extends React.Component<NavigationScreenProps> {
         <ListItem onPress={notImplemented}>
           <TextM>Хочу прочитать</TextM>
         </ListItem>
-        <ListItem onPress={() => this.props.navigation.navigate('TestModal')}>
+        <ListItem onPress={notImplemented}>
           <TextM>Синхронизация</TextM>
         </ListItem>
         <ListItem onPress={this.openProfile}>

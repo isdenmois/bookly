@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx'
-import { commonApi } from 'api/commonApi'
+import { commonApi } from 'api'
 import { SessionStore } from 'services/SessionStore'
 
 export class LoginStore {

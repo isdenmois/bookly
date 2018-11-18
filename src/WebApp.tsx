@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { ApolloProvider, Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import { client } from 'services/apollo-client-bridge'
+import { client } from 'services/client'
 
 const CHALLENGE_QUERY = gql`
     query home($year: Int!, $user: ID!) {

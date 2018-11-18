@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx'
 import { AsyncStorage } from 'react-native'
 
-import { api } from 'api/api'
+import { api } from 'api'
 
 const SESSION_KEY = 'SESSION_KEY'
 

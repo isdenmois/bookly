@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { Body, Button, Radio, Content, Left, List, ListItem, Right, Text, Thumbnail } from 'native-base'
 import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
-import { client } from 'services/apollo-client-bridge'
+import { client } from 'services/client'
 import { Book } from 'models/Book'
 
 import { Dialog } from 'components/Dialog'

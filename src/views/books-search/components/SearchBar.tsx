@@ -1,6 +1,8 @@
 import * as React from 'react'
-import { Constants } from 'expo'
+import { StyleSheet, ViewStyle } from 'react-native'
 import { Button, Header, Icon, Input, Item, Text } from 'native-base'
+
+import * as color from 'constants/colors'
 
 interface Props {
   value: string
@@ -16,7 +18,7 @@ export class SearchBar extends React.Component<Props, State> {
 
   render() {
     return (
-      <Header searchBar style={{marginTop: Constants.statusBarHeight}}>
+      <Header searchBar style={s.header}>
         <Item>
           <Icon name='ios-search'/>
           <Input placeholder='Поиск книг'
@@ -36,3 +38,9 @@ export class SearchBar extends React.Component<Props, State> {
   updateState = value => this.setState({value})
   change = () => this.props.onChange(this.state.value)
 }
+
+const s = StyleSheet.create({
+  header: {
+    backgroundColor: color.green,
+  } as ViewStyle,
+})

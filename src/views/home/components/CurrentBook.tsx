@@ -6,7 +6,7 @@ import { NavigationScreenProps } from 'react-navigation'
 import { Book } from 'models/Book'
 
 import { EmptyBook } from './EmptyBook'
-import { WishBook } from './WishBook'
+import { ReadNowBook } from './ReadNowBook'
 import { BookSelectDialog } from './BookSelectDialog'
 
 interface Props extends NavigationScreenProps {
@@ -29,7 +29,7 @@ export class CurrentBook extends React.Component<Props, State> {
     return (
       <View>
         {currentBooks.length > 0 &&
-          <WishBook book={currentBooks[0]} navigation={this.props.navigation}/>
+          <ReadNowBook book={currentBooks[0]} navigation={this.props.navigation}/>
         }
 
         {currentBooks.length === 0 &&

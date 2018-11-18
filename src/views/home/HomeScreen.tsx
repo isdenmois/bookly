@@ -5,7 +5,7 @@ import { Query } from 'react-apollo'
 import { Container, Content } from 'native-base'
 
 import { sessionStore } from 'services/store'
-import { client } from 'services/apollo-client-bridge'
+import { client } from 'services/client'
 
 import { SearchHeader } from './components/SearchHeader'
 import { NavigationLinks } from './components/NavigationLinks'
@@ -14,11 +14,6 @@ import { BookChallenge } from './components/BookChallenge'
 import { USER_BOOKS_QUERY, USER_CHALLENGE_QUERY } from './queries'
 
 interface Props extends NavigationScreenProps {
-  refetch?: () => void
-  loading?: boolean
-  isLoaded?: boolean
-  userChallenge?: any
-  userBooks?: any
 }
 
 interface State {
