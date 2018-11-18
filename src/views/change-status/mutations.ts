@@ -21,6 +21,10 @@ export const CHANGE_STATUS_MUTATION = gql`
       id
       user_book_partial {
         book_read
+        date_day
+        date_month
+        date_year
+        rating
       }
     }
   }
