@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { DialogModal as Dialog } from 'components/dialog'
+import { Dialog } from 'components/dialog'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
 

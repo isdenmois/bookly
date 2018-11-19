@@ -1,44 +1,13 @@
 import * as React from 'react'
-import { View, Modal, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native'
+import { View, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { TextL } from './text'
 
-interface Props {
-  visible: boolean
-  onClose: () => void
+interface Props extends NavigationScreenProps {
   header?: string
 }
 
-export class Dialog extends React.PureComponent<Props> {
-  render() {
-    return (
-      <Modal visible={this.props.visible} onRequestClose={this.props.onClose} transparent>
-        <TouchableWithoutFeedback onPress={this.props.onClose}>
-          <View style={s.backdrop}/>
-        </TouchableWithoutFeedback>
-
-        <View style={s.modal}>
-          <View style={s.modalView}>
-            {this.props.header &&
-              <View style={s.header}>
-                <TextL>{this.props.header}</TextL>
-              </View>
-            }
-            <View style={s.content}>
-              {this.props.children}
-            </View>
-          </View>
-        </View>
-      </Modal>
-    )
-  }
-}
-
-interface ModalProps extends NavigationScreenProps {
-  header?: string
-}
-
-export class DialogModal extends React.Component<ModalProps> {
+export class Dialog extends React.Component<Props> {
   render() {
     return (
       <View style={{flex: 1}}>

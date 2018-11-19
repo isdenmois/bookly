@@ -7,21 +7,12 @@ import { Book } from 'models/book'
 
 import { EmptyBook } from './empty-book'
 import { ReadNowBook } from './read-now-book'
-import { BookSelectDialog } from './book-select-dialog'
 
 interface Props extends NavigationScreenProps {
   books: Book[]
 }
 
-interface State {
-  bookSelectDialogVisible: boolean
-}
-
-export class CurrentBook extends React.Component<Props, State> {
-  state = {
-    bookSelectDialogVisible: false,
-  }
-
+export class CurrentBook extends React.Component<Props> {
   render() {
     const wantToRead = this.wantToRead,
           currentBooks = this.currentBooks
@@ -35,12 +26,6 @@ export class CurrentBook extends React.Component<Props, State> {
         {currentBooks.length === 0 &&
           <EmptyBook onChooseBook={this.openBookSelectDialog} chooseBookAvailable={wantToRead.length > 0}/>
         }
-
-        {!_.isEmpty(wantToRead) &&
-         <BookSelectDialog visible={this.state.bookSelectDialogVisible}
-                            books={wantToRead}
-                            onClose={this.closeBookSelectDialog}/>
-        }
       </View>
     )
   }
@@ -53,6 +38,5 @@ export class CurrentBook extends React.Component<Props, State> {
     return _.filter(this.props.books, book => +_.get(book, 'userBookPartial.bookRead') === 0)
   }
 
-  openBookSelectDialog = () => this.setState({bookSelectDialogVisible: true})
-  closeBookSelectDialog = () => this.setState({bookSelectDialogVisible: false})
+  openBookSelectDialog = () => this.props.navigation.navigate('BookSelect', {books: this.wantToRead})
 }

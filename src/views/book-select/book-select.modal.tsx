@@ -1,8 +1,9 @@
 import * as _ from 'lodash'
 import * as React from 'react'
 import gql from 'graphql-tag'
-import { Body, Button, Radio, Content, Left, List, ListItem, Right, Text, Thumbnail } from 'native-base'
-import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { NavigationScreenProps } from 'react-navigation'
+import { Body, Button, Radio, Left, List, ListItem, Right, Text, Thumbnail } from 'native-base'
+import { Dimensions, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
 import { client } from 'services/client'
 import { Book } from 'models/book'
@@ -10,10 +11,7 @@ import { Book } from 'models/book'
 import { Dialog } from 'components/dialog'
 import { TextM } from 'components/text'
 
-interface Props {
-  visible: boolean
-  books: Book[]
-  onClose: () => void
+interface Props extends NavigationScreenProps {
 }
 
 interface State {
@@ -31,27 +29,24 @@ const mutation = gql`
   }
 `
 
-export class BookSelectDialog extends React.Component<Props, State> {
+export class BookSelectModal extends React.Component<Props, State> {
   state = {
     selected: null,
   }
 
-  bookLast = 0
-
-  componentWillReceiveProps(nextProps: Props) {
-    this.bookLast = _.size(nextProps.books) - 1
-  }
+  books: Book[] = this.props.navigation.getParam('books', [])
+  bookLast = _.size(this.books) - 1
 
   render() {
     const maxHeight = Dimensions.get('window').height / 2
 
     return (
-      <Dialog visible={this.props.visible} onClose={this.close} header='Выбор книги'>
-        <Content style={[s.list, {maxHeight}]}>
+      <Dialog navigation={this.props.navigation} header='Выбор книги'>
+        <ScrollView style={[s.list, {maxHeight}]}>
           <List>
-            {this.props.books.map(this.renderBook)}
+            {this.books.map(this.renderBook)}
           </List>
-        </Content>
+        </ScrollView>
 
         <View style={s.button}>
           <Button full success onPress={this.save} disabled={!this.state.selected}>
@@ -79,11 +74,6 @@ export class BookSelectDialog extends React.Component<Props, State> {
     </ListItem>
   )
 
-  close = () => {
-    this.setState({selected: null})
-    this.props.onClose()
-  }
-
   selectBook(selected) {
     this.setState({selected})
   }
@@ -92,8 +82,22 @@ export class BookSelectDialog extends React.Component<Props, State> {
     const { selected } = this.state,
           variables = {bookId: selected.id, bookRead: 2}
 
-    client.mutate({mutation, variables})
-    this.close()
+    client.mutate({mutation, variables, optimisticResponse: this.optimisticResponse})
+
+    this.props.navigation.goBack()
+  }
+
+  optimisticResponse = (vars: any) => {
+    return {
+      changeStatus: {
+        id: vars.bookId,
+        userBookPartial: {
+          bookRead: vars.bookRead,
+          __typename: 'UserBookPartial',
+        },
+        __typename: 'Book',
+      },
+    }
   }
 }
 
