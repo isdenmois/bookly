@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 
 import { Container, Content } from 'native-base'
 
-import * as color from 'constants/colors'
+import { color } from 'constants/colors'
 
 import { StatusBar } from 'components/status-bar'
 import { QueryList } from 'components/query-list'
@@ -51,7 +51,7 @@ export class BooksSearchScreen extends React.Component<Props, State> {
 
     return (
       <Container>
-        <StatusBar color={color.green}/>
+        <StatusBar color={color.Green}/>
 
         <SearchBar value={this.state.search} onChange={this.onSearch}/>
 

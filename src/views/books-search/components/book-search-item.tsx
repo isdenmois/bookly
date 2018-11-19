@@ -6,7 +6,7 @@ import { Button, Icon } from 'native-base'
 const { NavigationConsumer } = require('react-navigation')
 
 import { Book, BOOK_READ_STATUS } from 'models/book'
-import * as color from 'constants/colors'
+import { color } from 'constants/colors'
 
 import { TextS, TextM } from 'components/text'
 
@@ -89,7 +89,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
 
   button: {
-    backgroundColor: color.green,
+    backgroundColor: color.Green,
     marginTop: 10,
   },
 

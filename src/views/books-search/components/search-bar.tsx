@@ -2,7 +2,7 @@ import * as React from 'react'
 import { StyleSheet, ViewStyle } from 'react-native'
 import { Button, Header, Icon, Input, Item, Text } from 'native-base'
 
-import * as color from 'constants/colors'
+import { color } from 'constants/colors'
 
 interface Props {
   value: string
@@ -41,6 +41,6 @@ export class SearchBar extends React.Component<Props, State> {
 
 const s = StyleSheet.create({
   header: {
-    backgroundColor: color.green,
+    backgroundColor: color.Green,
   } as ViewStyle,
 })

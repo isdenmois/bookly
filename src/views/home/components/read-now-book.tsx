@@ -5,7 +5,7 @@ import { Button, Card, CardItem } from 'native-base'
 import AutoHeightImage from 'react-native-auto-height-image'
 
 import { Book } from 'models/book'
-import * as color from 'constants/colors'
+import { color } from 'constants/colors'
 
 import { TextL, TextM } from 'components/text'
 
@@ -64,7 +64,7 @@ const s = StyleSheet.create({
     marginBottom: 10,
   } as TextStyle,
   readButton: {
-    backgroundColor: color.green,
+    backgroundColor: color.Green,
   } as ViewStyle,
   readButtonText: {
     color: 'white',
