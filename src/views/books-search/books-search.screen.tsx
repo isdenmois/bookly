@@ -53,7 +53,7 @@ export class BooksSearchScreen extends React.Component<Props, State> {
       <Container>
         <StatusBar color={color.Green}/>
 
-        <SearchBar value={this.state.search} onChange={this.onSearch}/>
+        <SearchBar navigation={this.props.navigation} value={this.state.search} onChange={this.onSearch}/>
 
         <Content>
           <QueryList query={SEARCH_BOOKS_QUERY}

@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { StyleSheet, ViewStyle } from 'react-native'
-import { Button, Header, Icon, Input, Item, Text } from 'native-base'
+import { NavigationScreenProps } from 'react-navigation'
+import { Button, Header, Icon, Input, Item, Left, Text } from 'native-base'
 
 import { color } from 'constants/colors'
 
-interface Props {
+interface Props extends NavigationScreenProps {
   value: string
   onChange: (value: string) => void
 }
@@ -19,6 +20,11 @@ export class SearchBar extends React.Component<Props, State> {
   render() {
     return (
       <Header searchBar style={s.header}>
+        <Left style={s.left}>
+          <Button icon transparent onPress={() => this.props.navigation.goBack()}>
+            <Icon style={s.icon} name='arrow-back' />
+          </Button>
+        </Left>
         <Item>
           <Icon name='ios-search'/>
           <Input placeholder='Поиск книг'
@@ -43,4 +49,10 @@ const s = StyleSheet.create({
   header: {
     backgroundColor: color.Green,
   } as ViewStyle,
+  left: {
+    flex: 0,
+  } as ViewStyle,
+  icon: {
+    color: color.Black,
+  },
 })
