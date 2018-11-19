@@ -8,7 +8,7 @@ import { Button, DatePicker } from 'native-base'
 import { Book, BOOK_READ_STATUS } from 'models/book'
 import { client } from 'services/client'
 
-import { Rating } from 'components/rating'
+import { RatingSelect } from 'components/rating'
 import { TextL, TextM } from 'components/text'
 import { Switcher, SwitchOption } from 'components/switcher'
 
@@ -75,7 +75,7 @@ export class ChangeStatusModal extends React.Component<Props, State> {
           <Switcher options={statusOptions} value={this.state.status} onChange={this.setStatus}/>
 
           {status === BOOK_READ_STATUS.HAVE_READ &&
-            <Rating value={this.state.rating} onChange={this.setRating}/>
+            <RatingSelect style={s.rating} value={this.state.rating} onChange={this.setRating}/>
           }
         </View>
 
@@ -164,6 +164,10 @@ const s = StyleSheet.create({
     color: '#828281',
     marginBottom: 10,
   } as TextStyle,
+
+  rating: {
+    marginTop: 10,
+  } as ViewStyle,
 
   button: {
     padding: 20,

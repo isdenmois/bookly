@@ -8,6 +8,7 @@ const { NavigationConsumer } = require('react-navigation')
 import { Book, BOOK_READ_STATUS } from 'models/book'
 import { color } from 'constants/colors'
 
+import { Rating } from 'components/rating'
 import { TextS, TextM } from 'components/text'
 
 interface Props {
@@ -40,7 +41,7 @@ export class BookSearchItem extends React.Component<Props> {
     const status = _.get(this.props.item, 'userBookPartial.bookRead')
 
     if (status === BOOK_READ_STATUS.HAVE_READ) {
-      return <TextM>{this.props.item.userBookPartial.rating} / 10</TextM>
+      return <Rating scale={5} value={this.props.item.userBookPartial.rating}/>
     }
 
     return (
