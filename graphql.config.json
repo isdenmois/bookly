@@ -1,5 +1,5 @@
 {
   "schema": {
-    "file": "schema.graphqls"
+    "file": "dev-tools/schema.graphqls"
   }
 }

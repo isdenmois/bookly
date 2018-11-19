@@ -2,7 +2,8 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createBridgeLink } from 'apollo-bridge-link'
 import resolvers from 'api/resolvers'
-import schema from './schema'
+
+const schema = require('../../dev-tools/schema.graphqls')
 
 const link = createBridgeLink({
   schema,
