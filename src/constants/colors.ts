@@ -18,6 +18,7 @@ export const color = {
   Brown: '#795548',
   Grey: '#9E9E9E',
   BlueGrey: '#607D8B',
+  Black: '#222222',
 
   Transparent: 'transparent',
   Silver: '#EAEAEA',

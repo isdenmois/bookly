@@ -1,17 +1,18 @@
 import * as React from 'react'
-import { ActivityIndicator, RefreshControl } from 'react-native'
+import { ActivityIndicator, ScrollView, RefreshControl, View } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { Query } from 'react-apollo'
-import { Container, Content } from 'native-base'
 
 import { sessionStore } from 'services/store'
 import { client } from 'services/client'
 
+import { StatusBar } from 'components/status-bar'
 import { SearchHeader } from './components/search-header'
 import { NavigationLinks } from './components/navigation-links'
 import { CurrentBook } from './components/current-book'
 import { BookChallenge } from './components/book-challenge'
 import { USER_BOOKS_QUERY, USER_CHALLENGE_QUERY } from './queries'
+import { color } from '../../constants/colors'
 
 interface Props extends NavigationScreenProps {
 }
@@ -35,10 +36,10 @@ export class HomeScreen extends React.Component<Props, State> {
     }
 
     return (
-      <Container>
+      <View style={{backgroundColor: 'white', flex: 1}}>
         <SearchHeader navigation={this.props.navigation}/>
 
-        <Content refreshControl={this.renderRefresh()}>
+        <ScrollView refreshControl={this.renderRefresh()}>
           <Query query={USER_BOOKS_QUERY} variables={variables}>
             {this.renderCurrentBook}
           </Query>
@@ -48,8 +49,8 @@ export class HomeScreen extends React.Component<Props, State> {
           </Query>
 
           <NavigationLinks navigation={this.props.navigation}/>
-        </Content>
-      </Container>
+        </ScrollView>
+      </View>
     )
   }
 

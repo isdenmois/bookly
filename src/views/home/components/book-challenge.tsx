@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { Body, Card, CardItem } from 'native-base'
+import { Card } from 'components/card'
 
 import { TextS, TextL } from 'components/text'
 
@@ -15,25 +15,21 @@ export class BookChallenge extends React.Component<Props> {
     const { countBooksRead, countBooksTotal, countBooksForecast} = this.props.challenge
 
     return (
-      <Card>
-        <CardItem>
-          <Body>
-            <View style={s.container}>
-              <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{countBooksRead}</TextL>
-                <TextS style={s.challengeLabel}>Прочтено</TextS>
-              </View>
-              <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{countBooksTotal}</TextL>
-                <TextS style={s.challengeLabel}>Запланировано</TextS>
-              </View>
-              <View style={s.challengeItem}>
-                <TextL style={s.challengeValue}>{countBooksForecast}</TextL>
-                <TextS style={s.challengeLabel}>Опережение</TextS>
-              </View>
-            </View>
-          </Body>
-        </CardItem>
+      <Card padding>
+        <View style={s.container}>
+          <View style={s.challengeItem}>
+            <TextL style={s.challengeValue}>{countBooksRead}</TextL>
+            <TextS style={s.challengeLabel}>Прочтено</TextS>
+          </View>
+          <View style={s.challengeItem}>
+            <TextL style={s.challengeValue}>{countBooksTotal}</TextL>
+            <TextS style={s.challengeLabel}>Запланировано</TextS>
+          </View>
+          <View style={s.challengeItem}>
+            <TextL style={s.challengeValue}>{countBooksForecast}</TextL>
+            <TextS style={s.challengeLabel}>Опережение</TextS>
+          </View>
+        </View>
       </Card>
     )
   }

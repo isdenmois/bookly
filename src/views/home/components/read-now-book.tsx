@@ -1,13 +1,14 @@
 import * as React from 'react'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
-import { Button, Card, CardItem } from 'native-base'
+import { Button } from 'native-base'
 import AutoHeightImage from 'react-native-auto-height-image'
 
 import { Book } from 'models/book'
 import { color } from 'constants/colors'
 
 import { TextL, TextM } from 'components/text'
+import { Card } from 'components/card'
 
 interface Props extends NavigationScreenProps {
   book: Book
@@ -18,24 +19,22 @@ export class ReadNowBook extends React.Component<Props> {
     const book = this.props.book
 
     return (
-      <Card>
-        <CardItem>
-          <View style={s.container}>
-            {book.pic100 &&
-             <View style={s.imageContainer}>
-               <AutoHeightImage width={100} source={{uri: book.pic100}}/>
-             </View>
-            }
+      <Card padding>
+        <View style={s.container}>
+          {book.pic100 &&
+           <View style={s.imageContainer}>
+             <AutoHeightImage width={100} source={{uri: book.pic100}}/>
+           </View>
+          }
 
-            <View style={s.contentContainer}>
-              <TextL style={s.title}>{book.name}</TextL>
-              <TextM style={s.author}>{book.authorName}</TextM>
-              <Button style={s.readButton} full onPress={this.openChangeStatus}>
-                <TextM style={s.readButtonText}>Прочитано</TextM>
-              </Button>
-            </View>
+          <View style={s.contentContainer}>
+            <TextL style={s.title}>{book.name}</TextL>
+            <TextM style={s.author}>{book.authorName}</TextM>
+            <Button style={s.readButton} full onPress={this.openChangeStatus}>
+              <TextM style={s.readButtonText}>Прочитано</TextM>
+            </Button>
           </View>
-        </CardItem>
+        </View>
       </Card>
     )
   }
