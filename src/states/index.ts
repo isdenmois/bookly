@@ -1,6 +1,6 @@
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 
-import { LoginScreen } from 'views/login/LoginScreen'
+import { LoginScreen } from 'views/login/login.screen'
 import { MainStack, MainStackOptions } from './main'
 import { ModalStack } from './modal'
 

@@ -1,2 +1,2 @@
 export { api } from './api'
-export { commonApi } from './commonApi'
+export { commonApi } from './common-api'

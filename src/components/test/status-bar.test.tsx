@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { Constants } from 'expo'
-import { StatusBar } from '../StatusBar'
+import { StatusBar } from '../status-bar'
 
 describe('StatusBar', function () {
   let component: renderer.ReactTestRendererJSON

@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const router = require('express').Router({mergeParams: true});
 const db = require('./db');
 const response = require('./response');

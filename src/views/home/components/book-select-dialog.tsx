@@ -5,10 +5,10 @@ import { Body, Button, Radio, Content, Left, List, ListItem, Right, Text, Thumbn
 import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
 import { client } from 'services/client'
-import { Book } from 'models/Book'
+import { Book } from 'models/book'
 
-import { Dialog } from 'components/Dialog'
-import { TextM } from 'components/Text'
+import { Dialog } from 'components/dialog'
+import { TextM } from 'components/text'
 
 interface Props {
   visible: boolean

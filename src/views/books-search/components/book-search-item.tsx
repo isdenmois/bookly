@@ -5,10 +5,10 @@ import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
 const { NavigationConsumer } = require('react-navigation')
 
-import { Book, BOOK_READ_STATUS } from 'models/Book'
+import { Book, BOOK_READ_STATUS } from 'models/book'
 import * as color from 'constants/colors'
 
-import { TextS, TextM } from 'components/Text'
+import { TextS, TextM } from 'components/text'
 
 interface Props {
   item: Book

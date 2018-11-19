@@ -3,11 +3,11 @@ import * as React from 'react'
 import { View } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 
-import { Book } from 'models/Book'
+import { Book } from 'models/book'
 
-import { EmptyBook } from './EmptyBook'
-import { ReadNowBook } from './ReadNowBook'
-import { BookSelectDialog } from './BookSelectDialog'
+import { EmptyBook } from './empty-book'
+import { ReadNowBook } from './read-now-book'
+import { BookSelectDialog } from './book-select-dialog'
 
 interface Props extends NavigationScreenProps {
   books: Book[]

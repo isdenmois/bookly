@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { TextM } from 'components/Text'
+import { TextM } from 'components/text'
 
 interface Props {}
 

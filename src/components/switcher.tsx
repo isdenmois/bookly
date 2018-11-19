@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 import cn from 'react-native-classnames'
-import { TextS } from 'components/Text'
+import { TextS } from 'components/text'
 import * as color from 'constants/colors'
 
 export interface SwitchOption {

@@ -3,7 +3,7 @@ import { NavigationScreenProps } from 'react-navigation'
 import { List, ListItem } from 'native-base'
 
 import { notImplemented } from 'constants/not-implemented-yet'
-import { TextM } from 'components/Text'
+import { TextM } from 'components/text'
 
 export class NavigationLinks extends React.Component<NavigationScreenProps> {
   render() {

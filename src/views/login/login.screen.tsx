@@ -4,12 +4,12 @@ import { Button, Container, Form, Icon, Item } from 'native-base'
 import { NavigationScreenProps } from 'react-navigation'
 import { inject, observer } from 'mobx-react'
 
-import { TextM, TextL } from 'components/Text'
-import { Field } from 'components/Field'
+import { TextM, TextL } from 'components/text'
+import { Field } from 'components/field'
 import { api } from 'api'
 
-import { LoginStore } from './LoginStore'
-import { LoginTriangles } from './LoginTriangles'
+import { LoginStore } from './login.store'
+import { LoginTriangles } from './login-triangles'
 
 interface Props extends NavigationScreenProps {
   loginStore: LoginStore

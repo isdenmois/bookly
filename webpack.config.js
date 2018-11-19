@@ -4,7 +4,7 @@ const babelConfig = require('./babel.web');
 
 module.exports = {
   mode: 'development',
-  entry: './src/WebApp.tsx',
+  entry: './src/web-app.tsx',
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Header, Item, Icon, Button, Text } from 'native-base'
 import { NavigationScreenProps } from 'react-navigation'
 
-import { Field } from 'components/Field'
+import { Field } from 'components/field'
 
 interface Props extends NavigationScreenProps {
 }

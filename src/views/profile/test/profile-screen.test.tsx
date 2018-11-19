@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { Button } from 'native-base'
-import { ProfileScreen } from '../ProfileScreen'
+import { ProfileScreen } from '../profile-screen'
 
 xdescribe('ProfileScreen', function () {
   it('should logout on button click', function () {

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import * as theme from '../../constants/theme'
-import { TextL, TextM, TextS } from '../Text'
+import { TextL, TextM, TextS } from '../text'
 
 describe('Text components', function () {
   it('should set font size', function () {

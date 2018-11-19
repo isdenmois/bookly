@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as _ from 'lodash'
 import { View, StyleSheet, ViewStyle } from 'react-native'
 import { Icon } from 'native-base'
-import { TextM } from './Text'
+import { TextM } from './text'
 
 interface Props {
   value: number

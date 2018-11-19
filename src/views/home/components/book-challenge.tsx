@@ -2,9 +2,9 @@ import * as React from 'react'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Body, Card, CardItem } from 'native-base'
 
-import { TextS, TextL } from 'components/Text'
+import { TextS, TextL } from 'components/text'
 
-import { UserChallenge } from 'models/UserChallenge'
+import { UserChallenge } from 'models/user-challenge'
 
 interface Props {
   challenge: UserChallenge

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as _ from 'lodash'
-import { TextInput, TextInputProps } from 'react-native'
+import { TextInputProps } from 'react-native'
 import { Input } from 'native-base'
 
 interface Props extends TextInputProps {

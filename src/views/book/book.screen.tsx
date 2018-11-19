@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ActivityIndicator, Button, Image, Text, View } from 'react-native'
 import { inject, observer } from 'mobx-react'
-import { BookStore } from './BookStore'
+import { BookStore } from './book.store'
 
 @inject('bookStore')
 @observer

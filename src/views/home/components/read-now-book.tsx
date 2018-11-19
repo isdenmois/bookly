@@ -4,10 +4,10 @@ import { NavigationScreenProps } from 'react-navigation'
 import { Button, Card, CardItem } from 'native-base'
 import AutoHeightImage from 'react-native-auto-height-image'
 
-import { Book } from 'models/Book'
+import { Book } from 'models/book'
 import * as color from 'constants/colors'
 
-import { TextL, TextM } from 'components/Text'
+import { TextL, TextM } from 'components/text'
 
 interface Props extends NavigationScreenProps {
   book: Book

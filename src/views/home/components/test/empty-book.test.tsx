@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { Button } from 'native-base'
-import { TextL } from '../../../../components/Text'
-import { EmptyBook } from '../EmptyBook'
+import { TextL } from '../../../../components/text'
+import { EmptyBook } from '../empty-book'
 
 describe('EmptyBook', function () {
   let component, onChooseBook

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, Modal, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
-import { TextL } from './Text'
+import { TextL } from './text'
 
 interface Props {
   visible: boolean

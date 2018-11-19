@@ -6,13 +6,13 @@ import { Container, Content } from 'native-base'
 
 import * as color from 'constants/colors'
 
-import { StatusBar } from 'components/StatusBar'
-import { QueryList } from 'components/QueryList'
-import { FoundResults } from 'components/FoundResults'
+import { StatusBar } from 'components/status-bar'
+import { QueryList } from 'components/query-list'
+import { FoundResults } from 'components/found-results'
 
-import { SearchBar } from './components/SearchBar'
-import { BookSearchItem } from './components/BookSearchItem'
-import { EmptyResult } from './components/EmptyResult'
+import { SearchBar } from './components/search-bar'
+import { BookSearchItem } from './components/book-search-item'
+import { EmptyResult } from './components/empty-result'
 
 interface Props extends NavigationScreenProps {
 }

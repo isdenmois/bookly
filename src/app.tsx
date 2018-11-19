@@ -12,7 +12,7 @@ interface State {
 }
 
 if (__DEV__) {
-  require('./services/ReactotronConfig')
+  require('./services/reactotron-config')
 }
 
 export default class App extends React.Component {

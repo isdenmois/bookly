@@ -1,16 +1,16 @@
 import * as React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { DialogModal as Dialog } from 'components/Dialog'
+import { DialogModal as Dialog } from 'components/dialog'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
 
-import { Book, BOOK_READ_STATUS } from 'models/Book'
+import { Book, BOOK_READ_STATUS } from 'models/book'
 import { client } from 'services/client'
 
-import { Rating } from 'components/Rating'
-import { TextL, TextM } from 'components/Text'
-import { Switcher, SwitchOption } from 'components/Switcher'
+import { Rating } from 'components/rating'
+import { TextL, TextM } from 'components/text'
+import { Switcher, SwitchOption } from 'components/switcher'
 
 import { MARK_AS_READ_MUTATION, CHANGE_STATUS_MUTATION } from './mutations'
 

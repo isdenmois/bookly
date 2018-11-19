@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { TextM } from './Text'
+import { TextM } from './text'
 
 interface Props {
   count: number

@@ -7,10 +7,10 @@ import { Container, Content } from 'native-base'
 import { sessionStore } from 'services/store'
 import { client } from 'services/client'
 
-import { SearchHeader } from './components/SearchHeader'
-import { NavigationLinks } from './components/NavigationLinks'
-import { CurrentBook } from './components/CurrentBook'
-import { BookChallenge } from './components/BookChallenge'
+import { SearchHeader } from './components/search-header'
+import { NavigationLinks } from './components/navigation-links'
+import { CurrentBook } from './components/current-book'
+import { BookChallenge } from './components/book-challenge'
 import { USER_BOOKS_QUERY, USER_CHALLENGE_QUERY } from './queries'
 
 interface Props extends NavigationScreenProps {
