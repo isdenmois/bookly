@@ -6,7 +6,7 @@ import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
 
 import { Book, BOOK_READ_STATUS } from 'models/book'
-import { client } from 'services/client'
+import { client, REST } from 'services/client'
 
 import { RatingSelect } from 'components/rating'
 import { TextL, TextM } from 'components/text'
@@ -114,7 +114,7 @@ export class ChangeStatusModal extends React.Component<Props, State> {
           },
           refetchQueries = status === BOOK_READ_STATUS.HAVE_READ ? ['userChallenge'] : ['userBooks', 'userChallenge']
 
-    client.mutate({mutation, variables, refetchQueries, optimisticResponse: this.optimisticResponse})
+    client.mutate({mutation, variables, refetchQueries, optimisticResponse: this.optimisticResponse, context: REST})
     this.props.navigation.goBack()
   }
 

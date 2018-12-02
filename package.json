@@ -67,6 +67,8 @@
     "apollo-bridge-link": "^2.0.2",
     "apollo-cache-inmemory": "^1.3.9",
     "apollo-client": "^2.4.5",
+    "apollo-link": "^1.2.4",
+    "apollo-link-http": "^1.5.7",
     "camelcase-keys": "^5.0.0",
     "expo": "^31.0.4",
     "graphql": "^14.0.2",

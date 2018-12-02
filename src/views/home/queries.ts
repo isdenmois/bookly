@@ -23,3 +23,14 @@ export const USER_BOOKS_QUERY = gql`
     }
   }
 `
+
+export const BOOK_LIST_QUERY = gql`
+  {
+    books {
+      id
+      author
+      title
+      status
+    }
+  }
+`

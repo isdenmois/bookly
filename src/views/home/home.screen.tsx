@@ -1,18 +1,16 @@
 import * as React from 'react'
-import { ActivityIndicator, ScrollView, RefreshControl, View } from 'react-native'
+import { ActivityIndicator, ScrollView, RefreshControl, Text, View } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { Query } from 'react-apollo'
 
 import { sessionStore } from 'services/store'
-import { client } from 'services/client'
+import { client, REST } from 'services/client'
 
-import { StatusBar } from 'components/status-bar'
 import { SearchHeader } from './components/search-header'
 import { NavigationLinks } from './components/navigation-links'
 import { CurrentBook } from './components/current-book'
 import { BookChallenge } from './components/book-challenge'
-import { USER_BOOKS_QUERY, USER_CHALLENGE_QUERY } from './queries'
-import { color } from '../../constants/colors'
+import { USER_BOOKS_QUERY, USER_CHALLENGE_QUERY, BOOK_LIST_QUERY } from './queries'
 
 interface Props extends NavigationScreenProps {
 }
@@ -40,12 +38,16 @@ export class HomeScreen extends React.Component<Props, State> {
         <SearchHeader navigation={this.props.navigation}/>
 
         <ScrollView refreshControl={this.renderRefresh()}>
-          <Query query={USER_BOOKS_QUERY} variables={variables}>
+          <Query query={USER_BOOKS_QUERY} variables={variables} context={REST}>
             {this.renderCurrentBook}
           </Query>
 
-          <Query query={USER_CHALLENGE_QUERY} variables={variables}>
+          <Query query={USER_CHALLENGE_QUERY} variables={variables} context={REST}>
             {this.renderBookChallenge}
+          </Query>
+
+          <Query query={BOOK_LIST_QUERY}>
+            {({data}) => <View>{data && data.books && data.books.map(b => <Text>{b.title} - {b.author}</Text>)}</View>}
           </Query>
 
           <NavigationLinks navigation={this.props.navigation}/>

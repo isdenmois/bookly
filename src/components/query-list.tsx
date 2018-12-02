@@ -5,6 +5,7 @@ import { DocumentNode } from 'graphql'
 import { Query } from 'react-apollo'
 import { Button, List, ListItem } from 'native-base'
 import { color } from 'constants/colors'
+import { REST } from 'services/client'
 
 interface Props {
   query: DocumentNode
@@ -25,7 +26,7 @@ export class QueryList extends React.Component<Props, State> {
 
   render() {
     return (
-        <Query query={this.props.query} variables={this.props.variables}>
+        <Query query={this.props.query} variables={this.props.variables} context={REST}>
           {this.renderResult}
         </Query>
     )

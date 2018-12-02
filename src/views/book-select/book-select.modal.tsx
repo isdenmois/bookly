@@ -5,7 +5,7 @@ import { NavigationScreenProps } from 'react-navigation'
 import { Body, Button, Radio, Left, List, ListItem, Right, Text, Thumbnail } from 'native-base'
 import { Dimensions, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 
-import { client } from 'services/client'
+import { client, REST } from 'services/client'
 import { Book } from 'models/book'
 
 import { Dialog } from 'components/dialog'
@@ -82,7 +82,7 @@ export class BookSelectModal extends React.Component<Props, State> {
     const { selected } = this.state,
           variables = {bookId: selected.id, bookRead: 2}
 
-    client.mutate({mutation, variables, optimisticResponse: this.optimisticResponse})
+    client.mutate({mutation, variables, optimisticResponse: this.optimisticResponse, context: REST})
 
     this.props.navigation.goBack()
   }

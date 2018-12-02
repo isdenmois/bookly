@@ -18,7 +18,7 @@ type UserBookPartial {
     dateYear: Int
 }
 
-type Book {
+type LiveLibBook {
     id: ID!
     authorId: Int
     authorName: String
@@ -31,21 +31,35 @@ type Book {
     userBookPartial: UserBookPartial
 }
 
+type Book {
+    id: ID!
+    title: String!
+    author: String!
+    status: BookStatus
+}
+
+enum BookStatus {
+    WISH
+    NOW
+    READ
+}
+
 type ChangeStatusParams {
     id: ID!
 }
 
 type BookSearchResult {
     count: Int!
-    books: [Book]
+    books: [LiveLibBook]
 }
 
 type Query {
     userChallenge(user: ID!, year: Int!): UserChallenge
-    userBooks(user: ID!, start: Int, count:  Int, type: String): [Book]
+    userBooks(user: ID!, start: Int, count:  Int, type: String): [LiveLibBook]
     searchBooks(q: String!, start: Int!, count: Int!): BookSearchResult
+    books: [Book]
 }
 
 type Mutation {
-    changeStatus(bookId: ID!, bookRead: Int!, dateDay: Int, dateMonth: Int, dateYear: Int, rating: Int): Book!
+    changeStatus(bookId: ID!, bookRead: Int!, dateDay: Int, dateMonth: Int, dateYear: Int, rating: Int): LiveLibBook!
 }
