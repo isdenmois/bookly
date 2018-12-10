@@ -79,7 +79,6 @@ export class LoginScreen extends React.Component<Props> {
             }
           </View>
         </KeyboardAvoidingView>
-
       </Container>
     )
   }

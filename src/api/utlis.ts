@@ -54,7 +54,7 @@ function fetchFn(t: any, point: Endpoint, query, fields?: string) {
 
   const queryParams = snakeCase({..._.omit(query, point.queryParams), ...t.query}, {deep: true}),
         queryString = queryParamsT(queryParams),
-        url = `${BASE_URL}${urlStr}?${queryString}`
+        url = `${DEV_URL}${urlStr}?${queryString}`
 
   return fetch(url, fetchParams)
     .then(res => res.json())
