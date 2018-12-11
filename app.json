@@ -13,6 +13,9 @@
     },
     "android": {
       "package": "ru.isden.bookly"
+    },
+    "ios": {
+      "bundleIdentifier": "ru.isden.bookly"
     }
   }
 }

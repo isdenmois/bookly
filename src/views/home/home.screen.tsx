@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { ActivityIndicator, ScrollView, RefreshControl, Text, View } from 'react-native'
+import { ActivityIndicator, ScrollView, RefreshControl, Text, View, Button } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { Query } from 'react-apollo'
+import { inject, observer } from 'mobx-react'
 
 import { sessionStore } from 'services/store'
 import { client, REST } from 'services/client'
@@ -13,12 +14,15 @@ import { BookChallenge } from './components/book-challenge'
 import { USER_BOOKS_QUERY, USER_CHALLENGE_QUERY, BOOK_LIST_QUERY } from './queries'
 
 interface Props extends NavigationScreenProps {
+  store: any
 }
 
 interface State {
   refreshing: boolean;
 }
 
+@inject('store')
+@observer
 export class HomeScreen extends React.Component<Props, State> {
   static navigationOptions = () => ({header: null})
 
@@ -49,6 +53,23 @@ export class HomeScreen extends React.Component<Props, State> {
           <Query query={BOOK_LIST_QUERY}>
             {({data}) => <View>{data && data.books && data.books.map(b => <Text>{b.title} - {b.author}</Text>)}</View>}
           </Query>
+
+          <Text>Читаю сейчас:</Text>
+          {this.props.store.now.map(book => (
+            <View key={book.id}>
+              <Text>Книга: {book.title}</Text>
+              <Text>Автор: {book.authors.map(a => a.name).join(', ')}</Text>
+              <Button title='Прочитано' onPress={book.markAsRead}/>
+            </View>
+          ))}
+
+          <Text>Прочитано:</Text>
+          {this.props.store.read.map(book => (
+            <View key={book.id}>
+              <Text>Книга: {book.title}</Text>
+              <Text>Автор: {book.authors.map(a => a.name).join(', ')}</Text>
+            </View>
+          ))}
 
           <NavigationLinks navigation={this.props.navigation}/>
         </ScrollView>
