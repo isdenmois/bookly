@@ -19,7 +19,11 @@ export class DataContext {
     ]
     // tslint:enable
 
-    return Models.create({ authors, books })
+    const challenges = {
+      2018: {year: 2018, booksCount: 5},
+    }
+
+    return Models.create({ authors, books, challenges })
   }
 }
 

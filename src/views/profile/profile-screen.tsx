@@ -5,12 +5,14 @@ import { NavigationScreenProps } from 'react-navigation'
 import { Button, Container, Content, Text } from 'native-base'
 
 import { Session } from 'services'
+import { injectContext } from 'services/react-16-5-context'
 import { StatusBar } from 'components/status-bar'
 
 interface Props extends NavigationScreenProps {
 }
 
 @observer
+@injectContext
 export class ProfileScreen extends React.Component<Props> {
   static navigationOptions = {headerTitle: 'Профиль'}
   static contextType = InjectorContext

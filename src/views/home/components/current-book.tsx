@@ -4,6 +4,7 @@ import { NavigationScreenProps } from 'react-navigation'
 import { inject, InjectorContext } from 'react-ioc'
 
 import { Books } from 'services'
+import { injectContext } from 'services/react-16-5-context'
 
 import { EmptyBook } from './empty-book'
 import { ReadNowBook } from './read-now-book'
@@ -11,6 +12,7 @@ import { ReadNowBook } from './read-now-book'
 interface Props extends NavigationScreenProps {
 }
 
+@injectContext
 export class CurrentBook extends React.Component<Props> {
   static contextType = InjectorContext
 

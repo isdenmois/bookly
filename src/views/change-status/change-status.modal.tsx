@@ -5,7 +5,7 @@ import { Dialog } from 'components/dialog'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
 
-import { Book, BOOK_READ_STATUS } from 'models/book'
+import { Book, BOOK_READ_STATUS, BookS } from 'models/book'
 import { client, REST } from 'services/client'
 
 import { RatingSelect } from 'components/rating'
@@ -50,21 +50,21 @@ export class ChangeStatusModal extends React.Component<Props, State> {
 
   render() {
     const status     = this.state.status,
-          book: Book = this.props.navigation.getParam('book', {})
+          book: BookS = this.props.navigation.getParam('book', {})
 
     return (
       <Dialog navigation={this.props.navigation} header={statusMap[status]}>
         <View style={s.content}>
           <View style={s.info}>
-            {book.pic100 &&
+            {book.thumbnail &&
              <View style={s.imageContainer}>
-               <AutoHeightImage width={100} source={{uri: book.pic100}}/>
+               <AutoHeightImage width={100} source={{uri: book.thumbnail}}/>
              </View>
             }
 
             <View style={s.contentContainer}>
-              <TextL style={s.title}>{book.name}</TextL>
-              <TextM style={s.author}>{book.authorName}</TextM>
+              <TextL style={s.title}>{book.title}</TextL>
+              <TextM style={s.author}>{book.authorsName}</TextM>
 
               {status === BOOK_READ_STATUS.HAVE_READ &&
                 <DatePicker defaultDate={this.state.date} locale='ru' onDateChange={this.selectDate}/>

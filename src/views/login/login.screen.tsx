@@ -8,6 +8,7 @@ import { inject, InjectorContext, provider } from 'react-ioc'
 import { TextM, TextL } from 'components/text'
 import { Field } from 'components/field'
 import { api } from 'api'
+import { injectContext } from 'services/react-16-5-context'
 
 import { LoginStore } from './login.store'
 import { LoginTriangles } from './login-triangles'
@@ -15,8 +16,10 @@ import { LoginTriangles } from './login-triangles'
 interface Props extends NavigationScreenProps {
 }
 
+@injectContext
 @provider(LoginStore)
 @observer
+@injectContext
 export class LoginScreen extends React.Component<Props> {
   static navigationOptions = () => ({header: null})
   static contextType = InjectorContext

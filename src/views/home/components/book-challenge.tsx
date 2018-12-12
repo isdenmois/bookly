@@ -1,32 +1,36 @@
 import * as React from 'react'
+import { inject, InjectorContext } from 'react-ioc'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Card } from 'components/card'
 
 import { TextS, TextL } from 'components/text'
 
-import { UserChallenge } from 'models/user-challenge'
+import { HomeService } from 'views/home/home.service'
+import { injectContext } from 'services/react-16-5-context'
 
 interface Props {
-  challenge: UserChallenge
 }
 
+@injectContext
 export class BookChallenge extends React.Component<Props> {
-  render() {
-    const { countBooksRead, countBooksTotal, countBooksForecast} = this.props.challenge
+  static contextType = InjectorContext
 
+  homeService = inject(this, HomeService)
+
+  render() {
     return (
       <Card padding>
         <View style={s.container}>
           <View style={s.challengeItem}>
-            <TextL style={s.challengeValue}>{countBooksRead}</TextL>
+            <TextL style={s.challengeValue}>{this.homeService.booksReadCount}</TextL>
             <TextS style={s.challengeLabel}>Прочтено</TextS>
           </View>
           <View style={s.challengeItem}>
-            <TextL style={s.challengeValue}>{countBooksTotal}</TextL>
+            <TextL style={s.challengeValue}>{this.homeService.booksReadChallenge}</TextL>
             <TextS style={s.challengeLabel}>Запланировано</TextS>
           </View>
           <View style={s.challengeItem}>
-            <TextL style={s.challengeValue}>{countBooksForecast}</TextL>
+            <TextL style={s.challengeValue}>{this.homeService.booksReadForecast}</TextL>
             <TextS style={s.challengeLabel}>Опережение</TextS>
           </View>
         </View>

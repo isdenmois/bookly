@@ -4,7 +4,8 @@ import { ActivityIndicator, AsyncStorage } from 'react-native'
 import { ApolloProvider } from 'react-apollo'
 import { RootStack } from 'states'
 import { client } from 'services/client'
-import { inject, InjectorContext, provider, toFactory } from 'react-ioc'
+import { injectContext } from 'services/react-16-5-context'
+import { inject, InjectorContext, provider, toFactory, toValue } from 'react-ioc'
 import { Books, DataContext, Session, Storage } from './services'
 
 interface State {
@@ -16,18 +17,18 @@ if (__DEV__) {
 }
 
 @provider(
-  [Storage, AsyncStorage as any],
+  [Storage, toValue(AsyncStorage)],
   Session,
   Books,
   [DataContext, toFactory(DataContext.create)]
 )
-export default class App extends React.Component {
+@injectContext
+export default class App extends React.Component<any> {
   static contextType = InjectorContext
 
   state: State = {
     isLoaded: false,
   }
-
   session = inject(this, Session)
 
   componentWillMount() {
