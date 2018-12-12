@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Font } from 'expo'
-import { Provider } from 'mobx-react'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, AsyncStorage } from 'react-native'
 import { ApolloProvider } from 'react-apollo'
 import { RootStack } from 'states'
-import { store, sessionStore } from 'services/store'
 import { client } from 'services/client'
+import { inject, InjectorContext, provider, toFactory } from 'react-ioc'
+import { Books, DataContext, Session, Storage } from './services'
 
 interface State {
   isLoaded: boolean;
@@ -15,17 +15,27 @@ if (__DEV__) {
   require('./services/reactotron-config')
 }
 
+@provider(
+  [Storage, AsyncStorage as any],
+  Session,
+  Books,
+  [DataContext, toFactory(DataContext.create)]
+)
 export default class App extends React.Component {
+  static contextType = InjectorContext
+
   state: State = {
     isLoaded: false,
   }
+
+  session = inject(this, Session)
 
   componentWillMount() {
     const font    = Font.loadAsync({
             'Roboto': require('native-base/Fonts/Roboto.ttf'),
             'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
           }),
-          session = sessionStore.loadSession()
+          session = this.session.loadSession()
 
     Promise.all([font, session])
       .catch(() => true)
@@ -39,9 +49,7 @@ export default class App extends React.Component {
 
     return (
       <ApolloProvider client={client}>
-        <Provider {...store}>
-          <RootStack/>
-        </Provider>
+        <RootStack/>
       </ApolloProvider>
     )
   }

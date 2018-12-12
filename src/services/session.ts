@@ -1,16 +1,19 @@
 import { action, observable } from 'mobx'
-import { AsyncStorage } from 'react-native'
+import { inject } from 'react-ioc'
+import { Storage } from './storage'
 
 import { api } from 'api'
 
 const SESSION_KEY = 'SESSION_KEY'
 
-export class SessionStore {
+export class Session {
   @observable sessionId: string = null
   @observable userId: string    = null
 
+  storage = inject(this, Storage)
+
   @action loadSession() {
-    return AsyncStorage.getItem(SESSION_KEY)
+    return this.storage.getItem(SESSION_KEY)
       .then(session => JSON.parse(session))
       .then(session => this.setSession(session.sessionId, session.userId))
       .catch(error => console.warn(error))
@@ -23,11 +26,11 @@ export class SessionStore {
     this.userId          = userId
     api.query.session_id = sessionId
 
-    return AsyncStorage.setItem(SESSION_KEY, session)
+    return this.storage.setItem(SESSION_KEY, session)
   }
 
   @action stopSession() {
     api.query.session_id = null
-    return AsyncStorage.removeItem(SESSION_KEY)
+    return this.storage.removeItem(SESSION_KEY)
   }
 }

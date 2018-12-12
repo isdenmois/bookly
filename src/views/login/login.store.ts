@@ -1,10 +1,10 @@
 import { action, observable } from 'mobx'
+import { inject } from 'react-ioc'
 import { commonApi } from 'api'
-import { SessionStore } from 'services/session.store'
+import { Session } from 'services'
 
 export class LoginStore {
-  constructor(private sessionStore: SessionStore) {
-  }
+  session = inject(this, Session)
 
   @observable login: string      = ''
   @observable password: string   = ''
@@ -27,7 +27,7 @@ export class LoginStore {
     this.submitting = true
 
     const promise = commonApi.login(params, 'session_id,user(login)')
-      .then(data => this.sessionStore.setSession(data.sessionId, data.user.login))
+      .then(data => this.session.setSession(data.sessionId, data.user.login))
       .then(() => {
         this.login    = ''
         this.password = ''

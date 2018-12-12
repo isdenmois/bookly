@@ -1,19 +1,21 @@
 import * as React from 'react'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
+import { inject, InjectorContext } from 'react-ioc'
 import { NavigationScreenProps } from 'react-navigation'
 import { Button, Container, Content, Text } from 'native-base'
 
+import { Session } from 'services'
 import { StatusBar } from 'components/status-bar'
-import { SessionStore } from 'services/session.store'
 
 interface Props extends NavigationScreenProps {
-  sessionStore?: SessionStore;
 }
 
-@inject('sessionStore')
 @observer
 export class ProfileScreen extends React.Component<Props> {
   static navigationOptions = {headerTitle: 'Профиль'}
+  static contextType = InjectorContext
+
+  session = inject(this, Session)
 
   render() {
     return (
@@ -30,7 +32,7 @@ export class ProfileScreen extends React.Component<Props> {
   }
 
   logout = () => {
-    this.props.sessionStore.stopSession()
+    this.session.stopSession()
     this.props.navigation.navigate('Login')
   }
 }

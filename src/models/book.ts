@@ -1,4 +1,4 @@
-import { types as t, onSnapshot } from 'mobx-state-tree'
+import { types as t, onSnapshot, Instance } from 'mobx-state-tree'
 import { Author } from './author'
 
 export interface UserBookPartial {
@@ -33,6 +33,7 @@ export const BookS = t.model('Book', {
   title: t.string,
   status: t.string,
   authors: t.array(t.reference(Author)),
+  thumbnail: t.string,
 })
   .actions(self => ({
     afterCreate() {
@@ -46,3 +47,10 @@ export const BookS = t.model('Book', {
       self.status = 'read'
     },
   }))
+  .views(self => ({
+    get authorsName() {
+      return (self.authors || <Author[]>[]).map(a => a.name)
+    },
+  }))
+
+export type BookS = Instance<typeof BookS>

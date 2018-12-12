@@ -4,14 +4,14 @@ import { NavigationScreenProps } from 'react-navigation'
 import { Button } from 'native-base'
 import AutoHeightImage from 'react-native-auto-height-image'
 
-import { Book } from 'models/book'
+import { BookS } from 'models/book'
 import { color } from 'constants/colors'
 
 import { TextL, TextM } from 'components/text'
 import { Card } from 'components/card'
 
 interface Props extends NavigationScreenProps {
-  book: Book
+  book: BookS
 }
 
 export class ReadNowBook extends React.Component<Props> {
@@ -21,15 +21,15 @@ export class ReadNowBook extends React.Component<Props> {
     return (
       <Card padding>
         <View style={s.container}>
-          {book.pic100 &&
+          {book.thumbnail &&
            <View style={s.imageContainer}>
-             <AutoHeightImage width={100} source={{uri: book.pic100}}/>
+             <AutoHeightImage width={100} source={{uri: book.thumbnail}}/>
            </View>
           }
 
           <View style={s.contentContainer}>
-            <TextL style={s.title}>{book.name}</TextL>
-            <TextM style={s.author}>{book.authorName}</TextM>
+            <TextL style={s.title}>{book.title}</TextL>
+            <TextM style={s.author}>{book.authorsName}</TextM>
             <Button style={s.readButton} full onPress={this.openChangeStatus}>
               <TextM style={s.readButtonText}>Прочитано</TextM>
             </Button>

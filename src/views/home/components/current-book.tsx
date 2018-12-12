@@ -1,21 +1,23 @@
-import * as _ from 'lodash'
 import * as React from 'react'
 import { View } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
+import { inject, InjectorContext } from 'react-ioc'
 
-import { Book } from 'models/book'
+import { Books } from 'services'
 
 import { EmptyBook } from './empty-book'
 import { ReadNowBook } from './read-now-book'
 
 interface Props extends NavigationScreenProps {
-  books: Book[]
 }
 
 export class CurrentBook extends React.Component<Props> {
+  static contextType = InjectorContext
+
+  books = inject(this, Books)
+
   render() {
-    const wantToRead = this.wantToRead,
-          currentBooks = this.currentBooks
+    const { currentBooks, wantToRead } = this.books
 
     return (
       <View>
@@ -30,13 +32,5 @@ export class CurrentBook extends React.Component<Props> {
     )
   }
 
-  get currentBooks(): Book[] {
-    return _.filter(this.props.books, book => +_.get(book, 'userBookPartial.bookRead') === 2)
-  }
-
-  get wantToRead(): Book[] {
-    return _.filter(this.props.books, book => +_.get(book, 'userBookPartial.bookRead') === 0)
-  }
-
-  openBookSelectDialog = () => this.props.navigation.navigate('BookSelect', {books: this.wantToRead})
+  openBookSelectDialog = () => this.props.navigation.navigate('BookSelect', {books: this.books.wantToRead})
 }

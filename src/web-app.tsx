@@ -1,33 +1,39 @@
 import * as React from 'react'
 import { ApolloProvider } from 'react-apollo'
-import { AppRegistry, View } from 'react-native'
-import gql from 'graphql-tag'
-import { provider, toFactory } from 'react-ioc'
-import { Provider } from 'mobx-react'
+import { ActivityIndicator, AppRegistry, View } from 'react-native'
+import { inject, InjectorContext, provider, toFactory } from 'react-ioc'
 import { RootStack } from 'states'
 import { client } from 'services/client'
-import { store as mobxStore } from 'services/store'
-import { DataContext } from 'services'
+import { Books, DataContext, Session, Storage } from 'services'
 const nativeBase = require('native-base-web')
 
-const CHALLENGE_QUERY = gql`
-    query home($year: Int!, $user: ID!) {
-      userChallenge(user: $user, year: $year) {
-        countBooksRead
-        countBooksForecast
-        countBooksTotal
-      }
-    }
-`
+interface State {
+  isLoaded: boolean;
+}
 
-@provider([DataContext, toFactory(DataContext.create)])
+@provider(Storage, Session, Books, [DataContext, toFactory(DataContext.create)])
 class App extends React.Component<any> {
+  static contextType = InjectorContext
+
+  state: State = {
+    isLoaded: false,
+  }
+
+  session = inject(this, Session)
+
+  componentWillMount() {
+    this.session.loadSession()
+      .then(() => this.setState({isLoaded: true}))
+  }
+
   render() {
+    if (!this.state.isLoaded) {
+      return <ActivityIndicator/>
+    }
+
     return (
       <ApolloProvider client={client}>
-        <Provider {...mobxStore}>
-          <RootStack/>
-        </Provider>
+        <RootStack/>
       </ApolloProvider>
     )
   }

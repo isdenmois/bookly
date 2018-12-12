@@ -2,7 +2,8 @@ import * as React from 'react'
 import { ActivityIndicator, KeyboardAvoidingView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Button, Container, Form, Icon, Item } from 'native-base'
 import { NavigationScreenProps } from 'react-navigation'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
+import { inject, InjectorContext, provider } from 'react-ioc'
 
 import { TextM, TextL } from 'components/text'
 import { Field } from 'components/field'
@@ -12,14 +13,15 @@ import { LoginStore } from './login.store'
 import { LoginTriangles } from './login-triangles'
 
 interface Props extends NavigationScreenProps {
-  loginStore: LoginStore
 }
 
-@inject('loginStore')
+@provider(LoginStore)
 @observer
 export class LoginScreen extends React.Component<Props> {
   static navigationOptions = () => ({header: null})
+  static contextType = InjectorContext
 
+  loginStore = inject(this, LoginStore)
   private passwordField: Field
 
   componentWillMount() {
@@ -29,7 +31,7 @@ export class LoginScreen extends React.Component<Props> {
   }
 
   render() {
-    const { login, password, submitting } = this.props.loginStore
+    const { login, password, submitting } = this.loginStore
 
     return (
       <Container style={s.container}>
@@ -84,21 +86,21 @@ export class LoginScreen extends React.Component<Props> {
   }
 
   get isDisabled() {
-    return !this.props.loginStore.login || !this.props.loginStore.password
+    return !this.loginStore.login || !this.loginStore.password
   }
 
   submit = () => {
-    return this.props.loginStore
+    return this.loginStore
       .submit()
       .then(() => this.props.navigation.navigate('App'))
   }
 
   onLoginChange = (login: string) => {
-    this.props.loginStore.setLogin(login)
+    this.loginStore.setLogin(login)
   }
 
   onPasswordChange = (password: string) => {
-    this.props.loginStore.setPassword(password)
+    this.loginStore.setPassword(password)
   }
 }
 
