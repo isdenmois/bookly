@@ -1,3 +1,6 @@
+import { types as t, onSnapshot } from 'mobx-state-tree'
+import { Author } from './author'
+
 export interface UserBookPartial {
   bookRead: BOOK_READ_STATUS
   rating: number
@@ -24,3 +27,22 @@ export enum BOOK_READ_STATUS {
   HAVE_READ,
   NOW_READING,
 }
+
+export const BookS = t.model('Book', {
+  id: t.identifier,
+  title: t.string,
+  status: t.string,
+  authors: t.array(t.reference(Author)),
+})
+  .actions(self => ({
+    afterCreate() {
+      onSnapshot(self, this.save)
+    },
+    save(data) {
+      console.log(data)
+      // TODO: send request to server
+    },
+    markAsRead() {
+      self.status = 'read'
+    },
+  }))

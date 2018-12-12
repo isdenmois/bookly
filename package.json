@@ -87,6 +87,7 @@
     "native-base": "^2.8.1",
     "react": "16.5.0",
     "react-apollo": "^2.2.4",
+    "react-ioc": "^1.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
     "react-native-auto-height-image": "^1.0.5",
     "react-native-classnames": "^0.1.1",

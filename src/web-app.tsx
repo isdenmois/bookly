@@ -2,11 +2,12 @@ import * as React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { AppRegistry, View } from 'react-native'
 import gql from 'graphql-tag'
+import { provider, toFactory } from 'react-ioc'
 import { Provider } from 'mobx-react'
 import { RootStack } from 'states'
 import { client } from 'services/client'
-import { store } from 'models/store'
 import { store as mobxStore } from 'services/store'
+import { DataContext } from 'services'
 const nativeBase = require('native-base-web')
 
 const CHALLENGE_QUERY = gql`
@@ -19,11 +20,12 @@ const CHALLENGE_QUERY = gql`
     }
 `
 
+@provider([DataContext, toFactory(DataContext.create)])
 class App extends React.Component<any> {
   render() {
     return (
       <ApolloProvider client={client}>
-        <Provider {...mobxStore} store={store}>
+        <Provider {...mobxStore}>
           <RootStack/>
         </Provider>
       </ApolloProvider>

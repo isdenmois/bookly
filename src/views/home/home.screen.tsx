@@ -2,10 +2,12 @@ import * as React from 'react'
 import { ActivityIndicator, ScrollView, RefreshControl, Text, View, Button } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { Query } from 'react-apollo'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
+import { inject, InjectorContext } from 'react-ioc'
 
 import { sessionStore } from 'services/store'
 import { client, REST } from 'services/client'
+import { DataContext } from 'services'
 
 import { SearchHeader } from './components/search-header'
 import { NavigationLinks } from './components/navigation-links'
@@ -21,10 +23,12 @@ interface State {
   refreshing: boolean;
 }
 
-@inject('store')
 @observer
 export class HomeScreen extends React.Component<Props, State> {
   static navigationOptions = () => ({header: null})
+  static contextType = InjectorContext
+
+  dataContext = inject(this, DataContext)
 
   state: State = {refreshing: false}
 
@@ -55,7 +59,7 @@ export class HomeScreen extends React.Component<Props, State> {
           </Query>
 
           <Text>Читаю сейчас:</Text>
-          {this.props.store.now.map(book => (
+          {this.dataContext.now.map(book => (
             <View key={book.id}>
               <Text>Книга: {book.title}</Text>
               <Text>Автор: {book.authors.map(a => a.name).join(', ')}</Text>
@@ -64,7 +68,7 @@ export class HomeScreen extends React.Component<Props, State> {
           ))}
 
           <Text>Прочитано:</Text>
-          {this.props.store.read.map(book => (
+          {this.dataContext.read.map(book => (
             <View key={book.id}>
               <Text>Книга: {book.title}</Text>
               <Text>Автор: {book.authors.map(a => a.name).join(', ')}</Text>
