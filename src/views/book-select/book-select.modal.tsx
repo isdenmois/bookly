@@ -1,41 +1,32 @@
 import * as _ from 'lodash'
 import * as React from 'react'
-import gql from 'graphql-tag'
 import { NavigationScreenProps } from 'react-navigation'
 import { Body, Button, Radio, Left, List, ListItem, Right, Text, Thumbnail } from 'native-base'
 import { Dimensions, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { inject, InjectorContext } from 'react-ioc'
 
-import { client, REST } from 'services/client'
-import { Book } from 'models/book'
+import { BookS } from 'models/book'
 
 import { Dialog } from 'components/dialog'
 import { TextM } from 'components/text'
+import { Books } from 'services'
 
 interface Props extends NavigationScreenProps {
 }
 
 interface State {
-  selected: any
+  selected: BookS
 }
 
-const mutation = gql`
-  mutation ChangeStatus($bookId: ID!, $bookRead: Int!) {
-    changeStatus(bookId: $bookId, bookRead: $bookRead) {
-      id
-      userBookPartial {
-        bookRead
-      }
-    }
-  }
-`
-
 export class BookSelectModal extends React.Component<Props, State> {
+  static contextType = InjectorContext
+
   state = {
     selected: null,
   }
 
-  books: Book[] = this.props.navigation.getParam('books', [])
-  bookLast = _.size(this.books) - 1
+  books = inject(this, Books)
+  bookLast = _.size(this.books.wantToRead) - 1
 
   render() {
     const maxHeight = Dimensions.get('window').height / 2
@@ -44,7 +35,7 @@ export class BookSelectModal extends React.Component<Props, State> {
       <Dialog navigation={this.props.navigation} header='Выбор книги'>
         <ScrollView style={[s.list, {maxHeight}]}>
           <List>
-            {this.books.map(this.renderBook)}
+            {this.books.wantToRead.map(this.renderBook)}
           </List>
         </ScrollView>
 
@@ -57,15 +48,15 @@ export class BookSelectModal extends React.Component<Props, State> {
     )
   }
 
-  renderBook = (book: Book, rowId) => (
+  renderBook = (book: BookS, rowId) => (
     <ListItem key={book.id} first={!rowId} last={rowId === this.bookLast} onPress={() => this.selectBook(book)}>
       <Left style={s.left}>
-        <Thumbnail source={{uri: book.pic100}}/>
+        <Thumbnail source={{uri: book.thumbnail}}/>
       </Left>
 
       <Body>
-        <Text>{book.name}</Text>
-        <Text note>{book.authorName}</Text>
+        <Text>{book.title}</Text>
+        <Text note>{book.authorsName}</Text>
       </Body>
 
       <Right style={s.right}>
@@ -79,25 +70,8 @@ export class BookSelectModal extends React.Component<Props, State> {
   }
 
   save = () => {
-    const { selected } = this.state,
-          variables = {bookId: selected.id, bookRead: 2}
-
-    client.mutate({mutation, variables, optimisticResponse: this.optimisticResponse, context: REST})
-
+    this.state.selected.changeStatus('now')
     this.props.navigation.goBack()
-  }
-
-  optimisticResponse = (vars: any) => {
-    return {
-      changeStatus: {
-        id: vars.bookId,
-        userBookPartial: {
-          bookRead: vars.bookRead,
-          __typename: 'UserBookPartial',
-        },
-        __typename: 'Book',
-      },
-    }
   }
 }
 

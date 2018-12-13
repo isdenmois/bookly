@@ -34,5 +34,5 @@ export class CurrentBook extends React.Component<Props> {
     )
   }
 
-  openBookSelectDialog = () => this.props.navigation.navigate('BookSelect', {books: this.books.wantToRead})
+  openBookSelectDialog = () => this.props.navigation.navigate('BookSelect')
 }

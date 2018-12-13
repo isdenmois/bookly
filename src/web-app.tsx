@@ -42,7 +42,10 @@ class App extends React.Component<any> {
 const Container1 = nativeBase.Container
 const Container2 = props => <Container1 style={props.style}><View>{props.children}</View></Container1>
 
-Object.assign(nativeBase, {Container: Container2, Header: View, Item: View, Form: View, DatePicker: View, Left: View})
+Object.assign(nativeBase, {
+  Container: Container2,
+  Header: View, Item: View, Form: View, DatePicker: View, Left: View, Body: View, Right: View,
+})
 
 AppRegistry.registerComponent('App', () => App)
 AppRegistry.runApplication('App', { rootTag: document.getElementById('app') })

@@ -39,7 +39,7 @@ export class ReadNowBook extends React.Component<Props> {
     )
   }
 
-  openChangeStatus = () => this.props.navigation.navigate('ChangeStatus', {book: this.props.book, status: 1})
+  openChangeStatus = () => this.props.navigation.navigate('ChangeStatus', {book: this.props.book, status: 'read'})
 }
 
 const s = StyleSheet.create({
