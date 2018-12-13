@@ -82,6 +82,7 @@
     "graphql-tag": "^2.10.0",
     "lodash": "^4.17.11",
     "mobx": "^4.5.0",
+    "mobx-devtools-mst": "^0.9.18",
     "mobx-react": "~5.2.8",
     "mobx-state-tree": "^3.9.0",
     "native-base": "^2.8.1",

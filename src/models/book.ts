@@ -23,9 +23,9 @@ export interface Book {
 }
 
 export enum BOOK_READ_STATUS {
-  WANT_TO_READ = 0,
-  HAVE_READ,
-  NOW_READING,
+  WANT_TO_READ = 'wish',
+  HAVE_READ = 'read',
+  NOW_READING = 'now',
 }
 
 export const BookS = t.model('Book', {
@@ -33,7 +33,9 @@ export const BookS = t.model('Book', {
   title: t.string,
   status: t.string,
   authors: t.array(t.reference(Author)),
-  thumbnail: t.string,
+  thumbnail: t.optional(t.string, ''),
+  rating: t.optional(t.number, 0),
+  date: t.optional(t.Date, Date.now()),
 })
   .actions(self => ({
     afterCreate() {
@@ -45,6 +47,14 @@ export const BookS = t.model('Book', {
     },
     markAsRead() {
       self.status = 'read'
+    },
+    changeStatus(status, rating, date) {
+      self.status = status
+
+      if (status === 'read') {
+        self.rating = rating
+        self.date = date
+      }
     },
   }))
   .views(self => ({

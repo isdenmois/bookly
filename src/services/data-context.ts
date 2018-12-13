@@ -1,4 +1,4 @@
-import { Instance } from 'mobx-state-tree'
+import { Instance, unprotect } from 'mobx-state-tree'
 import Models from 'models'
 
 export class DataContext {
@@ -20,10 +20,18 @@ export class DataContext {
     // tslint:enable
 
     const challenges = {
-      2018: {year: 2018, booksCount: 5},
+      2018: {year: 2018, booksCount: 2},
     }
 
-    return Models.create({ authors, books, challenges })
+    const store = Models.create({ authors, books, challenges })
+
+    if (__DEV__) {
+      const makeInspectable = require('mobx-devtools-mst').default
+
+      makeInspectable(store)
+    }
+
+    return store
   }
 }
 

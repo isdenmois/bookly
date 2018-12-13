@@ -1,17 +1,19 @@
 import * as React from 'react'
-import { inject, InjectorContext } from 'react-ioc'
+import { InjectorContext } from 'react-ioc'
+import { observer } from 'mobx-react'
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Card } from 'components/card'
 
 import { TextS, TextL } from 'components/text'
 
 import { HomeService } from 'views/home/home.service'
-import { injectContext } from 'services/react-16-5-context'
+import { injectContext, inject } from 'services/react-16-5-context'
 
 interface Props {
 }
 
 @injectContext
+@observer
 export class BookChallenge extends React.Component<Props> {
   static contextType = InjectorContext
 

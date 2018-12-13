@@ -5,14 +5,11 @@ import { Dialog } from 'components/dialog'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
 
-import { Book, BOOK_READ_STATUS, BookS } from 'models/book'
-import { client, REST } from 'services/client'
+import { BOOK_READ_STATUS, BookS } from 'models/book'
 
 import { RatingSelect } from 'components/rating'
 import { TextL, TextM } from 'components/text'
 import { Switcher, SwitchOption } from 'components/switcher'
-
-import { MARK_AS_READ_MUTATION, CHANGE_STATUS_MUTATION } from './mutations'
 
 interface Props extends NavigationScreenProps {
 }
@@ -35,13 +32,8 @@ const statusMap = {
   [BOOK_READ_STATUS.NOW_READING]: 'Сейчас читаю',
 }
 
-const mutations = {
-  [BOOK_READ_STATUS.WANT_TO_READ]: CHANGE_STATUS_MUTATION,
-  [BOOK_READ_STATUS.HAVE_READ]: MARK_AS_READ_MUTATION,
-  [BOOK_READ_STATUS.NOW_READING]: CHANGE_STATUS_MUTATION,
-}
-
 export class ChangeStatusModal extends React.Component<Props, State> {
+  book: BookS = this.props.navigation.getParam('book', {})
   state = {
     date: new Date(),
     rating: 0,
@@ -49,22 +41,21 @@ export class ChangeStatusModal extends React.Component<Props, State> {
   }
 
   render() {
-    const status     = this.state.status,
-          book: BookS = this.props.navigation.getParam('book', {})
+    const status = this.state.status
 
     return (
       <Dialog navigation={this.props.navigation} header={statusMap[status]}>
         <View style={s.content}>
           <View style={s.info}>
-            {book.thumbnail &&
+            {this.book.thumbnail &&
              <View style={s.imageContainer}>
-               <AutoHeightImage width={100} source={{uri: book.thumbnail}}/>
+               <AutoHeightImage width={100} source={{uri: this.book.thumbnail}}/>
              </View>
             }
 
             <View style={s.contentContainer}>
-              <TextL style={s.title}>{book.title}</TextL>
-              <TextM style={s.author}>{book.authorsName}</TextM>
+              <TextL style={s.title}>{this.book.title}</TextL>
+              <TextM style={s.author}>{this.book.authorsName}</TextM>
 
               {status === BOOK_READ_STATUS.HAVE_READ &&
                 <DatePicker defaultDate={this.state.date} locale='ru' onDateChange={this.selectDate}/>
@@ -101,38 +92,10 @@ export class ChangeStatusModal extends React.Component<Props, State> {
   setRating = rating => this.setState({rating})
 
   save = () => {
-    const { date, rating, status } = this.state,
-          book: Book = this.props.navigation.getParam('book', {}),
-          mutation = mutations[status],
-          variables = {
-            bookId: book.id,
-            dateDay: date.getDate(),
-            dateMonth: date.getMonth() + 1,
-            dateYear: date.getFullYear(),
-            status,
-            rating,
-          },
-          refetchQueries = status === BOOK_READ_STATUS.HAVE_READ ? ['userChallenge'] : ['userBooks', 'userChallenge']
+    const { date, rating, status } = this.state
 
-    client.mutate({mutation, variables, refetchQueries, optimisticResponse: this.optimisticResponse, context: REST})
+    this.book.changeStatus(status, rating, date)
     this.props.navigation.goBack()
-  }
-
-  optimisticResponse = (vars: any) => {
-    return {
-      changeStatus: {
-        id: vars.bookId,
-        userBookPartial: {
-          bookRead: vars.status,
-          dateDay: vars.dateDay,
-          dateMonth: vars.dateMonth,
-          dateYear: vars.dateYear,
-          rating: vars.rating,
-          __typename: 'UserBookPartial',
-        },
-        __typename: 'Book',
-      },
-    }
   }
 }
 
