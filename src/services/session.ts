@@ -7,7 +7,6 @@ import { api } from 'api'
 const SESSION_KEY = 'SESSION_KEY'
 
 export class Session {
-  @observable sessionId: string = null
   @observable userId: string    = null
 
   storage = inject(this, Storage)
@@ -15,16 +14,14 @@ export class Session {
   @action loadSession() {
     return this.storage.getItem(SESSION_KEY)
       .then(session => JSON.parse(session))
-      .then(session => this.setSession(session.sessionId, session.userId))
+      .then(session => this.setSession(session.userId))
       .catch(error => console.warn(error))
   }
 
-  @action setSession(sessionId: string, userId: string = null) {
-    const session = JSON.stringify({sessionId, userId})
+  @action setSession(userId: string = null) {
+    const session = JSON.stringify({userId})
 
-    this.sessionId       = sessionId
-    this.userId          = userId
-    api.query.session_id = sessionId
+    this.userId = userId
 
     return this.storage.setItem(SESSION_KEY, session)
   }

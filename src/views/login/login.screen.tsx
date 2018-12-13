@@ -8,6 +8,7 @@ import { inject, InjectorContext, provider } from 'react-ioc'
 import { TextM, TextL } from 'components/text'
 import { Field } from 'components/field'
 import { api } from 'api'
+import { Session } from 'services'
 
 import { LoginStore } from './login.store'
 import { LoginTriangles } from './login-triangles'
@@ -22,16 +23,17 @@ export class LoginScreen extends React.Component<Props> {
   static contextType = InjectorContext
 
   loginStore = inject(this, LoginStore)
+  session = inject(this, Session)
   private passwordField: Field
 
   componentWillMount() {
-    if (api.query.session_id) {
+    if (this.session.userId) {
       this.props.navigation.navigate('App')
     }
   }
 
   render() {
-    const { login, password, submitting } = this.loginStore
+    const { login, submitting } = this.loginStore
 
     return (
       <Container style={s.container}>
@@ -55,19 +57,6 @@ export class LoginScreen extends React.Component<Props> {
                        next={this.passwordField}
                        onChangeText={this.onLoginChange}/>
               </Item>
-              <Item style={s.item}>
-                <Icon name='ios-lock' style={s.icon}/>
-                <Field placeholder='Пароль'
-                       textContentType='password'
-                       autoCapitalize='none'
-                       autoCorrect={false}
-                       secureTextEntry={true}
-                       returnKeyType='done'
-                       ref={field => this.passwordField = field}
-                       value={password}
-                       onSubmitEditing={this.submit}
-                       onChangeText={this.onPasswordChange}/>
-              </Item>
             </Form>
 
             {submitting &&
@@ -86,7 +75,7 @@ export class LoginScreen extends React.Component<Props> {
   }
 
   get isDisabled() {
-    return !this.loginStore.login || !this.loginStore.password
+    return !this.loginStore.login
   }
 
   submit = () => {
@@ -97,10 +86,6 @@ export class LoginScreen extends React.Component<Props> {
 
   onLoginChange = (login: string) => {
     this.loginStore.setLogin(login)
-  }
-
-  onPasswordChange = (password: string) => {
-    this.loginStore.setPassword(password)
   }
 }
 

@@ -1,10 +1,8 @@
 import * as React from 'react'
-import { ScrollView, RefreshControl, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { observer } from 'mobx-react'
 import { provider, InjectorContext } from 'react-ioc'
-
-import { client } from 'services/client'
 
 import { HomeService } from './home.service'
 
@@ -43,18 +41,6 @@ export class HomeScreen extends React.Component<Props, State> {
         </ScrollView>
       </View>
     )
-  }
-
-  renderRefresh() {
-    return <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>
-  }
-
-  refresh = async () => {
-    this.setState({refreshing: true})
-
-    await client.reFetchObservableQueries()
-
-    this.setState({refreshing: false})
   }
 }
 
