@@ -1,15 +1,16 @@
 import { inject } from 'react-ioc'
 import { computed } from 'mobx'
 
-import { DataContext } from 'services'
+import { Books, DataContext } from 'services'
 
 export class HomeService {
   dataContext = inject(this, DataContext)
+  books = inject(this, Books)
 
   currentYear: number = currentYear()
 
   @computed get booksReadCount() {
-    return this.dataContext.books.filter(b => b.status === 'read').length
+    return this.books.haveRead.length
   }
 
   @computed get booksReadChallenge() {

@@ -36,7 +36,7 @@ export class SearchHeader extends React.Component<Props, State> {
 
   openBooksSearchScreen = () => {
     if (this.state.value) {
-      this.props.navigation.push('BooksSearch', {search: this.state.value})
+      this.props.navigation.push('BooksSearch', {query: this.state.value})
       this.setState({value: ''})
     }
   }

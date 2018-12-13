@@ -21,7 +21,7 @@ export class ReadNowBook extends React.Component<Props> {
     return (
       <Card padding>
         <View style={s.container}>
-          {book.thumbnail &&
+          {Boolean(book.thumbnail) &&
            <View style={s.imageContainer}>
              <AutoHeightImage width={100} source={{uri: book.thumbnail}}/>
            </View>

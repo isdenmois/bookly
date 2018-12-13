@@ -26,6 +26,7 @@ export enum BOOK_READ_STATUS {
   WANT_TO_READ = 'wish',
   HAVE_READ = 'read',
   NOW_READING = 'now',
+  NONE = 'none',
 }
 
 export const BookS = t.model('Book', {

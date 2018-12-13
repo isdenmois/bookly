@@ -1,72 +1,73 @@
 import * as React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
-import gql from 'graphql-tag'
 
 import { Container, Content } from 'native-base'
 
 import { color } from 'constants/colors'
 
+import { FantlabWork, searchBooks } from 'api/fantlab'
+
 import { StatusBar } from 'components/status-bar'
-import { QueryList } from 'components/query-list'
-import { FoundResults } from 'components/found-results'
 
 import { SearchBar } from './components/search-bar'
 import { BookSearchItem } from './components/book-search-item'
 import { EmptyResult } from './components/empty-result'
+import { WorkList } from 'components/work-list'
 
 interface Props extends NavigationScreenProps {
 }
 
 interface State {
-  search: string
+  query: string
+  loading: boolean
+  books: FantlabWork[]
 }
-
-const LIMIT = 12
-
-const SEARCH_BOOKS_QUERY = gql`
-  query searchBooks($q: String!, $start: Int!, $count: Int!) {
-    searchBooks(q: $q, start: $start, count: $count) {
-      count
-      books {
-        id
-        name
-        authorName
-        pic100
-        userBookPartial {
-          bookRead
-          rating
-        }
-      }
-    }
-  }
-`
 
 export class BooksSearchScreen extends React.Component<Props, State> {
   static navigationOptions = () => ({header: null})
 
-  state: State = {search: this.props.navigation.getParam('search')}
+  state: State = {
+    query: this.props.navigation.getParam('query'),
+    loading: true,
+    books: null,
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.search(this.state.query)
+  }
 
   render() {
-    const variables = {q: this.state.search, start: 1, count: LIMIT}
-
     return (
       <Container>
         <StatusBar color={color.Green}/>
 
-        <SearchBar navigation={this.props.navigation} value={this.state.search} onChange={this.onSearch}/>
+        <SearchBar navigation={this.props.navigation} value={this.state.query} onChange={this.search}/>
 
         <Content>
-          <QueryList query={SEARCH_BOOKS_QUERY}
-                     variables={variables}
-                     itemComponent={BookSearchItem}
-                     emptyComponent={EmptyResult}
-                     resultCountComponent={FoundResults}
-                     request='searchBooks'
-                     field='books'/>
+          <WorkList loading={this.state.loading}
+                    books={this.state.books}
+                    itemComponent={BookSearchItem}
+                    emptyComponent={EmptyResult}/>
         </Content>
       </Container>
     )
   }
 
-  onSearch = search => this.setState({search})
+  search = async query => {
+    if (!query) {
+      return this.setState({query})
+    }
+
+    this.setState({query, loading: true})
+
+    try {
+      const books = await searchBooks(query)
+
+      this.setState({books, loading: false})
+    } catch (e) {
+      this.setState({books: [], loading: false})
+    }
+  }
 }

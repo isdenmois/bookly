@@ -47,7 +47,7 @@ export class ChangeStatusModal extends React.Component<Props, State> {
       <Dialog navigation={this.props.navigation} header={statusMap[status]}>
         <View style={s.content}>
           <View style={s.info}>
-            {this.book.thumbnail &&
+            {Boolean(this.book.thumbnail) &&
              <View style={s.imageContainer}>
                <AutoHeightImage width={100} source={{uri: this.book.thumbnail}}/>
              </View>
