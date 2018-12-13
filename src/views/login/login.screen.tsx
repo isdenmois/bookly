@@ -3,8 +3,7 @@ import { ActivityIndicator, KeyboardAvoidingView, StyleSheet, TextStyle, View, V
 import { Button, Container, Form, Icon, Item } from 'native-base'
 import { NavigationScreenProps } from 'react-navigation'
 import { observer } from 'mobx-react'
-import { InjectorContext, provider } from 'react-ioc'
-import { injectProviderContext, injectContext, inject } from 'services/react-16-5-context'
+import { inject, InjectorContext, provider } from 'react-ioc'
 
 import { TextM, TextL } from 'components/text'
 import { Field } from 'components/field'
@@ -16,9 +15,7 @@ import { LoginTriangles } from './login-triangles'
 interface Props extends NavigationScreenProps {
 }
 
-@injectProviderContext
 @provider(LoginStore)
-@injectContext
 @observer
 export class LoginScreen extends React.Component<Props> {
   static navigationOptions = () => ({header: null})

@@ -1,17 +1,15 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { InjectorContext } from 'react-ioc'
+import { inject, InjectorContext } from 'react-ioc'
 import { NavigationScreenProps } from 'react-navigation'
 import { Button, Container, Content, Text } from 'native-base'
 
 import { Session } from 'services'
-import { inject, injectContext } from 'services/react-16-5-context'
 import { StatusBar } from 'components/status-bar'
 
 interface Props extends NavigationScreenProps {
 }
 
-@injectContext
 @observer
 export class ProfileScreen extends React.Component<Props> {
   static navigationOptions = {headerTitle: 'Профиль'}

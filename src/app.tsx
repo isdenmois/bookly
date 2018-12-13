@@ -4,8 +4,7 @@ import { ActivityIndicator, AsyncStorage } from 'react-native'
 import { ApolloProvider } from 'react-apollo'
 import { RootStack } from 'states'
 import { client } from 'services/client'
-import { injectContext, inject } from 'services/react-16-5-context'
-import { InjectorContext, provider, toFactory, toValue } from 'react-ioc'
+import { inject, InjectorContext, provider, toFactory, toValue } from 'react-ioc'
 import { Books, DataContext, Session, Storage } from './services'
 
 interface State {
@@ -22,7 +21,6 @@ if (__DEV__) {
   Books,
   [DataContext, toFactory(DataContext.create)]
 )
-@injectContext
 export default class App extends React.Component<any> {
   static contextType = InjectorContext
 
