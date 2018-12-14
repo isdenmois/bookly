@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { ScrollView, View } from 'react-native'
+import { RefreshControl, ScrollView, View } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation'
 import { observer } from 'mobx-react'
-import { provider, InjectorContext } from 'react-ioc'
+import { inject, provider, InjectorContext } from 'react-ioc'
 
+import { DataContext } from 'services'
 import { HomeService } from './home.service'
 
 import { SearchHeader } from './components/search-header'
@@ -27,12 +28,14 @@ export class HomeScreen extends React.Component<Props, State> {
 
   state: State = {refreshing: false}
 
+  dataContext = inject(this, DataContext)
+
   render() {
     return (
       <View style={{backgroundColor: 'white', flex: 1}}>
         <SearchHeader navigation={this.props.navigation}/>
 
-        <ScrollView>
+        <ScrollView refreshControl={this.renderRefresh()}>
           <CurrentBook navigation={this.props.navigation}/>
 
           <BookChallenge/>
@@ -41,6 +44,18 @@ export class HomeScreen extends React.Component<Props, State> {
         </ScrollView>
       </View>
     )
+  }
+
+  renderRefresh() {
+    return <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>
+  }
+
+  refresh = async () => {
+    this.setState({refreshing: true})
+
+    await this.dataContext.reload()
+
+    this.setState({refreshing: false})
   }
 }
 

@@ -43,7 +43,6 @@
     "test/**.js",
     "coverage/**.js",
     "dev-tools/**.js",
-    "metro.config.js",
     "webpack.config.js"
   ],
   "compileOnSave": false

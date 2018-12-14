@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const babelConfig = require('./babel.web');
+const babelConfig = require('./dev-tools/babel.web');
 
 const appDirectory = path.resolve(__dirname, './');
 

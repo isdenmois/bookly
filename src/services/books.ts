@@ -22,19 +22,19 @@ export class Books {
   }
 
   find(id: number): BookS {
-    return _.find(this.dataContext.books, {id: id.toString()})
+    return _.find(this.dataContext.books, {id: id})
   }
 
   @action createFromWork(work: FantlabWork) {
     let author = this.dataContext.authors.get(work.autor_id.toString())
 
     if (!author) {
-      author = Author.create({id: work.autor_id.toString(), name: work.autor_rusname})
+      author = Author.create({id: work.autor_id, name: work.autor_rusname})
       this.dataContext.authors.put(author)
     }
 
     const book = BookS.create({
-      id: work.work_id.toString(),
+      id: work.work_id,
       authors: [author.id],
       status: BOOK_READ_STATUS.NONE,
       title: work.rusname,

@@ -1,4 +1,5 @@
-import { types as t, onSnapshot, Instance } from 'mobx-state-tree'
+import { types as t, onSnapshot, Instance, getSnapshot, getRoot } from 'mobx-state-tree'
+import { firebase } from 'api/firebase'
 import { Author } from './author'
 
 export interface UserBookPartial {
@@ -30,7 +31,7 @@ export enum BOOK_READ_STATUS {
 }
 
 export const BookS = t.model('Book', {
-  id: t.identifier,
+  id: t.identifierNumber,
   title: t.string,
   status: t.string,
   authors: t.array(t.reference(Author)),
@@ -39,15 +40,12 @@ export const BookS = t.model('Book', {
   date: t.optional(t.Date, Date.now()),
 })
   .actions(self => ({
-    afterCreate() {
-      onSnapshot(self, this.save)
-    },
-    save(data) {
-      console.log(data)
-      // TODO: send request to server
-    },
-    markAsRead() {
-      self.status = 'read'
+    save() {
+      const data = getSnapshot(self),
+            root: any = getRoot(self)
+
+      self.authors.forEach(author => author.save())
+      firebase.bookSave(root.user, data)
     },
     changeStatus(status, rating, date) {
       self.status = status
@@ -56,6 +54,8 @@ export const BookS = t.model('Book', {
         self.rating = rating
         self.date = date
       }
+
+      this.save()
     },
   }))
   .views(self => ({

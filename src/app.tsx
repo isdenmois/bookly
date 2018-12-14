@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { Font } from 'expo'
 import { ActivityIndicator, AsyncStorage } from 'react-native'
-import { ApolloProvider } from 'react-apollo'
 import { RootStack } from 'states'
-import { client } from 'services/client'
 import { inject, InjectorContext, provider, toFactory, toValue } from 'react-ioc'
 import { Books, DataContext, Session, Storage } from './services'
 
@@ -47,9 +45,7 @@ export default class App extends React.Component<any> {
     }
 
     return (
-      <ApolloProvider client={client}>
-        <RootStack/>
-      </ApolloProvider>
+      <RootStack/>
     )
   }
 }

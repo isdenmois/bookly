@@ -1,5 +1,6 @@
 import { action, observable } from 'mobx'
 import { inject } from 'react-ioc'
+import { DataContext } from './data-context'
 import { Storage } from './storage'
 
 import { api } from 'api'
@@ -10,6 +11,7 @@ export class Session {
   @observable userId: string    = null
 
   storage = inject(this, Storage)
+  dataContext = inject(this, DataContext)
 
   @action loadSession() {
     return this.storage.getItem(SESSION_KEY)
@@ -23,7 +25,11 @@ export class Session {
 
     this.userId = userId
 
-    return this.storage.setItem(SESSION_KEY, session)
+    this.storage.setItem(SESSION_KEY, session)
+
+    if (userId) {
+      return this.dataContext.load(userId)
+    }
   }
 
   @action stopSession() {

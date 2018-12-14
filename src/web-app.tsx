@@ -1,9 +1,7 @@
 import * as React from 'react'
-import { ApolloProvider } from 'react-apollo'
 import { ActivityIndicator, AppRegistry, View } from 'react-native'
 import { inject, InjectorContext, provider, toFactory } from 'react-ioc'
 import { RootStack } from 'states'
-import { client } from 'services/client'
 import { Books, DataContext, Session, Storage } from 'services'
 const nativeBase = require('native-base-web')
 
@@ -32,9 +30,7 @@ class App extends React.Component<any> {
     }
 
     return (
-      <ApolloProvider client={client}>
-        <RootStack/>
-      </ApolloProvider>
+      <RootStack/>
     )
   }
 }
