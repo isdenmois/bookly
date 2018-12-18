@@ -12,7 +12,7 @@ export class NavigationLinks extends React.Component<NavigationScreenProps> {
         <ListItem onPress={notImplemented}>
           <TextM>Прочитано</TextM>
         </ListItem>
-        <ListItem onPress={notImplemented}>
+        <ListItem onPress={this.openWishlist}>
           <TextM>Хочу прочитать</TextM>
         </ListItem>
         <ListItem onPress={notImplemented}>
@@ -23,6 +23,10 @@ export class NavigationLinks extends React.Component<NavigationScreenProps> {
         </ListItem>
       </List>
     )
+  }
+
+  openWishlist = () => {
+    this.props.navigation.push('WishList')
   }
 
   openProfile = () => {
