@@ -12,7 +12,7 @@ interface Props {
   book: BookS
 }
 
-export class HaveReadItem extends React.Component<Props> {
+export class HaveReadItem extends React.PureComponent<Props> {
   render() {
     const book = this.props.book,
           hasThumbnail = Boolean(book.thumbnail)

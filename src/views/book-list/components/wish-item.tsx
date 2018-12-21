@@ -14,7 +14,7 @@ interface Props extends NavigationScreenProps {
   book: BookS
 }
 
-export class WishItem extends React.Component<Props> {
+export class WishItem extends React.PureComponent<Props> {
   render() {
     const book = this.props.book,
           hasThumbnail = Boolean(book.thumbnail)
