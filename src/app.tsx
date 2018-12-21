@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Font } from 'expo'
-import { ActivityIndicator, AsyncStorage } from 'react-native'
+import { ActivityIndicator, AsyncStorage, StyleSheet, View } from 'react-native'
 import { RootStack } from 'states'
 import { inject, InjectorContext, provider, toFactory, toValue } from 'react-ioc'
 import { Books, DataContext, Session, Storage } from './services'
@@ -41,7 +41,11 @@ export default class App extends React.Component<any> {
 
   render() {
     if (!this.state.isLoaded) {
-      return <ActivityIndicator/>
+      return (
+        <View style={s.container}>
+          <ActivityIndicator size='large'/>
+        </View>
+      )
     }
 
     return (
@@ -49,3 +53,11 @@ export default class App extends React.Component<any> {
     )
   }
 }
+
+const s = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  }
+})
