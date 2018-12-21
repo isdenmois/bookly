@@ -30,6 +30,21 @@ export enum BOOK_READ_STATUS {
   NONE = 'none',
 }
 
+export const BookType = t.enumeration('BookType', [
+  'na',
+  'novel',
+  'shortstory',
+  'documental',
+  'story',
+  'collection',
+  'poem',
+  'other',
+  'piece',
+  'cycle',
+  'microstory',
+  'epic'
+])
+
 export const BookS = t.model('Book', {
   id: t.identifierNumber,
   title: t.string,
@@ -37,7 +52,9 @@ export const BookS = t.model('Book', {
   authors: t.array(t.reference(Author)),
   thumbnail: t.optional(t.string, ''),
   rating: t.optional(t.number, 0),
-  date: t.optional(t.Date, Date.now()),
+  date: t.optional(t.Date, 0),
+  type: t.optional(t.string, 'na'),
+  searchTitles: t.optional(t.string, '')
 })
   .actions(self => ({
     save() {

@@ -4,8 +4,10 @@ const BASE_URL = 'https://api.fantlab.ru'
 
 export interface FantlabWork {
   work_id: number
-  rusname: string
   name: string
+  rusname: string
+  name_eng: string
+  altname: string
   autor_rusname: string
   autor_id: number
   year: number

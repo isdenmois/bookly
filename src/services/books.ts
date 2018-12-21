@@ -39,6 +39,8 @@ export class Books {
       status: BOOK_READ_STATUS.NONE,
       title: work.rusname,
       thumbnail: work.thumbnail,
+      type: work.name_eng as any,
+      searchTitles: [work.name, work.rusname, work.altname].filter(_.identity).join('; '),
     })
 
     this.dataContext.books.push(book)
