@@ -33,7 +33,7 @@ export class Session {
   }
 
   @action stopSession() {
-    api.query.session_id = null
+    this.userId = null
     return this.storage.removeItem(SESSION_KEY)
   }
 }
