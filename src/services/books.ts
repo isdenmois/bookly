@@ -18,7 +18,11 @@ export class Books {
   }
 
   @computed get haveRead() {
-    return _.filter(this.dataContext.books, {status: BOOK_READ_STATUS.HAVE_READ})
+    let books = _.filter(this.dataContext.books, {status: BOOK_READ_STATUS.HAVE_READ})
+    
+    books = _.sortBy(books, 'date')
+
+    return _.reverse(books)
   }
 
   find(id: number): BookS {

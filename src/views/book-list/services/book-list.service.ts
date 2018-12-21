@@ -20,6 +20,10 @@ export class BookListService {
       status: this.status
     }
 
-    return _.filter(this.data.books, filters)
+    let books = _.filter(this.data.books, filters)
+
+    books = _.sortBy(books, 'date')
+
+    return _.reverse(books)
   }
 }

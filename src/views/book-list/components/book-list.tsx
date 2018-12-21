@@ -42,5 +42,5 @@ export class BookList extends React.Component<Props> {
     )
   }
 
-  private keyExtractor = item => item.id
+  private keyExtractor = item => item.id.toString()
 }
