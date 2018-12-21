@@ -8,9 +8,10 @@ export class HomeService {
   books = inject(this, Books)
 
   currentYear: number = currentYear()
+  currentYearDate = new Date(this.currentYear, 0, 1)
 
   @computed get booksReadCount() {
-    return this.books.haveRead.length
+    return this.books.haveRead.filter(b => b.date >= this.currentYearDate).length
   }
 
   @computed get booksReadChallenge() {
