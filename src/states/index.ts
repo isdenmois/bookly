@@ -1,4 +1,5 @@
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
+import { Easing, Animated } from 'react-native'
 
 import { LoginScreen } from 'views/login/login.screen'
 import { MainStack, MainStackOptions } from './main'
@@ -14,17 +15,39 @@ export const RootStack = createSwitchNavigator(
       },
       {
         initialRouteName: 'MainStack',
-        mode: 'card',
+        mode: 'modal',
         headerMode: 'none',
-        cardStyle: {
-          backgroundColor: 'transparent',
-          opacity: 1,
-        },
-        // TODO: добавить transitionConfig
-      },
+        transparentCard: true,
+        transitionConfig,
+      } as any,
     ),
   },
   {
     initialRouteName: 'Login',
   },
 )
+
+function transitionConfig() {
+  return {
+    transitionSpec: {
+      duration: 200,
+      easing: Easing.out(Easing.poly(4)),
+      timing: Animated.timing,
+      useNativeDriver: true,
+    },
+    containerStyle: {
+      backgroundColor: 'black',
+    },
+    screenInterpolator: sceneProps => {
+      const { position, scene } = sceneProps;
+      const thisSceneIndex = scene.index;
+  
+      const opacity = position.interpolate({
+        inputRange: [thisSceneIndex - 1, thisSceneIndex, thisSceneIndex + 1],
+        outputRange: [0, 1, 1],
+      });
+
+      return {opacity};
+    },
+  }
+}
