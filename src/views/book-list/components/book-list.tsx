@@ -3,10 +3,12 @@ import { InjectorContext, inject } from 'react-ioc'
 import { observer } from 'mobx-react'
 import { NavigationScreenProps } from 'react-navigation'
 
-import { FlatList, ScrollView } from 'react-native'
-import { List, ListItem, Item } from 'native-base'
+import { FlatList } from 'react-native'
+import { List, ListItem, Text } from 'native-base'
 
 import { BookListService } from '../services/book-list.service'
+
+import { BookListTotal } from './book-list-total'
 
 interface Props extends NavigationScreenProps {
   listItem: any
@@ -27,6 +29,7 @@ export class BookList extends React.Component<Props> {
         <FlatList data={this.bookListService.books}
                   keyExtractor={this.keyExtractor}
                   renderItem={this.renderItem}
+                  ListHeaderComponent={BookListTotal}
         />
       </List>
     )

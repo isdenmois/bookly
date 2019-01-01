@@ -1,12 +1,12 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash'
 import { computed } from 'mobx'
 import { inject } from 'react-ioc'
 
 import { DataContext } from 'services'
-import { BOOK_READ_STATUS } from 'models/book';
+import { BOOK_READ_STATUS } from 'models/book'
 
 export enum BookListFilters {
-  authorId
+  authorId,
 }
 
 export class BookListService {
@@ -17,7 +17,7 @@ export class BookListService {
 
   @computed get books() {
     const filters = {
-      status: this.status
+      status: this.status,
     }
 
     let books = _.filter(this.data.books, filters)
