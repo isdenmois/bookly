@@ -53,7 +53,7 @@ export class HomeScreen extends React.Component<Props, State> {
   refresh = async () => {
     this.setState({refreshing: true})
 
-    await this.dataContext.reload()
+    await this.dataContext.syncFirebase()
 
     this.setState({refreshing: false})
   }

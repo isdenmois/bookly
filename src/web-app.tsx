@@ -9,7 +9,7 @@ interface State {
   isLoaded: boolean;
 }
 
-@provider(Storage, Session, Books, [DataContext, toFactory(DataContext.create)])
+@provider(Storage, Session, Books, [DataContext, toFactory([Storage], DataContext.create)])
 class App extends React.Component<any> {
   static contextType = InjectorContext
 

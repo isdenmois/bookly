@@ -17,7 +17,7 @@ if (__DEV__) {
   [Storage, toValue(AsyncStorage)],
   Session,
   Books,
-  [DataContext, toFactory(DataContext.create)]
+  [DataContext, toFactory([Storage], DataContext.create)]
 )
 export default class App extends React.Component<any> {
   static contextType = InjectorContext

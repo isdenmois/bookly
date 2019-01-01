@@ -54,7 +54,8 @@ export const BookS = t.model('Book', {
   rating: t.optional(t.number, 0),
   date: t.optional(t.Date, 0),
   type: t.optional(t.string, 'na'),
-  searchTitles: t.optional(t.string, '')
+  searchTitles: t.optional(t.string, ''),
+  sync: t.optional(t.Date, 0),
 })
   .actions(self => ({
     save() {
@@ -63,6 +64,7 @@ export const BookS = t.model('Book', {
 
       self.authors.forEach(author => author.save())
       firebase.bookSave(root.user, data)
+      root.save()
     },
     changeStatus(status, rating, date) {
       self.status = status

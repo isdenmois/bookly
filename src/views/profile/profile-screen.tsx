@@ -8,7 +8,7 @@ import { ToastAndroid } from 'react-native'
 import { Container, Content, List, ListItem, Text } from 'native-base'
 
 import { APP_VERSION } from 'constants/version'
-import { Session } from 'services'
+import { DataContext, Session } from 'services'
 import { TextM } from 'components/text'
 
 interface Props extends NavigationScreenProps {
@@ -20,6 +20,7 @@ export class ProfileScreen extends React.Component<Props> {
   static contextType = InjectorContext
 
   session = inject(this, Session)
+  dataContext = inject(this, DataContext)
 
   render() {
     return (
@@ -32,6 +33,10 @@ export class ProfileScreen extends React.Component<Props> {
 
             <ListItem last button onPress={this.checkForUpdates}>
               <TextM>Проверить обновления</TextM>
+            </ListItem>
+
+            <ListItem last button onPress={this.clearCache}>
+              <TextM>Сбросить кеш</TextM>
             </ListItem>
 
             <ListItem last button onPress={this.logout}>
@@ -62,6 +67,11 @@ export class ProfileScreen extends React.Component<Props> {
     } catch (e) {
       ToastAndroid.show('Не удалось получить обновления', ToastAndroid.LONG)
     }
+  }
+
+  clearCache = () => {
+    this.dataContext.reload()
+    ToastAndroid.show('Кеш сброшен', ToastAndroid.LONG)
   }
 
   logout = () => {

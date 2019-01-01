@@ -3,8 +3,6 @@ import { inject } from 'react-ioc'
 import { DataContext } from './data-context'
 import { Storage } from './storage'
 
-import { api } from 'api'
-
 const SESSION_KEY = 'SESSION_KEY'
 
 export class Session {
@@ -28,12 +26,13 @@ export class Session {
     this.storage.setItem(SESSION_KEY, session)
 
     if (userId) {
-      return this.dataContext.load(userId)
+      return this.dataContext.restore(userId)
     }
   }
 
   @action stopSession() {
     this.userId = null
-    return this.storage.removeItem(SESSION_KEY)
+
+    return this.storage.clear()
   }
 }

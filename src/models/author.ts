@@ -4,8 +4,13 @@ import { firebase } from 'api/firebase'
 export const Author = t.model('Author', {
   id: t.identifierNumber,
   name: t.string,
-  saved: t.optional(t.boolean, false),
+  sync: t.optional(t.Date, 0),
 })
+  .views(self => ({
+    get saved() {
+      return (self.sync as any) > 0
+    },
+  }))
   .actions(self => ({
     save() {
       if (self.saved) return false
@@ -13,7 +18,7 @@ export const Author = t.model('Author', {
       const data = getSnapshot(self),
             root: any = getRoot(self)
 
-      self.saved = true
+      self.sync = new Date()
       firebase.authorSave(root.user, data)
     },
   }))

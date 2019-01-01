@@ -10,4 +10,8 @@ export class Storage {
   removeItem(key: string) {
     return Promise.resolve(localStorage.removeItem(key))
   }
+
+  clear() {
+    return Promise.resolve(localStorage.clear())
+  }
 }
