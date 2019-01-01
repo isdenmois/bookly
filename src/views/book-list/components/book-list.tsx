@@ -39,7 +39,7 @@ export class BookList extends React.Component<Props> {
     const Item = this.props.listItem
 
     return (
-      <ListItem last={this.lastIndex === index}>
+      <ListItem style={{height: 150}} last={this.lastIndex === index}>
         <Item navigation={this.props.navigation} book={item}/>
       </ListItem>
     )
