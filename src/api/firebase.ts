@@ -13,7 +13,7 @@ export const firebase = {
     fetch(`${BASE_URL}/${user}/challenges.json`).then(r => r.json()),
 
   authorSave: (user: string, author: any) =>
-    fetch(`${BASE_URL}/${user}/authors/${author.id}.json`, {method: 'PUT', body: JSON.stringify(author.name)}),
+    fetch(`${BASE_URL}/${user}/authors/${author.id}.json`, {method: 'PUT', body: JSON.stringify(author)}),
 
   bookSave: (user: string, book: any) =>
     fetch(`${BASE_URL}/${user}/books/${book.id}.json`, {method: 'PUT', body: JSON.stringify(book)}),
