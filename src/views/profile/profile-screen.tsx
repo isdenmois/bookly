@@ -2,10 +2,14 @@ import * as React from 'react'
 import { observer } from 'mobx-react'
 import { inject, InjectorContext } from 'react-ioc'
 import { NavigationScreenProps } from 'react-navigation'
-import { Button, Container, Content, Text } from 'native-base'
+import { Updates } from 'expo'
+import { ToastAndroid } from 'react-native'
 
+import { Container, Content, List, ListItem, Text } from 'native-base'
+
+import { APP_VERSION } from 'constants/version'
 import { Session } from 'services'
-import { StatusBar } from 'components/status-bar'
+import { TextM } from 'components/text'
 
 interface Props extends NavigationScreenProps {
 }
@@ -20,15 +24,44 @@ export class ProfileScreen extends React.Component<Props> {
   render() {
     return (
       <Container>
-        <StatusBar/>
-
         <Content>
-          <Button full onPress={this.logout}>
-            <Text>Выйти</Text>
-          </Button>
+          <List>
+            <ListItem itemHeader first>
+              <Text>Версия: {APP_VERSION}</Text>
+            </ListItem>
+
+            <ListItem last button onPress={this.checkForUpdates}>
+              <TextM>Проверить обновления</TextM>
+            </ListItem>
+
+            <ListItem last button onPress={this.logout}>
+              <TextM>Выйти</TextM>
+            </ListItem>
+          </List>
         </Content>
       </Container>
     )
+  }
+
+  checkForUpdates = async () => {
+    try {
+      const update = await Updates.checkForUpdateAsync()
+
+      if (update.isAvailable) {
+        ToastAndroid.show('Доступно обновление', ToastAndroid.SHORT)
+
+        await Updates.fetchUpdateAsync()
+
+        ToastAndroid.show('Приложение было обновлено', ToastAndroid.SHORT)
+
+        Updates.reloadFromCache()
+      } else {
+        ToastAndroid.show('Нет доступных обновлений', ToastAndroid.SHORT)
+      }
+
+    } catch (e) {
+      ToastAndroid.show('Не удалось получить обновления', ToastAndroid.LONG)
+    }
   }
 
   logout = () => {
