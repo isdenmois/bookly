@@ -10,11 +10,22 @@ import { BookList } from './components/book-list'
 interface Props extends NavigationScreenProps {
 }
 
+const filters = {
+  year: true,
+}
+
+const options = {
+  status: BOOK_READ_STATUS.HAVE_READ,
+  title: 'Прочитано',
+  filters,
+  year: new Date().getFullYear(),
+}
+
 @provider(
-  [BookListService, toFactory(() => new BookListService(BOOK_READ_STATUS.HAVE_READ))]
+  [BookListService, toFactory(() => new BookListService(options))]
 )
 export class HaveReadListScreen extends React.Component<Props> {
-  static navigationOptions = () => ({title: 'Прочитано'})
+  static navigationOptions = () => ({header: null})
 
   public render() {
     return <BookList navigation={this.props.navigation} listItem={HaveReadItem}/>

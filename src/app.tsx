@@ -48,8 +48,10 @@ export default class App extends React.Component<any> {
       )
     }
 
+    const navigationPersistenceKey = __DEV__ ? 'NavigationStateDEV' : null
+
     return (
-      <RootStack/>
+      <RootStack persistenceKey={navigationPersistenceKey}/>
     )
   }
 }

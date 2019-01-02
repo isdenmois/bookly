@@ -4,11 +4,13 @@ import { observer } from 'mobx-react'
 import { NavigationScreenProps } from 'react-navigation'
 
 import { FlatList } from 'react-native'
-import { List, ListItem, Text } from 'native-base'
+import { Drawer, List, ListItem, Content, Container } from 'native-base'
+import { StatusBar } from 'components/status-bar'
 
 import { BookListService } from '../services/book-list.service'
 
 import { BookListTotal } from './book-list-total'
+import { BookListHeader } from './book-list-header'
 
 interface Props extends NavigationScreenProps {
   listItem: any
@@ -25,13 +27,19 @@ export class BookList extends React.Component<Props> {
     this.lastIndex = this.bookListService.books.length - 1
 
     return (
-      <List>
-        <FlatList data={this.bookListService.books}
-                  keyExtractor={this.keyExtractor}
-                  renderItem={this.renderItem}
-                  ListHeaderComponent={BookListTotal}
-        />
-      </List>
+      <Container>
+        <StatusBar/>
+        <BookListHeader/>
+        <Content>
+          <List>
+            <FlatList data={this.bookListService.books}
+                      keyExtractor={this.keyExtractor}
+                      renderItem={this.renderItem}
+                      ListHeaderComponent={BookListTotal}
+            />
+          </List>
+        </Content>
+      </Container>
     )
   }
 
