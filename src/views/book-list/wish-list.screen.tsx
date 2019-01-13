@@ -15,9 +15,13 @@ const filters = {
   type: true,
 }
 
+const sorts = ['title', 'author', 'id', 'shuffle']
+
 const options = {
   status: BOOK_READ_STATUS.WANT_TO_READ,
   title: 'Хочу прочитать',
+  sorts,
+  defaultSort: 'title',
   filters,
 }
 

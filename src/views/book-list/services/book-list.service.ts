@@ -25,27 +25,46 @@ const BOOK_TYPES = [
   {id: 'na', name: 'Не определено'},
 ]
 
+const BOOK_SORTS = [
+  {id: 'date', name: 'Дата прочтения'},
+  {id: 'title', name: 'Название'},
+  {id: 'author', name: 'Автор'},
+  {id: 'rating', name: 'Рейтинг'},
+  {id: 'id', name: 'ID'},
+  {id: 'shuffle', name: 'Перемешать'},
+]
+
 export class BookListService {
   data = inject(this, DataContext)
 
   title: string
   status: BOOK_READ_STATUS
-  sort = 'date'
   authorList = []
   bookTypeList = []
+  sortList = []
   filters: any = {}
 
   @observable year: number
   @observable authorId: number
   @observable bookType: string
 
+  @observable sort: string = 'date'
+  @observable sortDirection = 'ASC'
+
   constructor(options) {
     this.title = options.title
     this.status = options.status
     this.filters = options.filters
+    this.sort = options.defaultSort
+
+    if (this.sort.startsWith('-')) {
+      this.sort = this.sort.slice(1)
+      this.sortDirection = 'DESC'
+    }
 
     this.authorList = this.createAuthorList()
     this.bookTypeList = this.createBookTypeList()
+    this.sortList = this.createSortList(options.sorts)
 
     this.setFilters(options)
   }
@@ -68,11 +87,20 @@ export class BookListService {
       filters.type = this.bookType
     }
 
-    let books = filterCollection(this.data.books, filters)
+    let books = filterCollection(this.data.books, filters),
+        sort: any = this.sort
 
-    books = _.sortBy(books, this.sort)
+    if (this.sort === 'shuffle') {
+      sort = shuffleSort
+    }
 
-    return _.reverse(books)
+    if (this.sort === 'author') {
+      sort = 'authors[0].name'
+    }
+
+    books = _.sortBy(books, sort)
+
+    return this.sortDirection === 'DESC' ? _.reverse(books) : books
   }
 
   createAuthorList() {
@@ -89,9 +117,23 @@ export class BookListService {
     return BOOK_TYPES.filter(t => bookTypes.includes(t.id))
   }
 
+  createSortList(sorts) {
+    return BOOK_SORTS.filter(s => sorts.includes(s.id))
+  }
+
   @action setFilters(filters: any) {
     this.year = filters.year
     this.authorId = filters.authorId
     this.bookType = filters.bookType
   }
+
+  @action setSort(sort: string, direction: string) {
+    this.sort = sort
+    this.sortDirection = direction
+  }
 }
+
+function shuffleSort() {
+  return Math.random() > 0.5
+}
+

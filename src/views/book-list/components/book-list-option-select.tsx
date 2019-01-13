@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 
-import { Text, TouchableOpacity, TextStyle } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import ModalFilterPicker from 'react-native-modal-filter-picker'
 
 interface Props {
@@ -24,7 +24,7 @@ export class BookListOptionSelect extends React.Component<Props, State> {
 
     return (
       <>
-        <TouchableOpacity onPress={this.openPicker} style={{flex: 3}}>
+        <TouchableOpacity onPress={this.openPicker} style={{flex: 4}}>
           {!!selected && <Text style={this.props.textStyle}>{selected.name}</Text>}
           {!selected && <Text style={[this.props.textStyle, {color: '#ccc'}]}>{this.props.placeholder}</Text>}
         </TouchableOpacity>

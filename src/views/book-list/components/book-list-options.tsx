@@ -1,17 +1,16 @@
 import * as React from 'react'
 import { InjectorContext, inject } from 'react-ioc'
-import { computed } from 'mobx'
-import * as _ from 'lodash'
+
+import { textM, paddingM } from 'constants/theme'
+import { DataContext } from 'services'
 
 import { Text, View, StyleSheet, ViewStyle, TextInput, TextStyle } from 'react-native'
 import { Button } from 'native-base'
-
-import { DataContext } from 'services'
+import { TextM } from 'components/text'
 import { BookListService } from '../services/book-list.service'
 
-import { textM, paddingM } from 'constants/theme'
 import { BookListOptionSelect } from './book-list-option-select'
-import { TextM } from 'components/text'
+import { BookListSort } from './book-list-sort'
 
 interface Props {
   onClose: () => void
@@ -39,6 +38,7 @@ export class BookListOptions extends React.Component<Props, State> {
 
     return (
       <View style={s.container}>
+        {this.renderSort()}
         {filters.year && this.renderYearFilter()}
         {filters.author && this.renderAuthorFilter()}
         {filters.type && this.renderBookTypeFilter()}
@@ -46,6 +46,15 @@ export class BookListOptions extends React.Component<Props, State> {
         <Button full onPress={this.setFilters}>
           <Text>Применить</Text>
         </Button>
+      </View>
+    )
+  }
+
+  renderSort() {
+    return (
+      <View style={s.filter}>
+        <TextM style={s.filterLabel}>Сортировка</TextM>
+        <BookListSort textStyle={s.filterValue}/>
       </View>
     )
   }
@@ -108,6 +117,7 @@ const s = StyleSheet.create({
     width: 300,
     flexDirection: 'column',
     alignItems: 'stretch',
+    padding: 10,
   } as ViewStyle,
   filter: {
     flexDirection: 'row',
@@ -116,10 +126,10 @@ const s = StyleSheet.create({
     borderBottomColor: '#ccc',
   } as ViewStyle,
   filterLabel: {
-    flex: 1,
+    flex: 2,
   },
   filterValue: {
-    flex: 3,
+    flex: 4,
     fontSize: textM,
     paddingVertical: paddingM,
   } as TextStyle,

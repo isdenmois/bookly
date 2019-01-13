@@ -16,10 +16,14 @@ const filters = {
   type: true,
 }
 
+const sorts = ['date', 'title', 'author', 'rating', 'id']
+
 const options = {
   status: BOOK_READ_STATUS.HAVE_READ,
   title: 'Прочитано',
   filters,
+  sorts,
+  defaultSort: '-date',
   year: new Date().getFullYear(),
 }
 
