@@ -11,6 +11,7 @@ interface Props extends NavigationScreenProps {
 }
 
 const filters = {
+  author: true,
 }
 
 const options = {

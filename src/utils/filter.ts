@@ -30,7 +30,7 @@ function filterRange(input, path, range) {
 }
 
 function filterArray(input, path, f) {
-  return input
+  return _.filter(input, item => _.some(_.get(item, path), f[0]))
 }
 
 function filterValue(input, path, f) {

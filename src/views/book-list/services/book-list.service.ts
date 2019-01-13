@@ -16,14 +16,17 @@ export class BookListService {
   title: string
   status: BOOK_READ_STATUS
   sort = 'date'
+  authorList = []
   filters: any = {}
 
   @observable year: number
+  @observable authorId: number
 
   constructor(options) {
     this.title = options.title
     this.status = options.status
     this.filters = options.filters
+    this.authorList = this.createAuthorList()
 
     this.setFilters(options)
   }
@@ -38,6 +41,10 @@ export class BookListService {
       }
     }
 
+    if (this.authorId) {
+      filters.authors = [{id: this.authorId}]
+    }
+
     let books = filterCollection(this.data.books, filters)
 
     books = _.sortBy(books, this.sort)
@@ -45,7 +52,15 @@ export class BookListService {
     return _.reverse(books)
   }
 
+  createAuthorList() {
+    const books = _.filter(this.data.books, {status: this.status}),
+          authors = _.flatMap(books, b => b.authors.toJS())
+
+    return _.sortBy(_.uniqBy(authors, 'id'), 'name')
+  }
+
   @action setFilters(filters: any) {
     this.year = filters.year
+    this.authorId = filters.authorId
   }
 }
