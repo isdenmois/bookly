@@ -69,7 +69,7 @@ export default t.model({
       applySnapshot(self, {
         user,
         authors: append ? _.merge({}, (self.authors as any).toJSON(), data.authors) : data.authors,
-        books: _.uniqBy(append ? _.concat((self.books as any).toJSON(), data.books) : data.books, 'id') as any,
+        books: _.uniqBy(append ? _.concat(data.books, (self.books as any).toJSON()) : data.books, 'id') as any,
         challenges: data.challenges,
         sync: Date.now(),
       })

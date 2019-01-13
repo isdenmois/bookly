@@ -59,11 +59,13 @@ export const BookS = t.model('Book', {
 })
   .actions(self => ({
     save() {
-      const data = getSnapshot(self),
-            root: any = getRoot(self)
+      const root: any = getRoot(self)
 
+      self.sync = new Date()
       self.authors.forEach(author => author.save())
-      firebase.bookSave(root.user, data)
+
+      firebase.bookSave(root.user, getSnapshot(self))
+
       root.save()
     },
     changeStatus(status, rating, date) {
