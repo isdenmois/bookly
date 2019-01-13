@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NavigationScreenProps } from 'react-navigation'
 
-import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native'
+import { Linking, StyleSheet, View, ViewStyle, TextStyle, TouchableOpacity } from 'react-native'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
 
@@ -22,12 +22,14 @@ export class WishItem extends React.PureComponent<Props> {
     return (
       <View style={s.container}>
         {hasThumbnail &&
-          <View style={s.imageContainer}>
+          <TouchableOpacity style={s.imageContainer} onPress={this.openBook}>
             <AutoHeightImage width={75} source={{uri: book.thumbnail}}/>
-          </View>
+          </TouchableOpacity>
         }
         <View style={s.infoContainer}>
-          <TextM>{book.title}</TextM>
+          <TouchableOpacity onPress={this.openBook}>
+            <TextM>{book.title}</TextM>
+          </TouchableOpacity>
           <TextS style={s.author}>{book.authorsName}</TextS>
 
           <Button iconLeft style={s.button} onPress={this.openChangeStatus}>
@@ -46,6 +48,10 @@ export class WishItem extends React.PureComponent<Props> {
     }
 
     this.props.navigation.navigate('ChangeStatus', params)
+  }
+
+  openBook = () => {
+    Linking.openURL(`http://fantlab.ru/work${this.props.book.id}`)
   }
 }
 

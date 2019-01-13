@@ -1,13 +1,12 @@
 import * as React from 'react'
 
-import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native'
+import { Linking, StyleSheet, View, ViewStyle, TextStyle, TouchableOpacity } from 'react-native'
 import AutoHeightImage from 'react-native-auto-height-image'
 
 import { BookS } from 'models'
 
 import { Rating } from 'components/rating'
 import { TextM, TextS } from 'components/text'
-import { DatePicker } from 'native-base';
 
 interface Props {
   book: BookS
@@ -21,12 +20,14 @@ export class HaveReadItem extends React.PureComponent<Props> {
     return (
       <View style={s.container}>
         {hasThumbnail &&
-          <View style={s.imageContainer}>
+          <TouchableOpacity style={s.imageContainer} onPress={this.openBook}>
             <AutoHeightImage width={75} source={{uri: book.thumbnail}}/>
-          </View>
+          </TouchableOpacity>
         }
         <View style={s.infoContainer}>
-          <TextM>{book.title}</TextM>
+          <TouchableOpacity onPress={this.openBook}>
+            <TextM>{book.title}</TextM>
+          </TouchableOpacity>
           <TextS style={s.author}>{book.authorsName}</TextS>
 
           <View style={s.readInfo}>
@@ -36,6 +37,10 @@ export class HaveReadItem extends React.PureComponent<Props> {
         </View>
       </View>
     )
+  }
+
+  openBook = () => {
+    Linking.openURL(`http://fantlab.ru/work${this.props.book.id}`)
   }
 }
 
