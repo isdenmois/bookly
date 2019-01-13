@@ -42,7 +42,7 @@ export const BookType = t.enumeration('BookType', [
   'piece',
   'cycle',
   'microstory',
-  'epic'
+  'epic',
 ])
 
 export const BookS = t.model('Book', {

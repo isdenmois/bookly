@@ -20,6 +20,7 @@ interface Props {
 interface State {
   year: number
   authorId: number
+  bookType: string
 }
 
 export class BookListOptions extends React.Component<Props, State> {
@@ -30,6 +31,7 @@ export class BookListOptions extends React.Component<Props, State> {
   state: State = {
     year: this.bookListService.year,
     authorId: this.bookListService.authorId,
+    bookType: this.bookListService.bookType,
   }
 
   render() {
@@ -39,6 +41,7 @@ export class BookListOptions extends React.Component<Props, State> {
       <View style={s.container}>
         {filters.year && this.renderYearFilter()}
         {filters.author && this.renderAuthorFilter()}
+        {filters.type && this.renderBookTypeFilter()}
 
         <Button full onPress={this.setFilters}>
           <Text>Применить</Text>
@@ -76,8 +79,23 @@ export class BookListOptions extends React.Component<Props, State> {
     )
   }
 
+  renderBookTypeFilter() {
+    return (
+      <View style={s.filter}>
+        <TextM style={s.filterLabel}>Тип книги</TextM>
+        <BookListOptionSelect data={this.bookListService.bookTypeList}
+                              textStyle={s.filterValue}
+                              placeholder='Тип книги'
+                              selected={this.state.bookType}
+                              onSelect={this.setBookType}
+        />
+      </View>
+    )
+  }
+
   setYear = year => this.setState({year: +year})
   setAuthor = authorId => this.setState({authorId})
+  setBookType = bookType => this.setState({bookType})
 
   setFilters = () => {
     this.bookListService.setFilters(this.state)

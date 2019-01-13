@@ -52,7 +52,7 @@ export class BookListOptionSelect extends React.Component<Props, State> {
   openPicker = () => this.setState({visible: true})
   closePicker = () => this.setState({visible: false})
   selectItem = id => {
-    this.props.onSelect(+id)
+    this.props.onSelect(+id || id)
     this.closePicker()
   }
 }
