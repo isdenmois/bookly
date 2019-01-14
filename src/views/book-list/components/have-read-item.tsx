@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import format from 'date-fns/format'
+
 import { Linking, StyleSheet, View, ViewStyle, TextStyle, TouchableOpacity } from 'react-native'
 import AutoHeightImage from 'react-native-auto-height-image'
 
@@ -31,12 +33,16 @@ export class HaveReadItem extends React.PureComponent<Props> {
           <TextS style={s.author}>{book.authorsName}</TextS>
 
           <View style={s.readInfo}>
-            <TextM style={s.date}>{book.date.toLocaleDateString()}</TextM>
+            <TextM style={s.date}>{this.renderDate()}</TextM>
             <Rating scale={5} value={book.rating}/>
           </View>
         </View>
       </View>
     )
+  }
+
+  renderDate() {
+    return format(this.props.book.date, 'YYYY.MM.DD')
   }
 
   openBook = () => {
