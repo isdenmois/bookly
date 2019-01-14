@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as _ from 'lodash'
-import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { Linking, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { inject, InjectorContext } from 'react-ioc'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
@@ -39,14 +39,16 @@ export class BookSearchItem extends React.Component<Props, State> {
     return (
       <View style={s.container}>
         {Boolean(item.thumbnail) &&
-          <View style={s.imageContainer}>
+          <TouchableOpacity style={s.imageContainer} onPress={this.openBook}>
             <AutoHeightImage width={75}
                              source={{uri: item.thumbnail}}
             />
-          </View>
+          </TouchableOpacity>
         }
         <View style={s.infoContainer}>
-          <TextM>{item.rusname}</TextM>
+          <TouchableOpacity onPress={this.openBook}>
+            <TextM>{item.rusname}</TextM>
+          </TouchableOpacity>
           <TextS style={s.author}>{item.autor_rusname}</TextS>
           {this.renderButton()}
         </View>
@@ -86,6 +88,10 @@ export class BookSearchItem extends React.Component<Props, State> {
     }
 
     navigation.navigate('ChangeStatus', params)
+  }
+
+  openBook = () => {
+    Linking.openURL(`http://fantlab.ru/work${this.props.item.work_id}`)
   }
 
   get bookButtonTitle() {
