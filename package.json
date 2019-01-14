@@ -63,7 +63,9 @@
     "build": "expo publish",
     "devtools": "react-devtools",
     "tsfix": "tslint --fix --project tsconfig.json",
-    "web": "webpack-dev-server"
+    "web": "webpack-dev-server",
+    "postinstall": "patch-package",
+    "postremove": "patch-package"
   },
   "dependencies": {
     "@expo/vector-icons": "^8.0.0",
