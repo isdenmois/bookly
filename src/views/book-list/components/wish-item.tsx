@@ -5,6 +5,7 @@ import { Linking, StyleSheet, View, ViewStyle, TextStyle, TouchableOpacity } fro
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
 
+import { feature } from 'utils/feature'
 import { BookS } from 'models'
 import { color } from 'constants/colors'
 import { TextM, TextS } from 'components/text'
@@ -50,9 +51,15 @@ export class WishItem extends React.PureComponent<Props> {
     this.props.navigation.navigate('ChangeStatus', params)
   }
 
-  openBook = () => {
+  openBookScreen = () => {
+    this.props.navigation.push('Book', {workId: this.props.book.id})
+  }
+
+  openBookURL = () => {
     Linking.openURL(`http://fantlab.ru/work${this.props.book.id}`)
   }
+
+  openBook = feature('2.4.0', this.openBookScreen, this.openBookURL)
 }
 
 const s = StyleSheet.create({

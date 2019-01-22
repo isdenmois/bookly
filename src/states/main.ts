@@ -5,13 +5,15 @@ import { ProfileScreen } from 'views/profile/profile-screen'
 import { BooksSearchScreen } from 'views/books-search/books-search.screen'
 import { WishListScreen } from 'views/book-list/wish-list.screen'
 import { HaveReadListScreen } from 'views/book-list/have-read-list.screen'
+import { BookScreen } from 'views/book/book.screen'
 
 export const MainStack: NavigationRouteConfigMap = {
   Home: HomeScreen,
   Profile: ProfileScreen,
   BooksSearch: BooksSearchScreen,
   WishList: WishListScreen,
-  HaveReadList: HaveReadListScreen
+  HaveReadList: HaveReadListScreen,
+  Book: BookScreen,
 }
 
 export const MainStackOptions: StackNavigatorConfig = {
