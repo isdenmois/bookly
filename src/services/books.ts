@@ -10,7 +10,9 @@ export class Books {
   dataContext = inject(this, DataContext)
 
   @computed get wantToRead() {
-    return _.filter(this.dataContext.books, {status: BOOK_READ_STATUS.WANT_TO_READ})
+    const books = _.filter(this.dataContext.books, {status: BOOK_READ_STATUS.WANT_TO_READ})
+
+    return _.sortBy(books, 'title')
   }
 
   @computed get currentBooks() {
@@ -19,7 +21,7 @@ export class Books {
 
   @computed get haveRead() {
     let books = _.filter(this.dataContext.books, {status: BOOK_READ_STATUS.HAVE_READ})
-    
+
     books = _.sortBy(books, 'date')
 
     return _.reverse(books)
