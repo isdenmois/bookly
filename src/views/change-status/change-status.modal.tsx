@@ -4,6 +4,7 @@ import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { Dialog } from 'components/dialog'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, DatePicker } from 'native-base'
+import format from 'date-fns/format'
 
 import { BOOK_READ_STATUS, BookS } from 'models/book'
 
@@ -58,7 +59,11 @@ export class ChangeStatusModal extends React.Component<Props, State> {
               <TextM style={s.author}>{this.book.authorsName}</TextM>
 
               {status === BOOK_READ_STATUS.HAVE_READ &&
-                <DatePicker defaultDate={this.state.date} locale='ru' onDateChange={this.selectDate}/>
+                <DatePicker defaultDate={this.state.date}
+                            locale='ru'
+                            onDateChange={this.selectDate}
+                            formatChosenDate={date => format(date, 'YYYY.MM.DD')}
+                />
               }
             </View>
           </View>
