@@ -5,7 +5,7 @@ import { textM, paddingM } from 'constants/theme'
 import { DataContext } from 'services'
 
 import { Text, View, StyleSheet, ViewStyle, TextInput, TextStyle } from 'react-native'
-import { Button } from 'native-base'
+import { Button, Icon } from 'native-base'
 import { TextM } from 'components/text'
 import { BookListService } from '../services/book-list.service'
 
@@ -70,6 +70,9 @@ export class BookListOptions extends React.Component<Props, State> {
                    placeholder='Год'
                    value={year && year.toString() || ''}
                    onChangeText={this.setYear}/>
+        {Boolean(year) &&
+          <Icon onPress={() => this.setYear(0)} name='ios-close'/>
+        }
       </View>
     )
   }
@@ -84,6 +87,9 @@ export class BookListOptions extends React.Component<Props, State> {
                               selected={this.state.authorId}
                               onSelect={this.setAuthor}
         />
+        {Boolean(this.state.authorId) &&
+          <Icon onPress={() => this.setAuthor(0)} name='ios-close'/>
+        }
       </View>
     )
   }
@@ -98,6 +104,9 @@ export class BookListOptions extends React.Component<Props, State> {
                               selected={this.state.bookType}
                               onSelect={this.setBookType}
         />
+        {Boolean(this.state.bookType) &&
+          <Icon onPress={() => this.setBookType(null)} name='ios-close'/>
+        }
       </View>
     )
   }
