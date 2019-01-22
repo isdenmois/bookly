@@ -16,7 +16,7 @@ export class EmptyBook extends React.Component<Props> {
       <Card padding margin title='Нет текущей читаемой книги'>
         {this.props.chooseBookAvailable &&
           <Button small bordered block style={s.withMargin} onPress={this.props.onChooseBook}>
-            <Text>Добавить</Text>
+            <Text>Выбрать</Text>
           </Button>
         }
       </Card>
