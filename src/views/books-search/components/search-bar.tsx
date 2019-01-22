@@ -32,6 +32,9 @@ export class SearchBar extends React.Component<Props, State> {
                  onChangeText={this.updateState}
                  onSubmitEditing={this.change}
                  value={this.state.value}/>
+          {Boolean(this.state.value) &&
+            <Icon onPress={() => this.updateState('')} name='ios-close'/>
+          }
         </Item>
 
         <Button transparent onPress={this.change}>
