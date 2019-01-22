@@ -2,7 +2,7 @@
   "expo": {
     "name": "Bookly",
     "slug": "isdenmois-bookly",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "icon": "./assets/icon.png",
     "sdkVersion": "31.0.0",
     "privacy": "unlisted",
