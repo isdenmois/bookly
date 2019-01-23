@@ -6,6 +6,7 @@ import { DataContext } from 'services'
 
 import { Text, View, StyleSheet, ViewStyle, TextInput, TextStyle } from 'react-native'
 import { Button, Icon } from 'native-base'
+import { If } from 'components/if'
 import { TextM } from 'components/text'
 import { BookListService } from '../services/book-list.service'
 
@@ -69,8 +70,9 @@ export class BookListOptions extends React.Component<Props, State> {
                    keyboardType='numeric'
                    placeholder='Год'
                    value={year && year.toString() || ''}
-                   onChangeText={this.setYear}/>
-        {Boolean(year) &&
+                   onChangeText={this.setYear}
+        />
+        {If(year) &&
           <Icon onPress={() => this.setYear(0)} name='ios-close'/>
         }
       </View>
@@ -87,7 +89,7 @@ export class BookListOptions extends React.Component<Props, State> {
                               selected={this.state.authorId}
                               onSelect={this.setAuthor}
         />
-        {Boolean(this.state.authorId) &&
+        {If(this.state.authorId) &&
           <Icon onPress={() => this.setAuthor(0)} name='ios-close'/>
         }
       </View>
@@ -104,7 +106,7 @@ export class BookListOptions extends React.Component<Props, State> {
                               selected={this.state.bookType}
                               onSelect={this.setBookType}
         />
-        {Boolean(this.state.bookType) &&
+        {If(this.state.bookType) &&
           <Icon onPress={() => this.setBookType(null)} name='ios-close'/>
         }
       </View>

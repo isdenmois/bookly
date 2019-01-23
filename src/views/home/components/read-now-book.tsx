@@ -7,6 +7,7 @@ import AutoHeightImage from 'react-native-auto-height-image'
 import { BookS } from 'models/book'
 import { color } from 'constants/colors'
 
+import { If } from 'components/if'
 import { TextL, TextM } from 'components/text'
 import { Card } from 'components/card'
 
@@ -21,7 +22,7 @@ export class ReadNowBook extends React.Component<Props> {
     return (
       <Card padding>
         <View style={s.container}>
-          {Boolean(book.thumbnail) &&
+          {If(book.thumbnail) &&
            <View style={s.imageContainer}>
              <AutoHeightImage width={100} source={{uri: book.thumbnail}}/>
            </View>

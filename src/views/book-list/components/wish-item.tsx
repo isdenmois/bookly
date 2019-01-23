@@ -5,6 +5,7 @@ import { Linking, StyleSheet, View, ViewStyle, TextStyle, TouchableOpacity } fro
 import AutoHeightImage from 'react-native-auto-height-image'
 import { Button, Icon } from 'native-base'
 
+import { If } from 'components/if'
 import { feature } from 'utils/feature'
 import { BookS } from 'models'
 import { color } from 'constants/colors'
@@ -17,12 +18,11 @@ interface Props extends NavigationScreenProps {
 
 export class WishItem extends React.PureComponent<Props> {
   render() {
-    const book = this.props.book,
-          hasThumbnail = Boolean(book.thumbnail)
+    const book = this.props.book
 
     return (
       <View style={s.container}>
-        {hasThumbnail &&
+        {If(book.thumbnail) &&
           <TouchableOpacity style={s.imageContainer} onPress={this.openBook}>
             <AutoHeightImage width={75} source={{uri: book.thumbnail}}/>
           </TouchableOpacity>

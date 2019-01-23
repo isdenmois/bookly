@@ -7,6 +7,7 @@ import { inject, InjectorContext } from 'react-ioc'
 
 import { BookS } from 'models/book'
 
+import { If } from 'components/if'
 import { Dialog } from 'components/dialog'
 import { TextM } from 'components/text'
 import { Books } from 'services'
@@ -50,7 +51,7 @@ export class BookSelectModal extends React.Component<Props, State> {
 
   renderBook = (book: BookS, rowId) => (
     <ListItem key={book.id} first={!rowId} last={rowId === this.bookLast} onPress={() => this.selectBook(book)}>
-      {Boolean(book.thumbnail) &&
+      {If(book.thumbnail) &&
         <Left style={s.left}>
           <Thumbnail source={{uri: book.thumbnail}}/>
         </Left>

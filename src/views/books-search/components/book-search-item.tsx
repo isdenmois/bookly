@@ -12,6 +12,7 @@ import { FantlabWork } from 'api/fantlab'
 import { BOOK_READ_STATUS, BookS } from 'models/book'
 import { color } from 'constants/colors'
 
+import { If } from 'components/if'
 import { Rating } from 'components/rating'
 import { TextS, TextM } from 'components/text'
 
@@ -38,7 +39,7 @@ export class BookSearchItem extends React.Component<Props, State> {
 
     return (
       <View style={s.container}>
-        {Boolean(item.thumbnail) &&
+        {If(item.thumbnail) &&
           <TouchableOpacity style={s.imageContainer} onPress={this.openBook}>
             <AutoHeightImage width={75}
                              source={{uri: item.thumbnail}}

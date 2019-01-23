@@ -8,6 +8,7 @@ import format from 'date-fns/format'
 
 import { BOOK_READ_STATUS, BookS } from 'models/book'
 
+import { If } from 'components/if'
 import { RatingSelect } from 'components/rating'
 import { TextL, TextM } from 'components/text'
 import { Switcher, SwitchOption } from 'components/switcher'
@@ -48,10 +49,10 @@ export class ChangeStatusModal extends React.Component<Props, State> {
       <Dialog navigation={this.props.navigation} header={statusMap[status]}>
         <View style={s.content}>
           <View style={s.info}>
-            {Boolean(this.book.thumbnail) &&
-             <View style={s.imageContainer}>
-               <AutoHeightImage width={100} source={{uri: this.book.thumbnail}}/>
-             </View>
+            {If(this.book.thumbnail) &&
+              <View style={s.imageContainer}>
+                <AutoHeightImage width={100} source={{uri: this.book.thumbnail}}/>
+              </View>
             }
 
             <View style={s.contentContainer}>

@@ -4,6 +4,7 @@ import { NavigationScreenProps } from 'react-navigation'
 import { Button, Header, Icon, Input, Item, Left, Text } from 'native-base'
 
 import { color } from 'constants/colors'
+import { If } from 'components/if'
 
 interface Props extends NavigationScreenProps {
   value: string
@@ -32,13 +33,13 @@ export class SearchBar extends React.Component<Props, State> {
                  onChangeText={this.updateState}
                  onSubmitEditing={this.change}
                  value={this.state.value}/>
-          {Boolean(this.state.value) &&
+          {If(this.state.value) &&
             <Icon onPress={() => this.updateState('')} name='ios-close'/>
           }
         </Item>
 
         <Button transparent onPress={this.change}>
-          <Text>Search</Text>
+          <Text>Найти</Text>
         </Button>
       </Header>
     )

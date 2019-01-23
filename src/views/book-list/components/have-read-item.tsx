@@ -9,6 +9,7 @@ import AutoHeightImage from 'react-native-auto-height-image'
 import { feature } from 'utils/feature'
 import { BookS } from 'models'
 
+import { If } from 'components/if'
 import { Rating } from 'components/rating'
 import { TextM, TextS } from 'components/text'
 
@@ -18,12 +19,11 @@ interface Props extends NavigationScreenProps {
 
 export class HaveReadItem extends React.PureComponent<Props> {
   render() {
-    const book = this.props.book,
-          hasThumbnail = Boolean(book.thumbnail)
+    const book = this.props.book
 
     return (
       <View style={s.container}>
-        {hasThumbnail &&
+        {If(book.thumbnail) &&
           <TouchableOpacity style={s.imageContainer} onPress={this.openBook}>
             <AutoHeightImage width={75} source={{uri: book.thumbnail}}/>
           </TouchableOpacity>
