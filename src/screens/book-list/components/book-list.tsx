@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { ScrollView, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
+import { FlatList, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
@@ -31,14 +31,22 @@ export class BookList extends React.PureComponent<Props> {
     }
 
     return (
-      <ScrollView contentContainerStyle={s.scrollContainer}>
-        <Text style={s.found}>Найдено: {books.length}</Text>
-        {_.map(books, book => (
-          <BookItem key={book.id} navigation={this.props.navigation} book={book} />
-        ))}
-      </ScrollView>
+      <FlatList
+        contentContainerStyle={s.scrollContainer}
+        data={books}
+        initialNumToRender={24}
+        keyExtractor={this.keyExtractor}
+        renderItem={this.renderItem}
+        ListHeaderComponent={<Text style={s.found}>Найдено: {books.length}</Text>}
+      />
     );
   }
+
+  private renderItem = ({ item }) => {
+    return <BookItem key={item.id} navigation={this.props.navigation} book={item} />;
+  };
+
+  private keyExtractor = book => book.id;
 }
 
 const s = StyleSheet.create({

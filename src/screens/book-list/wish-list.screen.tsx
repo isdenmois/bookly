@@ -9,12 +9,12 @@ const defaultFilters = {
 
 const WISH_LIST_FILTERS = ['author', 'type'];
 
-const WISH_LIST_SORTS = ['date', 'title', 'author', 'id'];
+const WISH_LIST_SORTS = ['title', 'author', 'id'];
 
 export class WishListScreen extends ReadListScreen {
   static contextType = InjectorContext;
 
-  state = createQueryState(defaultFilters, { field: 'date', desc: true });
+  state = createQueryState(defaultFilters, { field: 'title', desc: false });
 
   filters = WISH_LIST_FILTERS;
   sorts = WISH_LIST_SORTS;

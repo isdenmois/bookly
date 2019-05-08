@@ -34,7 +34,7 @@ interface Props extends Partial<NavigationScreenProps> {
 @withObservables(['book'], ({ book }) => ({
   record: book.record || book,
 }))
-export class BookItem extends React.Component<Props> {
+export class BookItem extends React.PureComponent<Props> {
   get book() {
     return this.props.record || this.props.book;
   }
