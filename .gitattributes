@@ -1,0 +1,4 @@
+*.pbxproj -text
+dev-tools/* linguist-vendored
+android/* linguist-vendored
+ios/* linguist-vendored

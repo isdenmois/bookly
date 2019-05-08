@@ -1,0 +1,13 @@
+diff --git a/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js b/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
+index 5a53128..edebc5f 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
++++ b/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
+@@ -134,7 +134,7 @@ var encodeMethod = function (table, countMode, needsDistinct) {
+ 
+ var encodeAssociation = function (mainTable) {
+   return function ([joinedTable, association]) {
+-    return 'belongs_to' === association.type ? " join ".concat((0, _encodeName.default)(joinedTable), " on ").concat((0, _encodeName.default)(joinedTable), ".\"id\" = ").concat((0, _encodeName.default)(mainTable), ".").concat((0, _encodeName.default)(association.key)) : " join ".concat((0, _encodeName.default)(joinedTable), " on ").concat((0, _encodeName.default)(joinedTable), ".").concat((0, _encodeName.default)(association.foreignKey), " = ").concat((0, _encodeName.default)(mainTable), ".\"id\"");
++    return 'belongs_to' === association.type ? " join ".concat((0, _encodeName.default)(joinedTable), " on ").concat((0, _encodeName.default)(joinedTable), ".\"id\" = ").concat((0, _encodeName.default)(association.table || mainTable), ".").concat((0, _encodeName.default)(association.key)) : " join ".concat((0, _encodeName.default)(joinedTable), " on ").concat((0, _encodeName.default)(joinedTable), ".").concat((0, _encodeName.default)(association.foreignKey), " = ").concat((0, _encodeName.default)(association.table || mainTable), ".\"id\"");
+   };
+ };
+ 

@@ -1,25 +1,4 @@
 {
-  "expo": {
-    "name": "Bookly",
-    "slug": "isdenmois-bookly",
-    "version": "2.3.3",
-    "icon": "./assets/icon.png",
-    "sdkVersion": "31.0.0",
-    "privacy": "unlisted",
-    "orientation": "portrait",
-    "splash": {
-      "backgroundColor": "#EDEDEE",
-      "image": "./assets/splash.png"
-    },
-    "updates": {
-      "checkAutomatically": "ON_ERROR_RECOVERY",
-      "fallbackToCacheTimeout": 0
-    },
-    "android": {
-      "package": "ru.isden.bookly"
-    },
-    "ios": {
-      "bundleIdentifier": "ru.isden.bookly"
-    }
-  }
+  "name": "bookly",
+  "displayName": "bookly"
 }

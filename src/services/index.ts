@@ -1,4 +1,3 @@
-export { Books } from './books'
-export { DataContext } from './data-context'
-export { Storage } from './storage'
-export { Session } from './session'
+export { Session } from './session';
+export { Storage } from './storage';
+export { SyncService } from './sync';

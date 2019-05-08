@@ -3,47 +3,20 @@
     "module": "es2015",
     "target": "es2018",
     "jsx": "react-native",
-    "rootDir": "src",
-    "outDir": "build",
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "noEmitHelpers": true,
-    "noImplicitAny": false,
-    "sourceMap": true,
+    "baseUrl": ".",
     "experimentalDecorators": true,
-    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
     "allowJs": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
     "noEmit": true,
-    "lib": [ "es2017", "dom", "es2018" ],
-    "baseUrl": "./src"
+    "rootDirs": ["./src/shared", "./src"],
+    "paths": {
+      "*": ["./src/shared/*", "./src/*"],
+      "api": ["./src/services/api"]
+    }
   },
-  "filesGlob": [
-    "typings/index.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "node_modules/typescript/lib/lib.es6.d.ts"
-  ],
-  "types": [
-    "react",
-    "react-dom",
-    "react-native"
-  ],
-  "exclude": [
-    "build",
-    "node_modules",
-    "server",
-    "jest.config.js",
-    "babel.*.js",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-    "App.js",
-    "test/**.js",
-    "coverage/**.js",
-    "dev-tools/**.js",
-    "webpack.config.js"
-  ],
-  "compileOnSave": false
+  "exclude": ["dev-tools", "node_modules", "babel.config.js", "metro.config.js"]
 }

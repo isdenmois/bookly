@@ -1,54 +1,40 @@
-const webpack = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const babelConfig = require('./dev-tools/babel.web');
-
+const webpack = require('webpack'),
+  path = require('path'),
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
+  babelConfig = require('./dev-tools/babel.web');
 const appDirectory = path.resolve(__dirname, './');
 
 module.exports = {
   mode: 'development',
-  entry: './src/web-app.tsx',
+  entry: './index.js',
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
 
   output: {
     path: __dirname + '/build',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    globalObject: 'this',
   },
-
 
   resolve: {
     symlinks: false,
-    // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx', '.web.js', '.js', '.mjs', '.jsx', '.json'],
+    extensions: ['.web.js', '.js', '.mjs', '.jsx', '.json'],
     alias: {
-      '@expo/vector-icons': 'expo-web',
-      expo: 'expo-web',
       'react-native$': 'react-native-web',
       'react-native-svg': 'react-native-svg-web',
-      // 'react-native-vector-icons': 'expo-web',
-      'native-base' : 'native-base-web',
-      'react-native-vector-icons/Ionicons': 'native-base-web/lib/Components/Widgets/Icon',
-      'react/lib/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-      'react-icons/lib/io/arrow-back': 'react-icons/lib/io/arrow-left-a',
-      'react-icons/lib/io/ios-lock': 'react-icons/lib/io/ios-locked',
     },
   },
 
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         // Add every directory that needs to be compiled by Babel during the build.
         include: [
           path.resolve(appDirectory, 'src'),
-          path.resolve(appDirectory, 'node_modules/react-navigation'),
-          path.resolve(appDirectory, 'node_modules/react-native'),
-          path.resolve(appDirectory, 'node_modules/react-native-web'),
-          path.resolve(appDirectory, 'node_modules/@expo/samples'),
-          path.resolve(appDirectory, 'node_modules/@expo/vector-icons'),
-          path.resolve(appDirectory, 'node_modules/react-native-auto-height-image'),
+          path.resolve(appDirectory, 'config'),
+          path.resolve(appDirectory, 'node_modules/react-native-vector-icons/'),
         ],
         use: {
           loader: 'babel-loader',
@@ -56,24 +42,24 @@ module.exports = {
         },
       },
       {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: babelConfig
-          },
-          'awesome-typescript-loader',
-        ],
+        test: /\.worker\.js$/,
+        use: { loader: 'worker-loader' },
       },
-      {
-        test: /\.mjs$/,
-        include: /node_modules/,
-        type: 'javascript/auto'
-      },
-      {
-        test: /\.graphqls$/,
-        use: 'raw-loader'
-      },
+      // {
+      //   test: /\.tsx?$/,
+      //   use: [
+      //     {
+      //       loader: 'babel-loader',
+      //       options: babelConfig
+      //     },
+      //     'awesome-typescript-loader',
+      //   ],
+      // },
+      // {
+      //   test: /\.mjs$/,
+      //   include: /node_modules/,
+      //   type: 'javascript/auto'
+      // },
       {
         test: /\.(gif|jpe?g|png|svg)$/,
         use: {
@@ -85,31 +71,26 @@ module.exports = {
       },
       {
         test: /\.ttf$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: './fonts/[hash].[ext]',
-            },
-          },
-        ]
-      }
-    ]
+        loader: 'url-loader',
+        include: path.resolve(appDirectory, 'node_modules/react-native-vector-icons/'),
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './dev-tools/index.html'
+      template: './dev-tools/index.html',
     }),
     new webpack.DefinePlugin({
-      __DEV__: true
-    })
+      __DEV__: true,
+    }),
   ],
   devServer: {
+    historyApiFallback: true,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
-        pathRewrite: {'^/api' : ''}
-      }
-    }
-  }
+        pathRewrite: { '^/api': '' },
+      },
+    },
+  },
 };

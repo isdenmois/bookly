@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "rootDirs": ["./src/shared", "./src"],
+    "paths": {
+      "*": ["./src/shared/*", "./src/*"],
+      "api": ["./src/services/api"]
+    }
+  }
+}
