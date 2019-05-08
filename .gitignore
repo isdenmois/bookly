@@ -60,3 +60,5 @@ buck-out/
 .env.*
 
 .vscode/.react
+yarn.lock
+
