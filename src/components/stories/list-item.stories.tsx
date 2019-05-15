@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { Alert, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { ListItem } from './list-item';
+import { ListItem } from '../list-item';
 
 storiesOf('ListItem')
   .add('Usage', () => (

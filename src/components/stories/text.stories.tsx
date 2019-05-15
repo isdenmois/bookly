@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { View, ViewStyle } from 'react-native';
-import { TextXs, TextS, TextM, TextL, TextXL } from './text';
+import { TextXs, TextS, TextM, TextL, TextXL } from '../text';
 
 const style = {
   flex: 1,

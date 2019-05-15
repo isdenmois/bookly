@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { View, Text, ViewStyle } from 'react-native';
-import { Card } from './card';
+import { Card } from '../card';
 
 const style = {
   flex: 1,

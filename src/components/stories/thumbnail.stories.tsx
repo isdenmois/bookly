@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { StyleSheet, View } from 'react-native';
-import { Thumbnail } from './thumbnail';
+import { Thumbnail } from '../thumbnail';
 
 storiesOf('Thumbnail').add('Usage', () => (
   <View style={s.centered}>

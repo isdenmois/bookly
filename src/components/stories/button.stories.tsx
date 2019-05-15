@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Button } from './button';
+import { Button } from '../button';
 
 storiesOf('Button').add('Usage', () => (
   <View style={s.centered}>

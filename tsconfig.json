@@ -12,9 +12,9 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "noEmit": true,
-    "rootDirs": ["./src/shared", "./src"],
+    "rootDirs": ["./src"],
     "paths": {
-      "*": ["./src/shared/*", "./src/*"],
+      "*": ["./src/*"],
       "api": ["./src/services/api"]
     }
   },

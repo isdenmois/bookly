@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { State, Store } from '@sambego/storybook-state';
 import { Alert, StyleSheet, View } from 'react-native';
-import { SearchBar } from './search-bar';
+import { SearchBar } from '../search-bar';
 
 const store = new Store({
   text: '',

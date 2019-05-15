@@ -6,7 +6,7 @@ module.exports = {
     [
       'babel-plugin-module-resolver',
       {
-        root: ['./src', './src/shared'],
+        root: ['./src'],
         alias: {
           api: './src/services/api',
         },

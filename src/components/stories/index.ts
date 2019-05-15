@@ -1,0 +1,10 @@
+require('./avatar.stories');
+require('./book-item.stories');
+require('./button.stories');
+require('./card.stories');
+require('./counter.stories');
+require('./list-item.stories');
+require('./search-bar.stories');
+require('./switcher.stories');
+require('./text.stories');
+require('./thumbnail.stories');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { State, Store } from '@sambego/storybook-state';
-import { Switcher } from './switcher';
+import { Switcher } from '../switcher';
 
 const store = new Store({
   active: 'WANT_TO_READ',

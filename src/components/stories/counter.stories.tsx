@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { StyleSheet, View } from 'react-native';
 import { Card } from 'components/card';
-import { Counter } from './counter';
+import { Counter } from '../counter';
 
 storiesOf('Counter')
   .add('Usage', () => (

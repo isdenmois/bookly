@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Avatar } from './avatar';
+import { Avatar } from '../avatar';
 
 storiesOf('Avatar').add('Usage', () => (
   <ScrollView style={s.centered}>
