@@ -18,6 +18,7 @@
     "lokijs": "1.5.6",
     "mobx": "5.9.4",
     "mobx-react": "5.4.3",
+    "rambdax": "2.9.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-ioc": "1.0.0",

@@ -1,7 +1,7 @@
 import React from 'react';
-import _ from 'lodash';
 import { Q, Database } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
+import { map, sortBy, prop, isFalsy } from 'rambdax';
 
 import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -23,33 +23,41 @@ interface Props {
   books: database.collections.get('books').query(...bookListQuery(search)),
 }))
 export class BookList extends React.Component<Props> {
-  render() {
-    const lastIndex = _.size(this.props.books) - 1;
-    const { selected } = this.props;
+  sortBooks = sortBy(prop('title'))
 
-    if (_.isEmpty(this.props.books)) {
+  render() {
+    if (isFalsy(this.props.books)) {
       return <Text style={s.emptyText}>Нет книг</Text>;
     }
 
+    const books = this.sortBooks(this.props.books)
+
     return (
       <ScrollView style={s.scroll}>
-        {_.map(this.props.books, (book, index) => (
-          <ListItem
-            key={book.id}
-            style={s.listItem}
-            icon={this.thumbnail(book)}
-            last={index === lastIndex}
-            selected={book.id === selected && <Icon name='check' size={18} color='#009688' />}
-            onPress={() => this.props.onSelect(book)}
-          >
-            <View style={s.row}>
-              <Text style={s.title}>{book.title}</Text>
-              <Text style={s.author}>{book.author}</Text>
-            </View>
-          </ListItem>
-        ))}
+        {map(this.renderBookItem, books)}
       </ScrollView>
     );
+  }
+
+  renderBookItem = (book, index) => {
+    const selected = this.props.selected;
+    const lastIndex = this.props.books.length;
+
+    return (
+      <ListItem
+        key={book.id}
+        style={s.listItem}
+        icon={this.thumbnail(book)}
+        last={index === lastIndex}
+        selected={book.id === selected && <Icon name='check' size={18} color='#009688' />}
+        onPress={() => this.props.onSelect(book)}
+      >
+        <View style={s.row}>
+          <Text style={s.title}>{book.title}</Text>
+          <Text style={s.author}>{book.author}</Text>
+        </View>
+      </ListItem>
+    )
   }
 
   thumbnail(book) {
