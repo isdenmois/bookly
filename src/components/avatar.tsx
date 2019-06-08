@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
 
+const CHARS_ONLY = /[a-zA-Zа-яА-Я ]+/g;
 const WORDS_SPLIT_REGEX = /[\s"\-',+]+/;
 
 export function Avatar({ style, width, height, title }) {
@@ -25,7 +26,13 @@ const s = StyleSheet.create({
 
 export function getAvatarInitials(name: string): string {
   if (name) {
-    const words = name.split(WORDS_SPLIT_REGEX).filter(value => value !== '');
+    const words = name
+      .match(CHARS_ONLY)
+      .join('')
+      .trim()
+      .split(WORDS_SPLIT_REGEX)
+      .filter(value => value !== '');
+
     const lastWord = words.length - 1;
 
     return words

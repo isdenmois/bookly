@@ -38,6 +38,11 @@ storiesOf('Avatar').add('Usage', () => (
       <Avatar width={120} height={185} style={s.avatar} title='А Л' />
       <Avatar width={120} height={185} style={s.avatar} title='А М' />
     </View>
+
+    <View style={s.row}>
+      <Avatar width={120} height={185} style={s.avatar} title='<<Какая-то штука >>' />
+      <Avatar width={120} height={185} style={s.avatar} title='Очень тупое название))' />
+    </View>
   </ScrollView>
 ));
 
