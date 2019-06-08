@@ -86,16 +86,6 @@ project.ext.vectoricons = [
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 /**
- * Set this to true to create two separate APKs instead of one:
- *   - An APK that only works on ARM devices
- *   - An APK that only works on x86 devices
- * The advantage is the size of the APK is reduced by about 4MB.
- * Upload all the APKs to the Play Store and people will download
- * the correct one based on the CPU architecture of their device.
- */
-def enableSeparateBuildPerCPUArchitecture = true
-
-/**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
 def enableProguardInReleaseBuilds = true
@@ -119,21 +109,17 @@ android {
     splits {
         abi {
             reset()
-            enable enableSeparateBuildPerCPUArchitecture
+            enable gradle.startParameter.taskNames.contains("assembleRelease")
             universalApk false  // If true, also generate a universal APK
             include "arm64-v8a"
         }
     }
     buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-    // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "bookly-${versionName}.apk"
