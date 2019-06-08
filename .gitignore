@@ -61,4 +61,5 @@ buck-out/
 
 .vscode/.react
 yarn.lock
-
+dev-tools/key.jks
+fastlane/report.xml

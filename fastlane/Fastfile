@@ -1,0 +1,35 @@
+fastlane_version '2.53.1'
+
+platform :android do
+  # Android Lanes
+  desc 'Build the Android application.'
+  lane :build do
+    gradle(task: 'clean', project_dir: 'android/')
+    gradle(
+      task: 'assemble',
+      build_type: 'Release',
+      project_dir: 'android/',
+      properties: {
+        'android.injected.signing.store.file' => 'dev-tools/key.jks',
+        'android.injected.signing.store.password' => ENV['KEY_PASSWORD'],     
+        'android.injected.signing.key.alias' => ENV['KEY_ALIAS'],
+        'android.injected.signing.key.password' => ENV['KEY_PASSWORD'], 
+      }
+    )
+  end
+
+  desc 'Upload apk to diawi'
+  lane :upload do
+    package = load_json(json_path: "package.json")
+    diawi(
+        token: ENV['DIAWI_TOKEN'],
+        file: "android/app/build/outputs/apk/release/bookly-#{package['version']}.apk",
+        callback_emails: 'isdenmois@gmail.com'
+    )
+  end
+
+  lane :release do
+    build()
+    upload()
+  end
+end
