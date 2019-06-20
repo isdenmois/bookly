@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { provider, inject, InjectorContext } from 'react-ioc';
+import { observer } from 'mobx-react';
 import { Database } from '@nozbe/watermelondb';
-import { SyncService } from 'services';
+import { SyncService, Session } from 'services';
 import { HomeService } from './home.service';
 import { Hr } from 'components/hr';
 import { HomeHeader } from './components/header';
@@ -16,6 +17,7 @@ interface State {
 }
 
 @provider(HomeService)
+@observer
 export class HomeScreen extends React.Component<NavigationScreenProps, State> {
   static contextType = InjectorContext;
 
@@ -23,6 +25,7 @@ export class HomeScreen extends React.Component<NavigationScreenProps, State> {
 
   database = inject(this, Database);
   syncService = inject(this, SyncService);
+  session = inject(this, Session);
 
   render() {
     return (
@@ -33,7 +36,7 @@ export class HomeScreen extends React.Component<NavigationScreenProps, State> {
 
         <Hr margin={20} />
 
-        <BookChallenge database={this.database} />
+        <BookChallenge database={this.database} totalBooks={this.session.totalBooks} />
 
         <Hr />
 

@@ -5,14 +5,14 @@ import { Database } from '@nozbe/watermelondb';
 import { Counter } from 'components/counter';
 import { readBooksThisYearQuery, booksReadForecast } from '../home.service';
 
-const TOTAL_COUNT = 80;
-
 interface Props {
   database: Database;
+  totalBooks: number;
   readCount?: number;
 }
 
 interface State {
+  totalBooks: number;
   readCount: number;
   forecast: number;
 }
@@ -21,11 +21,12 @@ interface State {
   readCount: readBooksThisYearQuery(database).observeCount(),
 }))
 export class BookChallenge extends React.Component<Props, State> {
-  static getDerivedStateFromProps(props, state) {
-    if (!state || props.readCount !== state.readCount) {
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (!state || props.readCount !== state.readCount || props.totalBooks !== state.totalBooks) {
       return {
+        totalBooks: props.totalBooks,
         readCount: props.readCount,
-        forecast: booksReadForecast(props.readCount, TOTAL_COUNT),
+        forecast: booksReadForecast(props.readCount, props.totalBooks),
       };
     }
 
@@ -33,15 +34,16 @@ export class BookChallenge extends React.Component<Props, State> {
   }
 
   state: State = {
+    totalBooks: this.props.totalBooks,
     readCount: this.props.readCount,
-    forecast: booksReadForecast(this.props.readCount, TOTAL_COUNT),
+    forecast: booksReadForecast(this.props.readCount, this.props.totalBooks),
   };
 
   render() {
     return (
       <View style={s.row}>
         <Counter label='Прочитано' value={this.props.readCount} />
-        <Counter label='Запланировано' value={TOTAL_COUNT} />
+        <Counter label='Запланировано' value={this.props.totalBooks} />
         <Counter label='Опережение' value={this.state.forecast} />
       </View>
     );
