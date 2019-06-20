@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
@@ -79,7 +79,7 @@ export class BookItem extends React.PureComponent<Props> {
   }
 
   openBook = () => {
-    Linking.openURL(`http://fantlab.ru/work${this.book.id}`);
+    this.props.navigation.push('Details', { bookId: this.book.id });
   };
 
   openChangeStatusModal = () => {

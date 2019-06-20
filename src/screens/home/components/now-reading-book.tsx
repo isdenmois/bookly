@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
@@ -55,7 +55,7 @@ export class NowReadingBook extends React.Component<Props> {
   openChangeStatus = () =>
     this.props.navigation.navigate('/modal/change-status', { book: this.props.books[0], status: BOOK_STATUSES.READ });
 
-  openBook = () => Linking.openURL(`http://fantlab.ru/work${this.props.books[0].id}`);
+  openBook = () => this.props.navigation.push('Details', { bookId: this.props.books[0].id });
 }
 
 const s = StyleSheet.create({

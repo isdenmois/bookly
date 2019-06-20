@@ -9,6 +9,7 @@ import { SearchScreen } from 'screens/search/search.screen';
 import { ReadListScreen } from 'screens/book-list/read-list.screen';
 import { WishListScreen } from 'screens/book-list/wish-list.screen';
 import { ProfileScreen } from 'screens/profile/profile.screen';
+import { DetailsScreen } from 'screens/details/details.screen';
 
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
 import { BookSelectModal } from 'modals/book-select/book-select.modal';
@@ -20,6 +21,7 @@ const MainStack = {
   ReadList: ReadListScreen,
   WishList: WishListScreen,
   Profile: ProfileScreen,
+  Details: DetailsScreen,
 };
 
 const ModalStack = {
@@ -56,16 +58,16 @@ const createNavigator = initialRouteName =>
 
 const PERSISTENCE_KEY = 'REACT_DEV_NAVIGATION';
 
-export const persistNavigationState = async (nav) => {
+export const persistNavigationState = async nav => {
   if (!hasModals(nav)) {
-    await AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(nav))
+    await AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(nav));
   }
-}
+};
 
 export const loadNavigationState = async () => {
-  const jsonString = await AsyncStorage.getItem(PERSISTENCE_KEY)
-  return JSON.parse(jsonString)
-}
+  const jsonString = await AsyncStorage.getItem(PERSISTENCE_KEY);
+  return JSON.parse(jsonString);
+};
 
 export const create = route => createAppContainer(createNavigator(route));
 
