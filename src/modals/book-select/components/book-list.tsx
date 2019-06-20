@@ -23,20 +23,16 @@ interface Props {
   books: database.collections.get('books').query(...bookListQuery(search)),
 }))
 export class BookList extends React.Component<Props> {
-  sortBooks = sortBy(prop('title'))
+  sortBooks = sortBy(prop('title'));
 
   render() {
     if (isFalsy(this.props.books)) {
       return <Text style={s.emptyText}>Нет книг</Text>;
     }
 
-    const books = this.sortBooks(this.props.books)
+    const books = this.sortBooks(this.props.books);
 
-    return (
-      <ScrollView style={s.scroll}>
-        {map(this.renderBookItem, books)}
-      </ScrollView>
-    );
+    return <ScrollView style={s.scroll}>{map(this.renderBookItem, books)}</ScrollView>;
   }
 
   renderBookItem = (book, index) => {
@@ -57,13 +53,11 @@ export class BookList extends React.Component<Props> {
           <Text style={s.author}>{book.author}</Text>
         </View>
       </ListItem>
-    )
-  }
+    );
+  };
 
   thumbnail(book) {
-    return (
-      <Thumbnail style={s.thumbnail} auto={false} width={60} height={60} title={book.title} url={book.thumbnail} />
-    );
+    return <Thumbnail style={s.thumbnail} auto={null} width={60} height={60} title={book.title} url={book.thumbnail} />;
   }
 }
 

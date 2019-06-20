@@ -26,6 +26,7 @@
     "react-native": "0.59.9",
     "react-native-auto-height-image": "1.1.0",
     "react-native-classnames": "0.1.1",
+    "react-native-fast-image": "^6.0.3",
     "react-native-gesture-handler": "1.2.1",
     "react-native-modal-datetime-picker": "7.4.2",
     "react-native-screens": "1.0.0-alpha.22",
