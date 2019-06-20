@@ -24,9 +24,11 @@ export class Session {
   }
 
   @action setTotalBooks(totalBooks: number) {
-    this.totalBooks = totalBooks;
+    if (this.totalBooks !== totalBooks) {
+      this.totalBooks = totalBooks;
 
-    this.serializeSession();
+      this.serializeSession();
+    }
   }
 
   @action setSession(userId: string = null) {
