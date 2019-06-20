@@ -38,6 +38,7 @@ export class SearchBar extends React.Component<Props> {
           value={value}
           onChangeText={onChange}
           onSubmitEditing={this.toSearch}
+          returnKeyType='search'
         />
 
         {!!value && (
