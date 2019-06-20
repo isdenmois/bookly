@@ -1,13 +1,14 @@
 {
   "name": "bookly",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "web": "webpack-dev-server --config ./webpack.config.js --mode development --hot",
     "postinstall": "patch-package",
     "storybook": "storybook start -p 7007",
-    "lint": "tslint --project tsconfig.json"
+    "lint": "tslint --project tsconfig.json",
+    "release": "fastlane android release"
   },
   "dependencies": {
     "@nozbe/watermelondb": "0.12.3",
