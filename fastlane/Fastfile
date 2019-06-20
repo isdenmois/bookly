@@ -24,7 +24,7 @@ platform :android do
     diawi(
         token: ENV['DIAWI_TOKEN'],
         file: "android/app/build/outputs/apk/release/bookly-#{package['version']}.apk",
-        callback_emails: 'isdenmois@gmail.com'
+        callback_emails: ENV['DIAWI_EMAILS']
     )
   end
 
