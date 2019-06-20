@@ -18,6 +18,8 @@ class App extends React.Component {
   syncService = inject(this, SyncService);
   state = { isLoaded: false };
   cmp: any = null;
+  loadNavigationState: Function = null;
+  persistNavigationState: Function = null;
 
   constructor(props, context) {
     super(props, context);
@@ -34,15 +36,20 @@ class App extends React.Component {
     }
 
     if (!this.cmp) {
-      this.cmp = require('../router/routes').create(this.session.userId ? 'App' : 'Login');
+      const routes = require('../router/routes')
+
+      this.cmp = routes.create(this.session.userId ? 'App' : 'Login');
       SplashScreen.hide();
+
+      if (__DEV__) {
+        this.loadNavigationState = routes.loadNavigationState;
+        this.persistNavigationState = routes.persistNavigationState;
+      }
     }
 
     const RootStack = this.cmp;
 
-    const navigationPersistenceKey = __DEV__ ? 'NavigationStateDEV' : null;
-
-    return <RootStack persistenceKey={navigationPersistenceKey} />;
+    return <RootStack loadNavigationState={this.loadNavigationState} persistNavigationState={this.persistNavigationState} />;
   }
 }
 

@@ -54,23 +54,20 @@ const createNavigator = initialRouteName =>
     },
   );
 
-export const create = route => {
-  const Component: any = createAppContainer(createNavigator(route));
+const PERSISTENCE_KEY = 'REACT_DEV_NAVIGATION';
 
-  class PathcedComponent extends Component {
-    _persistNavigationState = async nav => {
-      const { persistenceKey } = this.props;
-
-      if (!persistenceKey || hasModals(nav)) {
-        return;
-      }
-
-      await AsyncStorage.setItem(persistenceKey, JSON.stringify(nav));
-    };
+export const persistNavigationState = async (nav) => {
+  if (!hasModals(nav)) {
+    await AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(nav))
   }
+}
 
-  return PathcedComponent;
-};
+export const loadNavigationState = async () => {
+  const jsonString = await AsyncStorage.getItem(PERSISTENCE_KEY)
+  return JSON.parse(jsonString)
+}
+
+export const create = route => createAppContainer(createNavigator(route));
 
 function isRouteModal(scene) {
   return scene && scene.routeName.startsWith('/modal');
