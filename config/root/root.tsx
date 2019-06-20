@@ -17,7 +17,7 @@ class App extends React.Component {
   session = inject(this, Session);
   syncService = inject(this, SyncService);
   state = { isLoaded: false };
-  cmp: any = null;
+  RootStack: any = null;
   loadNavigationState: Function = null;
   persistNavigationState: Function = null;
 
@@ -35,10 +35,10 @@ class App extends React.Component {
       return <ActivityIndicator />;
     }
 
-    if (!this.cmp) {
-      const routes = require('../router/routes')
+    if (!this.RootStack) {
+      const routes = require('../router/routes');
 
-      this.cmp = routes.create(this.session.userId ? 'App' : 'Login');
+      this.RootStack = routes.create(this.session.userId ? 'App' : 'Login');
       SplashScreen.hide();
 
       if (__DEV__) {
@@ -47,9 +47,9 @@ class App extends React.Component {
       }
     }
 
-    const RootStack = this.cmp;
+    const { RootStack, loadNavigationState, persistNavigationState } = this;
 
-    return <RootStack loadNavigationState={this.loadNavigationState} persistNavigationState={this.persistNavigationState} />;
+    return <RootStack loadNavigationState={loadNavigationState} persistNavigationState={persistNavigationState} />;
   }
 }
 
