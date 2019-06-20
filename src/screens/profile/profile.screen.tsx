@@ -7,6 +7,7 @@ import { Database } from '@nozbe/watermelondb';
 import { Session } from 'services';
 import { TouchIcon } from 'components/touch-icon';
 import { Button } from 'components/button';
+import { ChallengeEditor } from './components/challenge-editor';
 
 export class ProfileScreen extends React.Component<NavigationScreenProps> {
   static contextType = InjectorContext;
@@ -28,6 +29,9 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
           />
           <Text style={s.profile}>{this.session.userId}</Text>
         </View>
+
+        <ChallengeEditor session={this.session}/>
+
         <View style={s.buttonContainer}>
           <Button
             label='Выйти'
