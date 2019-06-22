@@ -34,7 +34,7 @@ export class BookDetails extends React.Component<Props> {
         {!record.thumbnail && this.renderMainInfoWithoutThumbnail()}
 
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 15 }}>
-          <ViewLine title='Тип' value={BOOK_TYPES[book.type]} />
+          <ViewLine first title='Тип' value={BOOK_TYPES[book.type]} />
 
           {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
           {!!book.year && <ViewLine title='Год' value={book.year} />}
@@ -67,8 +67,8 @@ export class BookDetails extends React.Component<Props> {
           </View>
         </ImageBackground>
 
-        <View style={{ alignSelf: 'flex-start', marginLeft: READ_BUTTON_MARGIN }}>
-          <ReadButton openChangeStatus={this.openChangeStatus} />
+        <View style={{ alignSelf: 'flex-start', marginLeft: READ_BUTTON_MARGIN, marginBottom: 20 }}>
+          <ReadButton openChangeStatus={this.openChangeStatus} book={record} />
         </View>
       </>
     );
@@ -85,7 +85,7 @@ export class BookDetails extends React.Component<Props> {
           <View style={{ alignItems: 'flex-start', marginHorizontal: 15, marginBottom: 15 }}>
             <Text style={{ color: 'white', fontSize: 24 }}>{record.title}</Text>
             <Text style={{ color: 'white', fontSize: 18 }}>{record.author}</Text>
-            <ReadButton openChangeStatus={this.openChangeStatus} />
+            <ReadButton openChangeStatus={this.openChangeStatus} book={record} />
           </View>
         </View>
       </View>

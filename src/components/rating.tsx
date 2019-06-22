@@ -43,26 +43,36 @@ interface RatingProps {
   value: number;
   size?: number;
   scale?: number;
+  withoutValue?: boolean;
+  starSize?: number;
   onChange?: (value: number) => void;
 }
 
 export class Rating extends React.PureComponent<RatingProps> {
-  static defaultProps = { size: SIZE };
+  static defaultProps: Partial<RatingProps> = { size: SIZE, starSize: 12 };
 
   render() {
-    const { value, size, scale } = this.props;
+    const { value, size, scale, starSize, withoutValue } = this.props;
 
     return (
       <View style={s.container}>
         {_.times(scale || size, index => (
-          <Icon key={index} style={s.star} solid={index < value} name={this.value(index)} />
+          <Icon key={index} size={starSize} style={s.star} solid={this.isSolid(index)} name={this.value(index)} />
         ))}
 
-        <TextM style={s.text}>
-          {value} / {size}
-        </TextM>
+        {!withoutValue && (
+          <TextM style={s.text}>
+            {value} / {size}
+          </TextM>
+        )}
       </View>
     );
+  }
+
+  isSolid(index) {
+    const max = this.props.scale || this.props.size;
+
+    return (index * this.props.size) / max < this.props.value;
   }
 
   value(index) {

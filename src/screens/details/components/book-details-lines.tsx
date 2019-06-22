@@ -3,6 +3,13 @@ import { Text, View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from '
 
 interface Props {
   description: string;
+  first?: boolean;
+}
+
+interface ViewListProps {
+  title: string;
+  value: any;
+  first?: boolean;
 }
 
 interface State {
@@ -16,7 +23,7 @@ export class BookDescriptionLine extends React.Component<Props, State> {
 
   render() {
     return (
-      <TouchableOpacity style={s.row} onPress={this.toggleExpand}>
+      <TouchableOpacity style={this.props.first ? null : s.row} onPress={this.toggleExpand}>
         <Text style={s.title}>Описание</Text>
         <Text style={s.value} numberOfLines={this.state.expanded ? null : 3}>
           {this.props.description}
@@ -27,11 +34,11 @@ export class BookDescriptionLine extends React.Component<Props, State> {
   toggleExpand = () => this.setState({ expanded: !this.state.expanded });
 }
 
-export function ViewLine({ title, value }) {
+export function ViewLine(props: ViewListProps) {
   return (
-    <View style={s.row}>
-      <Text style={s.title}>{title}</Text>
-      <Text style={s.value}>{value}</Text>
+    <View style={props.first ? null : s.row}>
+      <Text style={s.title}>{props.title}</Text>
+      <Text style={s.value}>{props.value}</Text>
     </View>
   );
 }
