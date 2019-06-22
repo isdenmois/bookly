@@ -29,7 +29,7 @@ export class DetailsScreen extends React.Component<NavigationScreenProps> {
       return this.renderError(error);
     }
 
-    return <BookDetails book={data} onBack={this.goBack} />;
+    return <BookDetails book={data} onBack={this.goBack} navigation={this.props.navigation} />;
   };
 
   renderError(error) {

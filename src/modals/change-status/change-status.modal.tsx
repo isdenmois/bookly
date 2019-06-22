@@ -71,7 +71,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   get defaultStatus() {
-    return this.props.status || BOOK_STATUSES.WISH;
+    return this.props.status || this.props.book.status || BOOK_STATUSES.WISH;
   }
 
   get disabled() {

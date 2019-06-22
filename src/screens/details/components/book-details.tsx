@@ -1,6 +1,7 @@
 import React from 'react';
 import Book from 'store/book';
 import { ImageBackground, Text, View, ScrollView } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
@@ -10,7 +11,7 @@ import { getAvatarBgColor } from 'components/avatar';
 import { BookDetailsHeader } from './book-details-header';
 import { BookDescriptionLine, ViewLine } from './book-details-lines';
 
-interface Props {
+interface Props extends NavigationScreenProps {
   book: BookExtended;
   record?: Book;
   onBack: () => void;
@@ -67,7 +68,7 @@ export class BookDetails extends React.Component<Props> {
         </ImageBackground>
 
         <View style={{ alignSelf: 'flex-start', marginLeft: READ_BUTTON_MARGIN }}>
-          <ReadButton openChangeStatus={() => null} />
+          <ReadButton openChangeStatus={this.openChangeStatus} />
         </View>
       </>
     );
@@ -84,10 +85,12 @@ export class BookDetails extends React.Component<Props> {
           <View style={{ alignItems: 'flex-start', marginHorizontal: 15, marginBottom: 15 }}>
             <Text style={{ color: 'white', fontSize: 24 }}>{record.title}</Text>
             <Text style={{ color: 'white', fontSize: 18 }}>{record.author}</Text>
-            <ReadButton openChangeStatus={() => null} />
+            <ReadButton openChangeStatus={this.openChangeStatus} />
           </View>
         </View>
       </View>
     );
   }
+
+  openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
 }
