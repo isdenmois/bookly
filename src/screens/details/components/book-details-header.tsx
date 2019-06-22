@@ -13,7 +13,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
       <View style={s.container}>
         <TouchIcon
           style={s.icon}
-          paddingHorizontal={10}
+          paddingHorizontal={15}
           paddingVertical={10}
           name='arrow-left'
           size={24}
@@ -22,7 +22,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
         />
         <TouchIcon
           style={s.icon}
-          paddingHorizontal={10}
+          paddingHorizontal={15}
           paddingVertical={10}
           name='globe'
           size={24}
