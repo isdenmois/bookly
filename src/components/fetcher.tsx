@@ -66,6 +66,9 @@ export class Fetcher extends React.PureComponent<Props> {
     this.props
       .api(this.props)
       .then(data => this.setState({ isLoading: false, data }))
-      .catch(error => this.setState({ isLoading: false, error }));
+      .catch(error => {
+        console.error(error);
+        this.setState({ isLoading: false, error });
+      });
   }
 }

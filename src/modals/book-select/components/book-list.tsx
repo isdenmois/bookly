@@ -7,7 +7,7 @@ import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Book from 'store/book';
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ListItem } from 'components/list-item';
 import { Thumbnail } from 'components/thumbnail';
 

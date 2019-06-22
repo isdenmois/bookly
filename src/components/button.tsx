@@ -8,7 +8,7 @@ interface Props {
   icon?: any;
   thin?: boolean;
   disabled?: boolean;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   textStyle?: TextStyle;
   onPress?: () => void;
 }
@@ -16,7 +16,7 @@ interface Props {
 export class Button extends React.Component<Props> {
   render() {
     const { icon, label, thin, disabled } = this.props;
-    const viewStyles = [cn(s, 'container', { thin, disabled }), this.props.style];
+    const viewStyles = [cn(s, 'container', { thin, disabled })].concat(this.props.style);
     const textStyles = [s.text, cn(s, icon && { icon: !thin, iconThin: thin }), this.props.textStyle];
     const Component: any = disabled ? View : TouchableOpacity;
 

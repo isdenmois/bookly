@@ -11,7 +11,7 @@ export function mapDatabase(context, collection, data) {
 
   const database = context.database || inject(context, Database);
   const c = database.collections.get(collection);
-  const query = Q.where('id', Q.oneOf(getIds(data)));
+  const query = Q.where('id', _.isArray(data) ? Q.oneOf(getIds(data)) : data.id);
   const fields = getFields(c);
 
   return c
@@ -46,7 +46,7 @@ function getIds(data) {
     return data.map(row => row.id);
   }
 
-  return data.id;
+  return [data.id];
 }
 
 function Observable(row) {

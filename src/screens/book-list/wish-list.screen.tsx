@@ -1,5 +1,5 @@
 import { InjectorContext } from 'react-ioc';
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ReadListScreen } from './read-list.screen';
 import { createQueryState } from './book-list.service';
 

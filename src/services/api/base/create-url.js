@@ -15,8 +15,8 @@ export function createUrl(url, context, params) {
 function replaceUrlParams(url, params) {
   const urlParams = (url.match(/:([\w]+)/g) || []).map(str => str.slice(1));
 
-  urlParams.forEach((value, param) => {
-    url = url.replace(`:${param}`, value);
+  urlParams.forEach(param => {
+    url = url.replace(`:${param}`, params[param]);
   });
 
   return [url, _.omit(params, urlParams)];

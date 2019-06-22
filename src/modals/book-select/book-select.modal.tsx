@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbSync } from 'services/db';
 import Book from 'store/book';
 import { Dialog } from 'components/dialog';

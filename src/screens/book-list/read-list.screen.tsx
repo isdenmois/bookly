@@ -4,7 +4,7 @@ import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookListHeader } from './components/book-list-header';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';

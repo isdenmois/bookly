@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import format from 'date-fns/format';
 import { BookData } from 'store/book';
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { createBook } from 'store/book';
 import { dbSync, dbAction } from 'services/db';
 import { Dialog } from 'components/dialog';

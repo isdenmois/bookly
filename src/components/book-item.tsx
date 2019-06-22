@@ -4,7 +4,7 @@ import withObservables from '@nozbe/with-observables';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
 import { Thumbnail } from 'components/thumbnail';
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book from 'store/book';
 
 const NEXT_STATUSES = {

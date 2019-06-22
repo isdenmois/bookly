@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'enums/colors';
+import { color } from 'types/colors';
 import { TextM } from 'components/text';
 
 const SIZE = 10;

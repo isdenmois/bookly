@@ -1,20 +1,6 @@
 import React from 'react';
+import { BOOK_TYPES } from 'types/book-types';
 import { EditableListItem } from './editable-list-item';
-
-const BOOK_TYPES = {
-  novel: 'Роман',
-  story: 'Повесть',
-  shortstory: 'Рассказ',
-  other: 'Прочее',
-  microstory: 'Микрорассказ',
-  documental: 'Документальное произведение',
-  collection: 'Сборник',
-  poem: 'Стихотворение',
-  piece: 'Пьеса',
-  cycle: 'Цикл',
-  epic: 'Роман-эпопея',
-  na: 'Не определено',
-};
 
 interface Props {
   value: any;

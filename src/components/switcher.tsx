@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import cn from 'react-native-classnames';
-import { color } from 'enums/colors';
+import { color } from 'types/colors';
 
 interface Option {
   key: any;

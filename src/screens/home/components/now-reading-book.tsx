@@ -6,10 +6,10 @@ import { Database } from '@nozbe/watermelondb';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Book from 'store/book';
 import { currentBooksQuery } from '../home.service';
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Thumbnail } from 'components/thumbnail';
 import { TextXL } from 'components/text';
-import { Button } from 'components/button';
+import { ReadButton } from 'components/read-button';
 const { withNavigation } = require('react-navigation');
 
 interface Props extends Partial<NavigationScreenProps> {
@@ -39,14 +39,7 @@ export class NowReadingBook extends React.Component<Props> {
             <TextXL style={s.title}>{book.title}</TextXL>
           </TouchableOpacity>
           <Text style={s.author}>{book.author}</Text>
-          <Button
-            label='Сейчас читаю'
-            icon={<Icon name='clock' size={18} color='#F57C00' />}
-            style={s.orange}
-            textStyle={s.textOrange}
-            onPress={this.openChangeStatus}
-            thin
-          />
+          <ReadButton openChangeStatus={this.openChangeStatus} />
         </View>
       </View>
     );
@@ -72,14 +65,6 @@ const s = StyleSheet.create({
     alignItems: 'flex-start',
     flex: 1,
   } as ViewStyle,
-  orange: {
-    backgroundColor: '#FFE0B2',
-    marginTop: 10,
-  } as ViewStyle,
-  textOrange: {
-    fontSize: 18,
-    color: '#F57C00',
-  } as TextStyle,
   title: {
     color: 'black',
   } as TextStyle,

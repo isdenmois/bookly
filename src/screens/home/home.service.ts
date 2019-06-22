@@ -1,7 +1,7 @@
 import { inject } from 'react-ioc';
 import { Database, Q } from '@nozbe/watermelondb';
 import { SyncService } from 'services';
-import { BOOK_STATUSES } from 'enums/book-statuses.enum';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
