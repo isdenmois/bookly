@@ -9,7 +9,7 @@ import { Thumbnail } from 'components/thumbnail';
 import { ReadButton } from 'components/read-button';
 import { getAvatarBgColor } from 'components/avatar';
 import { BookDetailsHeader } from './book-details-header';
-import { BookDescriptionLine, ViewLine } from './book-details-lines';
+import { BookDescriptionLine, ViewLine, ViewLineTouchable } from './book-details-lines';
 
 interface Props extends NavigationScreenProps {
   book: BookExtended;
@@ -39,11 +39,13 @@ export class BookDetails extends React.Component<Props> {
           {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
           {!!book.year && <ViewLine title='Год' value={book.year} />}
 
-          <BookDescriptionLine description={book.description} />
-
           {!!book.editionCount && <ViewLine title='Изданий' value={book.editionCount} />}
           <ViewLine title='Язык написания' value={book.language} />
-          <ViewLine title='Оригинальное название' value={book.originalTitle} />
+          {!!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
+
+          {!!book.description && <BookDescriptionLine description={book.description} />}
+
+          {!!book.parent.length && this.renderParenBooks()}
         </ScrollView>
       </View>
     );
@@ -92,5 +94,19 @@ export class BookDetails extends React.Component<Props> {
     );
   }
 
+  renderParenBooks() {
+    return (
+      <View style={{ marginTop: 15 }}>
+        <Text>ВХОДИТ В</Text>
+
+        {this.props.book.parent.map(book => (
+          <ViewLineTouchable key={book.id} onPress={() => this.openParent(book)} title={book.type} value={book.title} />
+        ))}
+      </View>
+    );
+  }
+
   openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
+
+  openParent = book => this.props.navigation.push('Details', { bookId: book.id });
 }

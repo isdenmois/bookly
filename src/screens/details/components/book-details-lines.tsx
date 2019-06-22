@@ -3,13 +3,16 @@ import { Text, View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from '
 
 interface Props {
   description: string;
-  first?: boolean;
 }
 
 interface ViewListProps {
   title: string;
-  value: any;
+  value?: any;
   first?: boolean;
+}
+
+interface ViewListTouchableProps extends ViewListProps {
+  onPress: () => void;
 }
 
 interface State {
@@ -23,8 +26,8 @@ export class BookDescriptionLine extends React.Component<Props, State> {
 
   render() {
     return (
-      <TouchableOpacity style={this.props.first ? null : s.row} onPress={this.toggleExpand}>
-        <Text style={s.title}>Описание</Text>
+      <TouchableOpacity style={s.descriptionRow} onPress={this.toggleExpand}>
+        <Text style={s.title}>ОПИСАНИЕ</Text>
         <Text style={s.value} numberOfLines={this.state.expanded ? null : 3}>
           {this.props.description}
         </Text>
@@ -43,9 +46,23 @@ export function ViewLine(props: ViewListProps) {
   );
 }
 
+export function ViewLineTouchable(props: ViewListTouchableProps) {
+  return (
+    <View style={props.first ? null : s.row}>
+      <Text style={s.title}>{props.title}</Text>
+      <TouchableOpacity onPress={props.onPress} style={s.value}>
+        <Text style={s.value}>{props.value}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 const s = StyleSheet.create({
   row: {
     marginVertical: 10,
+  } as ViewStyle,
+  descriptionRow: {
+    marginVertical: 15,
   } as ViewStyle,
   title: {
     color: '#757575',

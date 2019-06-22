@@ -8,4 +8,11 @@ export interface BookExtended extends BookData {
   originalTitle: string;
   editionCount: number;
   genre: string;
+  parent: ParentBook[];
+}
+
+export interface ParentBook {
+  id: string;
+  title: string;
+  type: string;
 }

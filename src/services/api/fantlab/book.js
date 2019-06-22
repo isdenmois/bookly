@@ -18,13 +18,14 @@ export const mapBody = {
   thumbnail: w => (w.image ? `https:${w.image}` : null),
   year: w => w.work_year_of_write || w.work_year,
   description: 'work_description',
-  language: 'lang',
+  language: w => _.capitalize(w.lang),
   languageId: 'lang_code',
   originalTitle: 'work_name_orig',
   type: 'work_type_name',
   editionCount,
   genre,
   searchTitles,
+  parent,
 };
 
 function editionCount(book) {
@@ -43,4 +44,12 @@ function searchTitles(w) {
   return _.flatten([w.work_name, w.work_name_orig, w.work_name_alts])
     .filter(_.identity)
     .join(';');
+}
+
+function parent(w) {
+  return _.map(w.work_root_saga, s => ({
+    id: s.work_id,
+    title: s.work_name,
+    type: _.capitalize(s.work_type) || 'Другое',
+  })).filter(p => p.id);
 }
