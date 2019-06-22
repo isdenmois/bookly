@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { StyleSheet, View, Text } from 'react-native';
+import { of } from 'rxjs';
 import { BookItem } from '../book-item';
 
 const books: any[] = [
@@ -16,6 +17,10 @@ const books: any[] = [
     author: 'Стивен Кинг',
   },
 ];
+
+books.forEach(b => {
+  b.record = of(b);
+});
 
 storiesOf('BookItem').add('Usage', () => (
   <View style={s.centered}>
