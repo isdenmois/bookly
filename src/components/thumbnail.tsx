@@ -13,9 +13,10 @@ interface Props {
   auto?: string;
   style?: ImageStyle;
   resizeMode?: Image.ResizeMode;
+  cache?: boolean;
 }
 
-export function Thumbnail({ auto, style, title, width, height, url, resizeMode }: Props) {
+export function Thumbnail({ auto, style, title, width, height, url, resizeMode, cache }: Props) {
   if (!url) {
     return <Avatar style={style} width={width} height={height} title={title} />;
   }
@@ -28,9 +29,12 @@ export function Thumbnail({ auto, style, title, width, height, url, resizeMode }
     return <AutoWithImage width={width} height={height} style={style} url={url} />;
   }
 
-  return <Image style={[style, { width, height }]} source={{ uri: url }} resizeMode={resizeMode} />;
+  const source = { uri: url, cache: cache ? Image.cacheControl.immutable : Image.cacheControl.web };
+
+  return <Image style={[style, { width, height }]} source={source} resizeMode={resizeMode} />;
 }
 
 Thumbnail.defaultProps = {
   auto: 'height',
+  cache: true,
 };

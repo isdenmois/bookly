@@ -30,12 +30,15 @@ interface Props extends Partial<NavigationScreenProps> {
   record?: Book;
   book?: Book;
   nextStatus?: BOOK_STATUSES;
+  cacheThumbnail?: boolean;
 }
 
 @withObservables(['book'], ({ book }) => ({
   record: book.record || book,
 }))
 export class BookItem extends React.PureComponent<Props> {
+  static defaultProps: Props = { cacheThumbnail: true };
+
   get book() {
     return this.props.record || this.props.book;
   }
@@ -53,12 +56,21 @@ export class BookItem extends React.PureComponent<Props> {
     const nextStatus = this.nextStatus;
     const statusIcon = book.status === BOOK_STATUSES.READ ? 'star' : STATUS_ICONS[nextStatus];
     const statusColor = STATUS_COLORS[statusIcon];
+    const cache = this.props.cacheThumbnail;
 
     return (
       <View style={s.container}>
         <TouchableOpacity style={s.thumbnailView} onPress={this.openBook}>
           <View style={s.thumbnail}>
-            <Thumbnail auto={null} style={s.image} width={65} height={100} title={book.title} url={book.thumbnail} />
+            <Thumbnail
+              cache={cache}
+              auto={null}
+              style={s.image}
+              width={65}
+              height={100}
+              title={book.title}
+              url={book.thumbnail}
+            />
           </View>
         </TouchableOpacity>
 
