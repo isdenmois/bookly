@@ -48,7 +48,7 @@ export class Fetcher extends React.PureComponent<Props> {
 
   render() {
     if (this.state.isLoading) {
-      return <ActivityIndicator size='large' />;
+      return <ActivityIndicator style={{ flex: 1, alignSelf: 'center' }} size='large' />;
     }
 
     if (!this.state.error && _.isEmpty(this.state.data)) {
