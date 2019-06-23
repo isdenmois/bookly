@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import { times } from 'rambdax';
 import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
@@ -17,22 +17,23 @@ interface RatingSelectProps {
 export class RatingSelect extends React.PureComponent<RatingSelectProps> {
   static defaultProps = { size: SIZE };
 
+  renderStars = times(index => (
+    <Icon
+      key={index}
+      style={s.star}
+      name='star'
+      size={20}
+      solid={index < this.props.value}
+      onPress={() => this.props.onChange(index + 1)}
+    />
+  ));
+
   render() {
     const { value, size, style } = this.props;
 
     return (
       <View style={[s.container, style]}>
-        {_.times(size, index => (
-          <Icon
-            key={index}
-            style={s.star}
-            name='star'
-            size={20}
-            solid={index < value}
-            onPress={() => this.props.onChange(index + 1)}
-          />
-        ))}
-
+        {this.renderStars(size)}
         <TextM style={s.text}>{value}</TextM>
       </View>
     );
@@ -51,14 +52,16 @@ interface RatingProps {
 export class Rating extends React.PureComponent<RatingProps> {
   static defaultProps: Partial<RatingProps> = { size: SIZE, starSize: 12 };
 
+  renderStars = times(index => (
+    <Icon key={index} size={this.props.starSize} style={s.star} solid={this.isSolid(index)} name={this.value(index)} />
+  ));
+
   render() {
-    const { value, size, scale, starSize } = this.props;
+    const { value, size, scale } = this.props;
 
     return (
       <View style={s.container}>
-        {_.times(scale || size, index => (
-          <Icon key={index} size={starSize} style={s.star} solid={this.isSolid(index)} name={this.value(index)} />
-        ))}
+        {this.renderStars(scale || size)}
 
         <TextM style={[s.text, this.props.textStyle]}>
           {value} / {size}

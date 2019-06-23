@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import { omit } from 'rambdax';
 import { Route, Redirect } from 'react-router-dom';
 import { inject, InjectorContext } from 'react-ioc';
 import { Session } from 'services/session';
@@ -29,7 +29,7 @@ export class PrivateRoute extends React.Component<any> {
   };
 
   render() {
-    const rest = _.omit(this.props, ['component']);
+    const rest = omit('component', this.props);
 
     return <Route {...rest} render={this.renderRoute} />;
   }
