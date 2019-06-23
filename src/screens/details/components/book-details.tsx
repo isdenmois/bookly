@@ -70,7 +70,7 @@ export class BookDetails extends React.Component<Props> {
         </ImageBackground>
 
         <View style={s.statusButton}>
-          <ReadButton openChangeStatus={this.openChangeStatus} book={record} />
+          <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={record} />
         </View>
       </>
     );
@@ -87,7 +87,7 @@ export class BookDetails extends React.Component<Props> {
           <View style={s.mainInformationWithoutThumbnail}>
             <Text style={s.title}>{record.title}</Text>
             <Text style={s.author}>{record.author}</Text>
-            <ReadButton openChangeStatus={this.openChangeStatus} book={record} />
+            <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={record} />
           </View>
         </View>
       </View>
@@ -165,4 +165,12 @@ const s = StyleSheet.create({
   parentBooks: {
     marginTop: 15,
   } as ViewStyle,
+  blackRating: {
+    color: 'black',
+    fontSize: 18,
+  } as TextStyle,
+  whiteRating: {
+    color: 'white',
+    fontSize: 18,
+  } as TextStyle,
 });

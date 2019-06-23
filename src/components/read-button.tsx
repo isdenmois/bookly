@@ -10,6 +10,7 @@ interface Props {
   openChangeStatus: () => void;
   book: BookData;
   style?: ViewStyle;
+  ratingStyle?: TextStyle;
 }
 
 export function ReadButton(props: Props) {
@@ -31,7 +32,7 @@ export function ReadButton(props: Props) {
   if (status === BOOK_STATUSES.READ) {
     return (
       <TouchableOpacity style={s.rating} onPress={props.openChangeStatus}>
-        <Rating starSize={24} scale={5} value={props.book.rating} />
+        <Rating textStyle={props.ratingStyle} starSize={24} scale={5} value={props.book.rating} />
       </TouchableOpacity>
     );
   }
