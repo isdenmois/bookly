@@ -26,8 +26,13 @@ const s = StyleSheet.create({
 
 export function getAvatarInitials(name: string): string {
   if (name) {
-    const words = name
-      .match(CHARS_ONLY)
+    let words = name.match(CHARS_ONLY);
+
+    if (!words) {
+      return '';
+    }
+
+    words = words
       .join('')
       .trim()
       .split(WORDS_SPLIT_REGEX)
