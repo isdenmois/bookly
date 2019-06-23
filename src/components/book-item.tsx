@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
+import format from 'date-fns/format';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
 import { Thumbnail } from 'components/thumbnail';
@@ -72,6 +73,7 @@ export class BookItem extends React.PureComponent<Props> {
               <Icon name={statusIcon} size={20} color={statusColor} />
               {book.status === BOOK_STATUSES.READ && <Text style={s.iconText}>{book.rating}</Text>}
             </View>
+            {book.status === BOOK_STATUSES.READ && <Text style={s.date}>{format(book.date, 'DD.MM.YYYY')}</Text>}
           </TouchableOpacity>
         </TouchableOpacity>
       </View>
@@ -148,6 +150,10 @@ const s = StyleSheet.create({
   } as TextStyle,
   author: {
     fontSize: 12,
+    color: '#757575',
+  } as TextStyle,
+  date: {
+    fontSize: 10,
     color: '#757575',
   } as TextStyle,
 });

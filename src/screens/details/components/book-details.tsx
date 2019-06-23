@@ -1,10 +1,12 @@
 import React from 'react';
-import Book from 'store/book';
+import format from 'date-fns/format';
 import { ImageBackground, Text, View, ScrollView, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
+import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Thumbnail } from 'components/thumbnail';
 import { ReadButton } from 'components/read-button';
 import { getAvatarBgColor } from 'components/avatar';
@@ -38,6 +40,10 @@ export class BookDetails extends React.Component<Props> {
 
           {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
           {!!book.year && <ViewLine title='Год' value={book.year} />}
+
+          {record.status === BOOK_STATUSES.READ && (
+            <ViewLine title='Дата прочтения' value={format(record.date, 'DD.MM.YYYY')} />
+          )}
 
           {!!book.editionCount && <ViewLine title='Изданий' value={book.editionCount} />}
           <ViewLine title='Язык написания' value={book.language} />
