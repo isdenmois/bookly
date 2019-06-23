@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpacity } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookData } from 'store/book';
 import { Button } from 'components/button';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { inject, InjectorContext } from 'react-ioc';
 import { FantlabAPI } from 'api';
@@ -8,7 +8,7 @@ import { BookExtended } from 'types/book-extended';
 import { BookDetails } from './components/book-details';
 
 function EmptyResult() {
-  return <Text>EMpty</Text>;
+  return <Text>No data</Text>;
 }
 
 export class DetailsScreen extends React.Component<NavigationScreenProps> {

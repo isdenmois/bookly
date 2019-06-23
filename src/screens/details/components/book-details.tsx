@@ -1,6 +1,6 @@
 import React from 'react';
 import Book from 'store/book';
-import { ImageBackground, Text, View, ScrollView } from 'react-native';
+import { ImageBackground, Text, View, ScrollView, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
 import { BookExtended } from 'types/book-extended';
@@ -29,11 +29,11 @@ export class BookDetails extends React.Component<Props> {
     const { book, record } = this.props;
 
     return (
-      <View style={{ flexDirection: 'column', alignItems: 'stretch', flex: 1 }}>
+      <View style={s.container}>
         {!!record.thumbnail && this.renderMainInfoWithThumbnail()}
         {!record.thumbnail && this.renderMainInfoWithoutThumbnail()}
 
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 15 }}>
+        <ScrollView style={s.scroll} contentContainerStyle={s.scrollContent}>
           <ViewLine first title='Тип' value={BOOK_TYPES[book.type]} />
 
           {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
@@ -45,7 +45,7 @@ export class BookDetails extends React.Component<Props> {
 
           {!!book.description && <BookDescriptionLine description={book.description} />}
 
-          {!!book.parent.length && this.renderParenBooks()}
+          {!!book.parent.length && this.renderParentBooks()}
         </ScrollView>
       </View>
     );
@@ -56,20 +56,20 @@ export class BookDetails extends React.Component<Props> {
 
     return (
       <>
-        <ImageBackground style={{ width: '100%' }} blurRadius={1.5} source={{ uri: record.thumbnail }}>
-          <View style={{ backgroundColor: 'rgba(0,0,0,.5)' }}>
+        <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: record.thumbnail }}>
+          <View style={s.darkOverlay}>
             <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
-            <View style={{ flexDirection: 'row', marginBottom: -50, marginTop: MARGIN }}>
-              <Thumbnail style={{ marginLeft: MARGIN }} width={120} url={record.thumbnail} />
-              <View style={{ marginLeft: MARGIN, marginTop: MARGIN, marginBottom: 65, flex: 1, overflow: 'hidden' }}>
-                <Text style={{ color: 'white', fontSize: 24 }}>{record.title}</Text>
-                <Text style={{ color: 'white', fontSize: 18 }}>{record.author}</Text>
+            <View style={s.mainInformationContainer}>
+              <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />
+              <View style={s.mainInformation}>
+                <Text style={s.title}>{record.title}</Text>
+                <Text style={s.author}>{record.author}</Text>
               </View>
             </View>
           </View>
         </ImageBackground>
 
-        <View style={{ alignSelf: 'flex-start', marginLeft: READ_BUTTON_MARGIN, marginBottom: 20 }}>
+        <View style={s.statusButton}>
           <ReadButton openChangeStatus={this.openChangeStatus} book={record} />
         </View>
       </>
@@ -82,11 +82,11 @@ export class BookDetails extends React.Component<Props> {
 
     return (
       <View style={{ backgroundColor }}>
-        <View style={{ backgroundColor: 'rgba(0,0,0,.5)' }}>
+        <View style={s.darkOverlay}>
           <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
-          <View style={{ alignItems: 'flex-start', marginHorizontal: 15, marginBottom: 15 }}>
-            <Text style={{ color: 'white', fontSize: 24 }}>{record.title}</Text>
-            <Text style={{ color: 'white', fontSize: 18 }}>{record.author}</Text>
+          <View style={s.mainInformationWithoutThumbnail}>
+            <Text style={s.title}>{record.title}</Text>
+            <Text style={s.author}>{record.author}</Text>
             <ReadButton openChangeStatus={this.openChangeStatus} book={record} />
           </View>
         </View>
@@ -94,9 +94,9 @@ export class BookDetails extends React.Component<Props> {
     );
   }
 
-  renderParenBooks() {
+  renderParentBooks() {
     return (
-      <View style={{ marginTop: 15 }}>
+      <View style={s.parentBooks}>
         <Text>ВХОДИТ В</Text>
 
         {this.props.book.parent.map(book => (
@@ -110,3 +110,59 @@ export class BookDetails extends React.Component<Props> {
 
   openParent = book => this.props.navigation.push('Details', { bookId: book.id });
 }
+
+const s = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    flex: 1,
+  } as ViewStyle,
+  scroll: {
+    flex: 1,
+  } as ViewStyle,
+  scrollContent: {
+    padding: 15,
+  } as ViewStyle,
+  imageBackground: {
+    width: '100%',
+  } as ViewStyle,
+  darkOverlay: {
+    backgroundColor: 'rgba(0,0,0,.5)',
+  } as ViewStyle,
+  mainInformationContainer: {
+    flexDirection: 'row',
+    marginBottom: -50,
+    marginTop: MARGIN,
+  } as ViewStyle,
+  thumbnail: {
+    marginLeft: MARGIN,
+  } as ImageStyle,
+  mainInformation: {
+    marginLeft: MARGIN,
+    marginTop: MARGIN,
+    marginBottom: 65,
+    flex: 1,
+    overflow: 'hidden',
+  } as ViewStyle,
+  title: {
+    color: 'white',
+    fontSize: 24,
+  } as TextStyle,
+  author: {
+    color: 'white',
+    fontSize: 18,
+  } as TextStyle,
+  statusButton: {
+    alignSelf: 'flex-start',
+    marginLeft: READ_BUTTON_MARGIN,
+    marginBottom: 20,
+  } as TextStyle,
+  mainInformationWithoutThumbnail: {
+    alignItems: 'flex-start',
+    marginHorizontal: 15,
+    marginBottom: 15,
+  } as ViewStyle,
+  parentBooks: {
+    marginTop: 15,
+  } as ViewStyle,
+});

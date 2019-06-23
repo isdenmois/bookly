@@ -16,6 +16,7 @@
     "no-var-requires": false,
     "member-ordering": false,
     "one-variable-per-declaration": false,
-    "max-classes-per-file": false
+    "max-classes-per-file": false,
+    "no-unused-expression": [true]
   }
 }
