@@ -35,6 +35,7 @@ export class BookYearFilter extends React.PureComponent<Props> {
   setYear = value => {
     if (!value || +value) {
       this.props.onChange('year', +value || null);
+      this.props.onChange('date', null);
     }
   };
 }

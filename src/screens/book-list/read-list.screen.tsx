@@ -15,7 +15,7 @@ const defaultFilters = {
   year: 2019,
 };
 
-const READ_LIST_FILTERS = ['year', 'author', 'type'];
+const READ_LIST_FILTERS = ['year', 'author', 'type', 'date'];
 
 const READ_LIST_SORTS = ['date', 'title', 'rating', 'author', 'id'];
 

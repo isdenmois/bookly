@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
+const HALF_DAY = 12 * 60 * 60 * 1000;
+
 const ON_FITLERS = {
   author: authorFilter,
 };
@@ -9,6 +11,7 @@ const WHERE_FILTERS = {
   status: whereFilter('status'),
   year: yearFilter,
   type: whereFilter('type'),
+  date: dateFilter,
 };
 
 export function createQueryState(filters, sort) {
@@ -37,4 +40,10 @@ function yearFilter(year) {
 
 function authorFilter(id) {
   return Q.on('book_authors', 'author_id', id);
+}
+
+function dateFilter({ from, to }) {
+  const dateFilter = Q.between(from.getTime() - HALF_DAY, to.getTime() + HALF_DAY);
+
+  return Q.where('date', dateFilter);
 }
