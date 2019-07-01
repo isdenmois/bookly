@@ -16,3 +16,10 @@ export interface ParentBook {
   title: string;
   type: string;
 }
+
+export interface ChildBook {
+  id: string;
+  title: string;
+  type: string;
+  year?: number;
+}

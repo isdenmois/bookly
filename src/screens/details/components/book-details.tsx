@@ -51,6 +51,8 @@ export class BookDetails extends React.Component<Props> {
 
           {!!book.description && <BookDescriptionLine description={book.description} />}
 
+          {!!book.children.length && this.renderChildrenBooks()}
+
           {!!book.parent.length && this.renderParentBooks()}
         </ScrollView>
       </View>
@@ -106,15 +108,42 @@ export class BookDetails extends React.Component<Props> {
         <Text>ВХОДИТ В</Text>
 
         {this.props.book.parent.map(book => (
-          <ViewLineTouchable key={book.id} onPress={() => this.openParent(book)} title={book.type} value={book.title} />
+          <ViewLineTouchable key={book.id} onPress={() => this.openBook(book)} title={book.type} value={book.title} />
         ))}
       </View>
     );
   }
 
+  renderChildrenBooks() {
+    return (
+      <View style={s.parentBooks}>
+        <Text>СОДЕРЖИТ</Text>
+
+        {this.props.book.children.map(book => (
+          <ViewLineTouchable
+            key={book.id}
+            onPress={() => this.openBook(book)}
+            title={book.type}
+            value={this.getChildBookTitle(book)}
+          />
+        ))}
+      </View>
+    );
+  }
+
+  getChildBookTitle(book) {
+    if (book.year) {
+      return `${book.title} (${book.year})`;
+    }
+
+    return book.title;
+  }
+
   openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
 
-  openParent = book => this.props.navigation.push('Details', { bookId: book.id });
+  openBook(book) {
+    this.props.navigation.push('Details', { bookId: book.id });
+  }
 }
 
 const s = StyleSheet.create({

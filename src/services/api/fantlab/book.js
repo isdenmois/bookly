@@ -26,6 +26,7 @@ export const mapBody = {
   genre,
   searchTitles,
   parent,
+  children,
 };
 
 function editionCount(book) {
@@ -54,4 +55,13 @@ function parent(w) {
       type: _.capitalize(_.get(group, '[0].work_type', '')) || 'Другое',
     })),
   ).filter(p => p.id);
+}
+
+function children(w) {
+  return _.filter(w.children, c => +c.deep === 1 && c.work_id).map(c => ({
+    id: c.work_id,
+    title: c.work_name || c.work_name_alt || c.work_name_orig,
+    type: _.capitalize(c.work_type) || 'Другое',
+    year: c.work_year,
+  }));
 }
