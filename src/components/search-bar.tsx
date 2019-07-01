@@ -14,6 +14,8 @@ interface Props {
 }
 
 export class SearchBar extends React.Component<Props> {
+  input: TextInput;
+
   render() {
     const { style, value, onChange, onBack } = this.props;
 
@@ -39,6 +41,7 @@ export class SearchBar extends React.Component<Props> {
           onChangeText={onChange}
           onSubmitEditing={this.toSearch}
           returnKeyType='search'
+          ref={this.setInputRef}
         />
 
         {!!value && (
@@ -55,7 +58,18 @@ export class SearchBar extends React.Component<Props> {
     );
   }
 
-  clear = () => this.props.onChange('');
+  setInputRef = input => (this.input = input);
+
+  focus() {
+    if (this.input) {
+      this.input.focus();
+    }
+  }
+
+  clear = () => {
+    this.props.onChange('');
+    this.focus();
+  };
 
   toSearch = () => this.props.value && this.props.onSearch(this.props.value);
 }
