@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, StyleSheet, TextStyle } from 'react-native';
+import { map, sortBy, prop, isFalsy } from 'rambdax';
 import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
 import Author from 'store/author';
@@ -25,6 +26,8 @@ interface State {
 export class BookAuthorFilter extends React.PureComponent<Props, State> {
   state: State = { name: '' };
 
+  sortAuthors = sortBy(prop('name'));
+
   render() {
     if (!this.props.authors) return null;
     let authors = this.props.authors;
@@ -37,7 +40,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
     return (
       <EditableListItem
         title='Автор'
-        fields={authors}
+        fields={this.sortAuthors(authors)}
         labelKey='name'
         value={this.props.value}
         onChange={this.setAuthor}
