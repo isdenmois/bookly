@@ -47,9 +47,11 @@ function searchTitles(w) {
 }
 
 function parent(w) {
-  return _.map(w.work_root_saga, s => ({
-    id: s.work_id,
-    title: s.work_name,
-    type: _.capitalize(s.work_type) || 'Другое',
-  })).filter(p => p.id);
+  return _.flatMap(w.parents, type =>
+    _.map(type, group => ({
+      id: _.get(group, '[0].work_id'),
+      title: _.get(group, '[0].work_name'),
+      type: _.capitalize(_.get(group, '[0].work_type', '')) || 'Другое',
+    })),
+  ).filter(p => p.id);
 }
