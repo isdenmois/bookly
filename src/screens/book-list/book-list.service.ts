@@ -12,6 +12,7 @@ const WHERE_FILTERS = {
   year: yearFilter,
   type: whereFilter('type'),
   date: dateFilter,
+  rating: ratingFilter,
 };
 
 export function createQueryState(filters, sort) {
@@ -46,4 +47,8 @@ function dateFilter({ from, to }) {
   const dateFilter = Q.between(from.getTime() - HALF_DAY, to.getTime() + HALF_DAY);
 
   return Q.where('date', dateFilter);
+}
+
+function ratingFilter({ from, to }) {
+  return Q.where('rating', Q.between(from, to));
 }

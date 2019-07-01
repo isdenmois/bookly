@@ -4,6 +4,7 @@ require('./button.stories');
 require('./card.stories');
 require('./counter.stories');
 require('./list-item.stories');
+require('./rating.stories');
 require('./search-bar.stories');
 require('./switcher.stories');
 require('./text.stories');

@@ -7,39 +7,6 @@ import { TextM } from 'components/text';
 
 const SIZE = 10;
 
-interface RatingSelectProps {
-  value: number;
-  size?: number;
-  style?: ViewStyle;
-  onChange?: (value: number) => void;
-}
-
-export class RatingSelect extends React.PureComponent<RatingSelectProps> {
-  static defaultProps = { size: SIZE };
-
-  renderStars = times(index => (
-    <Icon
-      key={index}
-      style={s.star}
-      name='star'
-      size={20}
-      solid={index < this.props.value}
-      onPress={() => this.props.onChange(index + 1)}
-    />
-  ));
-
-  render() {
-    const { value, size, style } = this.props;
-
-    return (
-      <View style={[s.container, style]}>
-        {this.renderStars(size)}
-        <TextM style={s.text}>{value}</TextM>
-      </View>
-    );
-  }
-}
-
 interface RatingProps {
   value: number;
   size?: number;

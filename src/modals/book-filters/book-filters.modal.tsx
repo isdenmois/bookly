@@ -12,6 +12,7 @@ import { BookYearFilter } from './components/book-year-filter';
 import { BookAuthorFilter } from './components/book-author-filter';
 import { BookTypeFilter } from './components/book-type-filter';
 import { BookDateFilter } from './components/book-date-filter';
+import { BookRatingFilter } from './components/book-rating-filter';
 const { withMappedNavigationParams } = require('react-navigation-props-mapper');
 
 const FILTER_COMPONENTS_MAP = {
@@ -19,6 +20,7 @@ const FILTER_COMPONENTS_MAP = {
   author: BookAuthorFilter,
   type: BookTypeFilter,
   date: BookDateFilter,
+  rating: BookRatingFilter,
 };
 
 interface Props extends NavigationScreenProps {
