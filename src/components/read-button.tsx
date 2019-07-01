@@ -39,7 +39,7 @@ export function ReadButton(props: Props) {
 
   return (
     <Button
-      label='Хочу прочитать'
+      label={status === BOOK_STATUSES.WISH ? 'Хочу прочитать' : 'Добавить'}
       icon={<Icon name='bookmark' size={18} color='#009688' />}
       style={[props.style, s.green]}
       textStyle={s.textGreen}
