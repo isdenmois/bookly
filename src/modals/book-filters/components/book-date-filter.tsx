@@ -1,6 +1,6 @@
 import React from 'react';
 import format from 'date-fns/format';
-import { Text, StyleSheet, ViewStyle, TextStyle, View } from 'react-native';
+import { Text, StyleSheet, ViewStyle, TextStyle, View, TouchableOpacity } from 'react-native';
 import { Calendar, DateObject } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { ListItem } from 'components/list-item';
@@ -31,9 +31,12 @@ export class BookDateFilter extends React.PureComponent<Props> {
     return (
       <ListItem rowStyle={s.list} onPress={opened ? null : this.openCalendar}>
         {!opened && <Text style={s.title}>Дата</Text>}
-        <View style={s.container}>
-          {opened && <Text style={s.title}>Дата</Text>}
-          {opened && (
+        {opened && (
+          <View style={s.container}>
+            <TouchableOpacity onPress={this.closeCalendar}>
+              <Text style={s.title}>Дата</Text>
+            </TouchableOpacity>
+
             <View style={s.calendarRow}>
               <TouchIcon
                 paddingVertical={16}
@@ -64,8 +67,8 @@ export class BookDateFilter extends React.PureComponent<Props> {
                 onPress={this.addYear}
               />
             </View>
-          )}
-        </View>
+          </View>
+        )}
         {defined && !opened && (
           <Text style={s.value}>
             {format(from, DATE_FORMAT)} - {format(to, DATE_FORMAT)}

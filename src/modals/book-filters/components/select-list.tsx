@@ -9,6 +9,7 @@ interface Props {
   value: string;
   labelKey: string;
   onChange: (id: string) => void;
+  onClose: () => void;
 }
 
 export class SelectList extends React.PureComponent<Props> {
@@ -16,7 +17,9 @@ export class SelectList extends React.PureComponent<Props> {
     return (
       <View style={s.container}>
         <View style={s.headerRow}>
-          <Text style={s.title}>{this.props.title}</Text>
+          <TouchableOpacity onPress={this.props.onClose}>
+            <Text style={s.title}>{this.props.title}</Text>
+          </TouchableOpacity>
           {this.props.children}
         </View>
         {this.renderList()}

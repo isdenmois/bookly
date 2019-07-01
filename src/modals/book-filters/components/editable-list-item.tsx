@@ -40,7 +40,14 @@ export class EditableListItem extends React.Component<Props> {
     return (
       <ListItem rowStyle={s.listItem} label={edit ? null : title} onPress={edit ? null : this.startEdit}>
         {edit && (
-          <SelectList title={title} labelKey={labelKey} fields={options} value={value} onChange={this.setValue}>
+          <SelectList
+            title={title}
+            labelKey={labelKey}
+            fields={options}
+            value={value}
+            onChange={this.setValue}
+            onClose={this.close}
+          >
             {this.props.children}
           </SelectList>
         )}
@@ -54,9 +61,11 @@ export class EditableListItem extends React.Component<Props> {
 
   clear = () => this.props.onChange(null);
 
+  close = () => this.setState({ edit: false });
+
   setValue = value => {
     this.props.onChange(value);
-    this.setState({ edit: false });
+    this.close();
   };
 
   startEdit = () => this.setState({ edit: true });
