@@ -94,7 +94,7 @@ export class SwipeRating extends React.PureComponent<SwipeRatingProps, SwiperRat
       onLayout={index === 0 ? this.setStarWidth : null}
       style={s.star}
       name='star'
-      size={20}
+      size={22}
       solid={index >= this.state.from && index <= this.state.to}
     />
   ));
@@ -135,9 +135,12 @@ export class SwipeRating extends React.PureComponent<SwipeRatingProps, SwiperRat
     const { size, style } = this.props;
 
     return (
-      <View {...this.pan.panHandlers} ref={this.setViewRef} onLayout={this.setLayout} style={[s.container, style]}>
-        {this.renderStars(size)}
+      <View style={[s.container, style]}>
         <TextM style={s.text}>{formatRating({ from: this.state.from + 1, to: this.state.to + 1 })}</TextM>
+
+        <View style={s.stars} {...this.pan.panHandlers} ref={this.setViewRef} onLayout={this.setLayout}>
+          {this.renderStars(size)}
+        </View>
       </View>
     );
   }
@@ -159,8 +162,11 @@ const s = StyleSheet.create({
   star: {
     color: color.DeepOrange,
   } as TextStyle,
+  stars: {
+    flexDirection: 'row',
+  } as ViewStyle,
   text: {
-    marginLeft: 10,
+    width: 50,
     color: 'black',
   } as TextStyle,
 });
