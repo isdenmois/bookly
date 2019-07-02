@@ -22,6 +22,7 @@ export const mapBody = {
   languageId: 'lang_code',
   originalTitle: 'work_name_orig',
   type: 'work_type_name',
+  otherTitles,
   editionCount,
   genre,
   searchTitles,
@@ -41,8 +42,12 @@ function genre(w) {
   return genre ? _.map(genre.genre, t => t.label).join(', ') : null;
 }
 
+function otherTitles(w) {
+  return _.filter(w.work_name_alts, _.identity).join('; ');
+}
+
 function searchTitles(w) {
-  return _.flatten([w.work_name, w.work_name_orig, w.work_name_alts])
+  return _.flatten([w.work_name, w.work_name_orig, otherTitles(w)])
     .filter(_.identity)
     .join(';');
 }

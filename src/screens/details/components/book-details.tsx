@@ -49,6 +49,8 @@ export class BookDetails extends React.Component<Props> {
           <ViewLine title='Язык написания' value={book.language} />
           {!!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
 
+          {!!book.otherTitles && <ViewLine title='Другие названия' value={book.otherTitles} />}
+
           {!!book.description && <BookDescriptionLine description={book.description} />}
 
           {!!book.children.length && this.renderChildrenBooks()}

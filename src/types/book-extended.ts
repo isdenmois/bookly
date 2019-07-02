@@ -6,9 +6,11 @@ export interface BookExtended extends BookData {
   language: string;
   languageId: string;
   originalTitle: string;
+  otherTitles: string;
   editionCount: number;
   genre: string;
   parent: ParentBook[];
+  children: ChildBook[];
 }
 
 export interface ParentBook {
