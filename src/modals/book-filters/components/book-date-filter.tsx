@@ -140,5 +140,7 @@ const s = StyleSheet.create({
   value: {
     fontSize: 16,
     color: 'black',
+    flex: 1,
+    textAlign: 'right',
   } as TextStyle,
 });
