@@ -4,6 +4,7 @@ import { inject, InjectorContext } from 'react-ioc';
 import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
+import { withNavigationProps } from 'utils/with-navigation-props';
 import { Button } from 'components/button';
 import { Dialog } from 'components/dialog';
 import { TouchIcon } from 'components/touch-icon';
@@ -13,7 +14,6 @@ import { BookAuthorFilter } from './components/book-author-filter';
 import { BookTypeFilter } from './components/book-type-filter';
 import { BookDateFilter } from './components/book-date-filter';
 import { BookRatingFilter } from './components/book-rating-filter';
-const { withMappedNavigationParams } = require('react-navigation-props-mapper');
 
 const FILTER_COMPONENTS_MAP = {
   year: BookYearFilter,
@@ -37,7 +37,7 @@ interface State {
   changed: boolean;
 }
 
-@withMappedNavigationParams()
+@withNavigationProps()
 export class BookFiltersModal extends React.Component<Props, State> {
   static contextType = InjectorContext;
 

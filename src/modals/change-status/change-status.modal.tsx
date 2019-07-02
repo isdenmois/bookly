@@ -6,7 +6,8 @@ import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { formatDate } from 'utils/date'
+import { formatDate } from 'utils/date';
+import { withNavigationProps } from 'utils/with-navigation-props';
 import { BookData } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { createBook } from 'store/book';
@@ -17,7 +18,6 @@ import { Button } from 'components/button';
 import { ListItem } from 'components/list-item';
 import { Switcher } from 'components/switcher';
 import { RatingSelect } from 'components/rating';
-const { withMappedNavigationParams } = require('react-navigation-props-mapper');
 
 const statusOptions = [
   { key: BOOK_STATUSES.WISH, title: 'Хочу прочитать' },
@@ -38,7 +38,7 @@ interface Props extends NavigationScreenProps {
   status: BOOK_STATUSES;
 }
 
-@withMappedNavigationParams()
+@withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
   static contextType = InjectorContext;
 

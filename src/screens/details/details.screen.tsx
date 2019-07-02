@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { inject, InjectorContext } from 'react-ioc';
+import { withNavigationProps } from 'utils/with-navigation-props';
 import { FantlabAPI } from 'api';
 import { Fetcher } from 'components/fetcher';
 import { BookExtended } from 'types/book-extended';
@@ -11,14 +12,19 @@ function EmptyResult() {
   return <Text>No data</Text>;
 }
 
-export class DetailsScreen extends React.Component<NavigationScreenProps> {
+interface Props extends NavigationScreenProps {
+  bookId: string;
+}
+
+@withNavigationProps()
+export class DetailsScreen extends React.Component<Props> {
   static contextType = InjectorContext;
 
   api = inject(this, FantlabAPI);
 
   render() {
     return (
-      <Fetcher bookId={this.props.navigation.getParam('bookId')} api={this.api.book} empty={EmptyResult}>
+      <Fetcher bookId={this.props.bookId} api={this.api.book} empty={EmptyResult}>
         {this.renderResult}
       </Fetcher>
     );

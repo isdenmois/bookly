@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { NavigationScreenProps } from 'react-navigation';
 import { StyleSheet, ScrollView, View, Text, ViewStyle } from 'react-native';
 import { inject, InjectorContext } from 'react-ioc';
+import { withNavigationProps } from 'utils/with-navigation-props';
 import { FantlabAPI } from 'api';
 import Book from 'store/book';
 import { Fetcher } from 'components/fetcher';
@@ -10,17 +11,22 @@ import { SearchBar } from 'components/search-bar';
 import { BookItem } from 'components/book-item';
 import { EmptyResult } from './empty-result';
 
+interface Props extends NavigationScreenProps {
+  query: string;
+}
+
 interface State {
   q: string;
   query: string;
 }
 
-export class SearchScreen extends React.Component<NavigationScreenProps, State> {
+@withNavigationProps()
+export class SearchScreen extends React.Component<Props, State> {
   static contextType = InjectorContext;
 
   state: State = {
-    q: this.props.navigation.getParam('query'),
-    query: this.props.navigation.getParam('query'),
+    q: this.props.query,
+    query: this.props.query,
   };
 
   api = inject(this, FantlabAPI);
