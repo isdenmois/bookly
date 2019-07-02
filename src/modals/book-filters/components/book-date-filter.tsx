@@ -1,10 +1,10 @@
 import React from 'react';
 import format from 'date-fns/format';
-import { Text, StyleSheet, ViewStyle, TextStyle, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, ViewStyle, View } from 'react-native';
 import { Calendar, DateObject } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { ListItem } from 'components/list-item';
 import { TouchIcon } from 'components/touch-icon';
+import { OpenableListItem } from './openable-list-item';
 
 interface Props {
   value: string;
@@ -22,76 +22,55 @@ export class BookDateFilter extends React.PureComponent<Props> {
   today = new Date();
   calendar: any;
 
-  render() {
+  get formattedDate(): string {
     const value: any = this.props.value || {};
     const { from, to } = value;
-    const defined = Boolean(from && to);
-    const opened = this.state.opened;
 
+    return from && to ? `${format(from, DATE_FORMAT)} - ${format(to, DATE_FORMAT)}` : '';
+  }
+
+  render() {
     return (
-      <ListItem rowStyle={s.list} onPress={opened ? null : this.openCalendar}>
-        {!opened && <Text style={s.title}>Дата</Text>}
-        {opened && (
-          <View style={s.container}>
-            <TouchableOpacity onPress={this.closeCalendar}>
-              <Text style={s.title}>Дата</Text>
-            </TouchableOpacity>
-
-            <View style={s.calendarRow}>
-              <TouchIcon
-                paddingVertical={16}
-                paddingLeft={10}
-                name='chevron-left'
-                size={20}
-                color='#000'
-                onPress={this.subYear}
-              />
-              <Calendar
-                style={s.calendar}
-                minDate={this.state.from}
-                maxDate={this.today}
-                markedDates={this.state.markedDates}
-                onDayPress={this.onDayPress}
-                markingType='period'
-                firstDay={1}
-                hideDayNames
-                renderArrow={this.renderArrow}
-                ref={this.setCalRef}
-              />
-              <TouchIcon
-                paddingVertical={16}
-                paddingLeft={10}
-                name='chevron-right'
-                size={20}
-                color='#000'
-                onPress={this.addYear}
-              />
-            </View>
-          </View>
-        )}
-        {defined && !opened && (
-          <Text style={s.value}>
-            {format(from, DATE_FORMAT)} - {format(to, DATE_FORMAT)}
-          </Text>
-        )}
-
-        {defined && !opened && (
-          <TouchIcon paddingVertical={15} paddingLeft={10} name='times' size={20} color='#000' onPress={this.clear} />
-        )}
-      </ListItem>
+      <OpenableListItem title='Дата' viewValue={this.formattedDate} onClear={this.clear} onClose={this.resetState}>
+        <View style={s.calendarRow}>
+          <TouchIcon
+            paddingVertical={16}
+            paddingLeft={10}
+            name='chevron-left'
+            size={20}
+            color='#000'
+            onPress={this.subYear}
+          />
+          <Calendar
+            style={s.calendar}
+            minDate={this.state.from}
+            maxDate={this.today}
+            markedDates={this.state.markedDates}
+            onDayPress={this.onDayPress}
+            markingType='period'
+            firstDay={1}
+            hideDayNames
+            renderArrow={this.renderArrow}
+            ref={this.setCalRef}
+          />
+          <TouchIcon
+            paddingVertical={16}
+            paddingLeft={10}
+            name='chevron-right'
+            size={20}
+            color='#000'
+            onPress={this.addYear}
+          />
+        </View>
+      </OpenableListItem>
     );
   }
 
-  renderArrow(direction) {
+  renderArrow(direction: string) {
     return <Icon name={`caret-${direction}`} size={20} color='#000' />;
   }
 
-  setCalRef = calendar => {
-    this.calendar = calendar;
-  };
-
-  openCalendar = () => this.setState({ opened: true });
-  closeCalendar = () => this.setState({ opened: false, from: null, markedDates: null });
+  setCalRef = calendar => (this.calendar = calendar);
 
   addYear = () => this.calendar.addMonth(12);
   subYear = () => this.calendar.addMonth(-12);
@@ -111,24 +90,13 @@ export class BookDateFilter extends React.PureComponent<Props> {
 
     this.props.onChange('date', { from, to });
     this.props.onChange('year', null);
-    this.closeCalendar();
   };
 
   clear = () => this.props.onChange('date', null);
+  resetState = () => this.setState({ from: null, markedDates: null });
 }
 
 const s = StyleSheet.create({
-  list: {
-    paddingVertical: 0,
-  } as ViewStyle,
-  title: {
-    fontSize: 16,
-    color: 'black',
-    paddingVertical: 15,
-  } as TextStyle,
-  container: {
-    flex: 1,
-  },
   calendarRow: {
     flexDirection: 'row',
     flex: 1,
@@ -137,10 +105,4 @@ const s = StyleSheet.create({
   calendar: {
     flex: 1,
   } as ViewStyle,
-  value: {
-    fontSize: 16,
-    color: 'black',
-    flex: 1,
-    textAlign: 'right',
-  } as TextStyle,
 });
