@@ -1,8 +1,8 @@
 import React from 'react';
-import format from 'date-fns/format';
 import { ImageBackground, Text, View, ScrollView, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
+import { formatDate } from 'utils/date';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
@@ -41,9 +41,7 @@ export class BookDetails extends React.Component<Props> {
           {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
           {!!book.year && <ViewLine title='Год' value={book.year} />}
 
-          {record.status === BOOK_STATUSES.READ && (
-            <ViewLine title='Дата прочтения' value={format(record.date, 'DD.MM.YYYY')} />
-          )}
+          {record.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(record.date)} />}
 
           {!!book.editionCount && <ViewLine title='Изданий' value={book.editionCount} />}
           <ViewLine title='Язык написания' value={book.language} />

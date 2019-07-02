@@ -6,7 +6,7 @@ import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import format from 'date-fns/format';
+import { formatDate } from 'utils/date'
 import { BookData } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { createBook } from 'store/book';
@@ -107,7 +107,7 @@ export class ChangeStatusModal extends React.Component<Props> {
             <ListItem
               onPress={this.showDatePicker}
               icon={<Icon name='calendar-alt' size={20} color='black' />}
-              value={format(this.state.date, 'DD.MM.YYYY')}
+              value={formatDate(this.state.date)}
             />
           )}
 

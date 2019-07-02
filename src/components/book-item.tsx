@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
-import format from 'date-fns/format';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book from 'store/book';
+import { formatDate } from 'utils/date'
 
 const NEXT_STATUSES = {
   [BOOK_STATUSES.WISH]: BOOK_STATUSES.NOW,
@@ -85,7 +85,7 @@ export class BookItem extends React.PureComponent<Props> {
               <Icon name={statusIcon} size={20} color={statusColor} />
               {book.status === BOOK_STATUSES.READ && <Text style={s.iconText}>{book.rating}</Text>}
             </View>
-            {book.status === BOOK_STATUSES.READ && <Text style={s.date}>{format(book.date, 'DD.MM.YYYY')}</Text>}
+            {book.status === BOOK_STATUSES.READ && <Text style={s.date}>{formatDate(book.date)}</Text>}
           </TouchableOpacity>
         </TouchableOpacity>
       </View>

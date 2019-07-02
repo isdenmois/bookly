@@ -1,9 +1,9 @@
 import React from 'react';
-import format from 'date-fns/format';
 import { StyleSheet, ViewStyle, View } from 'react-native';
 import { Calendar, DateObject } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchIcon } from 'components/touch-icon';
+import { formatDate } from 'utils/date'
 import { OpenableListItem } from './openable-list-item';
 
 interface Props {
@@ -12,7 +12,6 @@ interface Props {
   onChange: (type: string, value: any) => void;
 }
 
-const DATE_FORMAT = 'DD.MM.YYYY';
 const HALF_DAY = 12 * 60 * 60 * 1000;
 const MARKED_DAY = { startingDay: true, color: '#009688' };
 
@@ -26,7 +25,7 @@ export class BookDateFilter extends React.PureComponent<Props> {
     const value: any = this.props.value || {};
     const { from, to } = value;
 
-    return from && to ? `${format(from, DATE_FORMAT)} - ${format(to, DATE_FORMAT)}` : '';
+    return from && to ? `${formatDate(from)} - ${formatDate(to)}` : '';
   }
 
   render() {
