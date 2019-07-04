@@ -2,6 +2,8 @@ import _ from 'lodash';
 
 export const url = '/work/:bookId/extended';
 
+export const cache = true;
+
 export const collection = 'books';
 
 export function mapParams({ bookId }) {
