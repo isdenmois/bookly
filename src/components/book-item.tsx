@@ -6,7 +6,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book from 'store/book';
-import { formatDate } from 'utils/date'
+import { formatDate } from 'utils/date';
 
 const NEXT_STATUSES = {
   [BOOK_STATUSES.WISH]: BOOK_STATUSES.NOW,
@@ -36,7 +36,7 @@ interface Props extends Partial<NavigationScreenProps> {
 @withObservables(['book'], ({ book }) => ({
   record: book.record || book,
 }))
-export class BookItem extends React.PureComponent<Props> {
+export class BookItem extends React.Component<Props> {
   static defaultProps: Props = { cacheThumbnail: true };
 
   get book() {

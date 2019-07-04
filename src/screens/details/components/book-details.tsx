@@ -1,5 +1,15 @@
 import React from 'react';
-import { ImageBackground, Text, View, ScrollView, StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import {
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
+  ScrollView,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  ImageStyle,
+} from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
 import { formatDate } from 'utils/date';
@@ -68,7 +78,14 @@ export class BookDetails extends React.Component<Props> {
           <View style={s.darkOverlay}>
             <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
             <View style={s.mainInformationContainer}>
-              <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />
+              {!!record.collection && (
+                <TouchableOpacity onPress={this.openChangeThumbnail}>
+                  <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />
+                </TouchableOpacity>
+              )}
+
+              {!record.collection && <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />}
+
               <View style={s.mainInformation}>
                 <Text style={s.title}>{record.title}</Text>
                 <Text style={s.author}>{record.author}</Text>
@@ -140,6 +157,8 @@ export class BookDetails extends React.Component<Props> {
   }
 
   openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
+
+  openChangeThumbnail = () => this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.record });
 
   openBook(book) {
     this.props.navigation.push('Details', { bookId: book.id });

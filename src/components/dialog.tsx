@@ -6,7 +6,7 @@ import { TextL } from 'components/text';
 interface Props extends NavigationScreenProps {
   style?: ViewStyle;
   modalStyle?: ViewStyle;
-  header?: ReactChild;
+  title?: ReactChild;
   children: ReactNode;
 }
 
@@ -18,9 +18,9 @@ export const Dialog = (props: Props) => (
 
     <View style={s.modal}>
       <View style={[s.modalView, props.modalStyle]}>
-        {props.header && (
-          <View style={s.header}>
-            <TextL>{props.header}</TextL>
+        {props.title && (
+          <View style={s.title}>
+            <TextL>{props.title}</TextL>
           </View>
         )}
         <View style={[s.content, props.style]}>{props.children}</View>
@@ -53,7 +53,7 @@ const s = StyleSheet.create({
     borderTopRightRadius: 10,
     backgroundColor: 'white',
   } as ViewStyle,
-  header: {
+  title: {
     backgroundColor: '#F5F5F5',
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,

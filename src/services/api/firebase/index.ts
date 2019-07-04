@@ -8,7 +8,8 @@ import * as pushChangesSchema from './push-changes';
 
 export class FirebaseAPI {
   session = inject(this, Session);
+  baseUrl = SYNC_URL;
 
-  fetchChanges = createApi(this, SYNC_URL, fetchChangesSchema);
-  pushChanges = createApi(this, SYNC_URL, pushChangesSchema);
+  fetchChanges = createApi(this, fetchChangesSchema);
+  pushChanges = createApi(this, pushChangesSchema);
 }

@@ -14,6 +14,7 @@ import { DetailsScreen } from 'screens/details/details.screen';
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
 import { BookSelectModal } from 'modals/book-select/book-select.modal';
 import { BookFiltersModal } from 'modals/book-filters/book-filters.modal';
+import { ThumbnailSelectModal } from 'modals/thumbnail-select/thumbnail-select.modal';
 
 const MainStack = {
   Home: HomeScreen,
@@ -28,6 +29,7 @@ const ModalStack = {
   ChangeStatus: ChangeStatusModal,
   BookSelect: BookSelectModal,
   BookFilters: BookFiltersModal,
+  ThumbnailSelect: ThumbnailSelectModal,
 };
 
 const createNavigator = initialRouteName =>

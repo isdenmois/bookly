@@ -7,7 +7,7 @@ import { AutoWithImage } from './auto-width-image';
 
 interface Props {
   url?: string;
-  width: number;
+  width?: number;
   height?: number;
   title?: string;
   auto?: string;

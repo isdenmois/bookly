@@ -5,10 +5,10 @@ import { parseResult } from './parse-result';
 
 const cacheStore = new Map();
 
-export function createApi(context, baseUrl, schema) {
+export function createApi(context, schema) {
   return function(...args) {
     const params = schema.mapParams ? schema.mapParams.apply(null, args) : {};
-    const url = createUrl(`${baseUrl}${schema.url}`, context, params.query || {});
+    const url = createUrl(`${context.baseUrl}${schema.url}`, context, params.query || {});
 
     return sendReq(context, schema, params, url);
   };
@@ -18,7 +18,7 @@ function sendReq(context, schema, params, url) {
   if (schema.cache && cacheStore.has(url)) {
     console.log('Cache HIT: ', url);
 
-    return Promise.resolve(cacheStore.get(url));
+    return parseResult(context, schema, cacheStore.get(url));
   }
 
   if (schema.cache) {
@@ -26,12 +26,13 @@ function sendReq(context, schema, params, url) {
   }
 
   return fetch(url, createFetchParams(schema, params.body))
-    .then(parseResult(context, schema))
+    .then(r => r.json())
     .then(data => {
       if (schema.cache) {
         cacheStore.set(url, data);
       }
 
       return data;
-    });
+    })
+    .then(response => parseResult(context, schema, response));
 }

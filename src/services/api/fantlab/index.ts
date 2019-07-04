@@ -5,10 +5,13 @@ import { Session } from 'services/session';
 
 import * as searchBooksSchema from './search-books';
 import * as bookSchema from './book';
+import * as thumbnailsSchema from './thumbnails';
 
 export class FantlabAPI {
+  baseUrl = FANTLAB_URL;
   session = inject(this, Session);
 
-  searchBooks = createApi(this, FANTLAB_URL, searchBooksSchema);
-  book = createApi(this, FANTLAB_URL, bookSchema);
+  searchBooks = createApi(this, searchBooksSchema);
+  book = createApi(this, bookSchema);
+  thumbnails = createApi(this, thumbnailsSchema);
 }

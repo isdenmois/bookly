@@ -19,7 +19,7 @@ interface Props extends Partial<NavigationScreenProps> {
 
 @withNavigation
 @withObservables([], ({ database }) => ({
-  books: currentBooksQuery(database).observe(),
+  books: currentBooksQuery(database).observeWithColumns(['thumbnail']),
 }))
 export class NowReadingBook extends React.Component<Props> {
   render() {
