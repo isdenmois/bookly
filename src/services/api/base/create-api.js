@@ -16,13 +16,7 @@ export function createApi(context, schema) {
 
 function sendReq(context, schema, params, url) {
   if (schema.cache && cacheStore.has(url)) {
-    console.log('Cache HIT: ', url);
-
     return parseResult(context, schema, cacheStore.get(url));
-  }
-
-  if (schema.cache) {
-    console.log('Cache MISS: ', url);
   }
 
   return fetch(url, createFetchParams(schema, params.body))
