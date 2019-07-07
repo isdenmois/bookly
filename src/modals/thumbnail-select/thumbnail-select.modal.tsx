@@ -28,14 +28,7 @@ export class ThumbnailSelectModal extends React.Component<Props, State> {
     const changed = this.props.book.thumbnail !== this.state.selected;
 
     return (
-      <Dialog navigation={this.props.navigation}>
-        <View style={s.header}>
-          <TouchIcon name='arrow-left' size={24} color='#000' padding={20} onPress={this.close} />
-          <Text style={s.title}>Обложка</Text>
-          {changed && <TouchIcon name='check' size={24} color='#000' padding={20} onPress={this.save} />}
-          {!changed && <View style={s.noSaveIcon} />}
-        </View>
-
+      <Dialog navigation={this.props.navigation} title='Обложка' onApply={changed && this.save}>
         <View style={s.thumbnail}>
           <Thumbnail cache={false} auto='height' width={150} url={this.state.selected} />
         </View>
@@ -69,16 +62,6 @@ const s = StyleSheet.create({
   filters: {
     paddingHorizontal: 20,
   } as ViewStyle,
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  } as ViewStyle,
-  title: {
-    color: 'black',
-    fontSize: 24,
-    flex: 1,
-    textAlign: 'center',
-  } as TextStyle,
   buttonRow: {
     alignItems: 'center',
     paddingBottom: 5,
@@ -86,8 +69,5 @@ const s = StyleSheet.create({
   thumbnail: {
     justifyContent: 'center',
     flexDirection: 'row',
-  } as ViewStyle,
-  noSaveIcon: {
-    width: 60,
   } as ViewStyle,
 });

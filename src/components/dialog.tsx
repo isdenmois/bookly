@@ -1,33 +1,45 @@
-import React, { ReactChild, ReactNode } from 'react';
+import React, { ReactChild, ReactNode, useCallback } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { View, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native';
-import { TextL } from 'components/text';
+import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle } from 'react-native';
+import { TouchIcon } from 'components/touch-icon';
 
 interface Props extends NavigationScreenProps {
   style?: ViewStyle;
   modalStyle?: ViewStyle;
   title?: ReactChild;
   children: ReactNode;
+  onApply?: () => void;
 }
 
-export const Dialog = (props: Props) => (
-  <View style={s.container}>
-    <TouchableWithoutFeedback onPress={() => props.navigation.pop()}>
-      <View style={s.backdrop} />
-    </TouchableWithoutFeedback>
+export const Dialog = (props: Props) => {
+  const onBack = useCallback(() => props.navigation.pop(), [props.navigation]);
 
-    <View style={s.modal}>
-      <View style={[s.modalView, props.modalStyle]}>
-        {props.title && (
-          <View style={s.title}>
-            <TextL>{props.title}</TextL>
-          </View>
-        )}
-        <View style={[s.content, props.style]}>{props.children}</View>
+  return (
+    <View style={s.container}>
+      <TouchableWithoutFeedback onPress={onBack}>
+        <View style={s.backdrop} />
+      </TouchableWithoutFeedback>
+
+      <View style={s.modal}>
+        <View style={[s.modalView, props.modalStyle]}>
+          {!!props.title && renderDialogHeader(props.title, onBack, props.onApply)}
+          <View style={[s.content, props.style]}>{props.children}</View>
+        </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
+
+function renderDialogHeader(title: ReactChild, onBack, onApply) {
+  return (
+    <View style={s.header}>
+      <TouchIcon name='arrow-left' size={24} color='#000' onPress={onBack} />
+      <Text style={s.title}>{title}</Text>
+      {onApply && <TouchIcon name='check' size={24} color='#000' onPress={onApply} />}
+      {!onApply && <View style={s.noApplyIcon} />}
+    </View>
+  );
+}
 
 const s = StyleSheet.create({
   container: {
@@ -53,17 +65,26 @@ const s = StyleSheet.create({
     borderTopRightRadius: 10,
     backgroundColor: 'white',
   } as ViewStyle,
-  title: {
-    backgroundColor: '#F5F5F5',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    alignItems: 'center',
   } as ViewStyle,
+  title: {
+    color: 'black',
+    fontSize: 24,
+    flex: 1,
+    textAlign: 'center',
+    marginHorizontal: 20,
+  } as TextStyle,
   content: {
     flexDirection: 'column',
     alignItems: 'stretch',
     maxHeight: '100%',
+  } as ViewStyle,
+  noApplyIcon: {
+    width: 24,
+    height: 25,
   } as ViewStyle,
 });

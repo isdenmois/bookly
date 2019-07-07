@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, ViewStyle } from 'react-native';
+import { Insets, TouchableOpacity, ViewStyle } from 'react-native';
 import Icon, { FontAwesome5IconProps } from 'react-native-vector-icons/FontAwesome5';
 
 type Props = FontAwesome5IconProps & {
@@ -9,6 +9,8 @@ type Props = FontAwesome5IconProps & {
   paddingLeft?: number;
   onPress: () => void;
 };
+
+const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export function TouchIcon({ padding, paddingHorizontal, paddingVertical, paddingLeft, onPress, ...props }: Props) {
   const style: ViewStyle = {};
@@ -30,7 +32,7 @@ export function TouchIcon({ padding, paddingHorizontal, paddingVertical, padding
   }
 
   return (
-    <TouchableOpacity style={style} onPress={onPress}>
+    <TouchableOpacity style={style} onPress={onPress} hitSlop={hitSlop}>
       <Icon {...props} />
     </TouchableOpacity>
   );

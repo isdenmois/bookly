@@ -46,16 +46,11 @@ export class BookFiltersModal extends React.Component<Props, State> {
   state: State = this.createDefaultState();
 
   render() {
-    const { filterFields, sortFields } = this.props;
+    const { filterFields, sortFields, navigation } = this.props;
+    const changed = this.state.changed;
 
     return (
-      <Dialog style={s.modalStyle} navigation={this.props.navigation}>
-        <View style={s.header}>
-          <TouchIcon name='arrow-left' size={24} color='#000' padding={20} onPress={this.close} />
-          <Text style={s.title}>Фильтры</Text>
-          {this.state.changed && <TouchIcon name='check' size={24} color='#000' padding={20} onPress={this.save} />}
-        </View>
-
+      <Dialog style={s.modalStyle} navigation={navigation} title='Фильтры' onApply={changed && this.save}>
         <ScrollView style={s.scroll} contentContainerStyle={s.filters}>
           <BookListSort value={this.state.sort} onChange={this.setSort} fields={sortFields} />
 
@@ -118,16 +113,6 @@ const s = StyleSheet.create({
   filters: {
     paddingHorizontal: 20,
   } as ViewStyle,
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  } as ViewStyle,
-  title: {
-    color: 'black',
-    fontSize: 24,
-    flex: 1,
-    textAlign: 'center',
-  } as TextStyle,
   buttonRow: {
     alignItems: 'center',
     paddingBottom: 5,
