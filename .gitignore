@@ -63,3 +63,5 @@ buck-out/
 yarn.lock
 dev-tools/key.jks
 fastlane/report.xml
+
+android/app/src/main/res/drawable-*/node_modules*.png
