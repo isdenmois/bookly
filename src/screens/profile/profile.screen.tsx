@@ -19,18 +19,11 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
     return (
       <View style={s.container}>
         <View style={s.header}>
-          <TouchIcon
-            paddingHorizontal={10}
-            paddingVertical={10}
-            name='arrow-left'
-            size={24}
-            color='#000'
-            onPress={this.goBack}
-          />
+          <TouchIcon name='arrow-left' size={24} color='#000' onPress={this.goBack} />
           <Text style={s.profile}>{this.session.userId}</Text>
         </View>
 
-        <ChallengeEditor session={this.session}/>
+        <ChallengeEditor session={this.session} />
 
         <View style={s.buttonContainer}>
           <Button
@@ -62,6 +55,8 @@ const s = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   } as ViewStyle,
   profile: {
     flex: 1,
@@ -69,6 +64,7 @@ const s = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     color: 'black',
+    marginLeft: 20,
   } as TextStyle,
   buttonContainer: {
     position: 'absolute',
