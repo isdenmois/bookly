@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 export function createFetchParams(schema, body) {
-  const params = {
+  const params: any = {
     method: schema.method || 'GET',
   };
 

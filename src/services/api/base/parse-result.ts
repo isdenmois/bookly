@@ -16,7 +16,7 @@ function mapResult(map, data) {
 }
 
 function mapObject(map, data) {
-  const result = {};
+  const result: any = {};
 
   _.forEach(map, (path, key) => {
     result[key] = _.isFunction(path) ? path(data) : _.get(data, path);

@@ -52,7 +52,7 @@ function getIds(data) {
 function Observable(row) {
   this.subject = new BehaviorSubject(row);
   this.observe = function() {
-    return this.subject.pipe(switchMap(r => (r.collection ? r.observe() : of(r))));
+    return this.subject.pipe(switchMap((r: any) => (r.collection ? r.observe() : of(r))));
   };
   this.next = function(data) {
     this.subject.next(data);
