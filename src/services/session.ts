@@ -15,7 +15,7 @@ export class Session {
   @action loadSession() {
     return this.storage
       .getItem(SESSION_KEY)
-      .then(session => JSON.parse(session))
+      .then(session => JSON.parse(session) || {})
       .then(session => {
         this.userId = session.userId;
         this.totalBooks = session.totalBooks || INITIAL_BOOKS_COUNT;

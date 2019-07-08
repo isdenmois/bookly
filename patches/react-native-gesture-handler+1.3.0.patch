@@ -1,0 +1,24 @@
+diff --git a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerEvent.java b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerEvent.java
+index 85dca41..43f0e6a 100644
+--- a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerEvent.java
++++ b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerEvent.java
+@@ -1,6 +1,6 @@
+ package com.swmansion.gesturehandler.react;
+ 
+-import android.support.v4.util.Pools;
++import androidx.core.util.Pools;
+ 
+ import com.facebook.react.bridge.Arguments;
+ import com.facebook.react.bridge.WritableMap;
+diff --git a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerStateChangeEvent.java b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerStateChangeEvent.java
+index 5912a45..8559366 100644
+--- a/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerStateChangeEvent.java
++++ b/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerStateChangeEvent.java
+@@ -1,6 +1,6 @@
+ package com.swmansion.gesturehandler.react;
+ 
+-import android.support.v4.util.Pools;
++import androidx.core.util.Pools;
+ 
+ import com.facebook.react.bridge.Arguments;
+ import com.facebook.react.bridge.WritableMap;
