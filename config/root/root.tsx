@@ -36,7 +36,7 @@ class App extends React.Component {
     }
 
     if (!this.RootStack) {
-      const routes = require('../router/routes');
+      const routes = require('../router');
 
       this.RootStack = routes.create(this.session.userId ? 'App' : 'Login');
       SplashScreen.hide();
