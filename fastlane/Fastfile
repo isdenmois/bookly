@@ -10,7 +10,7 @@ platform :android do
       build_type: 'Release',
       project_dir: 'android/',
       properties: {
-        'android.injected.signing.store.file' => 'dev-tools/key.jks',
+        'android.injected.signing.store.file' => ENV['KEY_PATH'],
         'android.injected.signing.store.password' => ENV['KEY_PASSWORD'],     
         'android.injected.signing.key.alias' => ENV['KEY_ALIAS'],
         'android.injected.signing.key.password' => ENV['KEY_PASSWORD'], 
@@ -23,7 +23,7 @@ platform :android do
     package = load_json(json_path: "package.json")
     diawi(
         token: ENV['DIAWI_TOKEN'],
-        file: "android/app/build/outputs/apk/release/bookly-#{package['version']}.apk",
+        file: lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH],
         callback_emails: ENV['DIAWI_EMAILS']
     )
   end
