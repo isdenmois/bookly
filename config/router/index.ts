@@ -1,7 +1,9 @@
 import _ from 'lodash';
-import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Easing, Animated } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useScreens } from 'react-native-screens';
 
 import { LoginScreen } from 'screens/login/login.screen';
 import { MainStack, ModalStack } from './routes';
@@ -15,7 +17,7 @@ const createNavigator = initialRouteName =>
       },
       App: createStackNavigator(
         {
-          MainStack: createStackNavigator(MainStack, { initialRouteName: 'Home', headerMode: 'none' }),
+          MainStack: createStackNavigator(MainStack, { initialRouteName: 'Home', headerMode: 'none' } as any),
           ...createModalStack(ModalStack),
         },
         {
@@ -45,7 +47,10 @@ export const loadNavigationState = async () => {
   return JSON.parse(jsonString);
 };
 
-export const create = route => createAppContainer(createNavigator(route));
+export const create = route => {
+  useScreens(true);
+  return createAppContainer(createNavigator(route));
+};
 
 function isRouteModal(scene) {
   return scene && scene.routeName.startsWith('/modal');
