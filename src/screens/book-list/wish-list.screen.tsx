@@ -7,7 +7,7 @@ const defaultFilters = {
   status: BOOK_STATUSES.WISH,
 };
 
-const WISH_LIST_FILTERS = ['author', 'type'];
+const WISH_LIST_FILTERS = ['title', 'author', 'type'];
 
 const WISH_LIST_SORTS = ['title', 'author', 'id'];
 

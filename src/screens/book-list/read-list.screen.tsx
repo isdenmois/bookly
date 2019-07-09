@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { inject, InjectorContext } from 'react-ioc';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -16,7 +17,7 @@ const defaultFilters = {
   year: 2019,
 };
 
-const READ_LIST_FILTERS = ['year', 'author', 'type', 'date', 'rating'];
+const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating'];
 
 const READ_LIST_SORTS = ['date', 'title', 'rating', 'author', 'id'];
 
@@ -43,7 +44,12 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
 
     return (
       <View style={s.container}>
-        <ScreenHeader title={this.title} navigation={this.props.navigation} />
+        <ScreenHeader
+          title={this.title}
+          query={this.state.filters.title}
+          navigation={this.props.navigation}
+          onSearch={this.setSearch}
+        />
         <BookList database={this.database} query={query} sort={sort} navigation={navigation} />
         <View style={s.buttonContainer}>
           <Button
@@ -59,6 +65,11 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
   }
 
   setFilters = (filters, sort) => this.setState(createQueryState(filters, sort));
+  setSearch = title => this.setState(createQueryState(this.createTitleFilter(title), this.state.sort));
+
+  createTitleFilter(title: string) {
+    return _.assign({}, this.state.filters, { title });
+  }
 
   openFiltersModal = () =>
     this.props.navigation.navigate('/modal/book-filters', {

@@ -7,23 +7,18 @@ interface Props {
   onChange: (type: string, value: any) => void;
 }
 
-export class BookYearFilter extends React.PureComponent<Props> {
+export class BookTitleFilter extends React.PureComponent<Props> {
   render() {
     return (
       <InputItem
-        title='Год'
-        keyboardType='numeric'
+        title='Название'
+        keyboardType='default'
         value={this.props.value}
-        onChange={this.setYear}
+        onChange={this.setTitle}
         onApply={this.props.onApply}
       />
     );
   }
 
-  setYear = value => {
-    if (!value || +value) {
-      this.props.onChange('year', +value || null);
-      this.props.onChange('date', null);
-    }
-  };
+  setTitle = value => this.props.onChange('title', value);
 }

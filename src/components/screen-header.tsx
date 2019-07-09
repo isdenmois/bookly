@@ -7,26 +7,38 @@ import { SearchBar } from './search-bar';
 
 interface Props extends NavigationScreenProps {
   title: string;
+  query?: string;
   onSearch?: (value: string) => void;
 }
 
 interface State {
   query: string;
+  prevQuery: string;
   search: boolean;
 }
 
 export class ScreenHeader extends React.PureComponent<Props, State> {
-  state: State = { query: '', search: false };
+  state = { search: false, query: '', prevQuery: '' };
+
+  static getDerivedStateFromProps(props: Props, state: State): State {
+    if (!state || state.prevQuery !== props.query) {
+      return { query: props.query, prevQuery: props.query, search: false };
+    }
+
+    return null;
+  }
+
   render() {
     if (this.state.search) {
       return (
         <SearchBar
+          autoFocus
           style={s.searchHeader}
           value={this.state.query}
           onChange={this.setQuery}
           onSearch={this.onSearch}
           onBack={this.goBack}
-          onClose={this.closeSearch}
+          onClose={this.clearSearch}
         />
       );
     }
@@ -47,10 +59,8 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
   setQuery = query => this.setState({ query });
   openSearch = () => this.setState({ search: true });
   closeSearch = () => this.setState({ search: false });
-  onSearch = () => {
-    this.closeSearch();
-    this.props.onSearch(this.state.query);
-  };
+  clearSearch = () => this.props.onSearch('');
+  onSearch = () => this.props.onSearch(this.state.query);
 }
 
 const s = StyleSheet.create({

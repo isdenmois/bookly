@@ -13,8 +13,10 @@ import { BookAuthorFilter } from './components/book-author-filter';
 import { BookTypeFilter } from './components/book-type-filter';
 import { BookDateFilter } from './components/book-date-filter';
 import { BookRatingFilter } from './components/book-rating-filter';
+import { BookTitleFilter } from './components/book-title-fitler';
 
 const FILTER_COMPONENTS_MAP = {
+  title: BookTitleFilter,
   year: BookYearFilter,
   author: BookAuthorFilter,
   type: BookTypeFilter,

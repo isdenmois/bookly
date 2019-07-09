@@ -13,6 +13,7 @@ const WHERE_FILTERS = {
   type: whereFilter('type'),
   date: dateFilter,
   rating: ratingFilter,
+  title: titleFitler,
 };
 
 export function createQueryState(filters, sort) {
@@ -51,4 +52,8 @@ function dateFilter({ from, to }) {
 
 function ratingFilter({ from, to }) {
   return Q.where('rating', Q.between(from, to));
+}
+
+function titleFitler(title) {
+  return Q.where('searchTitles', Q.like(`%${Q.sanitizeLikeString(title.toLowerCase())}%`));
 }
