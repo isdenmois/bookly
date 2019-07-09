@@ -9,6 +9,7 @@ import {
   ViewStyle,
   TextStyle,
   ImageStyle,
+  ToastAndroid,
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
@@ -78,13 +79,9 @@ export class BookDetails extends React.Component<Props> {
           <View style={s.darkOverlay}>
             <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
             <View style={s.mainInformationContainer}>
-              {!!record.collection && (
-                <TouchableOpacity onPress={this.openChangeThumbnail}>
-                  <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />
-                </TouchableOpacity>
-              )}
-
-              {!record.collection && <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />}
+              <TouchableOpacity onPress={this.openChangeThumbnail}>
+                <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />
+              </TouchableOpacity>
 
               <View style={s.mainInformation}>
                 <Text style={s.title}>{record.title}</Text>
@@ -158,7 +155,17 @@ export class BookDetails extends React.Component<Props> {
 
   openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
 
-  openChangeThumbnail = () => this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.record });
+  openChangeThumbnail = () => {
+    if (!this.props.record.collection) {
+      return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
+    }
+
+    if (this.props.book.editionCount <= 1) {
+      return ToastAndroid.show('Недостаточно изданий для выбора', ToastAndroid.SHORT);
+    }
+
+    this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.record });
+  };
 
   openBook(book) {
     this.props.navigation.push('Details', { bookId: book.id });
