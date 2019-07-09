@@ -5,6 +5,7 @@ import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import { color } from 'types/colors';
 import { dbSync } from 'services/db';
 import Book from 'store/book';
 import { Dialog } from 'components/dialog';
@@ -64,13 +65,13 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   } as ViewStyle,
   button: {
-    borderTopColor: '#E0E0E0',
+    borderTopColor: color.Border,
     borderTopWidth: 0.5,
     paddingVertical: 20,
-    backgroundColor: '#009688',
+    backgroundColor: color.Primary,
   } as ViewStyle,
   text: {
-    color: 'white',
+    color: color.PrimaryTextInverse,
     fontSize: 18,
     textAlign: 'center',
     fontFamily: 'sans-serif-medium',

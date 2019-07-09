@@ -6,6 +6,7 @@ import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { BookData } from 'store/book';
@@ -94,7 +95,7 @@ export class ChangeStatusModal extends React.Component<Props> {
         <View style={s.list}>
           <ListItem
             onPress={!statusEditable && this.toggleStatus}
-            icon={<Icon name='book-reader' size={20} color='black' />}
+            icon={<Icon name='book-reader' size={20} color={color.PrimaryText} />}
             border={!statusEditable}
             value={statusMap[status]}
           >
@@ -106,13 +107,13 @@ export class ChangeStatusModal extends React.Component<Props> {
           {status === BOOK_STATUSES.READ && (
             <ListItem
               onPress={this.showDatePicker}
-              icon={<Icon name='calendar-alt' size={20} color='black' />}
+              icon={<Icon name='calendar-alt' size={20} color={color.PrimaryText} />}
               value={formatDate(this.state.date)}
             />
           )}
 
           {status === BOOK_STATUSES.READ && (
-            <ListItem icon={<Icon name='star' size={20} color='black' />}>
+            <ListItem icon={<Icon name='star' size={20} color={color.PrimaryText} />}>
               <RatingSelect value={this.state.rating} onChange={this.setRating} />
             </ListItem>
           )}
@@ -199,7 +200,7 @@ const s = StyleSheet.create({
     borderWidth: 3,
   } as ImageStyle,
   title: {
-    color: 'black',
+    color: color.PrimaryText,
     fontSize: 24,
     fontWeight: 'bold',
     alignSelf: 'center',

@@ -4,6 +4,7 @@ import withObservables from '@nozbe/with-observables';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { color } from 'types/colors';
 import { Button } from 'components/button';
 import { TextM } from 'components/text';
 import { wishBooksQuery } from '../home.service';
@@ -23,7 +24,7 @@ export class EmptyBook extends React.Component<Props> {
     const { wishBooksCount } = this.props;
     return (
       <View style={s.container}>
-        <Icon name='bookmark' size={36} color='#90A4AE' />
+        <Icon name='bookmark' size={36} color={color.Empty} />
         {!wishBooksCount && <TextM style={s.text}>Нет текущей читаемой книги</TextM>}
         {!!wishBooksCount && <TextM style={s.text}>Выберите книгу, которую сейчас читаете</TextM>}
         {!!wishBooksCount && <Button onPress={this.openBookSelect} style={s.button} label='Выбрать книгу' />}
@@ -40,7 +41,7 @@ const s = StyleSheet.create({
     marginTop: 35,
   } as ViewStyle,
   text: {
-    color: '#90A4AE',
+    color: color.Empty,
     marginTop: 25,
     textAlign: 'center',
   } as TextStyle,

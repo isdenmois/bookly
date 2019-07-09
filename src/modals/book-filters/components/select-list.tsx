@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Text, TouchableOpacity, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { color } from 'types/colors';
 
 interface Props {
   title: string;
@@ -33,7 +34,7 @@ export class SelectList extends React.PureComponent<Props> {
 
     return _.map(fields, field => (
       <TouchableOpacity key={field.id} style={s.row} onPress={() => this.props.onChange(field.id)}>
-        <Icon name={value === field.id ? 'check-circle' : 'circle'} size={18} color='black' />
+        <Icon name={value === field.id ? 'check-circle' : 'circle'} size={18} color={color.PrimaryText} />
         <Text style={s.optionText}>{field[labelKey]}</Text>
       </TouchableOpacity>
     ));
@@ -58,11 +59,11 @@ const s = StyleSheet.create({
   } as ViewStyle,
   title: {
     fontSize: 16,
-    color: 'black',
+    color: color.PrimaryText,
     paddingVertical: 15,
   } as TextStyle,
   optionText: {
-    color: 'black',
+    color: color.PrimaryText,
     fontSize: 14,
     marginLeft: 10,
   } as TextStyle,

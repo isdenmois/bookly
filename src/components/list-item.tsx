@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import cn from 'react-native-classnames';
+import { color } from 'types/colors';
 import { TextM } from 'components/text';
 
 interface Props {
@@ -53,30 +54,30 @@ const s = StyleSheet.create({
     paddingVertical: 15,
     alignItems: 'center',
     borderBottomWidth: 0.5,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: color.Border,
     flex: 1,
     paddingHorizontal: 5,
   } as ViewStyle,
   borderFirst: {
     borderTopWidth: 0.5,
-    borderTopColor: '#E0E0E0',
+    borderTopColor: color.Border,
   } as ViewStyle,
   borderLast: {
     borderBottomWidth: 0,
   } as ViewStyle,
   label: {
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
   text: {
     flex: 1,
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
   textRight: {
     textAlign: 'right',
   } as TextStyle,
   counter: {
     marginLeft: 10,
-    color: '#757575',
+    color: color.SecondaryText,
   } as TextStyle,
   icon: {
     marginRight: 15,

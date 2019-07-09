@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { ScrollView, Text, StyleSheet, ViewStyle, View, TouchableOpacity } from 'react-native';
 import { inject, InjectorContext } from 'react-ioc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { color } from 'types/colors';
 import { FantlabAPI } from 'api';
 import { Fetcher } from 'components/fetcher';
 import { Thumbnail } from 'components/thumbnail';
@@ -49,7 +50,7 @@ export class ThumbnailList extends React.PureComponent<Props> {
         <Thumbnail cache={false} url={thumbnail.url} auto='width' height={120} />
         {isSelected && (
           <View style={s.check}>
-            <Icon name='check' size={12} color='white' />
+            <Icon name='check' size={12} color={color.PrimaryTextInverse} />
           </View>
         )}
       </ViewComponent>
@@ -63,7 +64,7 @@ export class ThumbnailList extends React.PureComponent<Props> {
 
 const s = StyleSheet.create({
   container: {
-    borderTopColor: '#E0E0E0',
+    borderTopColor: color.Border,
     borderTopWidth: 0.5,
     marginTop: 25,
   } as ViewStyle,
@@ -78,7 +79,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   check: {
     borderRadius: 50,
-    backgroundColor: '#009688',
+    backgroundColor: color.Primary,
     position: 'absolute',
     padding: 4,
     top: 5,

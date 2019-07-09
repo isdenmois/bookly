@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { color } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
 
 interface Props {
@@ -29,10 +30,10 @@ export class SearchBar extends React.Component<Props> {
             onPress={onBack}
             name='chevron-left'
             size={20}
-            color='black'
+            color={color.PrimaryText}
           />
         )}
-        {!onBack && <Icon style={s.searchIcon} name='search' size={20} color='#757575' />}
+        {!onBack && <Icon style={s.searchIcon} name='search' size={20} color={color.SecondaryText} />}
 
         <TextInput
           style={s.text}
@@ -52,7 +53,7 @@ export class SearchBar extends React.Component<Props> {
             onPress={this.clear}
             name='times'
             size={20}
-            color='black'
+            color={color.PrimaryText}
           />
         )}
       </View>
@@ -84,7 +85,7 @@ export class SearchBar extends React.Component<Props> {
 const s = StyleSheet.create({
   container: {
     height: 44,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: color.SearchBackground,
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'stretch',

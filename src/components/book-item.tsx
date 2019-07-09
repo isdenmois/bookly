@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextSt
 import withObservables from '@nozbe/with-observables';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
+import { color } from 'types/colors';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book from 'store/book';
@@ -21,9 +22,9 @@ const STATUS_ICONS = {
 };
 
 const STATUS_COLORS = {
-  bookmark: '#009688',
-  flag: '#FFE0B2',
-  star: '#F57C00',
+  bookmark: color.Primary,
+  flag: color.OrangeBackground,
+  star: color.Secondary,
 };
 
 interface Props extends Partial<NavigationScreenProps> {
@@ -110,7 +111,7 @@ const s = StyleSheet.create({
     marginTop: 15,
   } as ViewStyle,
   thumbnailView: {
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     elevation: 4,
     borderRadius: 5,
     borderBottomRightRadius: 0,
@@ -132,7 +133,7 @@ const s = StyleSheet.create({
     paddingLeft: 25,
     borderBottomRightRadius: 5,
     borderTopRightRadius: 5,
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     elevation: 4,
     flex: 1,
   } as ViewStyle,
@@ -149,23 +150,23 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 5,
     paddingVertical: 5,
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
   } as ViewStyle,
   iconText: {
     fontSize: 16,
-    color: '#000000',
+    color: color.PrimaryText,
     marginLeft: 5,
   } as TextStyle,
   title: {
     fontSize: 16,
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
   author: {
     fontSize: 12,
-    color: '#757575',
+    color: color.SecondaryText,
   } as TextStyle,
   date: {
     fontSize: 10,
-    color: '#757575',
+    color: color.SecondaryText,
   } as TextStyle,
 });

@@ -160,13 +160,13 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   star: {
-    color: color.DeepOrange,
+    color: color.Stars,
   } as TextStyle,
   stars: {
     flexDirection: 'row',
   } as ViewStyle,
   text: {
     width: 50,
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
 });

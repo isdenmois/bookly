@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { color } from 'types/colors';
 
 interface Props {
   description: string;
@@ -65,11 +66,11 @@ const s = StyleSheet.create({
     marginVertical: 15,
   } as ViewStyle,
   title: {
-    color: '#757575',
+    color: color.SecondaryText,
     fontSize: 12,
   } as TextStyle,
   value: {
-    color: 'black',
+    color: color.PrimaryText,
     fontSize: 18,
   } as TextStyle,
 });

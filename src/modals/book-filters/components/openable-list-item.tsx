@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, ViewStyle, TextStyle, View, TouchableOpacity } from 'react-native';
+import { color } from 'types/colors';
 import { ListItem } from 'components/list-item';
 import { TouchIcon } from 'components/touch-icon';
 
@@ -51,7 +52,7 @@ export class OpenableListItem extends React.Component<Props, State> {
             paddingLeft={10}
             name='times'
             size={20}
-            color='#000'
+            color={color.PrimaryText}
             onPress={this.props.onClear}
           />
         )}
@@ -72,7 +73,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   title: {
     fontSize: 16,
-    color: 'black',
+    color: color.PrimaryText,
     paddingVertical: 15,
   } as TextStyle,
   container: {
@@ -80,7 +81,7 @@ const s = StyleSheet.create({
   },
   value: {
     fontSize: 16,
-    color: 'black',
+    color: color.PrimaryText,
     flex: 1,
     textAlign: 'right',
   } as TextStyle,

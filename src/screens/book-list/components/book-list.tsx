@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
+import { color } from 'types/colors';
 import Book from 'store/book';
 import { BookItem } from 'components/book-item';
 import { EmptyResult } from 'screens/search/empty-result';
@@ -57,7 +58,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   found: {
     fontSize: 18,
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
 });
 

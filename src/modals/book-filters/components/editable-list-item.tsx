@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { color } from 'types/colors';
 import { ListItem } from 'components/list-item';
 import { TouchIcon } from 'components/touch-icon';
 import { SelectList } from './select-list';
@@ -53,7 +54,14 @@ export class EditableListItem extends React.Component<Props> {
         )}
         {!edit && <Text style={s.value}>{this.label}</Text>}
         {clearable && !edit && !!value && (
-          <TouchIcon paddingVertical={15} paddingLeft={10} name='times' size={20} color='#000' onPress={this.clear} />
+          <TouchIcon
+            paddingVertical={15}
+            paddingLeft={10}
+            name='times'
+            size={20}
+            color={color.PrimaryText}
+            onPress={this.clear}
+          />
         )}
       </ListItem>
     );
@@ -77,7 +85,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   value: {
     fontSize: 16,
-    color: 'black',
+    color: color.PrimaryText,
     flex: 1,
     textAlign: 'right',
     paddingVertical: 15,

@@ -4,6 +4,7 @@ import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
+import { color } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ScreenHeader } from 'components/screen-header';
 import { BookList } from './components/book-list';
@@ -48,7 +49,7 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
           <Button
             label='ФИЛЬТРЫ'
             onPress={this.openFiltersModal}
-            icon={<Icon name='sliders-h' size={18} color='black' />}
+            icon={<Icon name='sliders-h' size={18} color={color.PrimaryText} />}
             style={s.button}
             textStyle={s.buttonText}
           />
@@ -72,7 +73,7 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
 
 const s = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     flex: 1,
   } as ViewStyle,
   buttonContainer: {
@@ -83,10 +84,10 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   button: {
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     elevation: 3,
   } as ViewStyle,
   buttonText: {
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
 });

@@ -5,6 +5,7 @@ import { InjectorContext, inject } from 'react-ioc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
+import { color } from 'types/colors';
 import { notImplemented } from 'utils/not-implemented-yet';
 import { readBooksQuery, wishBooksQuery } from '../home.service';
 import { ListItem } from 'components/list-item';
@@ -29,24 +30,24 @@ export class NavigationLinks extends React.Component<Props> {
       <View style={s.container}>
         <ListItem
           onPress={this.openReadBooks}
-          icon={<Icon name='flag' size={20} color='#0D47A1' />}
+          icon={<Icon name='flag' size={20} color={color.BlueIcon} />}
           value='Прочитанные'
           counter={this.props.readCount}
         />
         <ListItem
           onPress={this.openWishBooks}
-          icon={<Icon name='plus' size={20} color='#0D47A1' />}
+          icon={<Icon name='plus' size={20} color={color.BlueIcon} />}
           value='Хочу прочитать'
           counter={this.props.wishCount}
         />
         <ListItem
           onPress={notImplemented}
-          icon={<Icon name='sync' size={20} color='#0D47A1' />}
+          icon={<Icon name='sync' size={20} color={color.BlueIcon} />}
           value='Синхронизация'
         />
         <ListItem
           onPress={this.openProfile}
-          icon={<Icon name='user' size={20} color='#0D47A1' />}
+          icon={<Icon name='user' size={20} color={color.BlueIcon} />}
           value='Профиль'
           counter={this.session.userId}
           last

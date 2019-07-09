@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import { color } from 'types/colors';
 import { BookData } from 'store/book';
 import { Button } from 'components/button';
 import { Rating } from 'components/rating';
@@ -20,7 +21,7 @@ export function ReadButton(props: Props) {
     return (
       <Button
         label='Сейчас читаю'
-        icon={<Icon name='clock' size={18} color='#F57C00' />}
+        icon={<Icon name='clock' size={18} color={color.Secondary} />}
         style={[props.style, s.orange]}
         textStyle={s.textOrange}
         onPress={props.openChangeStatus}
@@ -40,7 +41,7 @@ export function ReadButton(props: Props) {
   return (
     <Button
       label={status === BOOK_STATUSES.WISH ? 'Хочу прочитать' : 'Добавить'}
-      icon={<Icon name='bookmark' size={18} color='#009688' />}
+      icon={<Icon name='bookmark' size={18} color={color.Primary} />}
       style={[props.style, s.green]}
       textStyle={s.textGreen}
       onPress={props.openChangeStatus}
@@ -53,21 +54,21 @@ const s = StyleSheet.create({
     marginTop: 10,
   } as ViewStyle,
   orange: {
-    backgroundColor: '#FFE0B2',
+    backgroundColor: color.OrangeBackground,
     marginTop: 10,
   } as ViewStyle,
   textOrange: {
     fontSize: 18,
-    color: '#F57C00',
+    color: color.Secondary,
   } as TextStyle,
   green: {
-    backgroundColor: 'white',
-    borderColor: '#009688',
+    backgroundColor: color.Background,
+    borderColor: color.Primary,
     borderWidth: 1,
     marginTop: 10,
   } as ViewStyle,
   textGreen: {
     fontSize: 18,
-    color: '#009688',
+    color: color.Primary,
   } as TextStyle,
 });

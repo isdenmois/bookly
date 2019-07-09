@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
+import { color } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
 import { SearchBar } from 'components/search-bar';
 
@@ -55,7 +56,7 @@ export class BookSelectHeader extends React.Component<Props, State> {
 const s = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: color.Border,
     borderBottomWidth: 0.5,
     alignItems: 'center',
   } as ViewStyle,
@@ -73,7 +74,7 @@ const s = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     fontFamily: 'sans-serif-medium',
-    color: 'black',
+    color: color.PrimaryText,
     textAlign: 'center',
     paddingVertical: 12,
   } as TextStyle,

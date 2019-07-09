@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
+import { color } from 'types/colors';
 import { TouchIcon } from './touch-icon';
 import { SearchBar } from './search-bar';
 
@@ -32,9 +33,11 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
 
     return (
       <View style={s.header}>
-        <TouchIcon name='arrow-left' size={24} color='#000' onPress={this.goBack} />
+        <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={this.goBack} />
         <Text style={s.title}>{this.props.title}</Text>
-        {this.props.onSearch && <TouchIcon name='search' size={24} color='#000' onPress={this.openSearch} />}
+        {this.props.onSearch && (
+          <TouchIcon name='search' size={24} color={color.PrimaryText} onPress={this.openSearch} />
+        )}
         {!this.props.onSearch && <View style={s.noSearch} />}
       </View>
     );
@@ -66,7 +69,7 @@ const s = StyleSheet.create({
     marginRight: 44,
     fontSize: 24,
     textAlign: 'center',
-    color: 'black',
+    color: color.PrimaryText,
     marginLeft: 20,
   } as TextStyle,
   noSearch: {

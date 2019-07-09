@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
+import { color } from 'types/colors';
 import { TextXL } from 'components/text';
 
 interface Props {
@@ -22,13 +23,13 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   } as ViewStyle,
   value: {
-    color: 'black',
+    color: color.PrimaryText,
     textAlign: 'center',
     marginBottom: 5,
     fontWeight: 'bold',
   } as TextStyle,
   label: {
-    color: 'black',
+    color: color.PrimaryText,
     fontSize: 14,
   } as TextStyle,
 });

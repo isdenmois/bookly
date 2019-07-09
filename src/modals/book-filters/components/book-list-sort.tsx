@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { TouchIcon } from 'components/touch-icon';
+import { color } from 'types/colors';
 import { EditableListItem } from './editable-list-item';
 
 const SORT_LABELS = {
@@ -28,7 +29,7 @@ export class BookListSort extends React.PureComponent<Props> {
           paddingVertical={15}
           paddingLeft={15}
           size={18}
-          color='black'
+          color={color.PrimaryText}
           onPress={this.toggleDesc}
         />
       </EditableListItem>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { color } from 'types/colors';
 import { ListItem } from 'components/list-item';
 import { TouchIcon } from 'components/touch-icon';
 
@@ -24,7 +25,14 @@ export class BookYearFilter extends React.PureComponent<Props> {
           onSubmitEditing={this.props.onApply}
         />
         {!!value && (
-          <TouchIcon paddingVertical={15} paddingLeft={10} name='times' size={20} color='#000' onPress={this.clear} />
+          <TouchIcon
+            paddingVertical={15}
+            paddingLeft={10}
+            name='times'
+            size={20}
+            color={color.PrimaryText}
+            onPress={this.clear}
+          />
         )}
       </ListItem>
     );
@@ -48,7 +56,7 @@ const s = StyleSheet.create({
     flex: 1,
     textAlign: 'right',
     fontSize: 16,
-    color: 'black',
+    color: color.PrimaryText,
     padding: 0,
     paddingRight: 5,
     paddingVertical: 15,

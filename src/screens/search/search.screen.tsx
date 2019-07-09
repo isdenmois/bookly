@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { NavigationScreenProps } from 'react-navigation';
 import { StyleSheet, ScrollView, View, Text, ViewStyle } from 'react-native';
 import { inject, InjectorContext } from 'react-ioc';
+import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { FantlabAPI } from 'api';
 import Book from 'store/book';
@@ -74,7 +75,7 @@ export class SearchScreen extends React.Component<Props, State> {
 
 const s = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     flexDirection: 'column',
     flex: 1,
   } as ViewStyle,

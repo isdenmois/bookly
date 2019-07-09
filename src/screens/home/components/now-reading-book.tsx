@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpac
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import Book from 'store/book';
-import { currentBooksQuery } from '../home.service';
+import { color } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Thumbnail } from 'components/thumbnail';
 import { TextXL } from 'components/text';
 import { ReadButton } from 'components/read-button';
 const { withNavigation } = require('react-navigation');
+import { currentBooksQuery } from '../home.service';
 
 interface Props extends Partial<NavigationScreenProps> {
   database: Database;
@@ -69,11 +69,11 @@ const s = StyleSheet.create({
     flex: 1,
   } as ViewStyle,
   title: {
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
   author: {
     fontSize: 14,
-    color: '#757575',
+    color: color.SecondaryText,
     marginTop: 5,
   } as TextStyle,
 });

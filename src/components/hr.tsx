@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
+import { color } from 'types/colors';
 
 interface Props {
   margin?: number;
@@ -13,7 +14,7 @@ export function Hr(props: Props) {
 
 const s = StyleSheet.create({
   hr: {
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: color.Border,
     borderBottomWidth: 0.5,
   } as ViewStyle,
 });

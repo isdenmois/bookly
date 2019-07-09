@@ -1,6 +1,7 @@
 import React, { ReactChild, ReactNode, useCallback } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle } from 'react-native';
+import { color } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
 
 interface Props extends NavigationScreenProps {
@@ -33,9 +34,9 @@ export const Dialog = (props: Props) => {
 function renderDialogHeader(title: ReactChild, onBack, onApply) {
   return (
     <View style={s.header}>
-      <TouchIcon name='arrow-left' size={24} color='#000' onPress={onBack} />
+      <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={onBack} />
       <Text style={s.title}>{title}</Text>
-      {onApply && <TouchIcon name='check' size={24} color='#000' onPress={onApply} />}
+      {onApply && <TouchIcon name='check' size={24} color={color.PrimaryText} onPress={onApply} />}
       {!onApply && <View style={s.noApplyIcon} />}
     </View>
   );
@@ -54,7 +55,7 @@ const s = StyleSheet.create({
     bottom: 0,
     opacity: 0.5,
     position: 'absolute',
-    backgroundColor: 'black',
+    backgroundColor: color.Black,
   } as ViewStyle,
   modal: {
     marginVertical: 50,
@@ -63,7 +64,7 @@ const s = StyleSheet.create({
   modalView: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
   } as ViewStyle,
   header: {
     flexDirection: 'row',
@@ -72,7 +73,7 @@ const s = StyleSheet.create({
     paddingVertical: 10,
   } as ViewStyle,
   title: {
-    color: 'black',
+    color: color.PrimaryText,
     fontSize: 24,
     flex: 1,
     textAlign: 'center',

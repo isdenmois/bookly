@@ -4,6 +4,7 @@ import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { inject, InjectorContext } from 'react-ioc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Database } from '@nozbe/watermelondb';
+import { color } from 'types/colors';
 import { Session } from 'services';
 import { Button } from 'components/button';
 import { ScreenHeader } from 'components/screen-header';
@@ -26,7 +27,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
           <Button
             label='Выйти'
             onPress={this.logout}
-            icon={<Icon name='sign-out-alt' size={18} color='black' />}
+            icon={<Icon name='sign-out-alt' size={18} color={color.PrimaryText} />}
             style={s.button}
             textStyle={s.buttonText}
           />
@@ -45,7 +46,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
   } as ViewStyle,
   buttonContainer: {
     position: 'absolute',
@@ -55,10 +56,10 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   button: {
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     elevation: 3,
   } as ViewStyle,
   buttonText: {
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
 });

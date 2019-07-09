@@ -6,6 +6,7 @@ import { map, sortBy, prop, isFalsy } from 'rambdax';
 import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import { color } from 'types/colors';
 import Book from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ListItem } from 'components/list-item';
@@ -45,7 +46,7 @@ export class BookList extends React.Component<Props> {
         style={s.listItem}
         icon={this.thumbnail(book)}
         last={index === lastIndex}
-        selected={book.id === selected && <Icon name='check' size={18} color='#009688' />}
+        selected={book.id === selected && <Icon name='check' size={18} color={color.Primary} />}
         onPress={() => this.props.onSelect(book)}
       >
         <View style={s.row}>
@@ -76,10 +77,10 @@ const s = StyleSheet.create({
   } as ImageStyle,
   title: {
     fontSize: 16,
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
   author: {
-    color: '#757575',
+    color: color.SecondaryText,
     fontSize: 12,
     marginTop: 5,
   } as TextStyle,
@@ -87,7 +88,7 @@ const s = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     paddingVertical: 20,
-    color: '#757575',
+    color: color.SecondaryText,
     fontSize: 14,
   } as TextStyle,
 });

@@ -49,6 +49,6 @@ const s = StyleSheet.create({
   } as ViewStyle,
   titleStyle: {
     textAlign: 'center',
-    color: color.Black,
+    color: color.PrimaryText,
   } as TextStyle,
 });

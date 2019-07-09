@@ -62,7 +62,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   star: {
-    color: color.DeepOrange,
+    color: color.Stars,
   } as TextStyle,
   text: {
     marginLeft: 10,

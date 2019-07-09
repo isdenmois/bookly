@@ -1,6 +1,7 @@
 import React from 'react';
 import { ViewStyle, TextStyle, StyleSheet, View, Text, TextInput } from 'react-native';
 import { Session } from 'services';
+import { color } from 'types/colors';
 
 interface Props {
   session: Session;
@@ -36,7 +37,7 @@ export class ChallengeEditor extends React.Component<Props, State> {
 const s = StyleSheet.create({
   container: {
     borderRadius: 10,
-    borderColor: '#E0E0E0',
+    borderColor: color.Border,
     borderWidth: 1,
     marginHorizontal: 20,
     marginTop: 30,
@@ -46,12 +47,12 @@ const s = StyleSheet.create({
     position: 'absolute',
     left: 20,
     top: -10,
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     fontSize: 12,
-    color: '#757575',
+    color: color.SecondaryText,
   } as TextStyle,
   input: {
     fontSize: 18,
-    color: 'black',
+    color: color.PrimaryText,
   } as TextStyle,
 });

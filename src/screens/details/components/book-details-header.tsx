@@ -1,5 +1,6 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, View, TextStyle, ViewStyle } from 'react-native';
+import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
+import { color } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
 
 interface Props {
@@ -47,7 +48,7 @@ const s = StyleSheet.create({
     zIndex: 2,
   } as ViewStyle,
   title: {
-    color: 'black',
+    color: color.PrimaryText,
     fontSize: 24,
     textAlign: 'center',
     flex: 1,

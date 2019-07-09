@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, ViewStyle, View } from 'react-native';
 import { Calendar, DateObject } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { color } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
-import { formatDate } from 'utils/date'
+import { formatDate } from 'utils/date';
 import { OpenableListItem } from './openable-list-item';
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const HALF_DAY = 12 * 60 * 60 * 1000;
-const MARKED_DAY = { startingDay: true, color: '#009688' };
+const MARKED_DAY = { startingDay: true, color: color.Primary };
 
 export class BookDateFilter extends React.PureComponent<Props> {
   state = { opened: false, from: null, markedDates: null };
@@ -37,7 +38,7 @@ export class BookDateFilter extends React.PureComponent<Props> {
             paddingLeft={10}
             name='chevron-left'
             size={20}
-            color='#000'
+            color={color.PrimaryText}
             onPress={this.subYear}
           />
           <Calendar
@@ -57,7 +58,7 @@ export class BookDateFilter extends React.PureComponent<Props> {
             paddingLeft={10}
             name='chevron-right'
             size={20}
-            color='#000'
+            color={color.PrimaryText}
             onPress={this.addYear}
           />
         </View>
@@ -66,7 +67,7 @@ export class BookDateFilter extends React.PureComponent<Props> {
   }
 
   renderArrow(direction: string) {
-    return <Icon name={`caret-${direction}`} size={20} color='#000' />;
+    return <Icon name={`caret-${direction}`} size={20} color={color.PrimaryText} />;
   }
 
   setCalRef = calendar => (this.calendar = calendar);

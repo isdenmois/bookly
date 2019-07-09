@@ -23,6 +23,7 @@ import { ReadButton } from 'components/read-button';
 import { getAvatarBgColor } from 'components/avatar';
 import { BookDetailsHeader } from './book-details-header';
 import { BookDescriptionLine, ViewLine, ViewLineTouchable } from './book-details-lines';
+import { color } from 'types/colors';
 
 interface Props extends NavigationScreenProps {
   book: BookExtended;
@@ -206,11 +207,11 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   } as ViewStyle,
   title: {
-    color: 'white',
+    color: color.PrimaryTextInverse,
     fontSize: 24,
   } as TextStyle,
   author: {
-    color: 'white',
+    color: color.PrimaryTextInverse,
     fontSize: 18,
   } as TextStyle,
   statusButton: {
@@ -227,11 +228,11 @@ const s = StyleSheet.create({
     marginTop: 15,
   } as ViewStyle,
   blackRating: {
-    color: 'black',
+    color: color.PrimaryText,
     fontSize: 18,
   } as TextStyle,
   whiteRating: {
-    color: 'white',
+    color: color.PrimaryTextInverse,
     fontSize: 18,
   } as TextStyle,
 });

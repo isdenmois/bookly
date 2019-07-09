@@ -4,9 +4,10 @@ import { NavigationScreenProps } from 'react-navigation';
 import { provider, inject, InjectorContext } from 'react-ioc';
 import { observer } from 'mobx-react';
 import { Database } from '@nozbe/watermelondb';
+import { color } from 'types/colors';
 import { SyncService, Session } from 'services';
-import { HomeService } from './home.service';
 import { Hr } from 'components/hr';
+import { HomeService } from './home.service';
 import { HomeHeader } from './components/header';
 import { CurrentBook } from './components/current-book';
 import { BookChallenge } from './components/book-challenge';
@@ -62,7 +63,7 @@ const s = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingHorizontal: 24,
-    backgroundColor: 'white',
+    backgroundColor: color.Background,
     flex: 1,
   } as ViewStyle,
 });

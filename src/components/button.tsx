@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import cn from 'react-native-classnames';
+import { color } from 'types/colors';
 import { TextM } from 'components/text';
 
 interface Props {
@@ -34,7 +35,7 @@ export class Button extends React.Component<Props> {
 const s = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#009688',
+    backgroundColor: color.Primary,
     paddingHorizontal: 25,
     paddingVertical: 10,
     borderRadius: 20,
@@ -55,7 +56,7 @@ const s = StyleSheet.create({
     opacity: 0.6,
   } as ViewStyle,
   text: {
-    color: 'white',
+    color: color.PrimaryTextInverse,
     fontFamily: 'sans-serif-medium',
     textAlign: 'center',
   } as TextStyle,

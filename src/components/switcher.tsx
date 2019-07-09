@@ -39,7 +39,7 @@ export class Switcher extends React.Component<Props> {
 const s = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderColor: color.Green,
+    borderColor: color.Primary,
     borderWidth: 0.5,
     borderRadius: 5,
     overflow: 'hidden',
@@ -48,7 +48,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRightColor: color.Green,
+    borderRightColor: color.Primary,
     borderRightWidth: 0.5,
     paddingVertical: 5,
   } as ViewStyle,
@@ -56,14 +56,14 @@ const s = StyleSheet.create({
     borderRightWidth: 0,
   } as ViewStyle,
   selected: {
-    backgroundColor: color.Green,
+    backgroundColor: color.Primary,
   } as ViewStyle,
   text: {
-    color: color.Green,
+    color: color.Primary,
     fontFamily: 'sans-serif-medium',
     fontSize: 13,
   } as TextStyle,
   selectedText: {
-    color: 'white',
+    color: color.PrimaryTextInverse,
   } as TextStyle,
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { color } from 'types/colors';
 import { TextXL } from 'components/text';
 
 export class EmptyResult extends React.Component {
@@ -20,6 +21,6 @@ const s = StyleSheet.create({
     marginBottom: 38,
   } as ViewStyle,
   notFoundText: {
-    color: '#90A4AE',
+    color: color.Empty,
   } as TextStyle,
 });

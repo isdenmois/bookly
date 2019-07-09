@@ -1,8 +1,9 @@
 import React from 'react';
 import { TextInput, StyleSheet, TextStyle } from 'react-native';
-import { map, sortBy, prop, isFalsy } from 'rambdax';
+import { sortBy, prop } from 'rambdax';
 import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
+import { color } from 'types/colors';
 import Author from 'store/author';
 import { EditableListItem } from './editable-list-item';
 
@@ -64,7 +65,7 @@ const s = StyleSheet.create({
     flex: 1,
     textAlign: 'right',
     fontSize: 16,
-    color: 'black',
+    color: color.Black,
     padding: 0,
     paddingRight: 5,
     paddingVertical: 15,
