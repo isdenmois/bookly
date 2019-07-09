@@ -11,6 +11,7 @@ interface Props {
   style?: ViewStyle;
   placeholder?: string;
   onBack?: () => void;
+  onClose?: () => void;
 }
 
 export class SearchBar extends React.Component<Props> {
@@ -71,7 +72,13 @@ export class SearchBar extends React.Component<Props> {
     this.focus();
   };
 
-  toSearch = () => this.props.value && this.props.onSearch(this.props.value);
+  toSearch = () => {
+    if (this.props.value) {
+      this.props.onSearch(this.props.value);
+    } else {
+      this.props.onClose && this.props.onClose();
+    }
+  };
 }
 
 const s = StyleSheet.create({

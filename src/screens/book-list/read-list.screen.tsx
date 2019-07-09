@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { BookListHeader } from './components/book-list-header';
+import { ScreenHeader } from 'components/screen-header';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
 import { Button } from 'components/button';
@@ -42,7 +42,7 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
 
     return (
       <View style={s.container}>
-        <BookListHeader title={this.title} onBack={this.goBack} />
+        <ScreenHeader title={this.title} navigation={this.props.navigation} />
         <BookList database={this.database} query={query} sort={sort} navigation={navigation} />
         <View style={s.buttonContainer}>
           <Button
@@ -56,8 +56,6 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
       </View>
     );
   }
-
-  goBack = () => this.props.navigation.pop();
 
   setFilters = (filters, sort) => this.setState(createQueryState(filters, sort));
 

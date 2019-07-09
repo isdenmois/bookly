@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { inject, InjectorContext } from 'react-ioc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Database } from '@nozbe/watermelondb';
 import { Session } from 'services';
-import { TouchIcon } from 'components/touch-icon';
 import { Button } from 'components/button';
+import { ScreenHeader } from 'components/screen-header';
 import { ChallengeEditor } from './components/challenge-editor';
 
 export class ProfileScreen extends React.Component<NavigationScreenProps> {
@@ -18,10 +18,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
   render() {
     return (
       <View style={s.container}>
-        <View style={s.header}>
-          <TouchIcon name='arrow-left' size={24} color='#000' onPress={this.goBack} />
-          <Text style={s.profile}>{this.session.userId}</Text>
-        </View>
+        <ScreenHeader title={this.session.userId} navigation={this.props.navigation} />
 
         <ChallengeEditor session={this.session} />
 
@@ -38,8 +35,6 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
     );
   }
 
-  goBack = () => this.props.navigation.pop();
-
   logout = () => {
     this.session.stopSession();
     this.props.navigation.navigate('Login');
@@ -52,20 +47,6 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   } as ViewStyle,
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-  } as ViewStyle,
-  profile: {
-    flex: 1,
-    marginRight: 44,
-    fontSize: 24,
-    textAlign: 'center',
-    color: 'black',
-    marginLeft: 20,
-  } as TextStyle,
   buttonContainer: {
     position: 'absolute',
     bottom: 24,
