@@ -57,7 +57,7 @@ function preparePushChanges(changes) {
 }
 
 function bookAuthorParse(bookAuthor) {
-  const [author_id, book_id] = bookAuthor.id.split('_');
+  const [book_id, author_id] = bookAuthor.id.split('_');
 
   return { ...bookAuthor, author_id, book_id };
 }
