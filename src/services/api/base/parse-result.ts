@@ -3,6 +3,7 @@ import { mapDatabase } from './map-database';
 
 export function parseResult(context, schema, response) {
   return Promise.resolve(response)
+    .then(data => Array.isArray(data) && schema.filter ? data.filter(schema.filter) : data)
     .then(data => (schema.mapBody ? mapResult(schema.mapBody, data) : data))
     .then(data => mapDatabase(context, schema.collection, data));
 }

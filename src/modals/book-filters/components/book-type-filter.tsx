@@ -1,5 +1,5 @@
 import React from 'react';
-import { BOOK_TYPES } from 'types/book-types';
+import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { EditableListItem } from './editable-list-item';
 
 interface Props {
@@ -12,7 +12,7 @@ export class BookTypeFilter extends React.Component<Props> {
     return (
       <EditableListItem
         title='Тип книги'
-        fields={BOOK_TYPES as any}
+        fields={BOOK_TYPE_NAMES as any}
         value={this.props.value}
         onChange={this.setType}
         clearable

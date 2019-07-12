@@ -1,7 +1,10 @@
 import { AppRegistry, Platform } from 'react-native';
-import 'proxy-polyfill';
 import App from './config/root/root';
 import { name as appName } from './app.json';
+
+if (!global.Proxy) {
+  require('proxy-polyfill');
+}
 
 AppRegistry.registerComponent(appName, () => App);
 
