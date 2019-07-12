@@ -3,6 +3,7 @@ import {
   ImageBackground,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   ScrollView,
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   TextStyle,
   ImageStyle,
   ToastAndroid,
+  Clipboard,
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
@@ -85,7 +87,9 @@ export class BookDetails extends React.Component<Props> {
               </TouchableOpacity>
 
               <View style={s.mainInformation}>
-                <Text style={s.title}>{record.title}</Text>
+                <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
+                  <Text style={s.title}>{record.title}</Text>
+                </TouchableWithoutFeedback>
                 <Text style={s.author}>{record.author}</Text>
               </View>
             </View>
@@ -108,7 +112,9 @@ export class BookDetails extends React.Component<Props> {
         <View style={s.darkOverlay}>
           <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
           <View style={s.mainInformationWithoutThumbnail}>
-            <Text style={s.title}>{record.title}</Text>
+            <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
+              <Text style={s.title}>{record.title}</Text>
+            </TouchableWithoutFeedback>
             <Text style={s.author}>{record.author}</Text>
             <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={record} />
           </View>
@@ -153,6 +159,11 @@ export class BookDetails extends React.Component<Props> {
 
     return book.title;
   }
+
+  copyBookTitle = () => {
+    Clipboard.setString(this.props.record.title);
+    ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
+  };
 
   openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
 
