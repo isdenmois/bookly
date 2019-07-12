@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { inject, InjectorContext } from 'react-ioc';
+import { color } from 'types/colors';
 import { FantlabAPI } from 'api';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'types/book-similar';
@@ -34,8 +35,8 @@ export class BookSimilars extends React.Component<Props> {
     }
 
     return (
-      <View>
-        <Text>ПОХОЖИЕ</Text>
+      <View style={s.container}>
+        <Text style={s.header}>ПОХОЖИЕ</Text>
 
         {_.map(data, book => this.renderBook(book))}
       </View>
@@ -49,10 +50,11 @@ export class BookSimilars extends React.Component<Props> {
   renderBook(book: BookSimilar) {
     return (
       <TouchableOpacity key={book.id} onPress={() => this.openBook(book)} style={s.row}>
-        {!!book.thumbnail && <Thumbnail auto='none' cache={false} url={book.thumbnail} width={50} height={80} />}
-        <View>
-          <Text>{book.title}</Text>
-          <Text>{book.author}</Text>
+        <Thumbnail auto='none' cache={false} title={book.title} url={book.thumbnail} width={50} height={80} />
+
+        <View style={s.info}>
+          <Text style={s.title}>{book.title}</Text>
+          <Text style={s.author}>{book.author}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -64,7 +66,27 @@ export class BookSimilars extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
+  container: {
+    marginTop: 20,
+  } as ViewStyle,
+  header: {
+    color: color.SecondaryText,
+    fontSize: 14,
+  } as TextStyle,
   row: {
     flexDirection: 'row',
+    paddingVertical: 10,
   } as ViewStyle,
+  info: {
+    marginLeft: 10,
+    flex: 1,
+  } as ViewStyle,
+  title: {
+    color: color.PrimaryText,
+    fontSize: 18,
+  } as TextStyle,
+  author: {
+    color: color.SecondaryText,
+    fontSize: 14,
+  } as TextStyle,
 });
