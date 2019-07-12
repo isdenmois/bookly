@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { inject, InjectorContext } from 'react-ioc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Database } from '@nozbe/watermelondb';
@@ -27,6 +27,12 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
         {__DEV__ && (
           <View style={{ marginTop: 15, marginHorizontal: 20 }}>
             <Button label='Очистить API Cache' onPress={clearCache} />
+          </View>
+        )}
+
+        {!!global.HermesInternal && (
+          <View>
+            <Text>Engine: Hermes</Text>
           </View>
         )}
 

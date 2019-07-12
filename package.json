@@ -12,15 +12,15 @@
   "dependencies": {
     "@nozbe/watermelondb": "0.12.3",
     "@nozbe/with-observables": "1.0.3",
-    "@react-native-community/async-storage": "1.5.0",
+    "@react-native-community/async-storage": "1.5.1",
     "date-fns": "1.30.1",
-    "lodash": "4.17.11",
+    "lodash": "4.17.14",
     "mobx": "5.11.0",
     "mobx-react": "6.1.1",
     "rambdax": "2.9.1",
     "react": "16.8.6",
     "react-ioc": "1.0.0",
-    "react-native": "0.60.0",
+    "react-native": "0.60.3",
     "react-native-auto-height-image": "1.1.0",
     "react-native-calendars": "1.196.0",
     "react-native-classnames": "0.1.1",
@@ -37,11 +37,11 @@
     "rxjs": "6.5.2"
   },
   "devDependencies": {
-    "@babel/core": "7.5.0",
+    "@babel/core": "7.5.4",
     "@babel/plugin-proposal-class-properties": "7.5.0",
     "@babel/plugin-proposal-decorators": "7.4.4",
     "@babel/plugin-transform-runtime": "7.5.0",
-    "@babel/preset-env": "7.5.0",
+    "@babel/preset-env": "7.5.4",
     "@babel/preset-react": "7.0.0",
     "@emotion/core": "10.0.14",
     "@react-native-community/eslint-config": "0.0.5",
@@ -49,7 +49,7 @@
     "@storybook/react-native": "5.1.9",
     "@storybook/react-native-server": "5.1.9",
     "@storybook/theming": "5.1.9",
-    "@types/lodash": "4.14.135",
+    "@types/lodash": "4.14.136",
     "@types/react": "16.8.23",
     "@types/react-native": "0.60.0",
     "@types/react-native-calendars": "1.20.7",
@@ -70,6 +70,7 @@
     "patch-package": "6.1.2",
     "postinstall-postinstall": "2.0.0",
     "prettier": "1.18.2",
+    "proxy-polyfill": "^0.3.0",
     "react-art": "16.8.6",
     "react-native-dotenv": "0.2.0",
     "react-native-typescript-transformer": "1.2.12",
@@ -78,6 +79,6 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-eslint-rules": "5.4.0",
     "tslint-react": "4.0.0",
-    "typescript": "3.5.2"
+    "typescript": "3.5.3"
   }
 }
