@@ -28,7 +28,7 @@ export class BookDescriptionLine extends React.Component<Props, State> {
   render() {
     return (
       <TouchableOpacity style={s.descriptionRow} onPress={this.toggleExpand}>
-        <Text style={s.title}>ОПИСАНИЕ</Text>
+        <Text style={s.headerTitle}>ОПИСАНИЕ</Text>
         <Text style={s.value} numberOfLines={this.state.expanded ? null : 3}>
           {this.props.description}
         </Text>
@@ -68,6 +68,10 @@ const s = StyleSheet.create({
   title: {
     color: color.SecondaryText,
     fontSize: 12,
+  } as TextStyle,
+  headerTitle: {
+    color: color.SecondaryText,
+    fontSize: 14,
   } as TextStyle,
   value: {
     color: color.PrimaryText,

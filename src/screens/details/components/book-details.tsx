@@ -135,7 +135,7 @@ export class BookDetails extends React.Component<Props> {
   renderParentBooks() {
     return (
       <View style={s.parentBooks}>
-        <Text>ВХОДИТ В</Text>
+        <Text style={s.header}>ВХОДИТ В</Text>
 
         {this.props.book.parent.map(book => (
           <ViewLineTouchable key={book.id} onPress={() => this.openBook(book)} title={book.type} value={book.title} />
@@ -147,7 +147,7 @@ export class BookDetails extends React.Component<Props> {
   renderChildrenBooks() {
     return (
       <View style={s.parentBooks}>
-        <Text>СОДЕРЖИТ</Text>
+        <Text style={s.header}>СОДЕРЖИТ</Text>
 
         {this.props.book.children.map(book => (
           <ViewLineTouchable
@@ -226,6 +226,10 @@ const s = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
   } as ViewStyle,
+  header: {
+    color: color.SecondaryText,
+    fontSize: 14,
+  } as TextStyle,
   title: {
     color: color.PrimaryTextInverse,
     fontSize: 24,
