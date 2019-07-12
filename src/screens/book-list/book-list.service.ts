@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { Q } from '@nozbe/watermelondb';
+import { sanitizeLike } from 'utils/sanitize';
 
 const HALF_DAY = 12 * 60 * 60 * 1000;
 
@@ -55,5 +56,5 @@ function ratingFilter({ from, to }) {
 }
 
 function titleFitler(title) {
-  return Q.where('search', Q.like(`%${Q.sanitizeLikeString(title.toLowerCase())}%`));
+  return Q.where('search', Q.like(`%${sanitizeLike(title.toLowerCase())}%`));
 }
