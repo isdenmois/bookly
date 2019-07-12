@@ -1,5 +1,5 @@
 export enum BOOK_STATUSES {
-  WISH = 'wish',
-  NOW = 'now',
-  READ = 'read',
+  WISH = 'w',
+  NOW = 'n',
+  READ = 'r',
 }

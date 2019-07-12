@@ -101,7 +101,7 @@ function bookListQuery(search) {
 
 function booksSearchFilter(search) {
   const queries = [
-    search && Q.where('searchTitles', Q.like(`%${search}%`)),
+    search && Q.where('search', Q.like(`%${search}%`)),
     search && Q.where('author', Q.like(`%${search}%`)),
   ].filter(i => i);
 

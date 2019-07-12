@@ -13,7 +13,7 @@ export const schema = appSchema({
         { name: 'rating', type: 'number', isOptional: true },
         { name: 'date', type: 'number', isOptional: true, isIndexed: true },
         { name: 'type', type: 'string', isOptional: true },
-        { name: 'searchTitles', type: 'string', isOptional: true },
+        { name: 'search', type: 'string', isOptional: true },
       ],
     }),
     tableSchema({

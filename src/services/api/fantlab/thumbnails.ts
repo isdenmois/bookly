@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-const THUMBNAIL_URL = 'https://data.fantlab.ru/images/editions/big';
-
 export { url, cache, mapParams } from './book';
 
 export const mapBody = { thumbnails };
@@ -15,6 +13,6 @@ function thumbnails(work) {
 
   return _.map(paper.list, edition => ({
     id: edition.edition_id,
-    url: `${THUMBNAIL_URL}/${edition.edition_id}`,
+    url: edition.edition_id,
   }));
 }

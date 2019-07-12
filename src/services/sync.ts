@@ -33,11 +33,56 @@ export class SyncService {
 
     const timestamp = Date.now();
 
-    return { changes, timestamp };
+    return { changes: preparePullChanges(changes), timestamp };
   };
 
   pushChanges = ({ lastPulledAt, changes }) =>
-    hasChanges(changes) ? this.api.pushChanges(lastPulledAt, changes) : Promise.resolve();
+    hasChanges(changes) ? this.api.pushChanges(lastPulledAt, preparePushChanges(changes)) : Promise.resolve();
+}
+
+function preparePullChanges(changes) {
+  changes.book_authors.created = _.map(changes.book_authors.created, bookAuthorParse);
+  changes.books.created = _.map(changes.books.created, bookParse);
+  changes.books.updated = _.map(changes.books.updated, bookParse);
+
+  return changes;
+}
+
+function preparePushChanges(changes) {
+  changes.book_authors.created = _.map(changes.book_authors.created, ba => _.omit(ba, ['author_id', 'book_id']));
+  changes.books.created = _.map(changes.books.created, bookSerialize);
+  changes.books.updated = _.map(changes.books.updated, bookSerialize);
+
+  return changes;
+}
+
+function bookAuthorParse(bookAuthor) {
+  const [author_id, book_id] = bookAuthor.id.split('_');
+
+  return { ...bookAuthor, author_id, book_id };
+}
+
+function bookSerialize(book) {
+  book.search =
+    book.search &&
+    book.search
+      .split(';')
+      .filter(s => s !== book.title)
+      .join(';');
+
+  if (!book.search) {
+    delete book.search;
+  }
+
+  book.thumbnail = +book.thumbnail || book.thumbnail;
+
+  return book;
+}
+
+function bookParse(book) {
+  book.search = book.search ? `${book.title};${book.search}` : book.title;
+  book.thumbnail = book.thumbnail && book.thumbnail.toString();
+  return book;
 }
 
 function hasChanges(changes) {

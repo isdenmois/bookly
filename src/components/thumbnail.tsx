@@ -5,6 +5,8 @@ import AutoHeightImage from 'react-native-auto-height-image';
 import { Avatar } from 'components/avatar';
 import { AutoWithImage } from './auto-width-image';
 
+const THUMBNAIL_URL = 'https://data.fantlab.ru/images/editions/big';
+
 interface Props {
   url?: string;
   width?: number;
@@ -19,6 +21,10 @@ interface Props {
 export function Thumbnail({ auto, style, title, width, height, url, resizeMode, cache }: Props) {
   if (!url) {
     return <Avatar style={style} width={width} height={height} title={title} />;
+  }
+
+  if (+url) {
+    url = `${THUMBNAIL_URL}/${url}`;
   }
 
   if (auto === 'height') {

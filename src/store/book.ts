@@ -6,9 +6,9 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
 
-const FIELDS = ['title', 'author', 'thumbnail', 'type', 'searchTitles', 'status', 'rating', 'date'];
+const FIELDS = ['title', 'author', 'thumbnail', 'type', 'search', 'status', 'rating', 'date'];
 
-type BookFields = 'id' | 'title' | 'author' | 'thumbnail' | 'type' | 'searchTitles' | 'status' | 'rating' | 'date';
+type BookFields = 'id' | 'title' | 'author' | 'thumbnail' | 'type' | 'search' | 'status' | 'rating' | 'date';
 
 export type BookData = Pick<Book, BookFields>;
 
@@ -25,7 +25,7 @@ export default class Book extends Model {
   @field('rating') rating;
   @date('date') date;
   @field('type') type;
-  @field('searchTitles') searchTitles;
+  @field('search') search;
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;

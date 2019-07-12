@@ -6,13 +6,7 @@ import { Thumbnail } from '../thumbnail';
 storiesOf('Thumbnail').add('Usage', () => (
   <View style={s.centered}>
     <View style={s.row}>
-      <Thumbnail
-        style={s.thumbnail}
-        width={120}
-        height={192}
-        title='Темная башня'
-        url='https://data.fantlab.ru/images/editions/big/4665'
-      />
+      <Thumbnail style={s.thumbnail} width={120} height={192} title='Темная башня' url='4665' />
 
       <Thumbnail style={s.thumbnail} width={120} height={185} title='Темная башня' />
     </View>

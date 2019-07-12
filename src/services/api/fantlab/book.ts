@@ -12,12 +12,15 @@ export function mapParams({ bookId }) {
   };
 }
 
+const THUMBNAIL_ID = /(\d+$)/;
+
 export const mapBody = {
   id: 'work_id',
   title: 'work_name',
   author: w => _.map(w.authors, a => a.name).join(', '),
   authors: w => _.map(w.authors, a => ({ id: a.id.toString(), name: a.name })),
-  thumbnail: w => (w.image ? `https:${w.image}` : null),
+  // TODO: попробовать вытянуть без regexp
+  thumbnail: w => (w.image ? _.get(w.image.match(THUMBNAIL_ID), '0', null) : null),
   year: w => w.work_year_of_write || w.work_year,
   description: 'work_description',
   language: w => _.capitalize(w.lang),
@@ -27,7 +30,7 @@ export const mapBody = {
   otherTitles,
   editionCount,
   genre,
-  searchTitles,
+  search,
   parent,
   children,
 };
@@ -48,10 +51,12 @@ function otherTitles(w) {
   return _.filter(w.work_name_alts, _.identity).join('; ');
 }
 
-function searchTitles(w) {
+function search(w) {
   return _.flatten([w.work_name, w.work_name_orig, otherTitles(w)])
     .filter(_.identity)
-    .join(';');
+    .map(t => t.trim())
+    .join(';')
+    .toLowerCase();
 }
 
 function parent(w) {

@@ -55,5 +55,5 @@ function ratingFilter({ from, to }) {
 }
 
 function titleFitler(title) {
-  return Q.where('searchTitles', Q.like(`%${Q.sanitizeLikeString(title.toLowerCase())}%`));
+  return Q.where('search', Q.like(`%${Q.sanitizeLikeString(title.toLowerCase())}%`));
 }
