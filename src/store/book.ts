@@ -51,7 +51,7 @@ export default class Book extends Model {
 
   @action setThumbnail(thumbnail: string) {
     return this.update(() => {
-      this.thumbnail = thumbnail;
+      this.thumbnail = thumbnail ? thumbnail.toString() : null;
     });
   }
 }

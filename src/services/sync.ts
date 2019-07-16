@@ -19,11 +19,7 @@ export class SyncService {
       return null;
     }
 
-    await synchronize({
-      database: this.database,
-      pullChanges: this.pullChanges,
-      pushChanges: this.pushChanges,
-    });
+    await synchronize(this);
 
     this.lastPulledAt = await getLastPulledAt(this.database);
   }
@@ -31,58 +27,12 @@ export class SyncService {
   pullChanges = async ({ lastPulledAt }) => {
     const changes = await this.api.fetchChanges(lastPulledAt);
 
-    const timestamp = Date.now();
-
-    return { changes: preparePullChanges(changes), timestamp };
+    return { changes: changes, timestamp: Date.now() };
   };
 
+  // TODO: спилить hasChanges в watermelondb@0.13.0
   pushChanges = ({ lastPulledAt, changes }) =>
-    hasChanges(changes) ? this.api.pushChanges(lastPulledAt, preparePushChanges(changes)) : Promise.resolve();
-}
-
-function preparePullChanges(changes) {
-  changes.book_authors.created = _.map(changes.book_authors.created, bookAuthorParse);
-  changes.books.created = _.map(changes.books.created, bookParse);
-  changes.books.updated = _.map(changes.books.updated, bookParse);
-
-  return changes;
-}
-
-function preparePushChanges(changes) {
-  changes.book_authors.created = _.map(changes.book_authors.created, ba => _.omit(ba, ['author_id', 'book_id']));
-  changes.books.created = _.map(changes.books.created, bookSerialize);
-  changes.books.updated = _.map(changes.books.updated, bookSerialize);
-
-  return changes;
-}
-
-function bookAuthorParse(bookAuthor) {
-  const [book_id, author_id] = bookAuthor.id.split('_');
-
-  return { ...bookAuthor, author_id, book_id };
-}
-
-function bookSerialize(book) {
-  book.search =
-    book.search &&
-    book.search
-      .split(';')
-      .filter(s => s !== book.title)
-      .join(';');
-
-  if (!book.search) {
-    delete book.search;
-  }
-
-  book.thumbnail = +book.thumbnail || book.thumbnail;
-
-  return book;
-}
-
-function bookParse(book) {
-  book.search = book.search ? `${book.title};${book.search}` : book.title;
-  book.thumbnail = book.thumbnail && book.thumbnail.toString();
-  return book;
+    hasChanges(changes) ? this.api.pushChanges(lastPulledAt, changes) : Promise.resolve();
 }
 
 function hasChanges(changes) {

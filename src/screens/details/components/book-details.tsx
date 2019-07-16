@@ -44,7 +44,6 @@ const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortst
 }))
 export class BookDetails extends React.Component<Props> {
   get similarBooksVisible() {
-    console.log('similarBooksVisible', this.props.record.type, SHOW_SIMILARS_ON.includes(this.props.record.type));
     return SHOW_SIMILARS_ON.includes(this.props.record.type);
   }
 
