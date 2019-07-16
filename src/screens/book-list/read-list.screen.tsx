@@ -65,7 +65,7 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
   }
 
   setFilters = (filters, sort) => this.setState(createQueryState(filters, sort));
-  setSearch = title => this.setState(createQueryState(this.createTitleFilter(title), this.state.sort));
+  setSearch = title => this.setState(createQueryState(this.createTitleFilter(title && title.trim()), this.state.sort));
 
   createTitleFilter(title: string) {
     return _.assign({}, this.state.filters, { title });

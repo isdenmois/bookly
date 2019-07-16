@@ -35,6 +35,7 @@ interface Props extends NavigationScreenProps {
 interface State {
   sort: any;
   status: string;
+  title: string;
   changed: boolean;
 }
 
@@ -96,6 +97,10 @@ export class BookFiltersModal extends React.Component<Props, State> {
   close = () => this.props.navigation.pop();
   save = () => {
     const filters = _.omit(this.state, ['sort', 'changed']);
+
+    if (filters.title) {
+      filters.title = filters.title.trim();
+    }
 
     this.setFilters(filters, this.state.sort);
 
