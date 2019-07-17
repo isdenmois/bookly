@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { withNavigationProps } from 'utils/with-navigation-props';
+import { BookFilters, BookSort } from 'types/book-filters';
 import { Button } from 'components/button';
 import { Dialog } from 'components/dialog';
 import { BookListSort } from './components/book-list-sort';
@@ -24,30 +25,15 @@ const FILTER_COMPONENTS_MAP = {
   rating: BookRatingFilter,
 };
 
-interface Sort {
-  field: string;
-  desc: boolean;
-}
-
-interface Filters {
-  title: string;
-  year: string;
-  author: string;
-  type: string;
-  date: { from: number; to: number };
-  rating: { from: number; to: number };
-  status: string;
-}
-
 interface Props extends NavigationScreenProps {
   filterFields: string[];
   sortFields: string[];
-  filters: Partial<Filters>;
-  sort: Sort;
-  setFilters: (filters: Partial<Filters>, sort: Sort) => void;
+  filters: Partial<BookFilters>;
+  sort: BookSort;
+  setFilters: (filters: Partial<BookFilters>, sort: BookSort) => void;
 }
 
-interface State extends Partial<Filters> {
+interface State extends Partial<BookFilters> {
   sort: any;
   changed: boolean;
 }

@@ -2,10 +2,12 @@ import React from 'react';
 import _ from 'lodash';
 import { inject, InjectorContext } from 'react-ioc';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { Where } from '@nozbe/watermelondb/QueryDescription';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
+import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ScreenHeader } from 'components/screen-header';
 import { BookList } from './components/book-list';
@@ -22,9 +24,9 @@ const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating'];
 const READ_LIST_SORTS = ['date', 'title', 'rating', 'author', 'id'];
 
 interface State {
-  query: any[];
-  sort: any;
-  filters: any;
+  query: Where[];
+  sort: BookSort;
+  filters: Partial<BookFilters>;
 }
 
 export class ReadListScreen extends React.Component<NavigationScreenProps, State> {

@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { FlatList, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
+import { Where } from '@nozbe/watermelondb/QueryDescription';
+import { BookSort } from 'types/book-filters';
 import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import Book from 'store/book';
@@ -10,8 +12,8 @@ import { BookItem } from 'components/book-item';
 import { EmptyResult } from 'screens/search/empty-result';
 
 interface Props extends NavigationScreenProps {
-  query: any;
-  sort: any;
+  query: Where[];
+  sort: BookSort;
   database: Database;
   books?: Book[];
 }
@@ -62,6 +64,6 @@ const s = StyleSheet.create({
   } as TextStyle,
 });
 
-function bookListQuery(database, query) {
+function bookListQuery(database: Database, query: Where[]) {
   return database.collections.get('books').query(...query);
 }

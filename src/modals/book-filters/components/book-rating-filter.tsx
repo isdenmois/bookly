@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, ViewStyle, View } from 'react-native';
 import { SwipeRating, formatRating } from 'components/rating';
+import { Interval } from 'types/book-filters';
 import { OpenableListItem } from './openable-list-item';
 
 interface Props {
-  value: number;
-  onChange: (type: string, value: any) => void;
+  value: Interval<number>;
+  onChange: (type: string, value: Interval<number>) => void;
 }
 
 export class BookRatingFilter extends React.PureComponent<Props> {

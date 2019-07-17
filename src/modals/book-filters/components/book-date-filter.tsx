@@ -2,22 +2,29 @@ import React from 'react';
 import { StyleSheet, ViewStyle, View } from 'react-native';
 import { Calendar, DateObject } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Interval } from 'types/book-filters';
 import { color } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
 import { formatDate } from 'utils/date';
 import { OpenableListItem } from './openable-list-item';
 
 interface Props {
-  value: string;
+  value: Interval<Date>;
   onApply: () => void;
-  onChange: (type: string, value: any) => void;
+  onChange: (type: string, value: Interval<Date>) => void;
+}
+
+interface State {
+  opened: boolean;
+  from: Date;
+  markedDates: any;
 }
 
 const HALF_DAY = 12 * 60 * 60 * 1000;
 const MARKED_DAY = { startingDay: true, color: color.Primary };
 
-export class BookDateFilter extends React.PureComponent<Props> {
-  state = { opened: false, from: null, markedDates: null };
+export class BookDateFilter extends React.PureComponent<Props, State> {
+  state: State = { opened: false, from: null, markedDates: null };
 
   today = new Date();
   calendar: any;
