@@ -24,18 +24,31 @@ const FILTER_COMPONENTS_MAP = {
   rating: BookRatingFilter,
 };
 
+interface Sort {
+  field: string;
+  desc: boolean;
+}
+
+interface Filters {
+  title: string;
+  year: string;
+  author: string;
+  type: string;
+  date: { from: number; to: number };
+  rating: { from: number; to: number };
+  status: string;
+}
+
 interface Props extends NavigationScreenProps {
   filterFields: string[];
   sortFields: string[];
-  filters: any;
-  sort: any;
-  setFilters: (filters: any, sort: any) => void;
+  filters: Partial<Filters>;
+  sort: Sort;
+  setFilters: (filters: Partial<Filters>, sort: Sort) => void;
 }
 
-interface State {
+interface State extends Partial<Filters> {
   sort: any;
-  status: string;
-  title: string;
   changed: boolean;
 }
 
@@ -86,10 +99,10 @@ export class BookFiltersModal extends React.Component<Props, State> {
   setSort = sort => this.setState({ sort, changed: true });
   changeFilter = (filter, value) => this.setState({ [filter]: value, changed: true } as any);
 
-  createDefaultState() {
+  createDefaultState(): State {
     const { filters, sort } = this.props;
 
-    return { ...filters, sort };
+    return { ...filters, sort, changed: false };
   }
 
   setFilters = this.props.setFilters;
