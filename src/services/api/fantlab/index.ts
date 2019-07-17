@@ -7,6 +7,7 @@ import * as searchBooksSchema from './search-books';
 import * as bookSchema from './book';
 import * as thumbnailsSchema from './thumbnails';
 import * as similarSchema from './similar';
+import * as reviewListSchema from './review-list';
 
 export class FantlabAPI {
   baseUrl = FANTLAB_URL;
@@ -16,4 +17,5 @@ export class FantlabAPI {
   book = createApi(this, bookSchema);
   thumbnails = createApi(this, thumbnailsSchema);
   similar = createApi(this, similarSchema);
+  reviewList = createApi(this, reviewListSchema);
 }

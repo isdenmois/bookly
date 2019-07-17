@@ -27,6 +27,7 @@ import { getAvatarBgColor } from 'components/avatar';
 import { BookDetailsHeader } from './book-details-header';
 import { BookDescriptionLine, ViewLine, ViewLineTouchable } from './book-details-lines';
 import { BookSimilars } from './book-similars';
+import { FantlabReviewList } from './fantlab-review-list';
 
 interface Props extends NavigationScreenProps {
   book: BookExtended;
@@ -76,6 +77,7 @@ export class BookDetails extends React.Component<Props> {
           {!!book.parent.length && this.renderParentBooks()}
 
           {this.similarBooksVisible && <BookSimilars bookId={record.id} navigation={this.props.navigation} />}
+          {this.similarBooksVisible && <FantlabReviewList bookId={record.id} />}
         </ScrollView>
       </View>
     );
