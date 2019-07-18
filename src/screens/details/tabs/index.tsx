@@ -53,8 +53,8 @@ export class BookDetailsTabs extends React.Component<Props, State> {
       inactiveColor={color.PrimaryText}
       indicatorStyle={s.indicator}
       labelStyle={s.label}
-      tabStyle={s.tab}
-      style={s.tabBar}
+      tabStyle={s.tabBar}
+      style={s.tab}
     />
   );
 

@@ -17,7 +17,7 @@ import withObservables from '@nozbe/with-observables';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
-import { Thumbnail } from 'components/thumbnail';
+import { Thumbnail, getThumbnailUrl } from 'components/thumbnail';
 import { ReadButton } from 'components/read-button';
 import { getAvatarBgColor } from 'components/avatar';
 import { BookDetailsHeader } from './book-details-header';
@@ -55,7 +55,7 @@ export class BookDetails extends React.Component<Props> {
 
     return (
       <>
-        <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: record.thumbnail }}>
+        <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: getThumbnailUrl(record.thumbnail) }}>
           <View style={s.darkOverlay}>
             <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
             <View style={s.mainInformationContainer}>
@@ -158,7 +158,7 @@ const s = StyleSheet.create({
   statusButton: {
     alignSelf: 'flex-start',
     marginLeft: READ_BUTTON_MARGIN,
-    marginBottom: 20,
+    marginBottom: 0,
   } as TextStyle,
   mainInformationWithoutThumbnail: {
     alignItems: 'flex-start',

@@ -7,6 +7,13 @@ import { AutoWithImage } from './auto-width-image';
 
 const THUMBNAIL_URL = 'https://data.fantlab.ru/images/editions/big';
 
+export function getThumbnailUrl(url: string) {
+  if (+url) {
+    return `${THUMBNAIL_URL}/${url}`;
+  }
+  return url;
+}
+
 interface Props {
   url?: string;
   width?: number;
@@ -23,9 +30,7 @@ export function Thumbnail({ auto, style, title, width, height, url, resizeMode, 
     return <Avatar style={style} width={width} height={height} title={title} />;
   }
 
-  if (+url) {
-    url = `${THUMBNAIL_URL}/${url}`;
-  }
+  url = getThumbnailUrl(url);
 
   if (auto === 'height') {
     return <AutoHeightImage style={style} width={width} source={{ uri: url }} />;
