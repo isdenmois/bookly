@@ -1,4 +1,5 @@
-import { AppRegistry, Platform } from 'react-native';
+import 'react-native-gesture-handler';
+import { AppRegistry } from 'react-native';
 import App from './config/root/root';
 import { name as appName } from './app.json';
 
@@ -7,10 +8,6 @@ if (!global.Proxy) {
 }
 
 AppRegistry.registerComponent(appName, () => App);
-
-if (Platform.OS === 'web') {
-  AppRegistry.runApplication(appName, { rootTag: document.getElementById('app') });
-}
 
 // if (__DEV__ && Platform.OS !== 'web') {
 //   require('./dev-tools/fetch');

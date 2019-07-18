@@ -1,0 +1,94 @@
+diff --git a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/ChangeTransition.java b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/ChangeTransition.java
+index 0d4e330..fb5f6f7 100644
+--- a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/ChangeTransition.java
++++ b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/ChangeTransition.java
+@@ -3,13 +3,13 @@ package com.swmansion.reanimated.transitions;
+ import android.animation.Animator;
+ import android.animation.AnimatorSet;
+ import android.animation.TimeInterpolator;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.transition.ChangeBounds;
+-import android.support.transition.ChangeTransform;
+-import android.support.transition.Transition;
+-import android.support.transition.TransitionPropagation;
+-import android.support.transition.TransitionValues;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.transition.ChangeBounds;
++import androidx.transition.ChangeTransform;
++import androidx.transition.Transition;
++import androidx.transition.TransitionPropagation;
++import androidx.transition.TransitionValues;
+ import android.view.ViewGroup;
+ 
+ final class ChangeTransition extends Transition {
+diff --git a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/SaneSidePropagation.java b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/SaneSidePropagation.java
+index f0db8d8..1ef05da 100644
+--- a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/SaneSidePropagation.java
++++ b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/SaneSidePropagation.java
+@@ -1,8 +1,8 @@
+ package com.swmansion.reanimated.transitions;
+ 
+-import android.support.transition.SidePropagation;
+-import android.support.transition.Transition;
+-import android.support.transition.TransitionValues;
++import androidx.transition.SidePropagation;
++import androidx.transition.Transition;
++import androidx.transition.TransitionValues;
+ import android.view.View;
+ import android.view.ViewGroup;
+ 
+diff --git a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/Scale.java b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/Scale.java
+index 4be08e0..24a37ac 100644
+--- a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/Scale.java
++++ b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/Scale.java
+@@ -3,10 +3,10 @@ package com.swmansion.reanimated.transitions;
+ import android.animation.Animator;
+ import android.animation.AnimatorSet;
+ import android.animation.ObjectAnimator;
+-import android.support.transition.Transition;
+-import android.support.transition.TransitionListenerAdapter;
+-import android.support.transition.TransitionValues;
+-import android.support.transition.Visibility;
++import androidx.transition.Transition;
++import androidx.transition.TransitionListenerAdapter;
++import androidx.transition.TransitionValues;
++import androidx.transition.Visibility;
+ import android.view.View;
+ import android.view.ViewGroup;
+ 
+diff --git a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionModule.java b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionModule.java
+index 7a29674..14adc89 100644
+--- a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionModule.java
++++ b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionModule.java
+@@ -1,6 +1,6 @@
+ package com.swmansion.reanimated.transitions;
+ 
+-import android.support.transition.TransitionManager;
++import androidx.transition.TransitionManager;
+ import android.view.View;
+ import android.view.ViewGroup;
+ 
+diff --git a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionUtils.java b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionUtils.java
+index 4d65fa7..d0bf2b1 100644
+--- a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionUtils.java
++++ b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/transitions/TransitionUtils.java
+@@ -1,11 +1,11 @@
+ package com.swmansion.reanimated.transitions;
+ 
+-import android.support.transition.Fade;
+-import android.support.transition.SidePropagation;
+-import android.support.transition.Slide;
+-import android.support.transition.Transition;
+-import android.support.transition.TransitionSet;
+-import android.support.transition.Visibility;
++import androidx.transition.Fade;
++import androidx.transition.SidePropagation;
++import androidx.transition.Slide;
++import androidx.transition.Transition;
++import androidx.transition.TransitionSet;
++import androidx.transition.Visibility;
+ import android.view.Gravity;
+ import android.view.animation.AccelerateDecelerateInterpolator;
+ import android.view.animation.AccelerateInterpolator;
