@@ -27,5 +27,13 @@ export const schema = appSchema({
         { name: 'author_id', type: 'string', isIndexed: true },
       ],
     }),
+    tableSchema({
+      name: 'reviews',
+      columns: [
+        { name: 'book_id', type: 'string', isIndexed: true },
+        { name: 'date', type: 'number' },
+        { name: 'body', type: 'string' },
+      ]
+    })
   ],
 });

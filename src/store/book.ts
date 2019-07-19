@@ -16,6 +16,7 @@ export default class Book extends Model {
   static table = 'books';
   static associations: Associations = {
     book_authors: { type: 'has_many', foreignKey: 'book_id' },
+    reviews: { type: 'has_many', foreignKey: 'book_id' },
   };
 
   @field('title') title;
@@ -29,6 +30,7 @@ export default class Book extends Model {
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;
+  @children('reviews') reviews;
 
   async markAsDeleted() {
     await this.bookAuthors.markAllAsDeleted();
