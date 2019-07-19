@@ -30,9 +30,10 @@ export async function createReview(database, book, body) {
   const record = database.collections.get('reviews').prepareCreate(review => {
     const created = new Date();
 
+    review._raw.id = `${book.id}_${format(created, 'YYMMDDHHmm')}`;
+
     created.setHours(12, 0, 0, 0);
 
-    review._raw.id = `${book.id}_${format(created, 'YYMMDDHHmm')}`;
     review.book.id = book.id
     review.date = created;
     review.body = body;
