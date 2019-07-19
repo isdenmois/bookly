@@ -30,7 +30,9 @@ public class MainActivity extends ReactFragmentActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme); // Now set the theme from Splash to App before setContentView
+        setContentView(R.layout.launch_screen); // Then inflate the new view
         SplashScreen.show(this);
-        super.onCreate(null);
+        super.onCreate(savedInstanceState);
     }
 }
