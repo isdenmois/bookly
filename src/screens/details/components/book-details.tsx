@@ -105,7 +105,7 @@ export class BookDetails extends React.Component<Props> {
     ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
   };
 
-  openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
+  openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.record });
 
   openChangeThumbnail = () => {
     if (!this.props.record.collection) {
