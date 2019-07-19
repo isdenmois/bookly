@@ -11,6 +11,7 @@ export const mapBody = {
   authors: 'authors',
   books: parseBooks,
   book_authors: parseBookAuthors,
+  reviews: parseReviews,
 };
 
 function parseBooks(changes) {
@@ -26,6 +27,13 @@ function parseBookAuthors(changes) {
   return changes.book_authors;
 }
 
+function parseReviews(changes) {
+  changes.reviews.created = _.map(changes.reviews.created, reviewParse);
+  changes.reviews.updated = _.map(changes.reviews.updated, reviewParse);
+
+  return changes.reviews;
+}
+
 function bookAuthorParse(bookAuthor) {
   const [book_id, author_id] = bookAuthor.id.split('_');
 
@@ -36,4 +44,10 @@ function bookParse(book) {
   book.search = book.search ? `${book.title};${book.search}` : book.title;
   book.thumbnail = book.thumbnail && book.thumbnail.toString();
   return book;
+}
+
+function reviewParse(review) {
+  [review.book_id] = review.id.split('_')
+
+  return review
 }

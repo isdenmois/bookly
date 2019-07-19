@@ -63,7 +63,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
       case 'details':
         return <DetailsTab book={this.props.book} record={this.props.record} navigation={this.props.navigation} />;
       case 'reviews':
-        return <ReviewsTab bookId={this.props.book.id} />;
+        return <ReviewsTab book={this.props.record} navigation={this.props.navigation} />;
     }
   };
 }

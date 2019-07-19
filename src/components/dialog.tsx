@@ -35,7 +35,9 @@ function renderDialogHeader(title: ReactChild, onBack, onApply) {
   return (
     <View style={s.header}>
       <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={onBack} />
-      <Text style={s.title}>{title}</Text>
+      <Text numberOfLines={1} style={s.title}>
+        {title}
+      </Text>
       {onApply && <TouchIcon name='check' size={24} color={color.PrimaryText} onPress={onApply} />}
       {!onApply && <View style={s.noApplyIcon} />}
     </View>
@@ -58,8 +60,9 @@ const s = StyleSheet.create({
     backgroundColor: color.Black,
   } as ViewStyle,
   modal: {
-    marginVertical: 50,
+    marginTop: 50,
     marginHorizontal: 20,
+    marginBottom: 100,
   } as ViewStyle,
   modalView: {
     borderTopLeftRadius: 10,

@@ -26,15 +26,19 @@ export default class Review extends Model {
   }
 }
 
-export function prepareReview(database, book, body) {
-  const reviews = database.collections.get('reviews');
-
-  return reviews.prepareCreate(review => {
+export async function createReview(database, book, body) {
+  const record = database.collections.get('reviews').prepareCreate(review => {
     const created = new Date();
+
+    created.setHours(12, 0, 0, 0);
 
     review._raw.id = `${book.id}_${format(created, 'YYYYMMDD')}`;
     review.book.id = book.id
     review.date = created;
     review.body = body;
-  })
+  });
+
+  await database.batch(record);
+
+  return record;
 }

@@ -5,7 +5,6 @@ import { withNavigationProps } from 'utils/with-navigation-props';
 import { dbSync } from 'services/db';
 import Book from 'store/book';
 import { Dialog } from 'components/dialog';
-import { TouchIcon } from 'components/touch-icon';
 import { Thumbnail } from 'components/thumbnail';
 import { ThumbnailList } from './components/thumbnail-list';
 

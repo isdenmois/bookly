@@ -26,6 +26,11 @@ function preparePushChanges(changes) {
       updated: changes.books.updated,
       deleted: changes.books.deleted,
     },
+    reviews: {
+      created: _.map(changes.reviews.created, reviewSerialize),
+      updated: _.map(changes.reviews.updated, reviewSerialize),
+      deleted: changes.reviews.deleted,
+    },
   };
 }
 
@@ -43,6 +48,10 @@ function bookSerialize(book) {
     },
     isEmpty,
   );
+}
+
+function reviewSerialize(review) {
+  return _.omitBy(_.pick(review, ['id', 'date', 'body']), isEmpty)
 }
 
 function isEmpty(value) {
