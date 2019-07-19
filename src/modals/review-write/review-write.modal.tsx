@@ -29,6 +29,8 @@ export class ReviewWriteModal extends React.Component<Props, State> {
 
   database = inject(Database);
 
+  buttonTitle = this.props.review ? 'Обновить' : 'Добавить';
+
   render() {
     const changed = this.state.changed && Boolean(this.state.body);
 
@@ -50,7 +52,13 @@ export class ReviewWriteModal extends React.Component<Props, State> {
           />
         </ScrollView>
 
-        <Button disabled={!changed} label='Добавить' style={s.button} textStyle={s.buttonText} onPress={this.save} />
+        <Button
+          disabled={!changed}
+          label={this.buttonTitle}
+          style={s.button}
+          textStyle={s.buttonText}
+          onPress={this.save}
+        />
       </Dialog>
     );
   }

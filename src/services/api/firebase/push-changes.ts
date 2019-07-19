@@ -14,6 +14,7 @@ export function mapParams(sync, body) {
 }
 
 function preparePushChanges(changes) {
+  console.log('changes.reviews: ', JSON.stringify(changes.reviews));
   return {
     authors: changes.authors,
     books: {

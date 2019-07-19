@@ -6,6 +6,7 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { Button } from 'components/button';
+import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
 
 interface Props extends NavigationScreenProps {
@@ -19,6 +20,7 @@ export class ReviewsTab extends React.PureComponent<Props> {
     return (
       <View style={s.relative}>
         <ScrollView style={s.scroll} contentContainerStyle={s.scrollContent}>
+          <LocalReviewList book={book} navigation={this.props.navigation} />
           <FantlabReviewList bookId={book.id} />
         </ScrollView>
 
