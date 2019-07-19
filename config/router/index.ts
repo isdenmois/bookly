@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator, StackViewTransitionConfigs } from 'react-navigation-stack';
 import { Easing, Animated } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useScreens } from 'react-native-screens';
@@ -17,7 +17,15 @@ const createNavigator = initialRouteName =>
       },
       App: createStackNavigator(
         {
-          MainStack: createStackNavigator(MainStack, { initialRouteName: 'Home', headerMode: 'none' } as any),
+          MainStack: createStackNavigator(MainStack, {
+            initialRouteName: 'Home',
+            headerMode: 'none',
+            gesturesEnabled: true,
+            transitionConfig: () => StackViewTransitionConfigs.SlideFromRightIOS,
+            defaultNavigationOptions: {
+              gesturesEnabled: true,
+            }
+          } as any),
           ...createModalStack(ModalStack),
         },
         {
