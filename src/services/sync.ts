@@ -27,14 +27,8 @@ export class SyncService {
   pullChanges = async ({ lastPulledAt }) => {
     const changes = await this.api.fetchChanges(lastPulledAt);
 
-    return { changes: changes, timestamp: Date.now() };
+    return { changes, timestamp: Date.now() };
   };
 
-  // TODO: спилить hasChanges в watermelondb@0.13.0
-  pushChanges = ({ lastPulledAt, changes }) =>
-    hasChanges(changes) ? this.api.pushChanges(lastPulledAt, changes) : Promise.resolve();
-}
-
-function hasChanges(changes) {
-  return _.some(changes, table => _.some(table, _.size));
+  pushChanges = ({ lastPulledAt, changes }) => this.api.pushChanges(lastPulledAt, changes);
 }
