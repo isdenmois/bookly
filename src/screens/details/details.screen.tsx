@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { inject, InjectorContext } from 'react-ioc';
 import { withNavigationProps } from 'utils/with-navigation-props';
+import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import { Fetcher } from 'components/fetcher';
 import { BookExtended } from 'types/book-extended';
@@ -18,9 +18,7 @@ interface Props extends NavigationScreenProps {
 
 @withNavigationProps()
 export class DetailsScreen extends React.Component<Props> {
-  static contextType = InjectorContext;
-
-  api = inject(this, FantlabAPI);
+  api = inject(FantlabAPI);
 
   render() {
     return (

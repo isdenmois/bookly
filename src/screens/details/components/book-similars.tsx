@@ -2,8 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { inject, InjectorContext } from 'react-ioc';
 import { color } from 'types/colors';
+import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'types/book-similar';
@@ -17,9 +17,7 @@ function EmptyResult() {
 }
 
 export class BookSimilars extends React.Component<Props> {
-  static contextType = InjectorContext;
-
-  api = inject(this, FantlabAPI);
+  api = inject(FantlabAPI);
 
   render() {
     return (

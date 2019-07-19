@@ -1,10 +1,9 @@
 import { action, observable } from 'mobx';
-import { inject } from 'react-ioc';
-import { Session, SyncService } from 'services';
+import { Session, SyncService, inject } from 'services';
 
 export class LoginStore {
-  session = inject(this, Session);
-  syncService = inject(this, SyncService);
+  session = inject(Session);
+  syncService = inject(SyncService);
 
   @observable login: string = '';
   @observable submitting: boolean = false;

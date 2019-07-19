@@ -1,7 +1,5 @@
 import { action, observable } from 'mobx';
-import { inject } from 'react-ioc';
-
-import { Storage } from './storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SESSION_KEY = 'SESSION_KEY';
 const INITIAL_BOOKS_COUNT = 80;
@@ -10,11 +8,8 @@ export class Session {
   @observable userId: string = null;
   @observable totalBooks: number = INITIAL_BOOKS_COUNT;
 
-  storage = inject(this, Storage);
-
   @action loadSession() {
-    return this.storage
-      .getItem(SESSION_KEY)
+    return AsyncStorage.getItem(SESSION_KEY)
       .then(session => JSON.parse(session) || {})
       .then(session => {
         this.userId = session.userId;
@@ -41,12 +36,12 @@ export class Session {
     this.userId = null;
     this.totalBooks = INITIAL_BOOKS_COUNT;
 
-    return this.storage.clear();
+    return AsyncStorage.clear();
   }
 
   serializeSession() {
     const session = JSON.stringify({ userId: this.userId, totalBooks: this.totalBooks });
 
-    this.storage.setItem(SESSION_KEY, session);
+    AsyncStorage.setItem(SESSION_KEY, session);
   }
 }

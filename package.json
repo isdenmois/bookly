@@ -19,7 +19,6 @@
     "mobx-react": "6.1.1",
     "rambdax": "2.9.1",
     "react": "16.8.6",
-    "react-ioc": "1.0.0",
     "react-native": "0.60.4",
     "react-native-auto-height-image": "1.1.0",
     "react-native-calendars": "1.200.0",

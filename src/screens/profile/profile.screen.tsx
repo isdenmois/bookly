@@ -1,21 +1,18 @@
 import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
-import { inject, InjectorContext } from 'react-ioc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { Session } from 'services';
+import { Session, inject } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { Button } from 'components/button';
 import { ScreenHeader } from 'components/screen-header';
 import { ChallengeEditor } from './components/challenge-editor';
 
 export class ProfileScreen extends React.Component<NavigationScreenProps> {
-  static contextType = InjectorContext;
-
-  session = inject(this, Session);
-  database = inject(this, Database);
+  session = inject(Session);
+  database = inject(Database);
 
   render() {
     return (

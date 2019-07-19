@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Text } from 'react-native';
-import { inject, InjectorContext } from 'react-ioc';
+import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import { FantlabReview as IFantlabReview, ReviewList } from 'services/api/fantlab/review-list';
 import { Fetcher } from 'components';
@@ -16,9 +16,7 @@ function EmptyResult() {
 }
 
 export class FantlabReviewList extends React.Component<Props> {
-  static contextType = InjectorContext;
-
-  api = inject(this, FantlabAPI);
+  api = inject(FantlabAPI);
 
   render() {
     return (

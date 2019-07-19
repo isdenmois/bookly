@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View, TextStyle, ViewStyle, StyleSheet } from 'react-native';
-import { InjectorContext } from 'react-ioc';
+import { View, ViewStyle, StyleSheet } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { dbSync } from 'services/db';
@@ -20,8 +19,6 @@ interface State {
 
 @withNavigationProps()
 export class ThumbnailSelectModal extends React.Component<Props, State> {
-  static contextType = InjectorContext;
-
   state: State = { selected: this.props.book.thumbnail };
 
   render() {

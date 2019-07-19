@@ -1,15 +1,15 @@
 import _ from 'lodash';
-import { inject } from 'react-ioc';
 import { Database, Q } from '@nozbe/watermelondb';
 import { BehaviorSubject, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { inject } from 'services/inject/inject';
 
-export function mapDatabase(context, collection, data) {
+export function mapDatabase(collection, data) {
   if (!collection) {
     return data;
   }
 
-  const database = context.database || inject(context, Database);
+  const database = inject(Database);
   const c = database.collections.get(collection);
   const query = Q.where('id', _.isArray(data) ? Q.oneOf(getIds(data)) : data.id);
   const fields = getFields(c);
@@ -51,10 +51,10 @@ function getIds(data) {
 
 function Observable(row) {
   this.subject = new BehaviorSubject(row);
-  this.observe = function() {
+  this.observe = function () {
     return this.subject.pipe(switchMap((r: any) => (r.collection ? r.observe() : of(r))));
   };
-  this.next = function(data) {
+  this.next = function (data) {
     this.subject.next(data);
   };
 }

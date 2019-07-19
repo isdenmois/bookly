@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { InjectorContext, inject } from 'react-ioc';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
+import { inject, Session } from 'services';
 import { notImplemented } from 'utils/not-implemented-yet';
 import { readBooksQuery, wishBooksQuery } from '../home.service';
 import { ListItem } from 'components/list-item';
-import { Session } from 'services';
 
 interface Props extends NavigationScreenProps {
   database: Database;
@@ -22,8 +21,7 @@ interface Props extends NavigationScreenProps {
   wishCount: wishBooksQuery(database).observeCount(),
 }))
 export class NavigationLinks extends React.Component<Props> {
-  static contextType = InjectorContext;
-  session = inject(this, Session);
+  session = inject(Session);
 
   render() {
     return (

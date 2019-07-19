@@ -22,17 +22,17 @@ export function clearCache() {
 }
 
 export function createApi(context, schema) {
-  return function(...args) {
+  return function (...args) {
     const params = schema.mapParams ? schema.mapParams.apply(null, args) : {};
-    const url = createUrl(`${context.baseUrl}${schema.url}`, context, params.query || {});
+    const url = createUrl(`${context.baseUrl}${schema.url}`, params.query || {});
 
-    return sendReq(context, schema, params, url);
+    return sendReq(schema, params, url);
   };
 }
 
-function sendReq(context, schema, params, url) {
+function sendReq(schema, params, url) {
   if (schema.cache && cacheStore.has(url)) {
-    return parseResult(context, schema, cacheStore.get(url));
+    return parseResult(schema, cacheStore.get(url));
   }
 
   return fetch(url, createFetchParams(schema, params.body))
@@ -50,5 +50,5 @@ function sendReq(context, schema, params, url) {
 
       return data;
     })
-    .then(response => parseResult(context, schema, response));
+    .then(response => parseResult(schema, response));
 }

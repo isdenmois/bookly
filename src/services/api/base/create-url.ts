@@ -1,12 +1,20 @@
 import _ from 'lodash';
+import { inject } from 'services/inject/inject';
+import { Session } from 'services/session';
 
 /**
  * Создает URL строку.
  */
-export function createUrl(url, context, params) {
-  const [urlStr, restParams] = replaceUrlParams(url.replace(':userId', context.session.userId), params);
+export function createUrl(url: string, params) {
+  if (url.includes(':userId')) {
+    const session = inject(Session);
 
-  return _.isEmpty(restParams) ? urlStr : `${urlStr}?${queryParams(restParams)}`;
+    url = url.replace(':userId', session.userId)
+  }
+
+  [url, params] = replaceUrlParams(url, params);
+
+  return _.isEmpty(params) ? url : `${url}?${queryParams(params)}`;
 }
 
 /**

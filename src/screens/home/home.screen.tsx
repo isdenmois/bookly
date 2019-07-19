@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { provider, inject, InjectorContext } from 'react-ioc';
 import { observer } from 'mobx-react';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { SyncService, Session } from 'services';
+import { SyncService, Session, inject, provider } from 'services';
 import { Hr } from 'components/hr';
 import { HomeService } from './home.service';
 import { HomeHeader } from './components/header';
@@ -20,13 +19,11 @@ interface State {
 @provider(HomeService)
 @observer
 export class HomeScreen extends React.Component<NavigationScreenProps, State> {
-  static contextType = InjectorContext;
-
   state: State = { refreshing: false };
 
-  database = inject(this, Database);
-  syncService = inject(this, SyncService);
-  session = inject(this, Session);
+  database = inject(Database);
+  syncService = inject(SyncService);
+  session = inject(Session);
 
   render() {
     return (

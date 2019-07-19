@@ -1,21 +1,18 @@
 import React from 'react';
-import { inject, InjectorContext, provider, toValue } from 'react-ioc';
 import { ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import { Database } from '@nozbe/watermelondb';
 import SplashScreen from 'react-native-splash-screen';
-import { Session, SyncService, Storage } from 'services';
 import { database } from 'store';
-import { providers } from '../providers';
+import { provider, asValue } from 'services/inject/provider';
 
-const injections: any = [...providers, [Storage, toValue(AsyncStorage)], [Database, toValue(database)]];
+import { Session, SyncService, inject } from 'services';
+import { FirebaseAPI, FantlabAPI } from 'api';
 
-@provider(...injections)
+@provider(asValue(Database, database), Session, FirebaseAPI, FantlabAPI, SyncService)
 class App extends React.Component {
-  static contextType = InjectorContext;
+  session = inject(Session);
+  syncService = inject(SyncService);
 
-  session = inject(this, Session);
-  syncService = inject(this, SyncService);
   state = { isLoaded: false };
   RootStack: any = null;
   loadNavigationState: Function = null;

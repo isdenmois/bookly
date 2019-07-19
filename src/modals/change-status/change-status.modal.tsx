@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
-import { InjectorContext, inject } from 'react-ioc';
 import { Text, StyleSheet, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { inject } from 'services';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
@@ -41,9 +41,7 @@ interface Props extends NavigationScreenProps {
 
 @withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
-  static contextType = InjectorContext;
-
-  db = inject(this, Database);
+  db = inject(Database);
 
   state = {
     date: this.defaultDate,

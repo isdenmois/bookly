@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { mapDatabase } from './map-database';
 
-export function parseResult(context, schema, response) {
+export function parseResult(schema, response) {
   return Promise.resolve(response)
     .then(data => Array.isArray(data) && schema.filter ? data.filter(schema.filter) : data)
     .then(data => (schema.mapBody ? mapResult(schema.mapBody, data) : data))
-    .then(data => mapDatabase(context, schema.collection, data));
+    .then(data => mapDatabase(schema.collection, data));
 }
 
 function mapResult(map, data) {

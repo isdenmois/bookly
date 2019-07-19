@@ -1,13 +1,12 @@
-import { inject } from 'react-ioc';
 import { Database, Q } from '@nozbe/watermelondb';
-import { SyncService } from 'services';
+import { SyncService, inject } from 'services';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
 export class HomeService {
-  syncService = inject(this, SyncService);
-  database = inject(this, Database);
+  syncService = inject(SyncService);
+  database = inject(Database);
 
   async updateBook(book, title) {
     await this.database.action(() =>

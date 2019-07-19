@@ -1,11 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
-import { inject, InjectorContext } from 'react-ioc';
 import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { BookFilters, BookSort } from 'types/book-filters';
+import { inject } from 'services';
 import { Button } from 'components/button';
 import { Dialog } from 'components/dialog';
 import { BookListSort } from './components/book-list-sort';
@@ -40,9 +40,7 @@ interface State extends Partial<BookFilters> {
 
 @withNavigationProps()
 export class BookFiltersModal extends React.Component<Props, State> {
-  static contextType = InjectorContext;
-
-  database = inject(this, Database);
+  database = inject(Database);
 
   state: State = this.createDefaultState();
 

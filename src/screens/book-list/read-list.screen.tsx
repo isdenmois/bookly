@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { inject, InjectorContext } from 'react-ioc';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -9,6 +8,7 @@ import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import { inject } from 'services';
 import { ScreenHeader } from 'components/screen-header';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
@@ -30,11 +30,9 @@ interface State {
 }
 
 export class ReadListScreen extends React.Component<NavigationScreenProps, State> {
-  static contextType = InjectorContext;
-
   state: State = createQueryState(defaultFilters, { field: 'date', desc: true });
 
-  database = inject(this, Database);
+  database = inject(Database);
 
   filters = READ_LIST_FILTERS;
   sorts = READ_LIST_SORTS;
