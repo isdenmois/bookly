@@ -27,7 +27,9 @@ export class EmptyBook extends React.Component<Props> {
         <Icon name='bookmark' size={36} color={color.Empty} />
         {!wishBooksCount && <TextM style={s.text}>Нет текущей читаемой книги</TextM>}
         {!!wishBooksCount && <TextM style={s.text}>Выберите книгу, которую сейчас читаете</TextM>}
-        {!!wishBooksCount && <Button onPress={this.openBookSelect} style={s.button} label='Выбрать книгу' />}
+        {!!wishBooksCount && (
+          <Button testID='bookSelectButton' onPress={this.openBookSelect} style={s.button} label='Выбрать книгу' />
+        )}
       </View>
     );
   }

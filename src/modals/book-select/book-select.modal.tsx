@@ -25,7 +25,7 @@ export class BookSelectModal extends React.Component<NavigationScreenProps, Stat
   render() {
     const { search, selected } = this.state;
     return (
-      <Dialog modalStyle={s.borderRadius} navigation={this.props.navigation}>
+      <Dialog testID='bookSelectModal' modalStyle={s.borderRadius} navigation={this.props.navigation}>
         <BookSelectHeader search={this.state.search} onChange={this.setSearch} />
         <BookList
           database={this.database}
