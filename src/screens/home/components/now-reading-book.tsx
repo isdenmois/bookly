@@ -39,7 +39,7 @@ export class NowReadingBook extends React.Component<Props> {
             <TextXL style={s.title}>{book.title}</TextXL>
           </TouchableOpacity>
           <Text style={s.author}>{book.author}</Text>
-          <ReadButton openChangeStatus={this.openChangeStatus} book={book} />
+          <ReadButton testID='homeReadButton' openChangeStatus={this.openChangeStatus} book={book} />
         </View>
       </View>
     );

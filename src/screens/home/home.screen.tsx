@@ -27,7 +27,7 @@ export class HomeScreen extends React.Component<NavigationScreenProps, State> {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={s.container} refreshControl={this.renderRefresh()}>
+      <ScrollView testID='homeScreen' contentContainerStyle={s.container} refreshControl={this.renderRefresh()}>
         <HomeHeader />
 
         <CurrentBook database={this.database} />

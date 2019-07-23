@@ -86,7 +86,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     const { status, statusEditable } = this.state;
 
     return (
-      <Dialog style={s.dialog} navigation={this.props.navigation}>
+      <Dialog testID='changeStatusModal' style={s.dialog} navigation={this.props.navigation}>
         <Thumbnail style={s.thumbnail} width={90} height={140} title={book.title} url={book.thumbnail} />
         <Text style={s.title}>{book.title}</Text>
 
@@ -127,6 +127,7 @@ export class ChangeStatusModal extends React.Component<Props> {
         )}
 
         <Button
+          testID='applyButton'
           disabled={this.disabled}
           label='Сохранить'
           style={s.button}

@@ -117,6 +117,8 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+def isRelease = gradle.startParameter.taskNames.contains("assembleRelease") && !gradle.startParameter.taskNames.contains("assembleAndroidTest");
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -141,25 +143,25 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     splits {
         abi {
             reset()
-            enable gradle.startParameter.taskNames.contains("assembleRelease")
-            universalApk false  // If true, also generate a universal APK
-            include "arm64-v8a"
+            enable isRelease
+            universalApk !isRelease  // If true, also generate a universal APK
+            include isRelease ? "arm64-v8a" : "x86"
         }
     }
+
     buildTypes {
         release {
-            minifyEnabled enableProguardInReleaseBuilds
-            shrinkResources true
+            minifyEnabled isRelease && enableProguardInReleaseBuilds
+            shrinkResources isRelease
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "bookly-${versionName}.apk"
+            // Detox-specific additions to pro-guard
+            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
         }
     }
 }
@@ -176,6 +178,8 @@ dependencies {
     } else {
       implementation jscFlavor
     }
+    androidTestImplementation(project(path: ":detox"))
+    androidTestImplementation 'junit:junit:4.12'
 }
 
 // Run this once to be able to run the application with BUCK

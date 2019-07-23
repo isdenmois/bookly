@@ -72,3 +72,4 @@ android/app/key.jks
 fastlane/report.xml
 
 android/app/src/main/res/drawable-*/node_modules*.png
+e2e/mock-server/mocks

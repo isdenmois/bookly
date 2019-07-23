@@ -1,0 +1,118 @@
+diff --git a/node_modules/detox/android/detox/build.gradle b/node_modules/detox/android/detox/build.gradle
+index 045df51..819008c 100644
+--- a/node_modules/detox/android/detox/build.gradle
++++ b/node_modules/detox/android/detox/build.gradle
+@@ -75,7 +75,7 @@ dependencies {
+     api 'androidx.test:runner:1.1.1'
+     api 'androidx.test:rules:1.1.1'
+     api 'androidx.test.ext:junit:1.1.0'
+-    api 'androidx.annotation:annotation:1.1.0'
++    api 'androidx.annotation:annotation:1.0.0'
+ 
+     // Version is the latest; Cannot sync with the Github repo (e.g. android/android-test) because the androidx
+     // packaging version of associated classes is simply not there...
+diff --git a/node_modules/detox/android/detox/src/main/java/com/wix/detox/Detox.java b/node_modules/detox/android/detox/src/main/java/com/wix/detox/Detox.java
+index 609ac73..2af506a 100644
+--- a/node_modules/detox/android/detox/src/main/java/com/wix/detox/Detox.java
++++ b/node_modules/detox/android/detox/src/main/java/com/wix/detox/Detox.java
+@@ -9,7 +9,7 @@ import android.os.Bundle;
+ import android.os.Handler;
+ import android.os.Looper;
+ import android.os.RemoteException;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Base64;
+ 
+ import androidx.test.platform.app.InstrumentationRegistry;
+@@ -54,7 +54,7 @@ import androidx.test.uiautomator.UiSelector;
+  * <pre>{@code
+  * android {
+  *   defaultConfig {
+- *     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
++ *     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  *     testInstrumentationRunnerArguments = [
+  *       'detoxServer': 'ws://10.0.2.2:8001',
+  *       'detoxSessionId': '1'
+@@ -65,7 +65,7 @@ import androidx.test.uiautomator.UiSelector;
+  *
+  * Or through command line, e.g <br>
+  * <blockquote>{@code adb shell am instrument -w -e detoxServer ws://localhost:8001 -e detoxSessionId
+- * 1 com.example/android.support.test.runner.AndroidJUnitRunner}</blockquote></p>
++ * 1 com.example/androidx.test.runner.AndroidJUnitRunner}</blockquote></p>
+  *
+  * <p>These are automatically set using,
+  * <blockquote>{@code detox test}</blockquote></p>
+diff --git a/node_modules/detox/android/detox/src/main/java/com/wix/detox/DetoxManager.java b/node_modules/detox/android/detox/src/main/java/com/wix/detox/DetoxManager.java
+index fe6bec2..0830923 100644
+--- a/node_modules/detox/android/detox/src/main/java/com/wix/detox/DetoxManager.java
++++ b/node_modules/detox/android/detox/src/main/java/com/wix/detox/DetoxManager.java
+@@ -4,7 +4,7 @@ import android.content.Context;
+ import android.os.Bundle;
+ import android.os.Handler;
+ import android.os.Looper;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ 
+ import com.wix.detox.systeminfo.Environment;
+diff --git a/node_modules/detox/android/detox/src/main/java/com/wix/detox/ReactNativeSupport.java b/node_modules/detox/android/detox/src/main/java/com/wix/detox/ReactNativeSupport.java
+index 92100be..a4dfbbd 100644
+--- a/node_modules/detox/android/detox/src/main/java/com/wix/detox/ReactNativeSupport.java
++++ b/node_modules/detox/android/detox/src/main/java/com/wix/detox/ReactNativeSupport.java
+@@ -2,7 +2,7 @@ package com.wix.detox;
+ 
+ import android.content.Context;
+ import android.os.Looper;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ 
+ import com.facebook.react.ReactApplication;
+diff --git a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/AnimatedModuleIdlingResource.java b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/AnimatedModuleIdlingResource.java
+index 6cfb784..962b7e1 100644
+--- a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/AnimatedModuleIdlingResource.java
++++ b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/AnimatedModuleIdlingResource.java
+@@ -1,6 +1,6 @@
+ package com.wix.detox.espresso;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ import android.view.Choreographer;
+ 
+diff --git a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeNetworkIdlingResource.java b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeNetworkIdlingResource.java
+index 8275556..596765e 100644
+--- a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeNetworkIdlingResource.java
++++ b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeNetworkIdlingResource.java
+@@ -1,6 +1,6 @@
+ package com.wix.detox.espresso;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ import android.view.Choreographer;
+ 
+diff --git a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeUIModuleIdlingResource.java b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeUIModuleIdlingResource.java
+index 84112a1..1153d15 100644
+--- a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeUIModuleIdlingResource.java
++++ b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/ReactNativeUIModuleIdlingResource.java
+@@ -1,6 +1,6 @@
+ package com.wix.detox.espresso;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ import android.view.Choreographer;
+ 
+diff --git a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/assertion/ViewAssertions.java b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/assertion/ViewAssertions.java
+index d579c76..7784de0 100644
+--- a/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/assertion/ViewAssertions.java
++++ b/node_modules/detox/android/detox/src/main/java/com/wix/detox/espresso/assertion/ViewAssertions.java
+@@ -1,6 +1,6 @@
+ package com.wix.detox.espresso.assertion;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.view.View;
+ 
+ import org.hamcrest.Matcher;

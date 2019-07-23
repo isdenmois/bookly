@@ -19,6 +19,7 @@ export class RatingSelect extends React.PureComponent<Props> {
 
   renderStars = times(index => (
     <Icon
+      testID={`star-${index}`}
       key={index}
       style={s.star}
       name='star'

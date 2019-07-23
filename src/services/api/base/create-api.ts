@@ -22,9 +22,9 @@ export function clearCache() {
 }
 
 export function createApi(context, schema) {
-  return function (...args) {
+  return function(...args) {
     const params = schema.mapParams ? schema.mapParams.apply(null, args) : {};
-    const url = createUrl(`${context.baseUrl}${schema.url}`, params.query || {});
+    const url = `${context.baseUrl}${createUrl(schema.url, params.query || {})}`;
 
     return sendReq(schema, params, url);
   };

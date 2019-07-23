@@ -9,6 +9,7 @@ interface Props extends NavigationScreenProps {
   modalStyle?: ViewStyle;
   title?: ReactChild;
   children: ReactNode;
+  testID?: string;
   onApply?: () => void;
 }
 
@@ -16,7 +17,7 @@ export const Dialog = (props: Props) => {
   const onBack = useCallback(() => props.navigation.pop(), [props.navigation]);
 
   return (
-    <View style={s.container}>
+    <View testID={props.testID} style={s.container}>
       <TouchableWithoutFeedback onPress={onBack}>
         <View style={s.backdrop} />
       </TouchableWithoutFeedback>

@@ -1,4 +1,4 @@
-import { SYNC_URL } from 'react-native-dotenv';
+import { SYNC_URL } from 'services/config';
 import { createApi } from '../base';
 
 import * as fetchChangesSchema from './fetch-changes';

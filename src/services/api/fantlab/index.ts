@@ -1,4 +1,4 @@
-import { FANTLAB_URL } from 'react-native-dotenv';
+import { FANTLAB_URL } from 'services/config';
 import { createApi } from '../base';
 
 import * as searchBooksSchema from './search-books';

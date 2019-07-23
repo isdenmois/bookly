@@ -18,6 +18,7 @@ export class LoginScreen extends React.Component<NavigationScreenProps> {
     return (
       <View>
         <TextInput
+          testID='loginField'
           autoCapitalize='none'
           autoCorrect={false}
           autoFocus
@@ -30,7 +31,7 @@ export class LoginScreen extends React.Component<NavigationScreenProps> {
 
         {submitting && <ActivityIndicator size='large' />}
 
-        {!submitting && <Button title='Войти' onPress={this.submit} />}
+        {!submitting && <Button testID='submitButton' title='Войти' disabled={!login} onPress={this.submit} />}
       </View>
     );
   }

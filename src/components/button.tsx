@@ -11,6 +11,7 @@ interface Props {
   disabled?: boolean;
   style?: ViewStyle | ViewStyle[];
   textStyle?: TextStyle;
+  testID?: string;
   onPress?: () => void;
 }
 
@@ -22,7 +23,7 @@ export class Button extends React.Component<Props> {
     const Component: any = disabled ? View : TouchableOpacity;
 
     return (
-      <Component onPress={!disabled && this.props.onPress} style={viewStyles}>
+      <Component testID={this.props.testID} onPress={!disabled && this.props.onPress} style={viewStyles}>
         <>
           {!!icon && icon}
           <TextM style={textStyles}>{label}</TextM>

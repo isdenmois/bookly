@@ -12,6 +12,7 @@ interface Props {
   book: BookData;
   style?: ViewStyle;
   ratingStyle?: TextStyle;
+  testID?: string;
 }
 
 export function ReadButton(props: Props) {
@@ -20,6 +21,7 @@ export function ReadButton(props: Props) {
   if (status === BOOK_STATUSES.NOW) {
     return (
       <Button
+        testID={props.testID}
         label='Сейчас читаю'
         icon={<Icon name='clock' size={18} color={color.Secondary} />}
         style={[props.style, s.orange]}
@@ -32,7 +34,7 @@ export function ReadButton(props: Props) {
 
   if (status === BOOK_STATUSES.READ) {
     return (
-      <TouchableOpacity style={s.rating} onPress={props.openChangeStatus}>
+      <TouchableOpacity testID={props.testID} style={s.rating} onPress={props.openChangeStatus}>
         <Rating textStyle={props.ratingStyle} starSize={24} scale={5} value={props.book.rating} />
       </TouchableOpacity>
     );
@@ -40,6 +42,7 @@ export function ReadButton(props: Props) {
 
   return (
     <Button
+      testID={props.testID}
       label={status === BOOK_STATUSES.WISH ? 'Хочу прочитать' : 'Добавить'}
       icon={<Icon name='bookmark' size={18} color={color.Primary} />}
       style={[props.style, s.green]}
