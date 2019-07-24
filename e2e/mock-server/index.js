@@ -4,22 +4,21 @@ const { syncRouter } = require('./sync');
 const { fantlabRouter } = require('./fantlab');
 
 class Mockserver {
-  constructor() {
+  constructor(port) {
     this.app = express();
     this.server = null;
+    this.port = port;
   }
 
   init() {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
 
-    const port = 9001;
-
     this.app.use('/sync', syncRouter);
     this.app.use('/fantlab', fantlabRouter);
 
-    this.server = this.app.listen(port);
-    console.log('Mock server listening on port ' + port);
+    this.server = this.app.listen(this.port);
+    console.log('Mock server listening on port ' + this.port);
   }
 
   close() {

@@ -1,10 +1,9 @@
 global.jexpect = expect;
 
 const detox = require('detox');
-const config = require('../package.json').detox;
+const { getDeviceId, createConfig, createMockServer } = require('./helpers');
 const adapter = require('detox/runners/jest/adapter');
 const specReporter = require('detox/runners/jest/specReporter');
-const MockServer = require('./mock-server');
 
 // Set the default timeout
 jest.setTimeout(120000);
@@ -14,10 +13,15 @@ jasmine.getEnv().addReporter(adapter);
 // This is strictly optional.
 jasmine.getEnv().addReporter(specReporter);
 
-let mockServer = new MockServer();
+let mockServer;
 
 beforeAll(async () => {
+  const deviceId = await getDeviceId();
+  const config = createConfig(deviceId);
+
+  mockServer = await createMockServer(deviceId, 9001);
   mockServer.init();
+
   await detox.init(config);
 });
 
@@ -28,5 +32,5 @@ beforeEach(async () => {
 afterAll(async () => {
   await adapter.afterAll();
   await detox.cleanup();
-  mockServer.close();
+  mockServer && mockServer.close();
 });
