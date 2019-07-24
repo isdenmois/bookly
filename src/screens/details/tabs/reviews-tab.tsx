@@ -14,12 +14,14 @@ interface Props extends NavigationScreenProps {
 }
 
 export class ReviewsTab extends React.PureComponent<Props> {
+  scrollStyle = this.props.book.status === BOOK_STATUSES.READ ? [s.withButton, s.scrollContent] : s.scrollContent;
+
   render() {
     const book = this.props.book;
 
     return (
       <View style={s.relative}>
-        <ScrollView style={s.scroll} contentContainerStyle={s.scrollContent}>
+        <ScrollView style={s.scroll} contentContainerStyle={this.scrollStyle}>
           <LocalReviewList book={book} navigation={this.props.navigation} />
           <FantlabReviewList bookId={book.id} />
         </ScrollView>
@@ -29,7 +31,7 @@ export class ReviewsTab extends React.PureComponent<Props> {
             <Button
               label='Добавить'
               onPress={this.openReviewWriteModal}
-              icon={<Icon name='sliders-h' size={18} color={color.PrimaryText} />}
+              icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
               style={s.button}
               textStyle={s.buttonText}
             />
@@ -47,6 +49,9 @@ const s = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  withButton: {
+    paddingBottom: 60,
+  } as ViewStyle,
   scroll: {
     flex: 1,
   } as ViewStyle,
