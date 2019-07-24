@@ -24,7 +24,7 @@ const createNavigator = initialRouteName =>
             transitionConfig: () => StackViewTransitionConfigs.SlideFromRightIOS,
             defaultNavigationOptions: {
               gesturesEnabled: true,
-            }
+            },
           } as any),
           ...createModalStack(ModalStack),
         },

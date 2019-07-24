@@ -1,16 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { inject, Session } from 'services';
+import { inject, Session, Navigation } from 'services';
 import { notImplemented } from 'utils/not-implemented-yet';
 import { readBooksQuery, wishBooksQuery } from '../home.service';
 import { ListItem } from 'components/list-item';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   database: Database;
   readCount?: number;
   wishCount?: number;
@@ -22,6 +21,7 @@ interface Props extends NavigationScreenProps {
 }))
 export class NavigationLinks extends React.Component<Props> {
   session = inject(Session);
+  navigation = inject(Navigation);
 
   render() {
     return (
@@ -54,9 +54,9 @@ export class NavigationLinks extends React.Component<Props> {
     );
   }
 
-  openReadBooks = () => this.props.navigation.push('ReadList');
-  openWishBooks = () => this.props.navigation.push('WishList');
-  openProfile = () => this.props.navigation.push('Profile');
+  openReadBooks = () => this.navigation.push('ReadList');
+  openWishBooks = () => this.navigation.push('WishList');
+  openProfile = () => this.navigation.push('Profile');
 }
 
 const s = StyleSheet.create({

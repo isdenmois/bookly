@@ -17,7 +17,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
   render() {
     return (
       <View style={s.container}>
-        <ScreenHeader title={this.session.userId} navigation={this.props.navigation} />
+        <ScreenHeader title={this.session.userId} />
 
         <ChallengeEditor session={this.session} />
 

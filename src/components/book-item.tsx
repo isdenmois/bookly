@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
+import { Navigation, inject } from 'services';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book from 'store/book';
@@ -27,7 +27,7 @@ const STATUS_COLORS = {
   star: color.Secondary,
 };
 
-interface Props extends Partial<NavigationScreenProps> {
+interface Props {
   record?: Book;
   book?: Book;
   nextStatus?: BOOK_STATUSES;
@@ -39,6 +39,7 @@ interface Props extends Partial<NavigationScreenProps> {
 }))
 export class BookItem extends React.Component<Props> {
   static defaultProps: Props = { cacheThumbnail: true };
+  navigation = inject(Navigation);
 
   get book() {
     return this.props.record || this.props.book;
@@ -94,14 +95,14 @@ export class BookItem extends React.Component<Props> {
   }
 
   openBook = () => {
-    this.props.navigation.push('Details', { bookId: this.book.id });
+    this.navigation.push('Details', { bookId: this.book.id });
   };
 
   openChangeStatusModal = () => {
     const book = this.book;
     const status = this.nextStatus;
 
-    this.props.navigation.navigate('/modal/change-status', { book, status });
+    this.navigation.navigate('/modal/change-status', { book, status });
   };
 }
 const s = StyleSheet.create({

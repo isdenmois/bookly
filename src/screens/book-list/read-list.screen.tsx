@@ -44,13 +44,8 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
 
     return (
       <View style={s.container}>
-        <ScreenHeader
-          title={this.title}
-          query={this.state.filters.title}
-          navigation={this.props.navigation}
-          onSearch={this.setSearch}
-        />
-        <BookList database={this.database} query={query} sort={sort} navigation={navigation} />
+        <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={this.setSearch} />
+        <BookList database={this.database} query={query} sort={sort} />
         <View style={s.buttonContainer}>
           <Button
             label='ФИЛЬТРЫ'

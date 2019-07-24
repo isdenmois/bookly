@@ -1,10 +1,10 @@
 import React, { ReactChild, ReactNode, useCallback } from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
+import { Navigation, inject } from 'services';
 import { TouchIcon } from 'components/touch-icon';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   style?: ViewStyle;
   modalStyle?: ViewStyle;
   title?: ReactChild;
@@ -14,8 +14,6 @@ interface Props extends NavigationScreenProps {
 }
 
 export const Dialog = (props: Props) => {
-  const onBack = useCallback(() => props.navigation.pop(), [props.navigation]);
-
   return (
     <View testID={props.testID} style={s.container}>
       <TouchableWithoutFeedback onPress={onBack}>
@@ -24,7 +22,7 @@ export const Dialog = (props: Props) => {
 
       <View style={s.modal}>
         <View style={[s.modalView, props.modalStyle]}>
-          {!!props.title && renderDialogHeader(props.title, onBack, props.onApply)}
+          {!!props.title && renderDialogHeader(props.title, props.onApply)}
           <View style={[s.content, props.style]}>{props.children}</View>
         </View>
       </View>
@@ -32,7 +30,7 @@ export const Dialog = (props: Props) => {
   );
 };
 
-function renderDialogHeader(title: ReactChild, onBack, onApply) {
+function renderDialogHeader(title: ReactChild, onApply) {
   return (
     <View style={s.header}>
       <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={onBack} />
@@ -43,6 +41,12 @@ function renderDialogHeader(title: ReactChild, onBack, onApply) {
       {!onApply && <View style={s.noApplyIcon} />}
     </View>
   );
+}
+
+function onBack() {
+  const navigation = inject(Navigation);
+
+  return navigation.pop();
 }
 
 const s = StyleSheet.create({

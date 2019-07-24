@@ -5,13 +5,12 @@ import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { BookSort } from 'types/book-filters';
-import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BookItem } from 'components/book-item';
 import { EmptyResult } from 'screens/search/empty-result';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   query: Where[];
   sort: BookSort;
   database: Database;
@@ -46,7 +45,7 @@ export class BookList extends React.PureComponent<Props> {
   }
 
   private renderItem = ({ item }) => {
-    return <BookItem key={item.id} navigation={this.props.navigation} book={item} />;
+    return <BookItem key={item.id} book={item} />;
   };
 
   private keyExtractor = book => book.id;

@@ -38,7 +38,7 @@ export class HomeScreen extends React.Component<NavigationScreenProps, State> {
 
         <Hr />
 
-        <NavigationLinks database={this.database} navigation={this.props.navigation} />
+        <NavigationLinks database={this.database} />
       </ScrollView>
     );
   }

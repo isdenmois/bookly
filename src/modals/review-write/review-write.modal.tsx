@@ -35,12 +35,7 @@ export class ReviewWriteModal extends React.Component<Props, State> {
     const changed = this.state.changed && Boolean(this.state.body);
 
     return (
-      <Dialog
-        style={s.dialog}
-        navigation={this.props.navigation}
-        title={this.props.book.title}
-        onApply={changed && this.save}
-      >
+      <Dialog style={s.dialog} title={this.props.book.title} onApply={changed && this.save}>
         <ScrollView style={s.scroll}>
           <TextInput
             style={s.text}

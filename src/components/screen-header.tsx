@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
+import { Navigation, inject } from 'services';
 import { TouchIcon } from './touch-icon';
 import { SearchBar } from './search-bar';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   title: string;
   query?: string;
   onSearch?: (value: string) => void;
@@ -37,7 +37,7 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
           value={this.state.query}
           onChange={this.setQuery}
           onSearch={this.onSearch}
-          onBack={this.goBack}
+          onBack={goBack}
           onClose={this.clearSearch}
         />
       );
@@ -45,7 +45,7 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
 
     return (
       <View style={s.header}>
-        <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={this.goBack} />
+        <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={goBack} />
         <Text style={s.title}>{this.props.title}</Text>
         {this.props.onSearch && (
           <TouchIcon name='search' size={24} color={color.PrimaryText} onPress={this.openSearch} />
@@ -55,12 +55,17 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
     );
   }
 
-  goBack = () => this.props.navigation.pop();
   setQuery = query => this.setState({ query });
   openSearch = () => this.setState({ search: true });
   closeSearch = () => this.setState({ search: false });
   clearSearch = () => this.props.onSearch('');
   onSearch = () => this.props.onSearch(this.state.query);
+}
+
+function goBack() {
+  const navigation = inject(Navigation);
+
+  navigation.pop();
 }
 
 const s = StyleSheet.create({

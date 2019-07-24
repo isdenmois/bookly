@@ -3,13 +3,20 @@ import { ActivityIndicator } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import SplashScreen from 'react-native-splash-screen';
 import { database } from 'store';
-import { provider, asValue } from 'services/inject/provider';
+import { provider, asValue, asRef } from 'services/inject/provider';
 
-import { Session, SyncService, inject } from 'services';
+import { Navigation, Session, SyncService, inject } from 'services';
 import { FirebaseAPI, FantlabAPI } from 'api';
 
-@provider(asValue(Database, database), Session, FirebaseAPI, FantlabAPI, SyncService)
-class App extends React.Component {
+@provider(
+  asValue(Database, database),
+  asRef(Navigation, 'setNavigation'),
+  Session,
+  FirebaseAPI,
+  FantlabAPI,
+  SyncService,
+)
+class App extends React.Component<any> {
   session = inject(Session);
   syncService = inject(SyncService);
 
@@ -46,7 +53,13 @@ class App extends React.Component {
 
     const { RootStack, loadNavigationState, persistNavigationState } = this;
 
-    return <RootStack loadNavigationState={loadNavigationState} persistNavigationState={persistNavigationState} />;
+    return (
+      <RootStack
+        ref={this.props.setNavigation}
+        loadNavigationState={loadNavigationState}
+        persistNavigationState={persistNavigationState}
+      />
+    );
   }
 }
 

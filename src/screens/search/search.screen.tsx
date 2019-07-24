@@ -56,7 +56,7 @@ export class SearchScreen extends React.Component<Props, State> {
     return (
       <ScrollView contentContainerStyle={s.scroll}>
         {_.map(data, book => (
-          <BookItem cacheThumbnail={false} book={book} key={book.id} navigation={this.props.navigation} />
+          <BookItem cacheThumbnail={false} book={book} key={book.id} />
         ))}
       </ScrollView>
     );

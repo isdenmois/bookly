@@ -45,11 +45,11 @@ export class BookFiltersModal extends React.Component<Props, State> {
   state: State = this.createDefaultState();
 
   render() {
-    const { filterFields, sortFields, navigation } = this.props;
+    const { filterFields, sortFields } = this.props;
     const changed = this.state.changed;
 
     return (
-      <Dialog style={s.modalStyle} navigation={navigation} title='Фильтры' onApply={changed && this.save}>
+      <Dialog style={s.modalStyle} title='Фильтры' onApply={changed && this.save}>
         <ScrollView style={s.scroll} contentContainerStyle={s.filters}>
           <BookListSort value={this.state.sort} onChange={this.setSort} fields={sortFields} />
 
