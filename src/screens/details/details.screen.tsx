@@ -4,7 +4,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
 import { FantlabAPI } from 'api';
-import { Fetcher } from 'components/fetcher';
+import { Fetcher } from 'components';
 import { BookExtended } from 'types/book-extended';
 import { BookDetails } from './components/book-details';
 

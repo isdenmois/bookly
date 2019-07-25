@@ -2,8 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { color } from 'types/colors';
-import { ListItem } from 'components/list-item';
-import { TouchIcon } from 'components/touch-icon';
+import { ListItem, TouchIcon } from 'components';
 import { SelectList } from './select-list';
 import Author from 'store/author';
 

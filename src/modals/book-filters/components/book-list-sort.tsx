@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import { TouchIcon } from 'components/touch-icon';
 import { color } from 'types/colors';
+import { TouchIcon } from 'components';
 import { EditableListItem } from './editable-list-item';
 
 const SORT_LABELS = {

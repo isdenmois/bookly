@@ -8,8 +8,7 @@ import Book from 'store/book';
 import Review, { createReview } from 'store/review';
 import { inject } from 'services';
 import { dbSync, dbAction } from 'services/db';
-import { Dialog } from 'components/dialog';
-import { Button } from 'components/button';
+import { Button, Dialog } from 'components';
 
 interface Props extends NavigationScreenProps {
   book: Book;

@@ -9,8 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { ListItem } from 'components/list-item';
-import { Thumbnail } from 'components/thumbnail';
+import { ListItem, Thumbnail } from 'components';
 
 interface Props {
   database: Database;

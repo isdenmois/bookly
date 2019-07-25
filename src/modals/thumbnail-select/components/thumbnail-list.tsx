@@ -5,8 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { inject } from 'services';
 import { FantlabAPI } from 'api';
-import { Fetcher } from 'components/fetcher';
-import { Thumbnail } from 'components/thumbnail';
+import { Fetcher, Thumbnail } from 'components';
 
 function EmptyResult() {
   return <Text>No data</Text>;

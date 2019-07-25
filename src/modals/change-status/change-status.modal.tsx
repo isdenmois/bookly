@@ -13,12 +13,7 @@ import { BookData } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { createBook } from 'store/book';
 import { dbSync, dbAction } from 'services/db';
-import { Dialog } from 'components/dialog';
-import { Thumbnail } from 'components/thumbnail';
-import { Button } from 'components/button';
-import { ListItem } from 'components/list-item';
-import { Switcher } from 'components/switcher';
-import { RatingSelect } from 'components/rating';
+import { Button, Dialog, ListItem, RatingSelect, Switcher, Thumbnail } from 'components';
 
 const statusOptions = [
   { key: BOOK_STATUSES.WISH, title: 'Хочу прочитать' },

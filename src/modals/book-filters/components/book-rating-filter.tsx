@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, ViewStyle, View } from 'react-native';
-import { SwipeRating, formatRating } from 'components/rating';
+import { formatRating } from 'components/rating';
+import { SwipeRating } from 'components';
 import { Interval } from 'types/book-filters';
 import { OpenableListItem } from './openable-list-item';
 

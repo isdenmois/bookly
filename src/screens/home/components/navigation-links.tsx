@@ -6,8 +6,8 @@ import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { inject, Session, Navigation } from 'services';
 import { notImplemented } from 'utils/not-implemented-yet';
+import { ListItem } from 'components';
 import { readBooksQuery, wishBooksQuery } from '../home.service';
-import { ListItem } from 'components/list-item';
 
 interface Props {
   database: Database;

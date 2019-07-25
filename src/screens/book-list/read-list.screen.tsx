@@ -9,10 +9,9 @@ import { color } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { inject } from 'services';
-import { ScreenHeader } from 'components/screen-header';
+import { Button, ScreenHeader } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
-import { Button } from 'components/button';
 
 const defaultFilters = {
   status: BOOK_STATUSES.READ,

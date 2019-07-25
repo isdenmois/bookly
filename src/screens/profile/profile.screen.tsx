@@ -6,8 +6,7 @@ import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { Session, inject } from 'services';
 import { clearCache } from 'services/api/base/create-api';
-import { Button } from 'components/button';
-import { ScreenHeader } from 'components/screen-header';
+import { Button, ScreenHeader } from 'components';
 import { ChallengeEditor } from './components/challenge-editor';
 
 export class ProfileScreen extends React.Component<NavigationScreenProps> {

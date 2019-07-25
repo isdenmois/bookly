@@ -8,7 +8,7 @@ import { color } from 'types/colors';
 import { inject } from 'services';
 import { dbSync } from 'services/db';
 import Book from 'store/book';
-import { Dialog } from 'components/dialog';
+import { Dialog } from 'components';
 
 import { BookSelectHeader } from './components/header';
 import { BookList } from './components/book-list';

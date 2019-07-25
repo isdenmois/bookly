@@ -1,21 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
-import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
-import { Button } from 'components/button';
-import { TextM } from 'components/text';
+import { Navigation, inject } from 'services';
+import { Button, TextM } from 'components';
 import { wishBooksQuery } from '../home.service';
-const { withNavigation } = require('react-navigation');
 
-interface Props extends Partial<NavigationScreenProps> {
+interface Props {
   database: Database;
   wishBooksCount?: number;
 }
 
-@withNavigation
 @withObservables([], ({ database }) => ({
   wishBooksCount: wishBooksQuery(database).observeCount(),
 }))
@@ -34,7 +31,7 @@ export class EmptyBook extends React.Component<Props> {
     );
   }
 
-  openBookSelect = () => this.props.navigation.navigate('/modal/book-select');
+  openBookSelect = () => inject(Navigation).navigate('/modal/book-select');
 }
 
 const s = StyleSheet.create({

@@ -6,7 +6,7 @@ import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
 import { color } from 'types/colors';
-import { TouchIcon } from 'components/touch-icon';
+import { TouchIcon } from 'components';
 
 interface Props extends NavigationScreenProps {
   book: BookData;

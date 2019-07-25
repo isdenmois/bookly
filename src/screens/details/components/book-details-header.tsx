@@ -1,7 +1,7 @@
 import React from 'react';
 import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
-import { TouchIcon } from 'components/touch-icon';
+import { TouchIcon } from 'components';
 
 interface Props {
   bookId: string;

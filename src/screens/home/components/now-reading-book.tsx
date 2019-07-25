@@ -6,10 +6,8 @@ import { Database } from '@nozbe/watermelondb';
 import Book from 'store/book';
 import { color } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { Thumbnail } from 'components/thumbnail';
-import { TextXL } from 'components/text';
-import { ReadButton } from 'components/read-button';
-const { withNavigation } = require('react-navigation');
+import { Navigation, inject } from 'services';
+import { ReadButton, TextXL, Thumbnail } from 'components';
 import { currentBooksQuery } from '../home.service';
 
 interface Props extends Partial<NavigationScreenProps> {
@@ -17,11 +15,12 @@ interface Props extends Partial<NavigationScreenProps> {
   books?: Book[];
 }
 
-@withNavigation
 @withObservables([], ({ database }) => ({
   books: currentBooksQuery(database).observeWithColumns(['thumbnail']),
 }))
 export class NowReadingBook extends React.Component<Props> {
+  navigation = inject(Navigation);
+
   render() {
     const books = this.props.books;
     const book = books && books[0];
@@ -50,9 +49,9 @@ export class NowReadingBook extends React.Component<Props> {
   }
 
   openChangeStatus = () =>
-    this.props.navigation.navigate('/modal/change-status', { book: this.props.books[0], status: BOOK_STATUSES.READ });
+    this.navigation.navigate('/modal/change-status', { book: this.props.books[0], status: BOOK_STATUSES.READ });
 
-  openBook = () => this.props.navigation.push('Details', { bookId: this.props.books[0].id });
+  openBook = () => this.navigation.push('Details', { bookId: this.props.books[0].id });
 }
 
 const s = StyleSheet.create({

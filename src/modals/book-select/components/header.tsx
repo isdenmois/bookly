@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
 import { color } from 'types/colors';
-import { TouchIcon } from 'components/touch-icon';
-import { SearchBar } from 'components/search-bar';
+import { SearchBar, TouchIcon } from 'components';
 
 interface Props {
   search: string;

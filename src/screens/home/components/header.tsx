@@ -1,14 +1,12 @@
 import React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { SearchBar } from 'components/search-bar';
-const { withNavigation } = require('react-navigation');
+import { Navigation, inject } from 'services';
+import { SearchBar } from 'components';
 
 interface State {
   query: string;
 }
 
-@withNavigation
-export class HomeHeader extends React.Component<Partial<NavigationScreenProps>, State> {
+export class HomeHeader extends React.Component<any, State> {
   state: State = { query: '' };
 
   render() {
@@ -25,7 +23,7 @@ export class HomeHeader extends React.Component<Partial<NavigationScreenProps>, 
   queryChange = query => this.setState({ query });
 
   onSearch = () => {
-    this.props.navigation.push('Search', { query: this.state.query.trim() });
+    inject(Navigation).push('Search', { query: this.state.query.trim() });
     this.setState({ query: '' });
   };
 }

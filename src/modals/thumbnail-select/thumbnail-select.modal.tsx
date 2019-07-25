@@ -4,8 +4,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { dbSync } from 'services/db';
 import Book from 'store/book';
-import { Dialog } from 'components/dialog';
-import { Thumbnail } from 'components/thumbnail';
+import { Dialog, Thumbnail } from 'components';
 import { ThumbnailList } from './components/thumbnail-list';
 
 interface Props extends NavigationScreenProps {

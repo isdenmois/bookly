@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { SyncService, Session, inject, provider } from 'services';
-import { Hr } from 'components/hr';
+import { Hr } from 'components';
 import { HomeService } from './home.service';
 import { HomeHeader } from './components/header';
 import { CurrentBook } from './components/current-book';

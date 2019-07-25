@@ -7,7 +7,7 @@ import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { BookSort } from 'types/book-filters';
 import { color } from 'types/colors';
 import Book from 'store/book';
-import { BookItem } from 'components/book-item';
+import { BookItem } from 'components';
 import { EmptyResult } from 'screens/search/empty-result';
 
 interface Props {

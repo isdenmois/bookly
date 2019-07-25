@@ -7,9 +7,7 @@ import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import Book from 'store/book';
-import { Fetcher } from 'components/fetcher';
-import { SearchBar } from 'components/search-bar';
-import { BookItem } from 'components/book-item';
+import { BookItem, Fetcher, SearchBar } from 'components';
 import { EmptyResult } from './empty-result';
 
 interface Props extends NavigationScreenProps {

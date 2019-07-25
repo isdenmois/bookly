@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { color } from 'types/colors';
-import { TextXL } from 'components/text';
+import { TextXL } from 'components';
 
 export class EmptyResult extends React.Component {
   render() {

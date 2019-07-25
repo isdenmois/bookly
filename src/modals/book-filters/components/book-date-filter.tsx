@@ -4,8 +4,8 @@ import { Calendar, DateObject } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Interval } from 'types/book-filters';
 import { color } from 'types/colors';
-import { TouchIcon } from 'components/touch-icon';
 import { formatDate } from 'utils/date';
+import { TouchIcon } from 'components';
 import { OpenableListItem } from './openable-list-item';
 
 interface Props {

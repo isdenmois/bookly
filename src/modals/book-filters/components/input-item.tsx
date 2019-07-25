@@ -1,8 +1,7 @@
 import React from 'react';
 import { TextInput, StyleSheet, ViewStyle, TextStyle, KeyboardTypeOptions } from 'react-native';
 import { color } from 'types/colors';
-import { ListItem } from 'components/list-item';
-import { TouchIcon } from 'components/touch-icon';
+import { ListItem, TouchIcon } from 'components';
 
 interface Props {
   title: string;

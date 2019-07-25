@@ -5,7 +5,7 @@ export class Navigation {
 
   setRef = ref => (this.navigator = ref);
 
-  navigate(routeName: string, params) {
+  navigate(routeName: string, params?: NavigationParams) {
     return this.navigator.dispatch(NavigationActions.navigate({ routeName, params }));
   }
 
