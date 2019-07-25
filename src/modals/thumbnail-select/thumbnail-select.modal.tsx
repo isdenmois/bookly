@@ -24,7 +24,7 @@ export class ThumbnailSelectModal extends React.Component<Props, State> {
     return (
       <Dialog title='Обложка' onApply={changed && this.save}>
         <View style={s.thumbnail}>
-          <Thumbnail cache={false} auto='height' width={150} url={this.state.selected} />
+          <Thumbnail auto='height' width={150} url={this.state.selected} />
         </View>
 
         <ThumbnailList bookId={this.props.book.id} selected={this.state.selected} onSelect={this.setThumbnail} />

@@ -33,7 +33,6 @@ export class FantlabReview extends React.Component<Props, State> {
               width={32}
               height={32}
               title={review.user}
-              cache={false}
               auto='none'
             />
             <Text style={s.user}>{review.user}</Text>

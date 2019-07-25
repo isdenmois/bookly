@@ -48,7 +48,7 @@ export class BookSimilars extends React.Component<Props> {
   renderBook(book: BookSimilar) {
     return (
       <TouchableOpacity key={book.id} onPress={() => this.openBook(book)} style={s.row}>
-        <Thumbnail auto='none' cache={false} title={book.title} url={book.thumbnail} width={50} height={80} />
+        <Thumbnail auto='none' title={book.title} url={book.thumbnail} width={50} height={80} />
 
         <View style={s.info}>
           <Text style={s.title}>{book.title}</Text>

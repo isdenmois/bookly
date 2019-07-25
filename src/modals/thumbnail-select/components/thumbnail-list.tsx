@@ -44,7 +44,7 @@ export class ThumbnailList extends React.PureComponent<Props> {
 
     return (
       <ViewComponent key={thumbnail.id} style={s.thumbnail} onPress={() => this.props.onSelect(thumbnail.url)}>
-        <Thumbnail cache={false} url={thumbnail.url} auto='width' height={120} />
+        <Thumbnail url={thumbnail.url} auto='width' height={120} />
         {isSelected && (
           <View style={s.check}>
             <Icon name='check' size={12} color={color.PrimaryTextInverse} />

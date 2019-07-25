@@ -82,7 +82,7 @@ export class ChangeStatusModal extends React.Component<Props> {
 
     return (
       <Dialog testID='changeStatusModal' style={s.dialog}>
-        <Thumbnail style={s.thumbnail} width={90} height={140} title={book.title} url={book.thumbnail} />
+        <Thumbnail style={s.thumbnail} width={90} height={140} title={book.title} url={book.thumbnail} cache />
         <Text style={s.title}>{book.title}</Text>
 
         <View style={s.list}>

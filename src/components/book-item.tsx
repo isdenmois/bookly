@@ -38,7 +38,6 @@ interface Props {
   record: book.record || book,
 }))
 export class BookItem extends React.Component<Props> {
-  static defaultProps: Props = { cacheThumbnail: true };
   navigation = inject(Navigation);
 
   get book() {

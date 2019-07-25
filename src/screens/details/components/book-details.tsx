@@ -60,7 +60,7 @@ export class BookDetails extends React.Component<Props> {
             <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
             <View style={s.mainInformationContainer}>
               <TouchableOpacity onPress={this.openChangeThumbnail}>
-                <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} />
+                <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} cache />
               </TouchableOpacity>
 
               <View style={s.mainInformation}>

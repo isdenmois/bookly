@@ -30,7 +30,7 @@ export class NowReadingBook extends React.Component<Props> {
     return (
       <View style={s.container}>
         <TouchableOpacity style={s.thumbnail} onPress={this.openBook}>
-          <Thumbnail style={s.image} width={120} height={192} title={book.title} url={book.thumbnail} />
+          <Thumbnail cache style={s.image} width={120} height={192} title={book.title} url={book.thumbnail} />
         </TouchableOpacity>
 
         <View style={s.details}>

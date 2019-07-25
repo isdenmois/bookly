@@ -57,7 +57,7 @@ export class BookList extends React.Component<Props> {
   };
 
   thumbnail(book) {
-    return <Thumbnail style={s.thumbnail} auto={null} width={60} height={60} title={book.title} url={book.thumbnail} />;
+    return <Thumbnail style={s.thumbnail} auto={null} width={60} height={60} title={book.title} url={book.thumbnail} cache />;
   }
 }
 

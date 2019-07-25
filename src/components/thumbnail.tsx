@@ -47,5 +47,4 @@ export function Thumbnail({ auto, style, title, width, height, url, resizeMode, 
 
 Thumbnail.defaultProps = {
   auto: 'height',
-  cache: true,
 };

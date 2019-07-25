@@ -45,7 +45,7 @@ export class BookList extends React.PureComponent<Props> {
   }
 
   private renderItem = ({ item }) => {
-    return <BookItem key={item.id} book={item} />;
+    return <BookItem key={item.id} book={item} cacheThumbnail />;
   };
 
   private keyExtractor = book => book.id;
