@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'react-native-classnames';
+import classnames from 'rn-classnames';
 import { Platform, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { color } from 'types/colors';
 import { TextL } from 'components/text';
@@ -16,7 +16,7 @@ export class Card extends React.Component<Props> {
     const { title, padding, margin, style } = this.props;
 
     return (
-      <View style={[style, cn(s, ['container', { padding, margin }])]}>
+      <View style={[style, ...cn('container', { padding, margin })]}>
         {title && <TextL style={s.titleStyle}>{title}</TextL>}
         {this.props.children}
       </View>
@@ -52,3 +52,4 @@ const s = StyleSheet.create({
     color: color.PrimaryText,
   } as TextStyle,
 });
+const cn = classnames(s);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
-import cn from 'react-native-classnames';
+import classnames from 'rn-classnames';
 import { color } from 'types/colors';
 import { TextM } from 'components/text';
 
@@ -18,8 +18,8 @@ interface Props {
 export class Button extends React.Component<Props> {
   render() {
     const { icon, label, thin, disabled } = this.props;
-    const viewStyles = [cn(s, 'container', { thin, disabled })].concat(this.props.style);
-    const textStyles = [s.text, cn(s, icon && { icon: !thin, iconThin: thin }), this.props.textStyle];
+    const viewStyles = [...cn('container', { thin, disabled })].concat(this.props.style);
+    const textStyles = [s.text, ...cn(icon && { icon: !thin, iconThin: thin }), this.props.textStyle];
     const Component: any = disabled ? View : TouchableOpacity;
 
     return (
@@ -62,3 +62,4 @@ const s = StyleSheet.create({
     textAlign: 'center',
   } as TextStyle,
 });
+const cn = classnames(s);

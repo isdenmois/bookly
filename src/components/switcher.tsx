@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
-import cn from 'react-native-classnames';
+import classnames from 'rn-classnames';
 import { color } from 'types/colors';
 
 interface Option {
@@ -24,11 +24,11 @@ export class Switcher extends React.Component<Props> {
       <View style={[s.container, this.props.style]}>
         {this.props.options.map((option, index) => (
           <TouchableOpacity
-            style={cn(s, ['option', { selected: option.key === value, lastOption: index === lastIndex }, style])}
+            style={cn('option', { selected: option.key === value, lastOption: index === lastIndex })}
             key={option.key}
             onPress={() => this.props.onChange(option.key)}
           >
-            <Text style={cn(s, ['text', { selectedText: option.key === value }])}>{option.title}</Text>
+            <Text style={cn('text', { selectedText: option.key === value })}>{option.title}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -67,3 +67,4 @@ const s = StyleSheet.create({
     color: color.PrimaryTextInverse,
   } as TextStyle,
 });
+const cn = classnames(s);

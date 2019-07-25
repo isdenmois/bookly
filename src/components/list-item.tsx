@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
-import cn from 'react-native-classnames';
+import classnames from 'rn-classnames';
 import { color } from 'types/colors';
 import { TextM } from 'components/text';
 
@@ -31,9 +31,9 @@ export class ListItem extends React.Component<Props> {
     return (
       <Container style={[s.container, style]} onPress={this.props.onPress}>
         {!!icon && <View style={s.icon}>{icon}</View>}
-        <View style={[cn(s, { border }, { borderFirst: first, borderLast: last }), this.props.rowStyle]}>
+        <View style={[...cn({ border, borderFirst: first, borderLast: last }), this.props.rowStyle]}>
           {!!label && <TextM style={s.label}>{label}</TextM>}
-          {!this.props.children && <TextM style={cn(s, 'text', { textRight: !!label })}>{this.props.value}</TextM>}
+          {!this.props.children && <TextM style={cn('text', { textRight: !!label })}>{this.props.value}</TextM>}
           {this.props.children}
           {counter !== undefined && <Text style={s.counter}>{counter}</Text>}
           {selected}
@@ -83,3 +83,4 @@ const s = StyleSheet.create({
     marginRight: 15,
   } as ViewStyle,
 });
+const cn = classnames(s);
