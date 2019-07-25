@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import SplashScreen from 'react-native-splash-screen';
-import { database } from 'store';
+import { database, onChanges } from 'store';
 import { provider, asValue, asRef } from 'services/inject/provider';
 
 import { Navigation, Session, SyncService, inject } from 'services';
@@ -25,13 +25,17 @@ class App extends React.Component<any> {
   loadNavigationState: Function = null;
   persistNavigationState: Function = null;
 
+  sync = () => this.syncService.sync();
+
+  subscription = onChanges.subscribe(this.sync);
+
   constructor(props, context) {
     super(props, context);
 
     this.session
       .loadSession()
       .then(() => this.setState({ isLoaded: true }))
-      .then(() => this.syncService.sync());
+      .then(this.sync);
   }
 
   render() {
@@ -60,6 +64,10 @@ class App extends React.Component<any> {
         persistNavigationState={persistNavigationState}
       />
     );
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 }
 

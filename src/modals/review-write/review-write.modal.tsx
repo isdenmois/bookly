@@ -7,7 +7,7 @@ import { color } from 'types/colors';
 import Book from 'store/book';
 import Review, { createReview } from 'store/review';
 import { inject } from 'services';
-import { dbSync, dbAction } from 'services/db';
+import { dbAction } from 'services/db';
 import { Button, Dialog } from 'components';
 
 interface Props extends NavigationScreenProps {
@@ -69,7 +69,7 @@ export class ReviewWriteModal extends React.Component<Props, State> {
     this.props.navigation.pop();
   };
 
-  @dbSync async updateReview() {
+  async updateReview() {
     await this.props.review.setBody(this.state.body);
 
     ToastAndroid.show('Отзыв был обновлен', ToastAndroid.SHORT);

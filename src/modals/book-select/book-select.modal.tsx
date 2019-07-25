@@ -6,7 +6,6 @@ import { NavigationScreenProps } from 'react-navigation';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
 import { inject } from 'services';
-import { dbSync } from 'services/db';
 import Book from 'store/book';
 import { Dialog } from 'components';
 
@@ -44,7 +43,7 @@ export class BookSelectModal extends React.Component<NavigationScreenProps, Stat
 
   selectBook = selected => this.setState({ selected });
 
-  @dbSync updateBook() {
+  updateBook() {
     return this.state.selected.setStatus(BOOK_STATUSES.NOW);
   }
 

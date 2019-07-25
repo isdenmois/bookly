@@ -2,7 +2,6 @@ import React from 'react';
 import { View, ViewStyle, StyleSheet } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { dbSync } from 'services/db';
 import Book from 'store/book';
 import { Dialog, Thumbnail } from 'components';
 import { ThumbnailList } from './components/thumbnail-list';
@@ -41,7 +40,7 @@ export class ThumbnailSelectModal extends React.Component<Props, State> {
     this.updateBook();
   };
 
-  @dbSync updateBook() {
+  updateBook() {
     return this.props.book.setThumbnail(this.state.selected);
   }
 }

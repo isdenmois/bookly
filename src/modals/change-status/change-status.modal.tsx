@@ -12,7 +12,7 @@ import { withNavigationProps } from 'utils/with-navigation-props';
 import { BookData } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { createBook } from 'store/book';
-import { dbSync, dbAction } from 'services/db';
+import { dbAction } from 'services/db';
 import { Button, Dialog, ListItem, RatingSelect, Switcher, Thumbnail } from 'components';
 
 const statusOptions = [
@@ -141,7 +141,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   setDate = date => this.setState({ date, dateEditable: false });
   setStatus = status => this.setState({ status, statusEditable: false });
 
-  @dbSync updateBook() {
+  updateBook() {
     const { book } = this.props;
     const { status, rating, date } = this.state;
     const data: Partial<BookData> = { status };
