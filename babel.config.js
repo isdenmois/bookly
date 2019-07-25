@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   presets: ['module:metro-react-native-babel-preset', 'module:react-native-dotenv', 'mobx'],
   plugins: [
     ['@babel/plugin-proposal-decorators', { legacy: true }],
@@ -15,3 +15,14 @@ module.exports = {
     ],
   ],
 };
+
+if (!process.env.RN_SRC_EXT || !process.env.RN_SRC_EXT.includes('e2e')) {
+  config.plugins.push([
+    'babel-plugin-jsx-remove-data-test-id',
+    {
+      attributes: 'testID',
+    },
+  ]);
+}
+
+module.exports = config;
