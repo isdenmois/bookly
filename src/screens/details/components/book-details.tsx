@@ -67,7 +67,9 @@ export class BookDetails extends React.Component<Props> {
                 <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
                   <Text style={s.title}>{record.title}</Text>
                 </TouchableWithoutFeedback>
-                <Text style={s.author}>{record.author}</Text>
+                <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
+                  <Text style={s.author}>{record.author}</Text>
+                </TouchableWithoutFeedback>
               </View>
             </View>
           </View>
@@ -92,7 +94,9 @@ export class BookDetails extends React.Component<Props> {
             <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
               <Text style={s.title}>{record.title}</Text>
             </TouchableWithoutFeedback>
-            <Text style={s.author}>{record.author}</Text>
+            <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
+              <Text style={s.author}>{record.author}</Text>
+            </TouchableWithoutFeedback>
             <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={record} />
           </View>
         </View>
@@ -117,6 +121,10 @@ export class BookDetails extends React.Component<Props> {
     }
 
     this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.record });
+  };
+
+  searchAuthor = () => {
+    this.props.navigation.push('Search', { query: this.props.record.author });
   };
 }
 
