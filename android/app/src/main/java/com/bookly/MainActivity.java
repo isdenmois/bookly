@@ -35,4 +35,10 @@ public class MainActivity extends ReactFragmentActivity {
         SplashScreen.show(this);
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    protected void onPause() {
+        SplashScreen.hide(this);
+        super.onPause();
+    }
 }
