@@ -5,7 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { color } from 'types/colors';
-
+import parser, { Tag } from 'bbcode-to-react';
+import { SpoilerTag } from '../../../components/tag-parser';
 interface Props {
   review: IFantlabReview;
 }
@@ -20,6 +21,8 @@ export class FantlabReview extends React.Component<Props, State> {
   state: State = { expanded: false };
 
   render() {
+    parser.registerTag('spoiler', SpoilerTag);
+
     const review = this.props.review;
     const bodyLines = this.state.expanded ? null : DEFAULT_BODY_LINES;
 
@@ -46,7 +49,7 @@ export class FantlabReview extends React.Component<Props, State> {
 
         <TouchableOpacity onPress={this.toggleExpanded}>
           <Text style={s.body} numberOfLines={bodyLines}>
-            {review.body}
+            {parser.toReact(review.body)}
           </Text>
         </TouchableOpacity>
       </View>
