@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
+import { Dimensions, Animated, ScrollView, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
@@ -11,20 +11,56 @@ import { FantlabReviewList } from '../components/fantlab-review-list';
 
 interface Props extends NavigationScreenProps {
   book: Book;
+  scrollY: Animated.Value;
+  headerHeight: number;
+  y?: number;
+  onScrollEnd: (y: number) => void;
 }
 
 export class ReviewsTab extends React.PureComponent<Props> {
   scrollStyle = this.props.book.status === BOOK_STATUSES.READ ? [s.withButton, s.scrollContent] : s.scrollContent;
+  screenHeight = Dimensions.get('screen').height;
+
+  y = 0;
+  scroll: ScrollView;
+  maxScroll = 0;
+
+  onScrollEnd = event => {
+    const y = event.nativeEvent.contentOffset.y;
+
+    this.y = y;
+    this.maxScroll = event.nativeEvent.contentOffset.height;
+    this.props.onScrollEnd(y);
+  };
+
+  scrollTo(y: number) {
+    this.y = y;
+
+    if (this.scroll) {
+      this.scroll.scrollTo({ y, animated: false });
+    }
+  }
 
   render() {
-    const book = this.props.book;
+    const { book, scrollY, headerHeight } = this.props;
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
 
     return (
       <View style={s.relative}>
-        <ScrollView style={s.scroll} contentContainerStyle={this.scrollStyle}>
+        <Animated.ScrollView
+          style={s.scroll}
+          onScroll={onScroll}
+          onScrollEndDrag={this.onScrollEnd}
+          onMomentumScrollEnd={this.onScrollEnd}
+          contentContainerStyle={[
+            this.scrollStyle,
+            { minHeight: this.screenHeight + headerHeight - 200, paddingTop: headerHeight + 30 },
+          ]}
+          ref={this.setRef}
+        >
           <LocalReviewList book={book} navigation={this.props.navigation} />
-          <FantlabReviewList bookId={book.id} />
-        </ScrollView>
+          <FantlabReviewList bookId={book.id} onLoad={this.onReviewsLoad} />
+        </Animated.ScrollView>
 
         {book.status === BOOK_STATUSES.READ && (
           <View style={s.buttonContainer}>
@@ -42,6 +78,13 @@ export class ReviewsTab extends React.PureComponent<Props> {
   }
 
   openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
+
+  onReviewsLoad = () => setTimeout(() => this.scrollTo(this.props.y), 0);
+
+  setRef = view => {
+    this.scroll = view && view._component;
+    this.scrollTo(this.props.y);
+  };
 }
 
 const s = StyleSheet.create({
