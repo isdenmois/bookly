@@ -41,9 +41,16 @@ export class BookDetails extends React.Component<Props> {
   render() {
     const { book, record } = this.props;
     const renderHeader = record.thumbnail ? this.renderMainInfoWithThumbnail : this.renderMainInfoWithoutThumbnail;
+    const tabsPadding = record.thumbnail ? 26 : 0;
 
     return (
-      <BookDetailsTabs renderHeader={renderHeader} book={book} record={record} navigation={this.props.navigation} />
+      <BookDetailsTabs
+        tabsPadding={tabsPadding}
+        renderHeader={renderHeader}
+        book={book}
+        record={record}
+        navigation={this.props.navigation}
+      />
     );
   }
 
@@ -53,8 +60,8 @@ export class BookDetails extends React.Component<Props> {
         style={{
           zIndex: 1,
           translateY: scrollY.interpolate({
-            inputRange: [0, headerHeight - 150],
-            outputRange: [0, headerHeight - 150],
+            inputRange: [0, headerHeight - 120],
+            outputRange: [0, headerHeight - 120],
             extrapolate: 'clamp',
           }),
         }}
@@ -76,9 +83,9 @@ export class BookDetails extends React.Component<Props> {
             <View style={s.mainInformationContainer}>
               <Animated.View
                 style={{
-                  opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 150], outputRange: [1, 0] }),
+                  opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 130], outputRange: [1, 0] }),
                   translateX: scrollY.interpolate({
-                    inputRange: [0, headerHeight - 150, headerHeight - 149],
+                    inputRange: [0, headerHeight - 130, headerHeight - 129],
                     outputRange: [0, 0, 500],
                     extrapolate: 'clamp',
                   }),
@@ -94,13 +101,13 @@ export class BookDetails extends React.Component<Props> {
                   s.mainInformation,
                   {
                     translateX: scrollY.interpolate({
-                      inputRange: [0, headerHeight - 150],
+                      inputRange: [0, headerHeight - 120],
                       outputRange: [0, -70],
                       extrapolate: 'clamp',
                     }),
                     translateY: scrollY.interpolate({
-                      inputRange: [0, headerHeight - 150],
-                      outputRange: [0, headerHeight - 250],
+                      inputRange: [0, headerHeight - 120],
+                      outputRange: [0, headerHeight - 217],
                       extrapolate: 'clamp',
                     }),
                   },
@@ -111,9 +118,9 @@ export class BookDetails extends React.Component<Props> {
                 </TouchableWithoutFeedback>
                 <Animated.View
                   style={{
-                    opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 150], outputRange: [1, 0] }),
+                    opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 140], outputRange: [1, 0] }),
                     translateX: scrollY.interpolate({
-                      inputRange: [0, headerHeight - 150, headerHeight - 149],
+                      inputRange: [0, headerHeight - 140, headerHeight - 139],
                       outputRange: [0, 0, 500],
                       extrapolate: 'clamp',
                     }),
@@ -131,7 +138,7 @@ export class BookDetails extends React.Component<Props> {
         <Animated.View
           style={[
             s.statusButton,
-            { opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 150], outputRange: [1, 0] }) },
+            { opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 140], outputRange: [1, 0] }) },
           ]}
         >
           <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={record} />
@@ -149,15 +156,37 @@ export class BookDetails extends React.Component<Props> {
         <View style={s.darkOverlay}>
           {this.renderHeader(record, scrollY, headerHeight)}
 
-          <View style={s.mainInformationWithoutThumbnail}>
+          <Animated.View
+            style={[
+              s.mainInformationWithoutThumbnail,
+              {
+                translateY: scrollY.interpolate({
+                  inputRange: [0, headerHeight - 130],
+                  outputRange: [0, headerHeight - 130],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ]}
+          >
             <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
               <Text style={s.title}>{record.title}</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
-              <Text style={s.author}>{record.author}</Text>
-            </TouchableWithoutFeedback>
-            <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={record} />
-          </View>
+            <Animated.View
+              style={{
+                opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 130], outputRange: [1, 0] }),
+                translateX: scrollY.interpolate({
+                  inputRange: [0, headerHeight - 130, headerHeight - 129],
+                  outputRange: [0, 0, 500],
+                  extrapolate: 'clamp',
+                }),
+              }}
+            >
+              <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
+                <Text style={s.author}>{record.author}</Text>
+              </TouchableWithoutFeedback>
+              <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={record} />
+            </Animated.View>
+          </Animated.View>
         </View>
       </View>
     );

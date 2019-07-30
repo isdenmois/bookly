@@ -13,6 +13,7 @@ import { color } from 'types/colors';
 interface Props extends NavigationScreenProps {
   book: BookExtended;
   renderHeader: (scrollY?: Animated.Value, height?: number) => React.ReactNode;
+  tabsPadding: number;
   record?: Book;
 }
 
@@ -74,8 +75,8 @@ export class BookDetailsTabs extends React.Component<Props, State> {
           s.header,
           {
             translateY: this.scrollY.interpolate({
-              inputRange: [0, this.state.headerHeight - 150],
-              outputRange: [0, 150 - this.state.headerHeight],
+              inputRange: [0, this.state.headerHeight - 120],
+              outputRange: [0, 120 - this.state.headerHeight],
               extrapolate: 'clamp',
             }),
           },
@@ -89,8 +90,8 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         style={{
           zIndex: 1,
           translateY: this.scrollY.interpolate({
-            inputRange: [0, this.state.headerHeight - 100 + 15],
-            outputRange: [this.state.headerHeight + 15, 100],
+            inputRange: [0, this.state.headerHeight - 100],
+            outputRange: [this.state.headerHeight + this.props.tabsPadding, 100 - this.props.tabsPadding],
             extrapolate: 'clamp',
           }),
         }}
@@ -104,7 +105,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
           indicatorStyle={s.indicator}
           labelStyle={s.label}
           tabStyle={s.tabBar}
-          style={[s.tab]}
+          style={s.tab}
         />
       </Animated.View>
     </View>
@@ -144,6 +145,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
     const headerHeight = Math.round(ev.nativeEvent.layout.height);
 
     if (headerHeight !== this.state.headerHeight) {
+      console.log(headerHeight);
       this.setState({ headerHeight });
     }
   };
