@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Dimensions, Animated, Text, View, ScrollView, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
@@ -13,6 +13,10 @@ import { BookSimilars } from '../components/book-similars';
 interface Props extends NavigationScreenProps {
   book: BookExtended;
   record?: Book;
+  scrollY: Animated.Value;
+  headerHeight: number;
+  y?: number;
+  onScrollEnd: (y: number) => void;
 }
 
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
@@ -22,11 +26,41 @@ export class DetailsTab extends React.PureComponent<Props> {
     return SHOW_SIMILARS_ON.includes(this.props.record.type);
   }
 
+  screenHeight = Dimensions.get('screen').height;
+  y = 0;
+  scroll: ScrollView;
+
+  onScrollEnd = event => {
+    const y = event.nativeEvent.contentOffset.y;
+
+    this.y = y;
+    this.props.onScrollEnd(y);
+  };
+
+  scrollTo(y: number) {
+    this.y = y;
+
+    if (this.scroll) {
+      this.scroll.scrollTo({ y, animated: false });
+    }
+  }
+
   render() {
-    const { book, record } = this.props;
+    const { book, record, scrollY, headerHeight } = this.props;
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
 
     return (
-      <ScrollView style={s.scroll} contentContainerStyle={s.scrollContent}>
+      <Animated.ScrollView
+        onScroll={onScroll}
+        style={s.scroll}
+        onScrollEndDrag={this.onScrollEnd}
+        onMomentumScrollEnd={this.onScrollEnd}
+        contentContainerStyle={[
+          s.scrollContent,
+          { minHeight: this.screenHeight + headerHeight - 200, paddingTop: headerHeight + 30 },
+        ]}
+        ref={this.setRef}
+      >
         <ViewLine first title='Тип' value={BOOK_TYPE_NAMES[book.type]} />
 
         {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
@@ -47,7 +81,7 @@ export class DetailsTab extends React.PureComponent<Props> {
         {!!book.parent.length && this.renderParentBooks()}
 
         {this.similarBooksVisible && <BookSimilars bookId={record.id} navigation={this.props.navigation} />}
-      </ScrollView>
+      </Animated.ScrollView>
     );
   }
 
@@ -91,6 +125,8 @@ export class DetailsTab extends React.PureComponent<Props> {
   openBook(book) {
     this.props.navigation.push('Details', { bookId: book.id });
   }
+
+  setRef = view => (this.scroll = view && view._component);
 }
 
 const s = StyleSheet.create({
