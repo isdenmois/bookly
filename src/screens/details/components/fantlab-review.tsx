@@ -5,8 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { color } from 'types/colors';
-import parser, { Tag } from 'bbcode-to-react';
-import { SpoilerTag } from '../../../components/tag-parser';
+import parser from 'bbcode-to-react';
 interface Props {
   review: IFantlabReview;
 }
@@ -21,7 +20,6 @@ export class FantlabReview extends React.Component<Props, State> {
   state: State = { expanded: false };
 
   render() {
-    parser.registerTag('spoiler', SpoilerTag);
 
     const review = this.props.review;
     const bodyLines = this.state.expanded ? null : DEFAULT_BODY_LINES;
@@ -95,7 +93,7 @@ const s = StyleSheet.create({
     marginLeft: 10,
   } as TextStyle,
   body: {
-    color: '#454754',
+    color: color.Review,
     marginTop: 10,
   } as TextStyle,
 });
