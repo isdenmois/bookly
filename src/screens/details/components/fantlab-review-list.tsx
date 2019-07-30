@@ -9,6 +9,7 @@ import { FantlabReview } from './fantlab-review';
 
 interface Props {
   bookId: string;
+  onLoad: () => void;
 }
 
 function EmptyResult() {
@@ -17,6 +18,7 @@ function EmptyResult() {
 
 export class FantlabReviewList extends React.Component<Props> {
   api = inject(FantlabAPI);
+  isLoaded = false;
 
   render() {
     return (
@@ -29,6 +31,11 @@ export class FantlabReviewList extends React.Component<Props> {
   renderResult = (data: ReviewList, error) => {
     if (error) {
       return this.renderError(error);
+    }
+
+    if (!this.isLoaded) {
+      this.isLoaded = true;
+      this.props.onLoad();
     }
 
     return _.map(data.items, review => this.renderReview(review));

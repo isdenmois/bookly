@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Animated,
   ImageBackground,
   Text,
   TouchableOpacity,
@@ -39,57 +40,115 @@ const READ_BUTTON_MARGIN = 2 * MARGIN + THUMBNAIL_WIDTH;
 export class BookDetails extends React.Component<Props> {
   render() {
     const { book, record } = this.props;
+    const renderHeader = record.thumbnail ? this.renderMainInfoWithThumbnail : this.renderMainInfoWithoutThumbnail;
 
     return (
-      <View style={s.container}>
-        {!!record.thumbnail && this.renderMainInfoWithThumbnail()}
-        {!record.thumbnail && this.renderMainInfoWithoutThumbnail()}
-
-        <BookDetailsTabs book={book} record={record} navigation={this.props.navigation} />
-      </View>
+      <BookDetailsTabs renderHeader={renderHeader} book={book} record={record} navigation={this.props.navigation} />
     );
   }
 
-  renderMainInfoWithThumbnail() {
+  renderHeader(book: Book, scrollY: Animated.Value, headerHeight) {
+    return (
+      <Animated.View
+        style={{
+          zIndex: 1,
+          translateY: scrollY.interpolate({
+            inputRange: [0, headerHeight - 150],
+            outputRange: [0, headerHeight - 150],
+            extrapolate: 'clamp',
+          }),
+        }}
+      >
+        <BookDetailsHeader bookId={book.id} onBack={this.props.onBack} />
+      </Animated.View>
+    );
+  }
+
+  renderMainInfoWithThumbnail = (scrollY: Animated.Value, headerHeight) => {
     const record = this.props.record;
 
     return (
       <>
         <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: getThumbnailUrl(record.thumbnail) }}>
           <View style={s.darkOverlay}>
-            <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
-            <View style={s.mainInformationContainer}>
-              <TouchableOpacity onPress={this.openChangeThumbnail}>
-                <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} cache />
-              </TouchableOpacity>
+            {this.renderHeader(record, scrollY, headerHeight)}
 
-              <View style={s.mainInformation}>
+            <View style={s.mainInformationContainer}>
+              <Animated.View
+                style={{
+                  opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 150], outputRange: [1, 0] }),
+                  translateX: scrollY.interpolate({
+                    inputRange: [0, headerHeight - 150, headerHeight - 149],
+                    outputRange: [0, 0, 500],
+                    extrapolate: 'clamp',
+                  }),
+                }}
+              >
+                <TouchableOpacity onPress={this.openChangeThumbnail} style={{ zIndex: 1 }}>
+                  <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} cache />
+                </TouchableOpacity>
+              </Animated.View>
+
+              <Animated.View
+                style={[
+                  s.mainInformation,
+                  {
+                    translateX: scrollY.interpolate({
+                      inputRange: [0, headerHeight - 150],
+                      outputRange: [0, -70],
+                      extrapolate: 'clamp',
+                    }),
+                    translateY: scrollY.interpolate({
+                      inputRange: [0, headerHeight - 150],
+                      outputRange: [0, headerHeight - 250],
+                      extrapolate: 'clamp',
+                    }),
+                  },
+                ]}
+              >
                 <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
                   <Text style={s.title}>{record.title}</Text>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
-                  <Text style={s.author}>{record.author}</Text>
-                </TouchableWithoutFeedback>
-              </View>
+                <Animated.View
+                  style={{
+                    opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 150], outputRange: [1, 0] }),
+                    translateX: scrollY.interpolate({
+                      inputRange: [0, headerHeight - 150, headerHeight - 149],
+                      outputRange: [0, 0, 500],
+                      extrapolate: 'clamp',
+                    }),
+                  }}
+                >
+                  <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
+                    <Text style={s.author}>{record.author}</Text>
+                  </TouchableWithoutFeedback>
+                </Animated.View>
+              </Animated.View>
             </View>
           </View>
         </ImageBackground>
 
-        <View style={s.statusButton}>
+        <Animated.View
+          style={[
+            s.statusButton,
+            { opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 150], outputRange: [1, 0] }) },
+          ]}
+        >
           <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={record} />
-        </View>
+        </Animated.View>
       </>
     );
-  }
+  };
 
-  renderMainInfoWithoutThumbnail() {
+  renderMainInfoWithoutThumbnail = (scrollY: Animated.Value, headerHeight) => {
     const record = this.props.record;
     const backgroundColor = getAvatarBgColor(record.title);
 
     return (
       <View style={{ backgroundColor }}>
         <View style={s.darkOverlay}>
-          <BookDetailsHeader bookId={record.id} onBack={this.props.onBack} />
+          {this.renderHeader(record, scrollY, headerHeight)}
+
           <View style={s.mainInformationWithoutThumbnail}>
             <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
               <Text style={s.title}>{record.title}</Text>
@@ -102,7 +161,7 @@ export class BookDetails extends React.Component<Props> {
         </View>
       </View>
     );
-  }
+  };
 
   copyBookTitle = () => {
     Clipboard.setString(this.props.record.title);
@@ -129,10 +188,12 @@ export class BookDetails extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
+  scroll: {
+    flex: 1,
+  } as ViewStyle,
   container: {
     flexDirection: 'column',
     alignItems: 'stretch',
-    flex: 1,
   } as ViewStyle,
   imageBackground: {
     width: '100%',
@@ -144,9 +205,11 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: -50,
     marginTop: MARGIN,
+    overflow: 'hidden',
   } as ViewStyle,
   thumbnail: {
     marginLeft: MARGIN,
+    zIndex: 1,
   } as ImageStyle,
   mainInformation: {
     marginLeft: MARGIN,
