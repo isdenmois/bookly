@@ -7,6 +7,8 @@ import { provider, asValue, asRef } from 'services/inject/provider';
 
 import { Navigation, Session, SyncService, inject } from 'services';
 import { FirebaseAPI, FantlabAPI } from 'api';
+import { SpoilerTag } from 'components';
+import parser from 'bbcode-to-react';
 
 @provider(
   asValue(Database, database),
@@ -31,6 +33,8 @@ class App extends React.Component<any> {
 
   constructor(props, context) {
     super(props, context);
+
+    parser.registerTag('spoiler', SpoilerTag);
 
     this.session
       .loadSession()
