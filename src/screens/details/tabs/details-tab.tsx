@@ -57,7 +57,7 @@ export class DetailsTab extends React.PureComponent<Props> {
         onMomentumScrollEnd={this.onScrollEnd}
         contentContainerStyle={[
           s.scrollContent,
-          { minHeight: this.screenHeight + headerHeight - 200, paddingTop: headerHeight + 30 },
+          { minHeight: this.screenHeight + headerHeight - 200, paddingTop: headerHeight + 15 },
         ]}
         ref={this.setRef}
       >
