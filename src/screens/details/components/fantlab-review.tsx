@@ -20,7 +20,6 @@ export class FantlabReview extends React.Component<Props, State> {
   state: State = { expanded: false };
 
   render() {
-
     const review = this.props.review;
     const bodyLines = this.state.expanded ? null : DEFAULT_BODY_LINES;
 
@@ -45,11 +44,9 @@ export class FantlabReview extends React.Component<Props, State> {
           <Text style={s.rating}>{review.likes}</Text>
         </View>
 
-        <TouchableOpacity onPress={this.toggleExpanded}>
-          <Text style={s.body} numberOfLines={bodyLines}>
-            {parser.toReact(review.body)}
-          </Text>
-        </TouchableOpacity>
+        <Text style={s.body} numberOfLines={bodyLines} onPress={this.toggleExpanded}>
+          {parser.toReact(review.body)}
+        </Text>
       </View>
     );
   }
