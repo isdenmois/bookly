@@ -5,9 +5,8 @@ import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
-import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { BookDescriptionLine, ViewLine, ViewLineTouchable } from '../components/book-details-lines';
+import { ViewLine, ViewLineTouchable } from '../components/book-details-lines';
 import { withScroll } from './tab';
 
 interface Props extends NavigationScreenProps {
@@ -16,14 +15,12 @@ interface Props extends NavigationScreenProps {
 }
 
 @withScroll
-export class DetailsTab extends React.PureComponent<Props> {
+export class MainTab extends React.Component<Props> {
   render() {
     const { book, record } = this.props;
 
     return (
       <View>
-        <ViewLine first title='Тип' value={BOOK_TYPE_NAMES[book.type]} />
-
         {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
         {!!book.year && <ViewLine title='Год' value={book.year} />}
 
@@ -34,8 +31,6 @@ export class DetailsTab extends React.PureComponent<Props> {
         {!!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
 
         {!!book.otherTitles && <ViewLine title='Другие названия' value={book.otherTitles} />}
-
-        {!!book.description && <BookDescriptionLine description={book.description} />}
 
         {!!book.parent.length && this.renderParentBooks()}
       </View>
@@ -60,6 +55,12 @@ export class DetailsTab extends React.PureComponent<Props> {
 }
 
 const s = StyleSheet.create({
+  scroll: {
+    flex: 1,
+  } as ViewStyle,
+  scrollContent: {
+    padding: 15,
+  } as ViewStyle,
   header: {
     color: color.SecondaryText,
     fontSize: 14,

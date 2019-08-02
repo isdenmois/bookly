@@ -7,30 +7,34 @@ import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'types/book-similar';
+import { BookExtended } from 'types/book-extended';
+import { withScroll } from './tab';
 
 interface Props extends NavigationScreenProps {
-  bookId: string;
+  book: BookExtended;
 }
 
 function EmptyResult() {
   return null;
 }
 
-export class BookSimilars extends React.Component<Props> {
+@withScroll
+export class SimilarTab extends React.Component<Props> {
   api = inject(FantlabAPI);
 
   render() {
-    return <Fetcher bookId={this.props.bookId} api={this.api.similar} empty={EmptyResult} renderResult={this.renderResult} />;
+    return (
+      <Fetcher
+        bookId={this.props.book.id}
+        api={this.api.similar}
+        empty={EmptyResult}
+        renderResult={this.renderResult}
+      />
+    );
   }
 
   renderResult = (data: BookSimilar[]) => {
-    return (
-      <View style={s.container}>
-        <Text style={s.header}>ПОХОЖИЕ</Text>
-
-        {_.map(data, book => this.renderBook(book))}
-      </View>
-    );
+    return <View style={s.container}>{_.map(data, book => this.renderBook(book))}</View>;
   };
 
   renderBook = (book: BookSimilar) => {
