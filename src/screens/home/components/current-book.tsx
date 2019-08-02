@@ -10,7 +10,7 @@ interface Props {
   currentBooksCount?: number;
 }
 
-@withObservables([], ({ database }) => ({
+@withObservables(null, ({ database }) => ({
   currentBooksCount: currentBooksQuery(database).observeCount(),
 }))
 export class CurrentBook extends React.Component<Props> {
