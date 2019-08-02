@@ -11,9 +11,13 @@ interface Props extends NavigationScreenProps {
   reviews?: Review[];
 }
 
-@withObservables(['book'], ({ book }: Props) => ({
-  reviews: book.reviews.observeWithColumns(['body']),
-}))
+@withObservables(['book'], ({ book }: Props) =>
+  book.reviews
+    ? {
+        reviews: book.reviews.observeWithColumns(['body']),
+      }
+    : {},
+)
 export class LocalReviewList extends React.Component<Props> {
   render() {
     return _.map(this.props.reviews, review => (
