@@ -8,5 +8,5 @@ exports.upload = function upload(path) {
       .on('complete', resolve)
       .on('error', reject)
       .execute();
-  });
+  }).then(url => console.log('Successfully uploaded to', url));
 };

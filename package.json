@@ -7,11 +7,15 @@
     "postinstall": "patch-package",
     "storybook": "start-storybook start -p 6006",
     "lint": "tslint --project tsconfig.json",
-    "release": "node dev-tools/release",
-    "e2e": "detox test -c android.emu.release",
+    "clean": "android/gradlew.bat -p android clean",
+    "build": "node dev-tools/release",
+    "release": "node dev-tools/release --clean --upload",
+    "e2e": "npm run e2e:build && npm run e2e:run",
+    "e2e:run": "detox test -c android.emu.release",
     "e2e:build": "detox build -c android.emu.release",
-    "e2e:debug": "detox test -c android.emu.debug",
-    "e2e:debug:build": "detox build -c android.emu.debug",
+    "e2e:debug": "npm run e2e:debug:build && npm run e2e:debug:run",
+    "e2e:debug:run": "detox test -c android.emu.debug",
+    "e2e:debug:build": "node dev-tools/release --test --type=debug",
     "e2e:metro": "cross-env NODE_ENV=test RN_SRC_EXT=e2e.ts react-native start --reset-cache",
     "run-android": "react-native run-android"
   },
@@ -98,12 +102,12 @@
     "configurations": {
       "android.emu.debug": {
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "android/gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug -p android",
+        "build": "node dev-tools/release --test --type=debug",
         "type": "android.attached"
       },
       "android.emu.release": {
         "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cross-env RN_SRC_EXT=e2e.ts android/gradlew assembleRelease assembleAndroidTest -DtestBuildType=release -p android",
+        "build": "node dev-tools/release --clean --test",
         "type": "android.attached"
       }
     },
