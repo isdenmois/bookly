@@ -7,7 +7,7 @@
     "postinstall": "patch-package",
     "storybook": "start-storybook start -p 6006",
     "lint": "tslint --project tsconfig.json",
-    "release": "fastlane android release",
+    "release": "node dev-tools/release",
     "e2e": "detox test -c android.emu.release",
     "e2e:build": "detox build -c android.emu.release",
     "e2e:debug": "detox test -c android.emu.debug",
