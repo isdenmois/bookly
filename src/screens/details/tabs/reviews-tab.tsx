@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Animated, ScrollView, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
+import { StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
@@ -8,90 +8,55 @@ import Book from 'store/book';
 import { Button } from 'components';
 import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
+import { withScroll } from './tab';
 
 interface Props extends NavigationScreenProps {
   book: Book;
-  scrollY: Animated.Value;
-  headerHeight: number;
-  y?: number;
-  onScrollEnd: (y: number) => void;
 }
 
-export class ReviewsTab extends React.PureComponent<Props> {
-  scrollStyle = this.props.book.status === BOOK_STATUSES.READ ? [s.withButton, s.scrollContent] : s.scrollContent;
-  screenHeight = Dimensions.get('screen').height;
-
-  y = 0;
-  scroll: ScrollView;
-  maxScroll = 0;
-
-  onScrollEnd = event => {
-    const y = event.nativeEvent.contentOffset.y;
-
-    this.y = y;
-    this.maxScroll = event.nativeEvent.contentOffset.height;
-    this.props.onScrollEnd(y);
-  };
-
-  scrollTo(y: number) {
-    this.y = y;
-
-    if (this.scroll) {
-      this.scroll.scrollTo({ y, animated: false });
-    }
-  }
-
+class AddButton extends React.PureComponent<Props> {
   render() {
-    const { book, scrollY, headerHeight } = this.props;
-    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
+    const { book } = this.props;
+
+    if (book.status !== BOOK_STATUSES.READ) {
+      return null;
+    }
 
     return (
-      <View style={s.relative}>
-        <Animated.ScrollView
-          style={s.scroll}
-          onScroll={onScroll}
-          onScrollEndDrag={this.onScrollEnd}
-          onMomentumScrollEnd={this.onScrollEnd}
-          contentContainerStyle={[
-            this.scrollStyle,
-            { minHeight: this.screenHeight + headerHeight - 200, paddingTop: headerHeight + 30 },
-          ]}
-          ref={this.setRef}
-        >
-          <LocalReviewList book={book} navigation={this.props.navigation} />
-          <FantlabReviewList bookId={book.id} onLoad={this.onReviewsLoad} />
-        </Animated.ScrollView>
-
-        {book.status === BOOK_STATUSES.READ && (
-          <View style={s.buttonContainer}>
-            <Button
-              label='Добавить'
-              onPress={this.openReviewWriteModal}
-              icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
-              style={s.button}
-              textStyle={s.buttonText}
-            />
-          </View>
-        )}
+      <View style={s.buttonContainer}>
+        <Button
+          label='Добавить'
+          onPress={this.openReviewWriteModal}
+          icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
+          style={s.button}
+          textStyle={s.buttonText}
+        />
       </View>
     );
   }
 
   openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
+}
 
-  onReviewsLoad = () => this.scrollTo(this.props.y);
+@withScroll
+export class ReviewsTab extends React.PureComponent<Props> {
+  static Fixed = AddButton;
 
-  setRef = view => {
-    this.scroll = view && view._component;
-    this.scrollTo(this.props.y);
-  };
+  render() {
+    const { book } = this.props;
+
+    return (
+      <>
+        <LocalReviewList book={book} navigation={this.props.navigation} />
+        <FantlabReviewList bookId={book.id} />
+      </>
+    );
+  }
+
+  openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
 }
 
 const s = StyleSheet.create({
-  relative: {
-    flex: 1,
-    position: 'relative',
-  },
   withButton: {
     paddingBottom: 60,
   } as ViewStyle,

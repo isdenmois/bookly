@@ -1,13 +1,17 @@
 import React from 'react';
-import * as _ from 'lodash';
-import { NavigationScreenProps, ScrollView } from 'react-navigation';
+import _ from 'lodash';
+import { NavigationScreenProps } from 'react-navigation';
 import { Animated, StyleSheet, Dimensions, View, ViewStyle, TextStyle } from 'react-native';
 import { TabView, TabBar, Route } from 'react-native-tab-view';
 import { Scene } from 'react-native-tab-view/src/types';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
-import { DetailsTab } from './details-tab';
+import { BOOK_TYPES } from 'types/book-types';
+import { MainTab } from './main-tab';
+import { ChildrenTab } from './children-tab';
 import { ReviewsTab } from './reviews-tab';
+import { SimilarTab } from './similar-tab';
+import { DetailsTab } from './details-tab';
 import { color } from 'types/colors';
 
 interface Props extends NavigationScreenProps {
@@ -23,10 +27,34 @@ interface State {
   headerHeight: number;
 }
 
+const TABS = {
+  MAIN: { key: 'main', title: 'Кратко', component: MainTab },
+  CHILDREN: { key: 'children', title: 'Состав', component: ChildrenTab },
+  REVIEWS: { key: 'reviews', title: 'Отзывы', component: ReviewsTab },
+  SIMILAR: { key: 'similar', title: 'Похожие', component: SimilarTab },
+  DETAILS: { key: 'details', title: 'Детали', component: DetailsTab },
+};
+
+const COMPONENTS = {
+  main: MainTab,
+  children: ChildrenTab,
+  reviews: ReviewsTab,
+  similar: SimilarTab,
+  details: DetailsTab,
+};
+
+const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
+
 export class BookDetailsTabs extends React.Component<Props, State> {
   state: State = {
     index: 0,
-    routes: [{ key: 'details', title: 'Детали' }, { key: 'reviews', title: 'Отзывы' }],
+    routes: [
+      TABS.MAIN,
+      ...(this.childrenBooksVisible ? [TABS.CHILDREN] : []),
+      TABS.REVIEWS,
+      ...(this.similarBooksVisible ? [TABS.SIMILAR] : []),
+      TABS.DETAILS,
+    ],
     headerHeight: 300,
   };
   initialLayout = {
@@ -38,13 +66,21 @@ export class BookDetailsTabs extends React.Component<Props, State> {
 
   scrollY = new Animated.Value(0);
 
+  get childrenBooksVisible() {
+    return _.size(this.props.book.children) > 0;
+  }
+
+  get similarBooksVisible() {
+    return SHOW_SIMILARS_ON.includes(this.props.record.type);
+  }
+
   render() {
     return (
       <TabView
         lazy
         navigationState={this.state}
         renderTabBar={this.renderTabBar}
-        renderScene={this.renderScene}
+        renderScene={this.renderScene as any}
         onIndexChange={this.setIndex}
         initialLayout={this.initialLayout}
       />
@@ -111,38 +147,25 @@ export class BookDetailsTabs extends React.Component<Props, State> {
     </View>
   );
 
-  renderScene = ({ route }: Scene<Route>) => {
-    switch (route.key) {
-      case 'details':
-        return (
-          <DetailsTab
-            y={this.y}
-            scrollY={this.scrollY}
-            headerHeight={this.state.headerHeight}
-            book={this.props.book}
-            record={this.props.record}
-            navigation={this.props.navigation}
-            onScrollEnd={this.onScrollEnd}
-            ref={ctrl => (this.tabCtrls['details'] = ctrl)}
-          />
-        );
-      case 'reviews':
-        return (
-          <ReviewsTab
-            y={this.y}
-            scrollY={this.scrollY}
-            headerHeight={this.state.headerHeight}
-            book={this.props.record}
-            navigation={this.props.navigation}
-            onScrollEnd={this.onScrollEnd}
-            ref={ctrl => (this.tabCtrls['review'] = ctrl)}
-          />
-        );
-    }
+  renderScene = ({ route }: Scene<Route & { component: any }>) => {
+    const Component = route.component;
+
+    return (
+      <Component
+        book={this.props.book}
+        record={this.props.record}
+        navigation={this.props.navigation}
+        y={this.y}
+        scrollY={this.scrollY}
+        headerHeight={this.state.headerHeight}
+        onScrollEnd={this.onScrollEnd}
+        ref={ctrl => (this.tabCtrls[route.key] = ctrl)}
+      />
+    );
   };
 
   setHeaderHeight = ev => {
-    const headerHeight = Math.round(ev.nativeEvent.layout.height);
+    const headerHeight = Math.round(ev.nativeEvent.layout.height) || 0;
 
     if (headerHeight !== this.state.headerHeight) {
       console.log(headerHeight);
