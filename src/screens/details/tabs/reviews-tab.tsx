@@ -79,7 +79,7 @@ export class ReviewsTab extends React.PureComponent<Props> {
 
   openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
 
-  onReviewsLoad = () => setTimeout(() => this.scrollTo(this.props.y), 0);
+  onReviewsLoad = () => this.scrollTo(this.props.y);
 
   setRef = view => {
     this.scroll = view && view._component;

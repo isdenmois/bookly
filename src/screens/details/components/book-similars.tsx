@@ -20,18 +20,10 @@ export class BookSimilars extends React.Component<Props> {
   api = inject(FantlabAPI);
 
   render() {
-    return (
-      <Fetcher bookId={this.props.bookId} api={this.api.similar} empty={EmptyResult}>
-        {this.renderResult}
-      </Fetcher>
-    );
+    return <Fetcher bookId={this.props.bookId} api={this.api.similar} empty={EmptyResult} renderResult={this.renderResult} />;
   }
 
-  renderResult = (data: BookSimilar[], error) => {
-    if (error) {
-      return this.renderError(error);
-    }
-
+  renderResult = (data: BookSimilar[]) => {
     return (
       <View style={s.container}>
         <Text style={s.header}>ПОХОЖИЕ</Text>
@@ -41,11 +33,7 @@ export class BookSimilars extends React.Component<Props> {
     );
   };
 
-  renderError(error) {
-    return <Text>{JSON.stringify(error)}</Text>;
-  }
-
-  renderBook(book: BookSimilar) {
+  renderBook = (book: BookSimilar) => {
     return (
       <TouchableOpacity key={book.id} onPress={() => this.openBook(book)} style={s.row}>
         <Thumbnail auto='none' title={book.title} url={book.thumbnail} width={50} height={80} />
@@ -56,7 +44,7 @@ export class BookSimilars extends React.Component<Props> {
         </View>
       </TouchableOpacity>
     );
-  }
+  };
 
   openBook(book: BookSimilar) {
     this.props.navigation.push('Details', { bookId: book.id });

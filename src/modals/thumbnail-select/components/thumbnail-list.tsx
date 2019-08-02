@@ -1,15 +1,10 @@
 import React from 'react';
-import _ from 'lodash';
-import { ScrollView, Text, StyleSheet, ViewStyle, View, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, ViewStyle, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import { Fetcher, Thumbnail } from 'components';
-
-function EmptyResult() {
-  return <Text>No data</Text>;
-}
 
 interface Props {
   bookId: string;
@@ -23,22 +18,14 @@ export class ThumbnailList extends React.PureComponent<Props> {
   render() {
     return (
       <ScrollView style={s.container} contentContainerStyle={s.content} horizontal>
-        <Fetcher bookId={this.props.bookId} api={this.api.thumbnails} empty={EmptyResult}>
-          {(data, error) => this.renderList(data, error)}
+        <Fetcher api={this.api.thumbnails} bookId={this.props.bookId}>
+          {this.renderThumbnail}
         </Fetcher>
       </ScrollView>
     );
   }
 
-  renderList(data, error) {
-    if (error) {
-      return this.renderError(error);
-    }
-
-    return _.map(data.thumbnails, t => this.renderThumbnail(t));
-  }
-
-  renderThumbnail(thumbnail) {
+  renderThumbnail = thumbnail => {
     const isSelected = thumbnail.url === this.props.selected;
     const ViewComponent: any = isSelected ? View : TouchableOpacity;
 
@@ -52,11 +39,7 @@ export class ThumbnailList extends React.PureComponent<Props> {
         )}
       </ViewComponent>
     );
-  }
-
-  renderError(error) {
-    return <Text>{JSON.stringify(error)}</Text>;
-  }
+  };
 }
 
 const s = StyleSheet.create({
