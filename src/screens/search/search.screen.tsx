@@ -1,7 +1,6 @@
 import React from 'react';
-import _ from 'lodash';
 import { NavigationScreenProps } from 'react-navigation';
-import { StyleSheet, ScrollView, View, Text, ViewStyle } from 'react-native';
+import { StyleSheet, ScrollView, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
@@ -39,30 +38,18 @@ export class SearchScreen extends React.Component<Props, State> {
           onBack={this.goBack}
         />
 
-        <Fetcher q={this.state.q} api={this.api.searchBooks} empty={EmptyResult}>
-          {this.renderResult}
-        </Fetcher>
+        <ScrollView contentContainerStyle={s.scroll}>
+          <Fetcher api={this.api.searchBooks} q={this.state.q} empty={EmptyResult}>
+            {this.renderResult}
+          </Fetcher>
+        </ScrollView>
       </View>
     );
   }
 
-  renderResult = (data: Book[], error) => {
-    if (error) {
-      return this.renderError(error);
-    }
-
-    return (
-      <ScrollView contentContainerStyle={s.scroll}>
-        {_.map(data, book => (
-          <BookItem book={book} key={book.id} />
-        ))}
-      </ScrollView>
-    );
+  renderResult = (book: Book) => {
+    return <BookItem book={book} key={book.id} />;
   };
-
-  renderError(error) {
-    return <Text>{JSON.stringify(error)}</Text>;
-  }
 
   goBack = () => this.props.navigation.pop();
   setQuery = query => this.setState({ query });

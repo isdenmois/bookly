@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import _ from 'lodash';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
+import { color } from 'types/colors';
 
 const OMIT_FIELDS = ['children', 'observe', 'error', 'api', 'empty'];
 
@@ -8,14 +9,24 @@ interface Parameters {
   [prop: string]: any;
 }
 
+type ListItemRender = (item: any, index?: number) => ReactNode;
+type DataRender = (item: any) => ReactNode;
+
 type Props = Parameters & {
   api: (props: any) => Promise<any>;
-  empty: any;
+  key?: string;
+  empty?: any;
   observe?: string[];
-  children: (data: any, errors: any) => ReactNode;
+  children?: ListItemRender | DataRender;
+  renderResult?: DataRender;
+  onLoad?: () => void;
 };
 
 export class Fetcher extends React.PureComponent<Props> {
+  static defaultProps: Partial<Props> = {
+    empty: EmptyResult,
+  };
+
   state = {
     data: null,
     isLoading: true,
@@ -51,13 +62,29 @@ export class Fetcher extends React.PureComponent<Props> {
       return <ActivityIndicator style={{ flex: 1, alignSelf: 'center' }} size='large' />;
     }
 
-    if (!this.state.error && _.isEmpty(this.state.data)) {
+    if (this.state.error) {
+      return this.renderError();
+    }
+
+    if (_.isEmpty(this.state.data)) {
       const Empty = this.props.empty;
 
       return <Empty />;
     }
 
-    return this.props.children(this.state.data, this.state.error);
+    if (this.props.renderResult) {
+      return this.props.renderResult(this.state.data);
+    }
+
+    if (Array.isArray(this.state.data)) {
+      return this.renderList(this.state.data);
+    }
+
+    if (this.state.data.items) {
+      return this.renderPagination();
+    }
+
+    return this.props.children(this.state.data);
   }
 
   fetchData() {
@@ -66,9 +93,35 @@ export class Fetcher extends React.PureComponent<Props> {
     this.props
       .api(this.props)
       .then(data => this.setState({ isLoading: false, data }))
-      .catch(error => {
-        console.error(error);
-        this.setState({ isLoading: false, error });
-      });
+      .catch(error => this.setState({ isLoading: false, error }))
+      .then(() => this.props.onLoad && setTimeout(this.props.onLoad));
   }
+
+  renderEmpty() {
+    const Component = this.props.empty;
+
+    return <Component />;
+  }
+
+  renderError() {
+    const error = this.state.error;
+
+    return <Text>{JSON.stringify(error)}</Text>;
+  }
+
+  renderList(list: any[]) {
+    return _.map(list, (item, index) => this.props.children(item, index));
+  }
+
+  renderPagination() {
+    if (_.isEmpty(this.state.data.items)) {
+      return this.renderEmpty();
+    }
+
+    return this.renderList(this.state.data.items);
+  }
+}
+
+function EmptyResult() {
+  return <Text style={{ color: color.Empty }}>No data</Text>;
 }
