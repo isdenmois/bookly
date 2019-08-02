@@ -15,7 +15,7 @@ interface Props {
   wishCount?: number;
 }
 
-@withObservables([], ({ database }) => ({
+@withObservables(null, ({ database }) => ({
   readCount: readBooksQuery(database).observeCount(),
   wishCount: wishBooksQuery(database).observeCount(),
 }))

@@ -17,7 +17,7 @@ interface State {
   forecast: number;
 }
 
-@withObservables([], ({ database }) => ({
+@withObservables(null, ({ database }) => ({
   readCount: readBooksThisYearQuery(database).observeCount(),
 }))
 export class BookChallenge extends React.Component<Props, State> {

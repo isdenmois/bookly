@@ -17,7 +17,7 @@ interface State {
   name: string;
 }
 
-@withObservables([], ({ database, status }) => {
+@withObservables(null, ({ database, status }) => {
   const queries = [Q.on('books', 'status', status), Q.on('book_authors', '_status', Q.notEq('deleted'))];
 
   return {
