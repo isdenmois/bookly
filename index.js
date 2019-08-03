@@ -13,7 +13,3 @@ AppRegistry.registerComponent(appName, () => require('./config/root/root').defau
 //   //  не забудь adb reverse tcp:9090 tcp:9090
 //   require('./dev-tools/reactotron');
 // }
-
-// // не забудь adb reverse tcp:6006 tcp:6006
-// require('./dev-tools/storybook');
-// require('react-native-splash-screen').default.hide();
