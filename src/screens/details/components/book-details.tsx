@@ -12,6 +12,7 @@ import {
   ImageStyle,
   ToastAndroid,
   Clipboard,
+  Linking,
 } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
@@ -113,9 +114,9 @@ export class BookDetails extends React.Component<Props> {
                   },
                 ]}
               >
-                <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
-                  <Text style={s.title}>{record.title}</Text>
-                </TouchableWithoutFeedback>
+                <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
+                  {record.title}
+                </Text>
                 <Animated.View
                   style={{
                     opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 140], outputRange: [1, 0] }),
@@ -168,9 +169,9 @@ export class BookDetails extends React.Component<Props> {
               },
             ]}
           >
-            <TouchableWithoutFeedback onLongPress={this.copyBookTitle}>
-              <Text style={s.title}>{record.title}</Text>
-            </TouchableWithoutFeedback>
+            <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
+              {record.title}
+            </Text>
             <Animated.View
               style={{
                 opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 130], outputRange: [1, 0] }),
@@ -191,6 +192,8 @@ export class BookDetails extends React.Component<Props> {
       </View>
     );
   };
+
+  openTelegram = () => Linking.openURL(`tg://share?text=${this.props.record.title}`);
 
   copyBookTitle = () => {
     Clipboard.setString(this.props.record.title);
