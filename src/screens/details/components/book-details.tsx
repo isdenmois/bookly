@@ -93,7 +93,7 @@ export class BookDetails extends React.Component<Props> {
                 }}
               >
                 <TouchableOpacity onPress={this.openChangeThumbnail} style={{ zIndex: 1 }}>
-                  <Thumbnail style={s.thumbnail} width={120} url={record.thumbnail} cache />
+                  <Thumbnail style={s.thumbnail} width={120} height={180} url={record.thumbnail} cache auto='none' />
                 </TouchableOpacity>
               </Animated.View>
 
