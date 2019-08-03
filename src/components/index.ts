@@ -1,3 +1,4 @@
+export { AutoHeightImage } from './auto-height-image';
 export { AutoWithImage } from './auto-width-image';
 export { Avatar } from './avatar';
 export { BookItem } from './book-item';

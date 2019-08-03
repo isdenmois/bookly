@@ -92,3 +92,15 @@ index 4d65fa7..d0bf2b1 100644
  import android.view.Gravity;
  import android.view.animation.AccelerateDecelerateInterpolator;
  import android.view.animation.AccelerateInterpolator;
+diff --git a/node_modules/react-native-reanimated/src/createAnimatedComponent.js b/node_modules/react-native-reanimated/src/createAnimatedComponent.js
+index bca82bc..e9599ef 100644
+--- a/node_modules/react-native-reanimated/src/createAnimatedComponent.js
++++ b/node_modules/react-native-reanimated/src/createAnimatedComponent.js
+@@ -36,7 +34,7 @@ export default function createAnimatedComponent(Component) {
+       this._component.setNativeProps(props);
+     }
+ 
+-    componentWillMount() {
++    UNSAFE_componentWillMount() {
+       this._attachProps(this.props);
+     }

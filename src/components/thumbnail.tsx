@@ -1,8 +1,8 @@
 import React from 'react';
 import { ImageStyle } from 'react-native';
 import Image from 'react-native-fast-image';
-import AutoHeightImage from 'react-native-auto-height-image';
 import { Avatar } from 'components/avatar';
+import { AutoHeightImage } from './auto-height-image';
 import { AutoWithImage } from './auto-width-image';
 
 const THUMBNAIL_URL = 'https://data.fantlab.ru/images/editions/big';
@@ -33,7 +33,7 @@ export function Thumbnail({ auto, style, title, width, height, url, resizeMode, 
   url = getThumbnailUrl(url);
 
   if (auto === 'height') {
-    return <AutoHeightImage style={style} width={width} source={{ uri: url }} />;
+    return <AutoHeightImage style={style} width={width} height={height} url={url} />;
   }
 
   if (auto === 'width') {
