@@ -34,7 +34,7 @@ export class SimilarTab extends React.Component<Props> {
   }
 
   renderResult = (data: BookSimilar[]) => {
-    return <View style={s.container}>{_.map(data, book => this.renderBook(book))}</View>;
+    return <View>{_.map(data, book => this.renderBook(book))}</View>;
   };
 
   renderBook = (book: BookSimilar) => {
@@ -56,9 +56,6 @@ export class SimilarTab extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
-  container: {
-    marginTop: 20,
-  } as ViewStyle,
   header: {
     color: color.SecondaryText,
     fontSize: 14,

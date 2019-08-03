@@ -21,7 +21,7 @@ export class MainTab extends React.Component<Props> {
 
     return (
       <View>
-        {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
+        {!!book.genre && <ViewLine first title='Жанр' value={book.genre} />}
         {!!book.year && <ViewLine title='Год' value={book.year} />}
 
         {record.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(record.date)} />}

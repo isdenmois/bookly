@@ -55,7 +55,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
       ...(this.similarBooksVisible ? [TABS.SIMILAR] : []),
       TABS.DETAILS,
     ],
-    headerHeight: 300,
+    headerHeight: 271,
   };
   initialLayout = {
     height: 0,
@@ -126,7 +126,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         style={{
           zIndex: 1,
           translateY: this.scrollY.interpolate({
-            inputRange: [0, this.state.headerHeight - 100],
+            inputRange: [0, this.state.headerHeight - 100 + 2 * this.props.tabsPadding],
             outputRange: [this.state.headerHeight + this.props.tabsPadding, 100 - this.props.tabsPadding],
             extrapolate: 'clamp',
           }),
@@ -158,6 +158,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         y={this.y}
         scrollY={this.scrollY}
         headerHeight={this.state.headerHeight}
+        tabsPadding={this.props.tabsPadding}
         onScrollEnd={this.onScrollEnd}
         ref={ctrl => (this.tabCtrls[route.key] = ctrl)}
       />
@@ -168,7 +169,6 @@ export class BookDetailsTabs extends React.Component<Props, State> {
     const headerHeight = Math.round(ev.nativeEvent.layout.height) || 0;
 
     if (headerHeight !== this.state.headerHeight) {
-      console.log(headerHeight);
       this.setState({ headerHeight });
     }
   };

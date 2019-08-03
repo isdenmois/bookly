@@ -5,6 +5,7 @@ import { Dimensions, Animated, View, ScrollView, StyleSheet, ViewStyle } from 'r
 interface Props {
   scrollY: Animated.Value;
   headerHeight: number;
+  tabsPadding: number;
   y?: number;
   onScrollEnd: (y: number) => void;
 }
@@ -32,7 +33,7 @@ export function withScroll(WrappedComponent): any {
     }
 
     render() {
-      const { scrollY, headerHeight } = this.props;
+      const { scrollY, headerHeight, tabsPadding } = this.props;
       const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
       const wrappedProps = _.omit(this.props, ['y', 'scrollY', 'headerHeight', 'onScrollEnd']);
 
@@ -45,7 +46,10 @@ export function withScroll(WrappedComponent): any {
             onMomentumScrollEnd={this.onScrollEnd}
             contentContainerStyle={[
               s.scrollContent,
-              { minHeight: this.screenHeight + headerHeight - 200, paddingTop: headerHeight + 15 },
+              {
+                minHeight: this.screenHeight + headerHeight - 200 + 2 * tabsPadding,
+                paddingTop: headerHeight + tabsPadding + 15,
+              },
             ]}
             ref={this.setRef}
           >
