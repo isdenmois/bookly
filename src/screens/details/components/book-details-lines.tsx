@@ -27,12 +27,16 @@ export class BookDescriptionLine extends React.Component<Props, State> {
 
   render() {
     return (
-      <TouchableOpacity style={s.descriptionRow} onPress={this.toggleExpand}>
+      <View style={s.descriptionRow}>
         <Text style={s.headerTitle}>ОПИСАНИЕ</Text>
         <Text style={s.value} numberOfLines={this.state.expanded ? null : 3}>
           {this.props.description}
         </Text>
-      </TouchableOpacity>
+
+        <TouchableOpacity onPress={this.toggleExpand}>
+          <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
   toggleExpand = () => this.setState({ expanded: !this.state.expanded });
@@ -76,5 +80,10 @@ const s = StyleSheet.create({
   value: {
     color: color.PrimaryText,
     fontSize: 18,
+  } as TextStyle,
+  toggleText: {
+    paddingVertical: 5,
+    textAlign: 'right',
+    color: color.ReadMore,
   } as TextStyle,
 });

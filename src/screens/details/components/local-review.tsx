@@ -37,10 +37,12 @@ export class LocalReview extends React.Component<Props, State> {
           <TouchIcon style={s.icon} name='pen' size={16} color={color.PrimaryText} onPress={this.openEditReview} />
         </View>
 
+        <Text style={s.body} numberOfLines={bodyLines}>
+          {review.body}
+        </Text>
+
         <TouchableOpacity onPress={this.toggleExpanded}>
-          <Text style={s.body} numberOfLines={bodyLines}>
-            {review.body}
-          </Text>
+          <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -88,7 +90,12 @@ const s = StyleSheet.create({
     marginLeft: 10,
   } as TextStyle,
   body: {
-    color: '#454754',
+    color: color.Review,
     marginTop: 10,
+  } as TextStyle,
+  toggleText: {
+    paddingVertical: 5,
+    textAlign: 'right',
+    color: color.ReadMore,
   } as TextStyle,
 });

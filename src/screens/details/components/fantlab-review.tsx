@@ -44,9 +44,13 @@ export class FantlabReview extends React.Component<Props, State> {
           <Text style={s.rating}>{review.likes}</Text>
         </View>
 
-        <Text style={s.body} numberOfLines={bodyLines} onPress={this.toggleExpanded}>
+        <Text style={s.body} numberOfLines={bodyLines}>
           {parser.toReact(review.body)}
         </Text>
+
+        <TouchableOpacity onPress={this.toggleExpanded}>
+          <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -92,5 +96,10 @@ const s = StyleSheet.create({
   body: {
     color: color.Review,
     marginTop: 10,
+  } as TextStyle,
+  toggleText: {
+    paddingVertical: 5,
+    textAlign: 'right',
+    color: color.ReadMore,
   } as TextStyle,
 });
