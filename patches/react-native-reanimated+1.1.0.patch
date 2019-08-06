@@ -104,3 +104,4 @@ index bca82bc..e9599ef 100644
 +    UNSAFE_componentWillMount() {
        this._attachProps(this.props);
      }
+
