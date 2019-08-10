@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 import _ from 'lodash';
-import { ActivityIndicator, Text } from 'react-native';
+import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
+import { TextXL } from './text';
 
-const OMIT_FIELDS = ['children', 'observe', 'error', 'api', 'empty'];
+const OMIT_FIELDS = ['children', 'observe', 'error', 'api', 'empty', 'emptyText'];
 
 interface Parameters {
   [prop: string]: any;
@@ -19,12 +20,14 @@ type Props = Parameters & {
   observe?: string[];
   children?: ListItemRender | DataRender;
   renderResult?: DataRender;
+  emptyText?: string;
   onLoad?: () => void;
 };
 
 export class Fetcher extends React.PureComponent<Props> {
   static defaultProps: Partial<Props> = {
     empty: EmptyResult,
+    emptyText: 'Ничего не найдено',
   };
 
   state = {
@@ -67,9 +70,7 @@ export class Fetcher extends React.PureComponent<Props> {
     }
 
     if (_.isEmpty(this.state.data)) {
-      const Empty = this.props.empty;
-
-      return <Empty />;
+      return this.renderEmpty();
     }
 
     if (this.props.renderResult) {
@@ -100,7 +101,7 @@ export class Fetcher extends React.PureComponent<Props> {
   renderEmpty() {
     const Component = this.props.empty;
 
-    return <Component />;
+    return <Component text={this.props.emptyText} />;
   }
 
   renderError() {
@@ -122,6 +123,22 @@ export class Fetcher extends React.PureComponent<Props> {
   }
 }
 
-function EmptyResult() {
-  return <Text style={{ color: color.Empty }}>No data</Text>;
+export function EmptyResult({ text }) {
+  return (
+    <View style={s.container}>
+      <TextXL style={s.notFoundText}>{text}</TextXL>
+    </View>
+  );
 }
+
+const s = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    marginBottom: 38,
+  } as ViewStyle,
+  notFoundText: {
+    color: color.Empty,
+  } as TextStyle,
+});

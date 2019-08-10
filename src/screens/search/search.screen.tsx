@@ -7,7 +7,6 @@ import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import Book from 'store/book';
 import { BookItem, Fetcher, SearchBar } from 'components';
-import { EmptyResult } from './empty-result';
 
 interface Props extends NavigationScreenProps {
   query: string;
@@ -39,7 +38,7 @@ export class SearchScreen extends React.Component<Props, State> {
         />
 
         <ScrollView contentContainerStyle={s.scroll}>
-          <Fetcher api={this.api.searchBooks} q={this.state.q} empty={EmptyResult}>
+          <Fetcher api={this.api.searchBooks} q={this.state.q} emptyText='Книги не найдены'>
             {this.renderResult}
           </Fetcher>
         </ScrollView>

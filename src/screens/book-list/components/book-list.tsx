@@ -8,7 +8,7 @@ import { BookSort } from 'types/book-filters';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BookItem } from 'components';
-import { EmptyResult } from 'screens/search/empty-result';
+import { EmptyResult } from 'components/fetcher';
 
 interface Props {
   query: Where[];
@@ -23,7 +23,7 @@ interface Props {
 export class BookList extends React.PureComponent<Props> {
   render() {
     if (!this.props.books || !this.props.books.length) {
-      return <EmptyResult />;
+      return <EmptyResult text='Книги не найдены' />;
     }
 
     const books = _.sortBy(this.props.books, this.props.sort.field);
