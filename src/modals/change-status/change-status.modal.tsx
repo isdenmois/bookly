@@ -9,10 +9,10 @@ import { inject } from 'services';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { BookData } from 'store/book';
+import { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { createBook } from 'store/book';
 import { dbAction } from 'services/db';
+import { FantlabAPI } from 'services/api';
 import { Button, Dialog, ListItem, RatingSelect, Switcher, Thumbnail } from 'components';
 
 const statusOptions = [
@@ -37,6 +37,7 @@ interface Props extends NavigationScreenProps {
 @withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
   db = inject(Database);
+  api = inject(FantlabAPI);
 
   state = {
     date: this.defaultDate,
@@ -150,6 +151,7 @@ export class ChangeStatusModal extends React.Component<Props> {
       data.rating = rating;
       data.date = date;
       data.date.setHours(12, 0, 0, 0);
+      this.api.markWork({ bookId: book.id, mark: rating });
     }
 
     return book.setData(data);
@@ -163,6 +165,8 @@ export class ChangeStatusModal extends React.Component<Props> {
     if (this.state.status === BOOK_STATUSES.READ) {
       book.rating = this.state.rating;
       book.date = this.state.date;
+      book.date.setHours(12, 0, 0, 0);
+      this.api.markWork({ bookId: book.id, mark: book.rating });
     }
 
     const record = await createBook(this.db, book);
@@ -171,12 +175,12 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   save = () => {
+    this.props.navigation.pop();
     if (this.isCreation) {
       this.createBook();
     } else {
       this.updateBook();
     }
-    this.props.navigation.pop();
   };
 }
 

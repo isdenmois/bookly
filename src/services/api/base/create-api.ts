@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import { ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { inject } from 'services/inject/inject';
+import { Navigation } from 'services/navigation';
+import { Session } from 'services/session';
 import { createUrl } from './create-url';
 import { createFetchParams } from './create-params';
 import { parseResult } from './parse-result';
@@ -22,9 +25,9 @@ export function clearCache() {
 }
 
 export function createApi(context, schema) {
-  return function(...args) {
+  return function (...args) {
     const params = schema.mapParams ? schema.mapParams.apply(null, args) : {};
-    const url = `${context.baseUrl}${createUrl(schema.url, params.query || {})}`;
+    const url = `${schema.baseUrl || context.baseUrl}${createUrl(schema.url, params.query || {})}`;
 
     return sendReq(schema, params, url);
   };
@@ -35,7 +38,7 @@ function sendReq(schema, params, url) {
     return parseResult(schema, cacheStore.get(url));
   }
 
-  return fetch(url, createFetchParams(schema, params.body))
+  return fetchData(url, schema, params)
     .then(r => r.json())
     .then(data => {
       if (schema.cache) {
@@ -44,11 +47,36 @@ function sendReq(schema, params, url) {
 
       if (schema.cache && __DEV__) {
         const cache = {};
-        cacheStore.forEach((value, url) => (cache[url] = value));
+        cacheStore.forEach((value, u) => (cache[u] = value));
         AsyncStorage.setItem('DEV_API_CACHE', JSON.stringify(cache));
       }
 
       return data;
     })
     .then(response => parseResult(schema, response));
+}
+
+function fetchData(url, schema, params) {
+  if (schema.needAuth && !inject(Session).fantlabAuth) {
+    return auth(url, schema, params);
+  }
+
+  return fetch(url, createFetchParams(schema, params.body))
+    .then(r => handleErrors(r, schema, params, url))
+}
+
+function handleErrors(response, schema, params, url) {
+  if (!response.ok && schema.needAuth) {
+    return auth(url, schema, params);
+  }
+
+  return response;
+}
+
+function auth(url, schema, params) {
+  return new Promise(resolve => {
+    const onSuccess = () => fetchData(url, schema, params).then(resolve);
+
+    inject(Navigation).navigate('/modal/fantlab-login', { onSuccess });
+  })
 }
