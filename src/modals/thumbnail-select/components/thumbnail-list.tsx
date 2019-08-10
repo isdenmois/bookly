@@ -12,13 +12,20 @@ interface Props {
   onSelect: (value: string) => void;
 }
 
+const OBSERVE_FIELDS = ['bookId'];
+
 export class ThumbnailList extends React.PureComponent<Props> {
   api = inject(FantlabAPI);
 
   render() {
     return (
       <ScrollView style={s.container} contentContainerStyle={s.content} horizontal>
-        <Fetcher api={this.api.thumbnails} bookId={this.props.bookId}>
+        <Fetcher
+          observe={OBSERVE_FIELDS}
+          api={this.api.thumbnails}
+          bookId={this.props.bookId}
+          selected={this.props.selected}
+        >
           {this.renderThumbnail}
         </Fetcher>
       </ScrollView>
