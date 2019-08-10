@@ -44,12 +44,13 @@ export class ReviewsTab extends React.PureComponent<Props> {
 
   render() {
     const { book } = this.props;
+    const style = book.status === BOOK_STATUSES.READ ? s.withButton : null;
 
     return (
-      <>
+      <View style={style}>
         <LocalReviewList book={book} navigation={this.props.navigation} />
         <FantlabReviewList bookId={book.id} />
-      </>
+      </View>
     );
   }
 
@@ -62,9 +63,6 @@ const s = StyleSheet.create({
   } as ViewStyle,
   scroll: {
     flex: 1,
-  } as ViewStyle,
-  scrollContent: {
-    padding: 15,
   } as ViewStyle,
   buttonContainer: {
     position: 'absolute',
