@@ -10,13 +10,13 @@ export class SpoilerTag extends Tag {
   }
 }
 
-const SpoilerText = (props) => {
+const SpoilerText = props => {
   const [spoiler, toggleSpoiler] = React.useState(true);
-  const backgroundColor = spoiler ? color.Review : color.Background;
+  const backgroundColor = spoiler ? color.Review : color.SpoilerBackground;
 
   return (
     <Text style={{ backgroundColor, color: color.Review }} onPress={() => toggleSpoiler(prev => !prev)}>
       {props.children}
     </Text>
-  )
+  );
 };
