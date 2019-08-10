@@ -14,10 +14,6 @@ interface Props extends NavigationScreenProps {
   book: BookExtended;
 }
 
-function EmptyResult() {
-  return null;
-}
-
 @withScroll
 export class SimilarTab extends React.Component<Props> {
   api = inject(FantlabAPI);
@@ -27,7 +23,7 @@ export class SimilarTab extends React.Component<Props> {
       <Fetcher
         bookId={this.props.book.id}
         api={this.api.similar}
-        empty={EmptyResult}
+        emptyText='Похожие книги не найдены'
         renderResult={this.renderResult}
       />
     );
