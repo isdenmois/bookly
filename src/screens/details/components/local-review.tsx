@@ -1,14 +1,13 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
-import { Session, inject } from 'services';
+import { Session, Navigation, inject } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
 import { color } from 'types/colors';
 import { TouchIcon } from 'components';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   book: BookData;
   review: Review;
 }
@@ -51,7 +50,7 @@ export class LocalReview extends React.Component<Props, State> {
   toggleExpanded = () => this.setState({ expanded: !this.state.expanded });
 
   openEditReview = () =>
-    this.props.navigation.navigate('/modal/review-write', { review: this.props.review, book: this.props.book });
+    inject(Navigation).navigate('/modal/review-write', { review: this.props.review, book: this.props.book });
 }
 
 const s = StyleSheet.create({
