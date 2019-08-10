@@ -90,7 +90,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
   setIndex = index => this.setState({ index });
 
   onScrollEnd = (y: number) => {
-    const topScroll = this.state.headerHeight - 85;
+    const topScroll = this.state.headerHeight - 95 + 2 * this.props.tabsPadding;
     this.y = y = Math.min(y, topScroll);
 
     _.forEach(this.tabCtrls, ctrl => {
