@@ -2,8 +2,7 @@ import React from 'react';
 import { ImageStyle } from 'react-native';
 import Image from 'react-native-fast-image';
 import { Avatar } from 'components/avatar';
-import { AutoHeightImage } from './auto-height-image';
-import { AutoWithImage } from './auto-width-image';
+import { AutoSizeImage } from './auto-size-image';
 
 const THUMBNAIL_URL = 'https://data.fantlab.ru/images/editions/big';
 
@@ -32,12 +31,8 @@ export function Thumbnail({ auto, style, title, width, height, url, resizeMode, 
 
   url = getThumbnailUrl(url);
 
-  if (auto === 'height') {
-    return <AutoHeightImage style={style} width={width} height={height} url={url} />;
-  }
-
-  if (auto === 'width') {
-    return <AutoWithImage width={width} height={height} style={style} url={url} />;
+  if (auto === 'height' || auto === 'width') {
+    return <AutoSizeImage auto={auto} style={style} width={width} height={height} url={url} />;
   }
 
   const source = { uri: url, cache: cache ? Image.cacheControl.immutable : Image.cacheControl.web };
