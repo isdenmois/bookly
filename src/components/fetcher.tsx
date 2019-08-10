@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { TextXL } from './text';
+import { Button } from './button';
 
 const OMIT_FIELDS = ['children', 'observe', 'error', 'api', 'empty', 'emptyText'];
 
@@ -29,6 +30,8 @@ export class Fetcher extends React.PureComponent<Props> {
     empty: EmptyResult,
     emptyText: 'Ничего не найдено',
   };
+
+  page = 1;
 
   state = {
     data: null,
@@ -61,8 +64,8 @@ export class Fetcher extends React.PureComponent<Props> {
   }
 
   render() {
-    if (this.state.isLoading) {
-      return <ActivityIndicator style={{ flex: 1, alignSelf: 'center' }} size='large' />;
+    if (this.state.isLoading && !this.state.data) {
+      return <ActivityIndicator style={s.loading} size='large' />;
     }
 
     if (this.state.error) {
@@ -88,12 +91,12 @@ export class Fetcher extends React.PureComponent<Props> {
     return this.props.children(this.state.data);
   }
 
-  fetchData() {
-    this.setState({ isLoading: true, data: null, error: null });
+  fetchData(append?: boolean) {
+    this.setState({ isLoading: true, data: append ? this.state.data : null, error: null });
 
     this.props
-      .api(this.props)
-      .then(data => this.setState({ isLoading: false, data }))
+      .api({ ...this.props, page: this.page })
+      .then(data => this.setState({ isLoading: false, data: append ? this.append(data) : data }))
       .catch(error => this.setState({ isLoading: false, error }))
       .then(() => this.props.onLoad && setTimeout(this.props.onLoad));
   }
@@ -118,9 +121,33 @@ export class Fetcher extends React.PureComponent<Props> {
     if (_.isEmpty(this.state.data.items)) {
       return this.renderEmpty();
     }
+    const list = this.renderList(this.state.data.items);
 
-    return this.renderList(this.state.data.items);
+    if (list.length >= this.state.data.total) {
+      return list;
+    }
+
+    return (
+      <>
+        {list}
+        <View style={s.loadMore}>
+          {this.state.isLoading && <ActivityIndicator size='large' />}
+          {!this.state.isLoading && <Button label='Загрузить еще' onPress={this.loadMore} />}
+        </View>
+      </>
+    );
   }
+
+  append(data) {
+    const items = this.state.data.items.concat(data.items);
+
+    return { items, total: data.total };
+  }
+
+  loadMore = () => {
+    this.page++;
+    this.fetchData(true);
+  };
 }
 
 export function EmptyResult({ text }) {
@@ -138,7 +165,14 @@ const s = StyleSheet.create({
     flex: 1,
     marginBottom: 38,
   } as ViewStyle,
+  loading: {
+    flex: 1,
+    alignSelf: 'center',
+  } as ViewStyle,
   notFoundText: {
     color: color.Empty,
   } as TextStyle,
+  loadMore: {
+    alignItems: 'center',
+  },
 });
