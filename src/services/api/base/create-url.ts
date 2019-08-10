@@ -2,6 +2,9 @@ import _ from 'lodash';
 import { inject } from 'services/inject/inject';
 import { Session } from 'services/session';
 
+const PARAMS_REGEX = /:[{]?([\w]+)[}]?/g;
+const DELIMITERS = /[:{}]+/g;
+
 /**
  * Создает URL строку.
  */
@@ -21,10 +24,10 @@ export function createUrl(url: string, params) {
  * Заменяет параметры в URL
  */
 function replaceUrlParams(url, params) {
-  const urlParams = (url.match(/:([\w]+)/g) || []).map(str => str.slice(1));
+  const urlParams: string[] = _.uniq((url.match(PARAMS_REGEX) || []).map(str => str.replace(DELIMITERS, '')));
 
   urlParams.forEach(param => {
-    url = url.replace(`:${param}`, params[param]);
+    url = url.replace(new RegExp(`:[{]?${param}[}]?`, 'g'), params[param]);
   });
 
   return [url, _.omit(params, urlParams)];

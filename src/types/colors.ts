@@ -4,6 +4,7 @@ export const color = {
   PrimaryText: '#000',
   PrimaryTextInverse: '#FFF',
   SecondaryText: '#757575',
+  ErrorText: '#F44336',
 
   Background: '#FFF',
   OrangeBackground: '#FFE0B2',

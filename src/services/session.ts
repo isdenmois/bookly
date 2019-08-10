@@ -7,6 +7,7 @@ const INITIAL_BOOKS_COUNT = 80;
 export class Session {
   @observable userId: string = null;
   @observable totalBooks: number = INITIAL_BOOKS_COUNT;
+  fantlabAuth: string = '';
 
   @action loadSession() {
     return AsyncStorage.getItem(SESSION_KEY)
@@ -14,8 +15,16 @@ export class Session {
       .then(session => {
         this.userId = session.userId;
         this.totalBooks = session.totalBooks || INITIAL_BOOKS_COUNT;
+        this.fantlabAuth = session.fantlabAuth || '';
       })
       .catch(error => console.warn(error));
+  }
+
+  setAuth(fantlabAuth: string) {
+    if (this.fantlabAuth !== fantlabAuth) {
+      this.fantlabAuth = fantlabAuth;
+      this.serializeSession();
+    }
   }
 
   @action setTotalBooks(totalBooks: number) {
@@ -35,12 +44,13 @@ export class Session {
   @action stopSession() {
     this.userId = null;
     this.totalBooks = INITIAL_BOOKS_COUNT;
+    this.fantlabAuth = '';
 
     return AsyncStorage.clear();
   }
 
   serializeSession() {
-    const session = JSON.stringify({ userId: this.userId, totalBooks: this.totalBooks });
+    const session = JSON.stringify({ userId: this.userId, totalBooks: this.totalBooks, fantlabAuth: this.fantlabAuth });
 
     AsyncStorage.setItem(SESSION_KEY, session);
   }
