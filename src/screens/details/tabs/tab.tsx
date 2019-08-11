@@ -57,7 +57,7 @@ export function withScroll(WrappedComponent): any {
           >
             <WrappedComponent {...wrappedProps} />
           </Animated.ScrollView>
-          {WrappedComponent.Fixed && <WrappedComponent.Fixed {...wrappedProps} />}
+          {WrappedComponent.Fixed && <WrappedComponent.Fixed {...wrappedProps} scrollY={scrollY} />}
         </View>
       );
     }

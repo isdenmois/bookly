@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
+import { Animated, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
@@ -14,7 +14,25 @@ interface Props extends NavigationScreenProps {
   record: Book;
 }
 
-class AddButton extends React.PureComponent<Props> {
+interface FixedProps extends Props {
+  scrollY: Animated.Value;
+}
+
+const BUTTON_TOP = 60;
+
+class AddButton extends React.PureComponent<FixedProps> {
+  transform = [
+    {
+      translateY: this.props.scrollY.interpolate({
+        inputRange: [0, 2 * BUTTON_TOP],
+        outputRange: [0, BUTTON_TOP],
+        extrapolate: 'clamp',
+      }),
+    },
+  ];
+
+  style = [s.buttonContainer, { transform: this.transform }];
+
   render() {
     const { record } = this.props;
 
@@ -23,7 +41,7 @@ class AddButton extends React.PureComponent<Props> {
     }
 
     return (
-      <View style={s.buttonContainer}>
+      <Animated.View style={this.style}>
         <Button
           label='Добавить'
           onPress={this.openReviewWriteModal}
@@ -31,7 +49,7 @@ class AddButton extends React.PureComponent<Props> {
           style={s.button}
           textStyle={s.buttonText}
         />
-      </View>
+      </Animated.View>
     );
   }
 
@@ -44,10 +62,9 @@ export class ReviewsTab extends React.PureComponent<Props> {
 
   render() {
     const { record } = this.props;
-    const style = record.status === BOOK_STATUSES.READ ? s.withButton : null;
 
     return (
-      <View style={style}>
+      <View>
         <LocalReviewList book={record} />
         <FantlabReviewList bookId={record.id} />
       </View>
@@ -58,9 +75,6 @@ export class ReviewsTab extends React.PureComponent<Props> {
 }
 
 const s = StyleSheet.create({
-  withButton: {
-    paddingBottom: 60,
-  } as ViewStyle,
   scroll: {
     flex: 1,
   } as ViewStyle,
