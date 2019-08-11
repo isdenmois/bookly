@@ -260,5 +260,6 @@ const s = StyleSheet.create({
   } as TextStyle,
   loadMore: {
     alignItems: 'center',
+    paddingTop: 15,
   },
 });
