@@ -15,11 +15,10 @@ import { DetailsTab } from './details-tab';
 import { color } from 'types/colors';
 
 interface Props extends NavigationScreenProps {
-  book: BookExtended;
+  book: Book & BookExtended;
   renderHeader: (scrollY?: Animated.Value, height?: number) => React.ReactNode;
   tabsPadding: number;
   isExist: boolean;
-  record?: Book;
 }
 
 interface State {
@@ -72,7 +71,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
   }
 
   get similarBooksVisible() {
-    return SHOW_SIMILARS_ON.includes(this.props.record.type);
+    return SHOW_SIMILARS_ON.includes(this.props.book.type);
   }
 
   render() {
@@ -154,7 +153,6 @@ export class BookDetailsTabs extends React.Component<Props, State> {
     return (
       <Component
         book={this.props.book}
-        record={this.props.record}
         navigation={this.props.navigation}
         y={this.y}
         scrollY={this.scrollY}

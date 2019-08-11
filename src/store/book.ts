@@ -14,6 +14,8 @@ type BookFields = 'id' | 'title' | 'author' | 'thumbnail' | 'type' | 'search' | 
 
 export type BookData = Pick<Book, BookFields>;
 
+const bookAuthorsCache = new Map();
+
 export default class Book extends Model {
   static table = 'books';
   static associations: Associations = {
@@ -30,33 +32,9 @@ export default class Book extends Model {
   @field('type') type;
   @field('search') search;
 
-  @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
+  // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;
   @children('reviews') reviews;
-
-  async experimentalMarkAsDeleted(): Promise<void> {
-    const authors = await this.authors.fetch();
-    const emptyModel = _.omit(this._raw as any, ['_status', 'status', 'rating', 'date']);
-
-    emptyModel._isCommitted = true;
-    emptyModel.record = new Observable(this.collection.table, this.id, emptyModel);
-    emptyModel.authors = _.map(authors, a => _.pick(a, ['id', 'name']));
-    emptyModel._raw = emptyModel;
-
-    emptyModel.record.observe().subscribe((this as any)._changes);
-
-    return super.experimentalMarkAsDeleted();
-  }
-
-  _notifyDestroyed() {
-    // Do nothing
-  }
-
-  observe() {
-    return (this as any)._changes.pipe(
-      filter((model: any) => model._isCommitted)
-    );
-  }
 
   @action setData(data: Partial<BookData>) {
     return this.update(() => {

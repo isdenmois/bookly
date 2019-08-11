@@ -16,15 +16,14 @@ import {
 import { withScroll } from './tab';
 
 interface Props extends NavigationScreenProps {
-  book: BookExtended;
+  book: Book & BookExtended;
   isExist: boolean;
-  record?: Book;
 }
 
 @withScroll
 export class DetailsTab extends React.PureComponent<Props> {
   render() {
-    const { book, record, isExist } = this.props;
+    const { book, isExist } = this.props;
 
     return (
       <View>
@@ -33,7 +32,7 @@ export class DetailsTab extends React.PureComponent<Props> {
         {!!book.genre && <ViewLine title='Жанр' value={book.genre} />}
         {!!book.year && <ViewLine title='Год' value={book.year} />}
 
-        {record.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(record.date)} />}
+        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
 
         {!!book.editionCount && <ViewLine title='Изданий' value={book.editionCount} />}
         <ViewLine title='Язык написания' value={book.language} />
@@ -45,7 +44,7 @@ export class DetailsTab extends React.PureComponent<Props> {
 
         {!!book.parent.length && this.renderParentBooks()}
 
-        {isExist && <ViewLineModelRemove model={record} warning='Удалить книгу из коллекции' />}
+        {isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
       </View>
     );
   }

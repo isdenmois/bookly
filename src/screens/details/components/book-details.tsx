@@ -14,6 +14,7 @@ import {
   Clipboard,
   Linking,
 } from 'react-native';
+import { of } from 'rxjs';
 import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
 import { color } from 'types/colors';
@@ -26,8 +27,7 @@ import { BookDetailsHeader } from './book-details-header';
 import { BookDetailsTabs } from '../tabs';
 
 interface Props extends NavigationScreenProps {
-  book: BookExtended;
-  record?: Book;
+  book: Book & BookExtended;
   onBack: () => void;
 }
 
@@ -36,21 +36,20 @@ const MARGIN = 30;
 const READ_BUTTON_MARGIN = 2 * MARGIN + THUMBNAIL_WIDTH;
 
 @withObservables(['book'], ({ book }) => ({
-  record: book.record || book,
+  book: book.observe ? book : of(book),
 }))
 export class BookDetails extends React.Component<Props> {
   render() {
-    const { book, record } = this.props;
-    const renderHeader = record.thumbnail ? this.renderMainInfoWithThumbnail : this.renderMainInfoWithoutThumbnail;
-    const tabsPadding = record.thumbnail ? 26 : 0;
+    const book = this.props.book;
+    const renderHeader = book.thumbnail ? this.renderMainInfoWithThumbnail : this.renderMainInfoWithoutThumbnail;
+    const tabsPadding = book.thumbnail ? 26 : 0;
 
     return (
       <BookDetailsTabs
         tabsPadding={tabsPadding}
         renderHeader={renderHeader}
         book={book}
-        record={record}
-        isExist={record && !!record.status}
+        isExist={book && !!book.status}
         navigation={this.props.navigation}
       />
     );
@@ -74,13 +73,13 @@ export class BookDetails extends React.Component<Props> {
   }
 
   renderMainInfoWithThumbnail = (scrollY: Animated.Value, headerHeight) => {
-    const record = this.props.record;
+    const book = this.props.book;
 
     return (
       <>
-        <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: getThumbnailUrl(record.thumbnail) }}>
+        <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: getThumbnailUrl(book.thumbnail) }}>
           <View style={s.darkOverlay}>
-            {this.renderHeader(record, scrollY, headerHeight)}
+            {this.renderHeader(book, scrollY, headerHeight)}
 
             <View style={s.mainInformationContainer}>
               <Animated.View
@@ -94,7 +93,7 @@ export class BookDetails extends React.Component<Props> {
                 }}
               >
                 <TouchableOpacity onPress={this.openChangeThumbnail} style={{ zIndex: 1 }}>
-                  <Thumbnail style={s.thumbnail} width={120} height={180} url={record.thumbnail} cache auto='none' />
+                  <Thumbnail style={s.thumbnail} width={120} height={180} url={book.thumbnail} cache auto='none' />
                 </TouchableOpacity>
               </Animated.View>
 
@@ -116,7 +115,7 @@ export class BookDetails extends React.Component<Props> {
                 ]}
               >
                 <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
-                  {record.title}
+                  {book.title}
                 </Text>
                 <Animated.View
                   style={{
@@ -129,7 +128,7 @@ export class BookDetails extends React.Component<Props> {
                   }}
                 >
                   <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
-                    <Text style={s.author}>{record.author}</Text>
+                    <Text style={s.author}>{book.author}</Text>
                   </TouchableWithoutFeedback>
                 </Animated.View>
               </Animated.View>
@@ -143,20 +142,20 @@ export class BookDetails extends React.Component<Props> {
             { opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 140], outputRange: [1, 0] }) },
           ]}
         >
-          <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={record} />
+          <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={book} />
         </Animated.View>
       </>
     );
   };
 
   renderMainInfoWithoutThumbnail = (scrollY: Animated.Value, headerHeight) => {
-    const record = this.props.record;
-    const backgroundColor = getAvatarBgColor(record.title);
+    const book = this.props.book;
+    const backgroundColor = getAvatarBgColor(book.title);
 
     return (
       <View style={{ backgroundColor }}>
         <View style={s.darkOverlay}>
-          {this.renderHeader(record, scrollY, headerHeight)}
+          {this.renderHeader(book, scrollY, headerHeight)}
 
           <Animated.View
             style={[
@@ -171,7 +170,7 @@ export class BookDetails extends React.Component<Props> {
             ]}
           >
             <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
-              {record.title}
+              {book.title}
             </Text>
             <Animated.View
               style={{
@@ -184,9 +183,9 @@ export class BookDetails extends React.Component<Props> {
               }}
             >
               <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
-                <Text style={s.author}>{record.author}</Text>
+                <Text style={s.author}>{book.author}</Text>
               </TouchableWithoutFeedback>
-              <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={record} />
+              <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={book} />
             </Animated.View>
           </Animated.View>
         </View>
@@ -194,17 +193,17 @@ export class BookDetails extends React.Component<Props> {
     );
   };
 
-  openTelegram = () => Linking.openURL(`tg://share?text=${this.props.record.title}`);
+  openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.title}`);
 
   copyBookTitle = () => {
-    Clipboard.setString(this.props.record.title);
+    Clipboard.setString(this.props.book.title);
     ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
   };
 
-  openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.record });
+  openChangeStatus = () => this.props.navigation.navigate('/modal/change-status', { book: this.props.book });
 
   openChangeThumbnail = () => {
-    if (!this.props.record.collection) {
+    if (!this.props.book.status) {
       return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
     }
 
@@ -212,11 +211,11 @@ export class BookDetails extends React.Component<Props> {
       return ToastAndroid.show('Недостаточно изданий для выбора', ToastAndroid.SHORT);
     }
 
-    this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.record });
+    this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.book });
   };
 
   searchAuthor = () => {
-    this.props.navigation.push('Search', { query: this.props.record.author });
+    this.props.navigation.push('Search', { query: this.props.book.author });
   };
 }
 
