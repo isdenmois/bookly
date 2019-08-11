@@ -7,18 +7,24 @@ import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { BookDescriptionLine, ViewLine, ViewLineTouchable } from '../components/book-details-lines';
+import {
+  BookDescriptionLine,
+  ViewLine,
+  ViewLineTouchable,
+  ViewLineModelRemove,
+} from '../components/book-details-lines';
 import { withScroll } from './tab';
 
 interface Props extends NavigationScreenProps {
   book: BookExtended;
+  isExist: boolean;
   record?: Book;
 }
 
 @withScroll
 export class DetailsTab extends React.PureComponent<Props> {
   render() {
-    const { book, record } = this.props;
+    const { book, record, isExist } = this.props;
 
     return (
       <View>
@@ -38,6 +44,8 @@ export class DetailsTab extends React.PureComponent<Props> {
         {!!book.description && <BookDescriptionLine description={book.description} />}
 
         {!!book.parent.length && this.renderParentBooks()}
+
+        {isExist && <ViewLineModelRemove model={record} warning='Удалить книгу из коллекции' />}
       </View>
     );
   }

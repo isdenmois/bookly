@@ -18,6 +18,7 @@ interface Props extends NavigationScreenProps {
   book: BookExtended;
   renderHeader: (scrollY?: Animated.Value, height?: number) => React.ReactNode;
   tabsPadding: number;
+  isExist: boolean;
   record?: Book;
 }
 
@@ -160,6 +161,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         headerHeight={this.state.headerHeight}
         tabsPadding={this.props.tabsPadding}
         onScrollEnd={this.onScrollEnd}
+        isExist={this.props.isExist}
         ref={ctrl => (this.tabCtrls[route.key] = ctrl)}
       />
     );

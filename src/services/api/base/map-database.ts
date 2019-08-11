@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { Database, Q } from '@nozbe/watermelondb';
-import { BehaviorSubject, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'utils/model-observable';
 import { inject } from 'services/inject/inject';
 
 export function mapDatabase(collection, data) {
@@ -17,19 +16,19 @@ export function mapDatabase(collection, data) {
   return c
     .query(query)
     .fetch()
-    .then(records => mapRecords(data, records, fields));
+    .then(records => mapRecords(collection, data, records, fields));
 }
 
-function mapRecords(data, records, fields) {
+function mapRecords(collection, data, records, fields) {
   if (_.isArray(data)) {
-    return _.map(data, row => mapRecord(row, records, fields));
+    return _.map(data, row => mapRecord(collection, row, records, fields));
   }
 
-  return mapRecord(data, records, fields);
+  return mapRecord(collection, data, records, fields);
 }
 
-function mapRecord(row, records, fields) {
-  const record = _.find(records, { id: row.id }) || new Observable(row);
+function mapRecord(collection, row, records, fields) {
+  const record = _.find(records, { id: row.id }) || new Observable(collection, row.id, row);
 
   row = _.assign(row, _.pick(record, fields));
   row.record = record;
@@ -47,14 +46,4 @@ function getIds(data) {
   }
 
   return [data.id];
-}
-
-function Observable(row) {
-  this.subject = new BehaviorSubject(row);
-  this.observe = function () {
-    return this.subject.pipe(switchMap((r: any) => (r.collection ? r.observe() : of(r))));
-  };
-  this.next = function (data) {
-    this.subject.next(data);
-  };
 }

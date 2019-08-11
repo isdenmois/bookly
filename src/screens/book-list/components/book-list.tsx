@@ -18,7 +18,7 @@ interface Props {
 }
 
 @withObservables(['query', 'sort'], ({ database, query, sort }) => ({
-  books: bookListQuery(database, query).observeWithColumns([sort]),
+  books: bookListQuery(database, query).observeWithColumns(sort ? [sort.field] : []),
 }))
 export class BookList extends React.PureComponent<Props> {
   render() {
