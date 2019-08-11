@@ -1,13 +1,14 @@
 import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { Session, inject } from 'services';
 import { clearCache } from 'services/api/base/create-api';
-import { Button, ScreenHeader } from 'components';
+import { Button, ScreenHeader, ListItem } from 'components';
 import { ChallengeEditor } from './components/challenge-editor';
+import { WithFantlabToggler } from './components/with-fantlab-toggler';
 
 export class ProfileScreen extends React.Component<NavigationScreenProps> {
   session = inject(Session);
@@ -18,18 +19,11 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
       <View style={s.container}>
         <ScreenHeader title={this.session.userId} />
 
-        <ChallengeEditor session={this.session} />
+        <ChallengeEditor />
+        <WithFantlabToggler />
 
         {__DEV__ && (
-          <View style={{ marginTop: 15, marginHorizontal: 20 }}>
-            <Button label='Очистить API Cache' onPress={clearCache} />
-          </View>
-        )}
-
-        {!!global.HermesInternal && (
-          <View>
-            <Text>Engine: Hermes</Text>
-          </View>
+          <ListItem style={{ marginTop: 15, marginHorizontal: 20 }} label='Очистить API Cache' onPress={clearCache} last />
         )}
 
         <View style={s.buttonContainer}>
