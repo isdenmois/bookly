@@ -10,21 +10,20 @@ import { ViewLine, ViewLineTouchable } from '../components/book-details-lines';
 import { withScroll } from './tab';
 
 interface Props extends NavigationScreenProps {
-  book: BookExtended;
-  record?: Book;
+  book: Book & BookExtended;
 }
 
 @withScroll
 export class MainTab extends React.Component<Props> {
   render() {
-    const { book, record } = this.props;
+    const book = this.props.book;
 
     return (
       <View>
         {!!book.genre && <ViewLine first title='Жанр' value={book.genre} />}
         {!!book.year && <ViewLine title='Год' value={book.year} />}
 
-        {record.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(record.date)} />}
+        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
 
         {!!book.editionCount && <ViewLine title='Изданий' value={book.editionCount} />}
         <ViewLine title='Язык написания' value={book.language} />

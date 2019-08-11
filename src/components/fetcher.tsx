@@ -1,9 +1,12 @@
 import React, { ReactNode } from 'react';
+import { Subscription } from 'rxjs';
 import _ from 'lodash';
 import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { Database, Q } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { TextXL } from './text';
 import { Button } from './button';
+import { inject } from 'services';
 
 const OMIT_FIELDS = ['children', 'observe', 'error', 'api', 'empty', 'emptyText'];
 
@@ -39,6 +42,9 @@ export class Fetcher extends React.PureComponent<Props> {
     error: null,
   };
 
+  subscription: Subscription;
+  appending: boolean = false;
+
   isPropsChanged(prevProps) {
     let current, prev;
 
@@ -63,8 +69,12 @@ export class Fetcher extends React.PureComponent<Props> {
     }
   }
 
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   render() {
-    if (this.state.isLoading && !this.state.data) {
+    if (this.state.isLoading && !this.appending) {
       return <ActivityIndicator style={s.loading} size='large' />;
     }
 
@@ -92,11 +102,14 @@ export class Fetcher extends React.PureComponent<Props> {
   }
 
   fetchData(append?: boolean) {
+    this.unsubscribe();
     this.setState({ isLoading: true, data: append ? this.state.data : null, error: null });
+    this.appending = append;
 
     this.props
       .api({ ...this.props, page: this.page })
-      .then(data => this.setState({ isLoading: false, data: append ? this.append(data) : data }))
+      .then(data => new Promise(resolve => this.setState({ data: append ? this.append(data) : data }, resolve)))
+      .then(() => this.mapDatabase())
       .catch(error => this.setState({ isLoading: false, error }))
       .then(() => this.props.onLoad && setTimeout(this.props.onLoad));
   }
@@ -148,6 +161,79 @@ export class Fetcher extends React.PureComponent<Props> {
     this.page++;
     this.fetchData(true);
   };
+
+  mapModelsToData = models => {
+    const data = mapData(this.state.data, i => findModel(i, models) || i._orig || i);
+
+    this.setState({ isLoading: false, data });
+  };
+
+  unsubscribe() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
+
+  mapDatabase() {
+    if (this.state.data && (this.props.api as any).schema.collection) {
+      this.subscribe();
+    } else {
+      this.setState({ isLoading: false });
+    }
+  }
+
+  subscribe() {
+    const { schema } = this.props.api as any;
+
+    const query = inject(Database)
+      .collections.get(schema.collection)
+      .query(Q.where('id', Q.oneOf(getIds(this.state.data))))
+      .observe();
+
+    this.subscription = query.subscribe(this.mapModelsToData);
+  }
+}
+
+function getIds(data) {
+  if (_.isArray(data)) {
+    return data.map(row => row.id);
+  }
+
+  if (_.isArray(data.items)) {
+    return data.items.map(row => row.id);
+  }
+
+  return [data.id];
+}
+
+function mapData(data, it) {
+  if (_.isArray(data)) {
+    return data.map(it);
+  }
+
+  if (_.isArray(data.items)) {
+    data.items = data.items.map(it);
+    return data;
+  }
+
+  return it(data);
+}
+
+function findModel(item, models) {
+  const record = _.find(models, { id: item.id });
+
+  if (record) {
+    _.defaults(record, _.omit(item, ['_orig']));
+    record._orig = item;
+    item._orig = null;
+  }
+
+  return record;
+}
+
+function getFields(collection) {
+  return _.map(collection.schema.columns, c => c.name);
 }
 
 export function EmptyResult({ text }) {

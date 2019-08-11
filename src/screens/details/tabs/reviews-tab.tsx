@@ -11,7 +11,7 @@ import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
 
 interface Props extends NavigationScreenProps {
-  record: Book;
+  book: Book;
 }
 
 interface FixedProps extends Props {
@@ -34,9 +34,9 @@ class AddButton extends React.PureComponent<FixedProps> {
   style = [s.buttonContainer, { transform: this.transform }];
 
   render() {
-    const { record } = this.props;
+    const book = this.props.book;
 
-    if (record.status !== BOOK_STATUSES.READ) {
+    if (book.status !== BOOK_STATUSES.READ) {
       return null;
     }
 
@@ -53,7 +53,7 @@ class AddButton extends React.PureComponent<FixedProps> {
     );
   }
 
-  openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.record });
+  openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
 }
 
 @withScroll
@@ -61,17 +61,17 @@ export class ReviewsTab extends React.PureComponent<Props> {
   static Fixed = AddButton;
 
   render() {
-    const { record } = this.props;
+    const book = this.props.book;
 
     return (
       <View>
-        <LocalReviewList book={record} />
-        <FantlabReviewList bookId={record.id} />
+        <LocalReviewList book={book} />
+        <FantlabReviewList bookId={book.id} />
       </View>
     );
   }
 
-  openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.record });
+  openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
 }
 
 const s = StyleSheet.create({

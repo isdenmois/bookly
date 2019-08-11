@@ -25,12 +25,16 @@ export function clearCache() {
 }
 
 export function createApi(context, schema) {
-  return function (...args) {
+  const api = function (...args) {
     const params = schema.mapParams ? schema.mapParams.apply(null, args) : {};
     const url = `${schema.baseUrl || context.baseUrl}${createUrl(schema.url, params.query || {})}`;
 
     return sendReq(schema, params, url);
   };
+
+  api.schema = schema;
+
+  return api;
 }
 
 function sendReq(schema, params, url) {

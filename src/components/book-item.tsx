@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
+import { of } from 'rxjs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { Navigation, inject } from 'services';
@@ -23,37 +24,32 @@ const STATUS_ICONS = {
 
 const STATUS_COLORS = {
   bookmark: color.Primary,
-  flag: color.OrangeBackground,
+  flag: color.Secondary,
   star: color.Secondary,
 };
 
 interface Props {
-  record?: Book;
   book?: Book;
   nextStatus?: BOOK_STATUSES;
   cacheThumbnail?: boolean;
 }
 
 @withObservables(['book'], ({ book }) => ({
-  record: book.record || book,
+  book: book.observe ? book : of(book),
 }))
 export class BookItem extends React.Component<Props> {
   navigation = inject(Navigation);
-
-  get book() {
-    return this.props.record || this.props.book;
-  }
 
   get nextStatus() {
     if (this.props.nextStatus) {
       return this.props.nextStatus;
     }
 
-    return NEXT_STATUSES[this.book.status] || BOOK_STATUSES.WISH;
+    return NEXT_STATUSES[this.props.book.status] || BOOK_STATUSES.WISH;
   }
 
   render() {
-    const book = this.book;
+    const book = this.props.book;
     const nextStatus = this.nextStatus;
     const statusIcon = book.status === BOOK_STATUSES.READ ? 'star' : STATUS_ICONS[nextStatus];
     const statusColor = STATUS_COLORS[statusIcon];
@@ -94,11 +90,11 @@ export class BookItem extends React.Component<Props> {
   }
 
   openBook = () => {
-    this.navigation.push('Details', { bookId: this.book.id });
+    this.navigation.push('Details', { bookId: this.props.book.id });
   };
 
   openChangeStatusModal = () => {
-    const book = this.book;
+    const book = this.props.book;
     const status = this.nextStatus;
 
     this.navigation.navigate('/modal/change-status', { book, status });

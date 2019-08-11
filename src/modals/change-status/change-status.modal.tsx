@@ -157,7 +157,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     return book.setData(data);
   }
 
-  @dbAction async createBook() {
+  @dbAction createBook() {
     const book: Partial<BookData> = _.pick(this.props.book, PRIMARY_BOOK_FIELDS);
 
     book.status = this.state.status;
@@ -169,9 +169,7 @@ export class ChangeStatusModal extends React.Component<Props> {
       this.api.markWork({ bookId: book.id, mark: book.rating });
     }
 
-    const record = await createBook(this.db, book);
-
-    this.props.book.record.next(record);
+    return createBook(this.db, book);
   }
 
   save = () => {
