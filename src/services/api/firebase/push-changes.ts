@@ -14,7 +14,6 @@ export function mapParams(sync, body) {
 }
 
 function preparePushChanges(changes) {
-  console.log('changes.reviews: ', JSON.stringify(changes.reviews));
   return {
     authors: changes.authors,
     books: {
@@ -24,8 +23,8 @@ function preparePushChanges(changes) {
     },
     book_authors: {
       created: _.map(changes.book_authors.created, ba => _.omit(ba, ['author_id', 'book_id'])),
-      updated: changes.books.updated,
-      deleted: changes.books.deleted,
+      updated: changes.book_authors.updated,
+      deleted: changes.book_authors.deleted,
     },
     reviews: {
       created: _.map(changes.reviews.created, reviewSerialize),

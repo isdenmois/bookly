@@ -1,6 +1,8 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle, Alert, ToastAndroid } from 'react-native';
+import { Model, Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
+import { inject, Navigation } from 'services';
 
 interface Props {
   description: string;
@@ -14,6 +16,11 @@ interface ViewListProps {
 
 interface ViewListTouchableProps extends ViewListProps {
   onPress: () => void;
+}
+
+interface ViewLineModelRemoveProps {
+  warning: string;
+  model: Model;
 }
 
 interface State {
@@ -62,6 +69,31 @@ export function ViewLineTouchable(props: ViewListTouchableProps) {
   );
 }
 
+export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
+  const onPress = React.useCallback(() => confirmRemoveModel(props.model, props.warning), [props.model]);
+
+  return (
+    <View style={s.row}>
+      <TouchableOpacity onPress={onPress} style={s.value}>
+        <Text style={s.dangerousText}>{props.warning}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+export function confirmRemoveModel(model: Model, warning: string) {
+  Alert.alert('Удаление', `Вы действительно хотите ${warning.toLowerCase()}? Это действие нельзя отменить`, [
+    { text: 'Отменить', style: 'cancel' },
+    { text: 'OK', onPress: () => removeModel(model), style: 'destructive' },
+  ]);
+}
+
+function removeModel(model: any) {
+  inject(Database)
+    .action(() => model.experimentalMarkAsDeleted())
+    .then(() => ToastAndroid.show('Удалено из коллекции', ToastAndroid.LONG));
+}
+
 const s = StyleSheet.create({
   row: {
     marginVertical: 10,
@@ -85,5 +117,9 @@ const s = StyleSheet.create({
     paddingVertical: 5,
     textAlign: 'right',
     color: color.ReadMore,
+  } as TextStyle,
+  dangerousText: {
+    color: color.ErrorText,
+    fontSize: 18,
   } as TextStyle,
 });

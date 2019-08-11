@@ -50,6 +50,7 @@ export class BookDetails extends React.Component<Props> {
         renderHeader={renderHeader}
         book={book}
         record={record}
+        isExist={record && !!record.status}
         navigation={this.props.navigation}
       />
     );

@@ -1,7 +1,9 @@
 import _ from 'lodash';
-import { Model } from '@nozbe/watermelondb';
+import { filter } from 'rxjs/operators';
+import { Model, Q } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
-import { action, field, date, children } from '@nozbe/watermelondb/decorators';
+import { action, field, date, children, lazy } from '@nozbe/watermelondb/decorators';
+import { Observable } from 'utils/model-observable';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
@@ -28,13 +30,32 @@ export default class Book extends Model {
   @field('type') type;
   @field('search') search;
 
-  // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
+  @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;
   @children('reviews') reviews;
 
-  async markAsDeleted() {
-    await this.bookAuthors.markAllAsDeleted();
-    await super.markAsDeleted();
+  async experimentalMarkAsDeleted(): Promise<void> {
+    const authors = await this.authors.fetch();
+    const emptyModel = _.omit(this._raw as any, ['_status', 'status', 'rating', 'date']);
+
+    emptyModel._isCommitted = true;
+    emptyModel.record = new Observable(this.collection.table, this.id, emptyModel);
+    emptyModel.authors = _.map(authors, a => _.pick(a, ['id', 'name']));
+    emptyModel._raw = emptyModel;
+
+    emptyModel.record.observe().subscribe((this as any)._changes);
+
+    return super.experimentalMarkAsDeleted();
+  }
+
+  _notifyDestroyed() {
+    // Do nothing
+  }
+
+  observe() {
+    return (this as any)._changes.pipe(
+      filter((model: any) => model._isCommitted)
+    );
   }
 
   @action setData(data: Partial<BookData>) {
