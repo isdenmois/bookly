@@ -123,7 +123,7 @@ export class Fetcher extends React.PureComponent<Props> {
     }
     const list = this.renderList(this.state.data.items);
 
-    if (list.length >= this.state.data.total) {
+    if (!this.state.data.total || list.length >= this.state.data.total) {
       return list;
     }
 
