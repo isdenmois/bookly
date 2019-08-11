@@ -5,7 +5,7 @@ import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { inject } from 'services';
+import { inject, Session } from 'services';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
@@ -38,6 +38,7 @@ interface Props extends NavigationScreenProps {
 export class ChangeStatusModal extends React.Component<Props> {
   db = inject(Database);
   api = inject(FantlabAPI);
+  session = inject(Session);
 
   state = {
     date: this.defaultDate,
@@ -151,7 +152,6 @@ export class ChangeStatusModal extends React.Component<Props> {
       data.rating = rating;
       data.date = date;
       data.date.setHours(12, 0, 0, 0);
-      this.api.markWork({ bookId: book.id, mark: rating });
     }
 
     return book.setData(data);
@@ -166,7 +166,6 @@ export class ChangeStatusModal extends React.Component<Props> {
       book.rating = this.state.rating;
       book.date = this.state.date;
       book.date.setHours(12, 0, 0, 0);
-      this.api.markWork({ bookId: book.id, mark: book.rating });
     }
 
     return createBook(this.db, book);
@@ -178,6 +177,10 @@ export class ChangeStatusModal extends React.Component<Props> {
       this.createBook();
     } else {
       this.updateBook();
+    }
+
+    if (this.state.status === BOOK_STATUSES.READ && this.session.withFantlab) {
+      this.api.markWork({ bookId: this.props.book.id, mark: this.state.rating });
     }
   };
 }

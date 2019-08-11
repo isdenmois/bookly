@@ -1,18 +1,15 @@
 import React from 'react';
 import { ViewStyle, TextStyle, StyleSheet, View, Text, TextInput } from 'react-native';
-import { Session } from 'services';
+import { Session, inject } from 'services';
 import { color } from 'types/colors';
-
-interface Props {
-  session: Session;
-}
 
 interface State {
   totalBooks: string;
 }
 
-export class ChallengeEditor extends React.Component<Props, State> {
-  state: State = { totalBooks: this.props.session.totalBooks.toString() };
+export class ChallengeEditor extends React.Component<any, State> {
+  session = inject(Session);
+  state: State = { totalBooks: this.session.totalBooks.toString() };
 
   render() {
     return (
@@ -31,7 +28,7 @@ export class ChallengeEditor extends React.Component<Props, State> {
   }
 
   setBooksCount = totalBooks => this.setState({ totalBooks });
-  save = () => +this.state.totalBooks && this.props.session.setTotalBooks(+this.state.totalBooks);
+  save = () => +this.state.totalBooks && this.session.setTotalBooks(+this.state.totalBooks);
 }
 
 const s = StyleSheet.create({
