@@ -26,8 +26,8 @@ export class MainTab extends React.Component<Props> {
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
 
         {!!book.editionCount && <ViewLine title='Изданий' value={book.editionCount} />}
-        <ViewLine title='Язык написания' value={book.language} />
-        {!!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
+        {!!book.language && <ViewLine title='Язык написания' value={book.language} />}
+        {!!book.title && !!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
 
         {!!book.otherTitles && <ViewLine title='Другие названия' value={book.otherTitles} />}
 

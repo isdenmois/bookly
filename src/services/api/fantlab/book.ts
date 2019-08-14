@@ -16,7 +16,7 @@ const THUMBNAIL_ID = /(\d+$)/;
 
 export const mapBody = {
   id: 'work_id',
-  title: 'work_name',
+  title: w => w.work_name || w.work_name_orig,
   author: w => _.map(w.authors, a => a.name).join(', '),
   authors: w => _.map(w.authors, a => ({ id: a.id.toString(), name: a.name })),
   // TODO: попробовать вытянуть без regexp
@@ -42,9 +42,9 @@ function editionCount(book) {
 }
 
 function genre(w) {
-  const genre = _.find(_.get(w, 'classificatory.genre_group'), g => +g.genre_group_id === 1);
+  const g = _.find(_.get(w, 'classificatory.genre_group'), g => +g.genre_group_id === 1);
 
-  return genre ? _.map(genre.genre, t => t.label).join(', ') : null;
+  return g ? _.map(g.genre, t => t.label).join(', ') : null;
 }
 
 function otherTitles(w) {
