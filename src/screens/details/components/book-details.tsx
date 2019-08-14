@@ -39,6 +39,10 @@ const READ_BUTTON_MARGIN = 2 * MARGIN + THUMBNAIL_WIDTH;
   book: book.observe ? book : of(book),
 }))
 export class BookDetails extends React.Component<Props> {
+  get bookTitle() {
+    return this.props.book.title || this.props.book.originalTitle;
+  }
+
   render() {
     const book = this.props.book;
     const renderHeader = book.thumbnail ? this.renderMainInfoWithThumbnail : this.renderMainInfoWithoutThumbnail;
@@ -115,7 +119,7 @@ export class BookDetails extends React.Component<Props> {
                 ]}
               >
                 <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
-                  {book.title}
+                  {this.bookTitle}
                 </Text>
                 <Animated.View
                   style={{
@@ -150,7 +154,7 @@ export class BookDetails extends React.Component<Props> {
 
   renderMainInfoWithoutThumbnail = (scrollY: Animated.Value, headerHeight) => {
     const book = this.props.book;
-    const backgroundColor = getAvatarBgColor(book.title);
+    const backgroundColor = getAvatarBgColor(this.bookTitle);
 
     return (
       <View style={{ backgroundColor }}>
@@ -170,7 +174,7 @@ export class BookDetails extends React.Component<Props> {
             ]}
           >
             <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
-              {book.title}
+              {this.bookTitle}
             </Text>
             <Animated.View
               style={{
@@ -193,10 +197,10 @@ export class BookDetails extends React.Component<Props> {
     );
   };
 
-  openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.title}`);
+  openTelegram = () => Linking.openURL(`tg://share?text=${this.bookTitle}`);
 
   copyBookTitle = () => {
-    Clipboard.setString(this.props.book.title);
+    Clipboard.setString(this.bookTitle);
     ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
   };
 

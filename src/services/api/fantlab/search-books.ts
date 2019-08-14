@@ -13,7 +13,7 @@ export function mapParams({ q, page }) {
 export const mapBody = {
   items: result => _.map(result.matches, (w: any) => ({
     id: w.work_id,
-    title: w.rusname,
+    title: w.rusname || w.name,
     thumbnail: w.pic_edition_id_auto,
     author: w.autor_rusname,
     authors: [{ id: w.autor_id.toString(), name: w.autor_rusname }],
