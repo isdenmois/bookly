@@ -18,7 +18,7 @@ interface State {
 
 const DEFAULT_BODY_LINES = 3;
 
-export class LocalReview extends React.Component<Props, State> {
+export class LocalReview extends React.PureComponent<Props, State> {
   state: State = { expanded: false };
   session = inject(Session);
 

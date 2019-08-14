@@ -1,11 +1,11 @@
 import React from 'react';
-import { Animated, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
+import { Animated, StyleSheet, ViewStyle, View, TextStyle, TouchableOpacity, Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
 import Book from 'store/book';
-import { Button } from 'components';
+import { Button, TouchIcon } from 'components';
 import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
@@ -16,6 +16,13 @@ interface Props extends NavigationScreenProps {
 
 interface FixedProps extends Props {
   scrollY: Animated.Value;
+}
+
+interface SelectReviewSortProps {
+  sort: string;
+  selected: string;
+  title: string;
+  setSort: (sort: string) => void;
 }
 
 const BUTTON_TOP = 60;
@@ -56,22 +63,35 @@ class AddButton extends React.PureComponent<FixedProps> {
   openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
 }
 
-@withScroll
-export class ReviewsTab extends React.PureComponent<Props> {
-  static Fixed = AddButton;
+export const ReviewsTab = withScroll(function(props: Props) {
+  const [sort, setSort] = React.useState('rating');
 
-  render() {
-    const book = this.props.book;
-
-    return (
-      <View>
-        <LocalReviewList book={book} />
-        <FantlabReviewList bookId={book.id} />
+  return (
+    <View>
+      <View style={s.sortList}>
+        <SelectReviewSort sort='rating' selected={sort} setSort={setSort} title='По рейтингу' />
+        <SelectReviewSort sort='date' selected={sort} setSort={setSort} title='По дате' />
+        <SelectReviewSort sort='mark' selected={sort} setSort={setSort} title='По оценке' />
       </View>
-    );
-  }
 
-  openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
+      <LocalReviewList book={props.book} />
+      <FantlabReviewList bookId={props.book.id} sort={sort} />
+    </View>
+  );
+});
+
+ReviewsTab.Fixed = AddButton;
+
+function SelectReviewSort(props: SelectReviewSortProps) {
+  const onPress = React.useCallback(() => props.setSort(props.sort), [props.sort]);
+  const isSelected = props.sort === props.selected;
+  const Component: any = isSelected ? View : TouchableOpacity;
+
+  return (
+    <Component style={isSelected ? s.sortSelected : s.sortItem} onPress={onPress}>
+      <Text style={s.sortText}>{props.title}</Text>
+    </Component>
+  );
 }
 
 const s = StyleSheet.create({
@@ -91,5 +111,25 @@ const s = StyleSheet.create({
   } as ViewStyle,
   buttonText: {
     color: color.PrimaryText,
+  } as TextStyle,
+  sortList: {
+    flexDirection: 'row',
+  },
+  sortItem: {
+    marginRight: 20,
+    borderWidth: 0.5,
+    borderColor: 'transparent',
+  },
+  sortSelected: {
+    borderRadius: 20,
+    borderColor: color.Review,
+    borderWidth: 0.5,
+    marginRight: 20,
+  } as ViewStyle,
+  sortText: {
+    fontSize: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    color: color.Review,
   } as TextStyle,
 });

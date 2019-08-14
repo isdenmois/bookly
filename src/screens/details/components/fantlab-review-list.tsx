@@ -7,6 +7,7 @@ import { FantlabReview } from './fantlab-review';
 
 interface Props {
   bookId: string;
+  sort: string;
 }
 
 export class FantlabReviewList extends React.Component<Props> {
@@ -14,7 +15,7 @@ export class FantlabReviewList extends React.Component<Props> {
 
   render() {
     return (
-      <Fetcher api={this.api.reviewList} bookId={this.props.bookId}>
+      <Fetcher api={this.api.reviewList} bookId={this.props.bookId} sort={this.props.sort}>
         {this.renderReview}
       </Fetcher>
     );
