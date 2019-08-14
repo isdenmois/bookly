@@ -29,14 +29,17 @@ const STATUS_COLORS = {
 };
 
 interface Props {
-  book?: Book;
+  book: Book;
   nextStatus?: BOOK_STATUSES;
   cacheThumbnail?: boolean;
 }
 
-@withObservables(['book'], ({ book }) => ({
-  book: book.observe ? book : of(book),
-}))
+@withObservables(['book'], ({ book }) => {
+  console.log('RESUBSCRIBE!', [book.id]);
+  return {
+    book: book.observe ? book : of(book),
+  };
+})
 export class BookItem extends React.Component<Props> {
   navigation = inject(Navigation);
 

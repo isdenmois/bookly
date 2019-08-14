@@ -54,12 +54,6 @@ export class MainTab extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
-  scroll: {
-    flex: 1,
-  } as ViewStyle,
-  scrollContent: {
-    padding: 15,
-  } as ViewStyle,
   header: {
     color: color.SecondaryText,
     fontSize: 14,

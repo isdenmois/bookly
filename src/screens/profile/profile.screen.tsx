@@ -19,10 +19,12 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
       <View style={s.container}>
         <ScreenHeader title={this.session.userId} />
 
-        <ChallengeEditor />
-        <WithFantlabToggler />
+        <View style={s.content}>
+          <ChallengeEditor />
+          <WithFantlabToggler />
 
-        {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
+          {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
+        </View>
 
         <View style={s.buttonContainer}>
           <Button
@@ -48,6 +50,9 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.Background,
+  } as ViewStyle,
+  content: {
+    paddingHorizontal: 15,
   } as ViewStyle,
   buttonContainer: {
     position: 'absolute',
