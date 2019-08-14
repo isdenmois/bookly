@@ -12,7 +12,7 @@ interface Props {
 
 export function withScroll(WrappedComponent): any {
   return class Tab extends React.Component<Props> {
-    screenHeight = Dimensions.get('screen').height;
+    screenHeight = Dimensions.get('window').height;
     y = 0;
     scroll: ScrollView;
 
@@ -37,7 +37,7 @@ export function withScroll(WrappedComponent): any {
       const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
       const wrappedProps = _.omit(this.props, ['y', 'scrollY', 'headerHeight', 'onScrollEnd']);
       const paddingTop = headerHeight + tabsPadding + 15;
-      const minHeight = this.screenHeight + 120;
+      const minHeight = this.screenHeight + paddingTop - 130;
 
       return (
         <View style={s.relative}>
