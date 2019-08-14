@@ -213,8 +213,7 @@ function mapData(data, it) {
   }
 
   if (_.isArray(data.items)) {
-    data.items = data.items.map(it);
-    return data;
+    return { ...data, items: data.items.map(it) };
   }
 
   return it(data);
@@ -227,6 +226,8 @@ function findModel(item, models) {
     _.defaults(record, _.omit(item, ['_orig']));
     record._orig = item;
     item._orig = null;
+
+    console.log('record found id =', record.id);
   }
 
   return record;

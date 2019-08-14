@@ -125,6 +125,8 @@ export class BookDetailsTabs extends React.Component<Props, State> {
       <Animated.View
         style={{
           zIndex: 1,
+          overflow: 'hidden',
+          paddingBottom: 6,
           translateY: this.scrollY.interpolate({
             inputRange: [0, this.state.headerHeight - 100 + 2 * this.props.tabsPadding],
             outputRange: [this.state.headerHeight + this.props.tabsPadding, 100 - this.props.tabsPadding],

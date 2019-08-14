@@ -47,7 +47,8 @@ export class SearchScreen extends React.Component<Props, State> {
   }
 
   renderResult = (book: Book) => {
-    return <BookItem book={book} key={book.id} />;
+    console.log(book.id, !!book.collection);
+    return <BookItem key={book.id} book={book} />;
   };
 
   goBack = () => this.props.navigation.pop();

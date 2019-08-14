@@ -1,8 +1,18 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle, Alert, ToastAndroid } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  Alert,
+  ToastAndroid,
+  Insets,
+} from 'react-native';
 import { Model, Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { inject, Navigation } from 'services';
+import { inject } from 'services';
 
 interface Props {
   description: string;
@@ -27,14 +37,18 @@ interface State {
   expanded: boolean;
 }
 
+const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
+
 export class BookDescriptionLine extends React.Component<Props, State> {
   state: State = {
     expanded: false,
   };
 
   render() {
+    const Component: any = this.state.expanded ? View : TouchableOpacity;
+
     return (
-      <View style={s.descriptionRow}>
+      <Component style={s.descriptionRow} onPress={this.toggleExpand}>
         <Text style={s.headerTitle}>ОПИСАНИЕ</Text>
         <Text style={s.value} numberOfLines={this.state.expanded ? null : 3}>
           {this.props.description}
@@ -43,7 +57,7 @@ export class BookDescriptionLine extends React.Component<Props, State> {
         <TouchableOpacity onPress={this.toggleExpand}>
           <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
         </TouchableOpacity>
-      </View>
+      </Component>
     );
   }
   toggleExpand = () => this.setState({ expanded: !this.state.expanded });
@@ -62,7 +76,7 @@ export function ViewLineTouchable(props: ViewListTouchableProps) {
   return (
     <View style={props.first ? null : s.row}>
       <Text style={s.title}>{props.title}</Text>
-      <TouchableOpacity onPress={props.onPress} style={s.value}>
+      <TouchableOpacity onPress={props.onPress} style={s.value} hitSlop={hitSlop}>
         <Text style={s.value}>{props.value}</Text>
       </TouchableOpacity>
     </View>
@@ -74,7 +88,7 @@ export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
 
   return (
     <View style={s.row}>
-      <TouchableOpacity onPress={onPress} style={s.value}>
+      <TouchableOpacity onPress={onPress} style={s.value} hitSlop={hitSlop}>
         <Text style={s.dangerousText}>{props.warning}</Text>
       </TouchableOpacity>
     </View>

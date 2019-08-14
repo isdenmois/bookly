@@ -67,7 +67,7 @@ function ReviewsTabComponent(props: Props) {
   const [sort, setSort] = React.useState('rating');
 
   return (
-    <View>
+    <>
       <View style={s.sortList}>
         <SelectReviewSort sort='rating' selected={sort} setSort={setSort} title='По рейтингу' />
         <SelectReviewSort sort='date' selected={sort} setSort={setSort} title='По дате' />
@@ -76,7 +76,7 @@ function ReviewsTabComponent(props: Props) {
 
       <LocalReviewList book={props.book} />
       <FantlabReviewList bookId={props.book.id} sort={sort} />
-    </View>
+    </>
   );
 }
 
@@ -97,9 +97,6 @@ function SelectReviewSort(props: SelectReviewSortProps) {
 }
 
 const s = StyleSheet.create({
-  scroll: {
-    flex: 1,
-  } as ViewStyle,
   buttonContainer: {
     position: 'absolute',
     bottom: 10,

@@ -67,7 +67,7 @@ export function withScroll(WrappedComponent): any {
     setRef = view => {
       this.scroll = view && view._component;
 
-      setTimeout(() => this.scrollTo(this.props.y));
+      requestAnimationFrame(() => this.scrollTo(this.props.y));
     };
   };
 }
