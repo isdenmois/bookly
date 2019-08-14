@@ -1,8 +1,18 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+  TextStyle,
+  KeyboardTypeOptions,
+  TextInput,
+} from 'react-native';
 import classnames from 'rn-classnames';
 import { color } from 'types/colors';
-import { TextM } from 'components/text';
+import { TextM } from './text';
+import { TouchIcon } from './touch-icon';
 
 interface Props {
   value?: string;
@@ -13,9 +23,15 @@ interface Props {
   counter?: ReactNode;
   icon?: ReactNode;
   selected?: ReactNode;
+  keyboardType?: KeyboardTypeOptions;
+  placeholder?: string;
+  clearable?: boolean;
   style?: ViewStyle;
   rowStyle?: ViewStyle;
   onPress?: () => void;
+  onChange?: (text: string) => void;
+  onSubmit?: () => void;
+  onBlur?: () => void;
 }
 
 export class ListItem extends React.Component<Props> {
@@ -23,24 +39,64 @@ export class ListItem extends React.Component<Props> {
     border: true,
   };
 
-  render() {
-    const { style, icon, counter, first, last, border, selected, label } = this.props;
+  input: TextInput;
 
-    const Container: any = this.props.onPress ? TouchableOpacity : View;
+  render() {
+    const { style, icon, counter, first, border, selected, label, children } = this.props;
+    const isEditable = Boolean(this.props.onChange);
+    const Container: any = this.props.onPress || isEditable ? TouchableOpacity : View;
 
     return (
-      <Container style={[s.container, style]} onPress={this.props.onPress}>
+      <Container style={[s.container, style]} onPress={this.onPress}>
         {!!icon && <View style={s.icon}>{icon}</View>}
-        <View style={[...cn({ border, borderFirst: first, borderLast: last }), this.props.rowStyle]}>
+        <View style={[...cn({ border, borderFirst: first }), this.props.rowStyle]}>
           {!!label && <TextM style={s.label}>{label}</TextM>}
-          {!this.props.children && <TextM style={cn('text', { textRight: !!label })}>{this.props.value}</TextM>}
-          {this.props.children}
+          {!children && !isEditable && <TextM style={cn('text', { textRight: !!label })}>{this.props.value}</TextM>}
+          {!children && isEditable && (
+            <TextInput
+              style={cn('text', { textRight: !!label })}
+              value={(this.props.value || '').toString()}
+              returnKeyType='done'
+              keyboardType={this.props.keyboardType}
+              placeholder={this.props.placeholder}
+              onChangeText={this.props.onChange}
+              onBlur={this.props.onBlur}
+              onSubmitEditing={this.props.onSubmit}
+              ref={this.setRef}
+            />
+          )}
+          {children}
           {counter !== undefined && <Text style={s.counter}>{counter}</Text>}
           {selected}
+          {!!this.props.clearable && !!this.props.value && (
+            <TouchIcon paddingLeft={10} name='times' size={20} color={color.PrimaryText} onPress={this.clear} />
+          )}
         </View>
       </Container>
     );
   }
+
+  focus() {
+    if (this.input) {
+      this.input.focus();
+    }
+  }
+
+  setRef = ref => (this.input = ref);
+
+  onPress = () => {
+    this.focus();
+
+    if (this.props.onPress) {
+      this.props.onPress();
+    }
+  };
+
+  clear = () => {
+    this.focus();
+
+    this.props.onChange(null);
+  };
 }
 
 const s = StyleSheet.create({
@@ -53,8 +109,6 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 15,
     alignItems: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: color.Border,
     flex: 1,
     paddingHorizontal: 5,
   } as ViewStyle,
@@ -62,15 +116,15 @@ const s = StyleSheet.create({
     borderTopWidth: 0.5,
     borderTopColor: color.Border,
   } as ViewStyle,
-  borderLast: {
-    borderBottomWidth: 0,
-  } as ViewStyle,
   label: {
     color: color.PrimaryText,
   } as TextStyle,
   text: {
     flex: 1,
     color: color.PrimaryText,
+    padding: 0,
+    margin: 0,
+    height: 20,
   } as TextStyle,
   textRight: {
     textAlign: 'right',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputItem } from './input-item';
+import { ListItem } from 'components';
 
 interface Props {
   value: string;
@@ -10,12 +10,13 @@ interface Props {
 export class BookTitleFilter extends React.PureComponent<Props> {
   render() {
     return (
-      <InputItem
-        title='Название'
+      <ListItem
+        label='Название'
         keyboardType='default'
         value={this.props.value}
         onChange={this.setTitle}
-        onApply={this.props.onApply}
+        onSubmit={this.props.onApply}
+        clearable
       />
     );
   }

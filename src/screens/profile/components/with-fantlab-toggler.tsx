@@ -26,7 +26,6 @@ export class WithFantlabToggler extends React.Component {
 
 const s = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
     width: 'auto',
   } as ViewStyle,
   row: {

@@ -22,9 +22,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
         <ChallengeEditor />
         <WithFantlabToggler />
 
-        {__DEV__ && (
-          <ListItem style={{ marginTop: 15, marginHorizontal: 20 }} label='Очистить API Cache' onPress={clearCache} last />
-        )}
+        {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
 
         <View style={s.buttonContainer}>
           <Button

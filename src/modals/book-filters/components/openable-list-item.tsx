@@ -27,12 +27,12 @@ export class OpenableListItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { title, viewValue, children } = this.props;
+    const { title, viewValue, children, onClear } = this.props;
     const defined = Boolean(viewValue);
     const opened = this.state.opened;
 
     return (
-      <ListItem rowStyle={s.list} onPress={opened ? null : this.open}>
+      <ListItem onPress={opened ? null : this.open} value={viewValue} clearable={defined && !opened} onChange={onClear}>
         {!opened && <Text style={s.title}>{title}</Text>}
         {opened && (
           <View style={s.container}>
@@ -44,17 +44,6 @@ export class OpenableListItem extends React.Component<Props, State> {
           </View>
         )}
         {defined && !opened && <Text style={s.value}>{viewValue}</Text>}
-
-        {defined && !opened && (
-          <TouchIcon
-            paddingVertical={15}
-            paddingLeft={10}
-            name='times'
-            size={20}
-            color={color.PrimaryText}
-            onPress={this.props.onClear}
-          />
-        )}
       </ListItem>
     );
   }
@@ -67,13 +56,9 @@ export class OpenableListItem extends React.Component<Props, State> {
 }
 
 const s = StyleSheet.create({
-  list: {
-    paddingVertical: 0,
-  } as ViewStyle,
   title: {
     fontSize: 16,
     color: color.PrimaryText,
-    paddingVertical: 15,
   } as TextStyle,
   container: {
     flex: 1,
