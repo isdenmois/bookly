@@ -4,9 +4,9 @@ export const url = '/work/:bookId/responses';
 
 export const cache = true;
 
-export function mapParams({ bookId, page }) {
+export function mapParams({ bookId, page, sort }) {
   return {
-    query: { bookId, page },
+    query: { bookId, page, sort },
   };
 }
 

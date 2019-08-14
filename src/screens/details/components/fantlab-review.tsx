@@ -17,7 +17,7 @@ interface State {
 
 const DEFAULT_BODY_LINES = 3;
 
-export class FantlabReview extends React.Component<Props, State> {
+export class FantlabReview extends React.PureComponent<Props, State> {
   state: State = { expanded: false };
 
   render() {
