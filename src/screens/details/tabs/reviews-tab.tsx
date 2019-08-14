@@ -63,7 +63,7 @@ class AddButton extends React.PureComponent<FixedProps> {
   openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
 }
 
-export const ReviewsTab = withScroll(function(props: Props) {
+function ReviewsTabComponent(props: Props) {
   const [sort, setSort] = React.useState('rating');
 
   return (
@@ -78,9 +78,11 @@ export const ReviewsTab = withScroll(function(props: Props) {
       <FantlabReviewList bookId={props.book.id} sort={sort} />
     </View>
   );
-});
+}
 
-ReviewsTab.Fixed = AddButton;
+export const ReviewsTab = withScroll(ReviewsTabComponent);
+
+ReviewsTabComponent.Fixed = AddButton;
 
 function SelectReviewSort(props: SelectReviewSortProps) {
   const onPress = React.useCallback(() => props.setSort(props.sort), [props.sort]);
