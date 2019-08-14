@@ -38,7 +38,13 @@ export class EditableListItem extends React.Component<Props> {
     const edit = this.state.edit;
 
     return (
-      <ListItem rowStyle={s.listItem} label={edit ? null : title} onPress={edit ? null : this.startEdit}>
+      <ListItem
+        label={edit ? null : title}
+        value={value}
+        clearable={clearable && !edit}
+        onPress={edit ? null : this.startEdit}
+        onChange={this.props.onChange}
+      >
         {edit && (
           <SelectList
             title={title}
@@ -52,21 +58,9 @@ export class EditableListItem extends React.Component<Props> {
           </SelectList>
         )}
         {!edit && <Text style={s.value}>{this.label}</Text>}
-        {clearable && !edit && !!value && (
-          <TouchIcon
-            paddingVertical={15}
-            paddingLeft={10}
-            name='times'
-            size={20}
-            color={color.PrimaryText}
-            onPress={this.clear}
-          />
-        )}
       </ListItem>
     );
   }
-
-  clear = () => this.props.onChange(null);
 
   close = () => this.setState({ edit: false });
 
@@ -79,14 +73,10 @@ export class EditableListItem extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
-  listItem: {
-    paddingVertical: 0,
-  } as ViewStyle,
   value: {
     fontSize: 16,
     color: color.PrimaryText,
     flex: 1,
     textAlign: 'right',
-    paddingVertical: 15,
   } as TextStyle,
 });

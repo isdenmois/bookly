@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputItem } from './input-item';
+import { ListItem } from 'components';
 
 interface Props {
   value: string;
@@ -10,12 +10,13 @@ interface Props {
 export class BookYearFilter extends React.PureComponent<Props> {
   render() {
     return (
-      <InputItem
-        title='Год'
+      <ListItem
+        label='Год'
         keyboardType='numeric'
         value={this.props.value}
         onChange={this.setYear}
-        onApply={this.props.onApply}
+        onSubmit={this.props.onApply}
+        clearable
       />
     );
   }

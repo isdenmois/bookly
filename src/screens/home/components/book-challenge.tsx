@@ -56,5 +56,6 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 10,
     paddingBottom: 10,
+    marginTop: 20,
   } as ViewStyle,
 });
