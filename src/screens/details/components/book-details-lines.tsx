@@ -45,19 +45,19 @@ export class BookDescriptionLine extends React.Component<Props, State> {
   };
 
   render() {
-    const Component: any = this.state.expanded ? View : TouchableOpacity;
+    const onPress = this.state.expanded ? null : this.toggleExpand;
 
     return (
-      <Component style={s.descriptionRow} onPress={this.toggleExpand}>
+      <View style={s.descriptionRow}>
         <Text style={s.headerTitle}>ОПИСАНИЕ</Text>
-        <Text style={s.value} numberOfLines={this.state.expanded ? null : 3}>
+        <Text style={s.value} numberOfLines={this.state.expanded ? null : 3} onPress={onPress}>
           {this.props.description}
         </Text>
 
         <TouchableOpacity onPress={this.toggleExpand}>
           <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
         </TouchableOpacity>
-      </Component>
+      </View>
     );
   }
   toggleExpand = () => this.setState({ expanded: !this.state.expanded });

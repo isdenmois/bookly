@@ -25,10 +25,10 @@ export class LocalReview extends React.PureComponent<Props, State> {
   render() {
     const review = this.props.review;
     const bodyLines = this.state.expanded ? null : DEFAULT_BODY_LINES;
-    const Component: any = this.state.expanded ? View : TouchableOpacity;
+    const onPress = this.state.expanded ? null : this.toggleExpanded;
 
     return (
-      <Component style={s.container} onPress={this.toggleExpanded}>
+      <View style={s.container}>
         <View style={s.dataRow}>
           <View style={s.mainInfo}>
             <Text style={s.user}>{this.session.userId}</Text>
@@ -37,14 +37,14 @@ export class LocalReview extends React.PureComponent<Props, State> {
           <TouchIcon style={s.icon} name='pen' size={16} color={color.PrimaryText} onPress={this.openEditReview} />
         </View>
 
-        <Text style={s.body} numberOfLines={bodyLines}>
+        <Text style={s.body} numberOfLines={bodyLines} onPress={onPress}>
           {review.body}
         </Text>
 
         <TouchableOpacity onPress={this.toggleExpanded}>
           <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
         </TouchableOpacity>
-      </Component>
+      </View>
     );
   }
 
