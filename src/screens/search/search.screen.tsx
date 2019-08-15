@@ -47,7 +47,6 @@ export class SearchScreen extends React.Component<Props, State> {
   }
 
   renderResult = (book: Book) => {
-    console.log(book.id, !!book.collection);
     return <BookItem key={book.id} book={book} />;
   };
 

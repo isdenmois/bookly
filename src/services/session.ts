@@ -4,10 +4,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 const SESSION_KEY = 'SESSION_KEY';
 const INITIAL_BOOKS_COUNT = 80;
 
+const INITIAL_SORT = { field: 'title', desc: false };
+
 export class Session {
   @observable userId: string = null;
   @observable totalBooks: number = INITIAL_BOOKS_COUNT;
   @observable withFantlab: boolean = true;
+  @observable.ref defaultSort = INITIAL_SORT;
   fantlabAuth: string = '';
 
   @action loadSession() {
@@ -18,8 +21,9 @@ export class Session {
         this.totalBooks = session.totalBooks || INITIAL_BOOKS_COUNT;
         this.fantlabAuth = session.fantlabAuth || '';
         this.withFantlab = session.withFantlab;
+        this.defaultSort = session.defaultSort || INITIAL_SORT;
       })
-      .catch(error => console.warn(error));
+      .catch(error => console.warn(error.toString()));
   }
 
   setAuth(fantlabAuth: string) {
@@ -44,6 +48,14 @@ export class Session {
     }
   }
 
+  @action setDefaultSort(sort) {
+    if (this.defaultSort !== sort) {
+      this.defaultSort = sort;
+
+      this.serializeSession();
+    }
+  }
+
   @action setSession(userId: string = null) {
     this.userId = userId;
 
@@ -55,12 +67,19 @@ export class Session {
     this.totalBooks = INITIAL_BOOKS_COUNT;
     this.fantlabAuth = '';
     this.withFantlab = true;
+    this.defaultSort = INITIAL_SORT;
 
     return AsyncStorage.clear();
   }
 
   serializeSession() {
-    const session = JSON.stringify({ userId: this.userId, totalBooks: this.totalBooks, fantlabAuth: this.fantlabAuth, withFantlab: this.withFantlab });
+    const session = JSON.stringify({
+      userId: this.userId,
+      totalBooks: this.totalBooks,
+      fantlabAuth: this.fantlabAuth,
+      withFantlab: this.withFantlab,
+      defaultSort: this.defaultSort
+    });
 
     AsyncStorage.setItem(SESSION_KEY, session);
   }

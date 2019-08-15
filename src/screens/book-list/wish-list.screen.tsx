@@ -1,4 +1,5 @@
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import { Session, inject } from 'services';
 import { ReadListScreen } from './read-list.screen';
 import { createQueryState } from './book-list.service';
 
@@ -8,10 +9,13 @@ const defaultFilters = {
 
 const WISH_LIST_FILTERS = ['title', 'author', 'type'];
 
-const WISH_LIST_SORTS = ['title', 'author', 'id'];
+export const WISH_LIST_SORTS = ['title', 'author', 'id', 'createdAt'];
 
 export class WishListScreen extends ReadListScreen {
-  state = createQueryState(defaultFilters, { field: 'title', desc: false });
+  session = inject(Session);
+
+  state = createQueryState(defaultFilters, this.session.defaultSort);
+  // state = createQueryState(defaultFilters, { field: 'title', desc: false });
 
   filters = WISH_LIST_FILTERS;
   sorts = WISH_LIST_SORTS;

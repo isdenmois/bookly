@@ -9,6 +9,7 @@ import { clearCache } from 'services/api/base/create-api';
 import { Button, ScreenHeader, ListItem } from 'components';
 import { ChallengeEditor } from './components/challenge-editor';
 import { WithFantlabToggler } from './components/with-fantlab-toggler';
+import { BookListSort } from './components/book-list-sort';
 
 export class ProfileScreen extends React.Component<NavigationScreenProps> {
   session = inject(Session);
@@ -22,6 +23,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
         <View style={s.content}>
           <ChallengeEditor />
           <WithFantlabToggler />
+          <BookListSort />
 
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
         </View>

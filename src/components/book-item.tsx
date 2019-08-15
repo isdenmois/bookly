@@ -35,7 +35,6 @@ interface Props {
 }
 
 @withObservables(['book'], ({ book }) => {
-  console.log('RESUBSCRIBE!', [book.id]);
   return {
     book: book.observe ? book : of(book),
   };

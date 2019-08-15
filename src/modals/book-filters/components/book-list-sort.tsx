@@ -10,9 +10,11 @@ const SORT_LABELS = {
   rating: 'рейтинг',
   author: 'автор',
   id: 'id',
+  createdAt: 'добавление',
 };
 
 interface Props {
+  title?: string;
   fields: string[];
   value: any;
   onChange: (params: any) => void;
@@ -21,9 +23,10 @@ interface Props {
 export class BookListSort extends React.PureComponent<Props> {
   render() {
     const fields: any = _.pick(SORT_LABELS, this.props.fields);
+    const title = this.props.title || 'Сортировка';
 
     return (
-      <EditableListItem title='Сортировка' fields={fields} value={this.props.value.field} onChange={this.setField}>
+      <EditableListItem title={title} fields={fields} value={this.props.value.field} onChange={this.setField}>
         <TouchIcon
           name={this.props.value.desc ? 'arrow-down' : 'arrow-up'}
           paddingVertical={15}
