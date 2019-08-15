@@ -1,9 +1,7 @@
 import _ from 'lodash';
-import { filter } from 'rxjs/operators';
-import { Model, Q } from '@nozbe/watermelondb';
+import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
-import { action, field, date, children, lazy } from '@nozbe/watermelondb/decorators';
-import { Observable } from 'utils/model-observable';
+import { action, field, date, children, readonly } from '@nozbe/watermelondb/decorators';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
@@ -13,8 +11,6 @@ const FIELDS = ['title', 'author', 'thumbnail', 'type', 'search', 'status', 'rat
 type BookFields = 'id' | 'title' | 'author' | 'thumbnail' | 'type' | 'search' | 'status' | 'rating' | 'date';
 
 export type BookData = Pick<Book, BookFields>;
-
-const bookAuthorsCache = new Map();
 
 export default class Book extends Model {
   static table = 'books';
@@ -31,6 +27,7 @@ export default class Book extends Model {
   @date('date') date;
   @field('type') type;
   @field('search') search;
+  @readonly @date('created_at') createdAt;
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;

@@ -226,8 +226,6 @@ function findModel(item, models) {
     _.defaults(record, _.omit(item, ['_orig']));
     record._orig = item;
     item._orig = null;
-
-    console.log('record found id =', record.id);
   }
 
   return record;
