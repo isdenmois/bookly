@@ -23,10 +23,10 @@ export class FantlabReview extends React.PureComponent<Props, State> {
   render() {
     const review = this.props.review;
     const bodyLines = this.state.expanded ? null : DEFAULT_BODY_LINES;
-    const Component: any = this.state.expanded ? View : TouchableOpacity;
+    const onPress = this.state.expanded ? null : this.toggleExpanded;
 
     return (
-      <Component style={s.container} onPress={this.toggleExpanded}>
+      <View style={s.container}>
         <View style={s.dataRow}>
           <View style={s.mainInfo}>
             <Thumbnail
@@ -46,14 +46,14 @@ export class FantlabReview extends React.PureComponent<Props, State> {
           <Text style={s.rating}>{review.likes}</Text>
         </View>
 
-        <Text style={s.body} numberOfLines={bodyLines}>
+        <Text style={s.body} numberOfLines={bodyLines} onPress={onPress}>
           {parser.toReact(review.body)}
         </Text>
 
         <TouchableOpacity onPress={this.toggleExpanded}>
           <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
         </TouchableOpacity>
-      </Component>
+      </View>
     );
   }
 
