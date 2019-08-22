@@ -3,6 +3,7 @@ import { StyleSheet, View, TextStyle, ViewStyle, Text, TouchableOpacity } from '
 import { color } from 'types/colors';
 import { Thumbnail } from 'components';
 import { Edition } from '../editions.screen';
+import { thousandsSeparator } from 'utils/number-format';
 const pluralize = require('pluralize-ru')
 
 interface Props {
@@ -29,7 +30,7 @@ export class EditionCard extends React.PureComponent<Props> {
           {this.title(edition)}
           <Text style={s.descriontion}>{translators.join(', ')}</Text>
           <Text style={s.descriontion}>{this.pageCount(edition)}</Text>
-          <Text style={s.descriontion}>{edition.copies} изданий</Text>
+          <Text style={s.descriontion}>{thousandsSeparator(edition.copies)} изданий</Text>
         </View>
       </View>
     );
