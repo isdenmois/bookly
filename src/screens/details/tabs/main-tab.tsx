@@ -25,7 +25,8 @@ export class MainTab extends React.Component<Props> {
 
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
 
-        {!!book.editionCount && <ViewLine title='Изданий' value={book.editionCount} />}
+        {!!book.editionCount && <ViewLineTouchable title='Изданий' value={book.editionCount} onPress={this.openEditions}/>}
+
         {!!book.language && <ViewLine title='Язык написания' value={book.language} />}
         {!!book.title && !!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
 
@@ -50,6 +51,10 @@ export class MainTab extends React.Component<Props> {
 
   openBook(book) {
     this.props.navigation.push('Details', { bookId: book.id });
+  }
+
+  openEditions = () => {
+    this.props.navigation.push('Editions', { book: this.props.book });
   }
 }
 
