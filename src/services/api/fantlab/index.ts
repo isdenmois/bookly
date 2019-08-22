@@ -8,6 +8,7 @@ import * as similarSchema from './similar';
 import * as reviewListSchema from './review-list';
 import * as markWorkSchema from './mark-work';
 import * as loginSchema from './login';
+import * as editionsSchema from './editions';
 
 export class FantlabAPI {
   baseUrl = FANTLAB_URL;
@@ -19,4 +20,5 @@ export class FantlabAPI {
   reviewList = createApi(this, reviewListSchema);
   markWork = createApi(this, markWorkSchema);
   login = createApi(this, loginSchema);
+  editions = createApi(this, editionsSchema);
 }
