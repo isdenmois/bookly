@@ -1,15 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, TextStyle, ViewStyle, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TextStyle, ViewStyle, Text, TouchableOpacity, Linking } from 'react-native';
 import { color } from 'types/colors';
 import { Thumbnail } from 'components';
-import { Edition } from '../editions.screen';
 import { thousandsSeparator } from 'utils/number-format';
+import { Edition } from 'services/api/fantlab/editions';
 const pluralize = require('pluralize-ru')
 
 interface Props {
   edition: Edition
   translators: string[]
-  onCoverPress: (edition: Edition) => void
 }
 
 export class EditionCard extends React.PureComponent<Props> {
@@ -23,7 +22,7 @@ export class EditionCard extends React.PureComponent<Props> {
             <Thumbnail auto={null} width={76} height={117} url={edition.thumbnail} />
           </TouchableOpacity>
           <View style={s.yearBlock}>
-            <Text style={s.yearText}>2005</Text>
+            <Text style={s.yearText}>{edition.year}</Text>
           </View>
         </View>
         <View>
@@ -48,9 +47,7 @@ export class EditionCard extends React.PureComponent<Props> {
     return pluralize(edition.pages, '%d страниц', '%d страница', '%d страницы', '%d страниц')
   }
 
-  openEditionPage = () => {
-    this.props.onCoverPress(this.props.edition)
-  }
+  openEditionPage = () => Linking.openURL(`https:${this.props.edition.url}`);
 }
 
 const s = StyleSheet.create({
