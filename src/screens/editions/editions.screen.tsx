@@ -9,6 +9,7 @@ import { Fetcher, ScreenHeader } from 'components';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { BookExtended } from 'types/book-extended';
+import { Edition } from 'services/api/fantlab/editions';
 
 interface Props extends NavigationScreenProps {
   book: BookExtended
@@ -32,10 +33,8 @@ export class EditionsListScreen extends React.Component<Props> {
   }
 
   renderEditionsList = (edition: Edition) => {
-    return <EditionCard key={edition.id} edition={edition} translators={this.props.book.translators[edition.id]} onCoverPress={this.openEditionPage} />
+    return <EditionCard key={edition.id} edition={edition} translators={this.props.book.translators[edition.id]} />
   };
-
-  openEditionPage = (edition: Edition) => Linking.openURL(`https:${edition.url}`);
 }
 
 const s = StyleSheet.create({
@@ -50,15 +49,3 @@ const s = StyleSheet.create({
     paddingBottom: 20,
   } as ViewStyle,
 });
-
-export interface Edition {
-  copies: number
-  id: number
-  image: string
-  isbns: string[]
-  thumbnail: string
-  pages: number
-  published: number
-  url: string
-  year: number
-}
