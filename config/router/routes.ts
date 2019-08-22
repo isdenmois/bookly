@@ -4,6 +4,7 @@ import { ReadListScreen } from 'screens/book-list/read-list.screen';
 import { WishListScreen } from 'screens/book-list/wish-list.screen';
 import { ProfileScreen } from 'screens/profile/profile.screen';
 import { DetailsScreen } from 'screens/details/details.screen';
+import { EditionsListScreen } from 'screens/editions/editions.screen';
 
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
 import { BookSelectModal } from 'modals/book-select/book-select.modal';
@@ -19,6 +20,7 @@ export const MainStack = {
   WishList: WishListScreen,
   Profile: ProfileScreen,
   Details: DetailsScreen,
+  Editions: EditionsListScreen,
 };
 
 export const ModalStack = {

@@ -33,6 +33,8 @@ export const mapBody = {
   search,
   parent,
   children,
+  editionIds,
+  translators,
 };
 
 function editionCount(book) {
@@ -76,4 +78,21 @@ function children(w) {
     type: _.capitalize(c.work_type) || 'Другое',
     year: c.work_year,
   }));
+}
+
+function editionIds(w) {
+  const RUSSIAN_EDITION = 10
+  return _.get(w, `editions_blocks.${RUSSIAN_EDITION}.list`, []).map(el => el.edition_id)
+}
+
+function translators(w) {
+  const editions = _.get(w, 'editions_blocks.10.list', [])
+  const translators = _.get(w, 'editions_info.translators', [])
+  const translatorNames = {}
+
+  _.forEach(editions, el => {
+    translatorNames[el.edition_id] = el.translators.split(',').map(id => _.get(translators.find(t => t.id === id), 'name', ''))
+  })
+
+  return translatorNames
 }
