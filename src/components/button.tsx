@@ -9,6 +9,7 @@ interface Props {
   icon?: any;
   thin?: boolean;
   disabled?: boolean;
+  bordered?: boolean;
   style?: ViewStyle | ViewStyle[];
   textStyle?: TextStyle;
   testID?: string;
@@ -17,9 +18,9 @@ interface Props {
 
 export class Button extends React.Component<Props> {
   render() {
-    const { icon, label, thin, disabled } = this.props;
-    const viewStyles = [...cn('container', { thin, disabled })].concat(this.props.style);
-    const textStyles = [s.text, ...cn(icon && { icon: !thin, iconThin: thin }), this.props.textStyle];
+    const { icon, label, thin, disabled, bordered, textStyle } = this.props;
+    const viewStyles = [...cn('container', { thin, disabled, bordered })].concat(this.props.style);
+    const textStyles = [s.text, ...cn(icon && { icon: !thin, iconThin: thin }, { inversed: bordered }), textStyle];
     const Component: any = disabled ? View : TouchableOpacity;
 
     return (
@@ -54,12 +55,21 @@ const s = StyleSheet.create({
     borderRadius: 15,
   } as ViewStyle,
   disabled: {
-    opacity: 0.6,
+    opacity: 0.4,
+  } as ViewStyle,
+  bordered: {
+    backgroundColor: 'transparent',
+    borderWidth: 0.5,
+    borderColor: color.Primary,
   } as ViewStyle,
   text: {
     color: color.PrimaryTextInverse,
     fontFamily: 'sans-serif-medium',
     textAlign: 'center',
+    lineHeight: 19,
+  } as TextStyle,
+  inversed: {
+    color: color.Primary,
   } as TextStyle,
 });
 const cn = classnames(s);
