@@ -33,11 +33,11 @@ export function withScroll(WrappedComponent): any {
     }
 
     render() {
-      const { scrollY, headerHeight, tabsPadding } = this.props;
+      const { scrollY, headerHeight } = this.props;
       const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true });
       const wrappedProps = _.omit(this.props, ['y', 'scrollY', 'headerHeight', 'onScrollEnd']);
-      const paddingTop = headerHeight + tabsPadding + 15;
-      const minHeight = this.screenHeight + paddingTop - 130;
+      const paddingTop = headerHeight + 15;
+      const minHeight = this.screenHeight + paddingTop - 110 - 38;
 
       return (
         <View style={s.relative}>
