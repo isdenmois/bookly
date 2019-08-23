@@ -1,12 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import { Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, StyleSheet, TextStyle } from 'react-native';
 import { color } from 'types/colors';
-import { ListItem, TouchIcon } from 'components';
+import { ListItem } from 'components';
 import { SelectList } from './select-list';
-import Author from 'store/author';
-
-type Field = string | Author;
 
 interface Props {
   title: string;

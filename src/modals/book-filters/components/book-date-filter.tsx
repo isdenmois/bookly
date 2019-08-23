@@ -2,16 +2,16 @@ import React from 'react';
 import { StyleSheet, ViewStyle, View } from 'react-native';
 import { Calendar, DateObject } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Interval } from 'types/book-filters';
+import { observer } from 'mobx-react';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
+import { inject } from 'services';
 import { TouchIcon } from 'components';
 import { OpenableListItem } from './openable-list-item';
+import { BookFilters } from '../book-filters.service';
 
 interface Props {
-  value: Interval<Date>;
   onApply: () => void;
-  onChange: (type: string, value: Interval<Date>) => void;
 }
 
 interface State {
@@ -23,14 +23,17 @@ interface State {
 const HALF_DAY = 12 * 60 * 60 * 1000;
 const MARKED_DAY = { startingDay: true, color: color.Primary };
 
+@observer
 export class BookDateFilter extends React.PureComponent<Props, State> {
   state: State = { opened: false, from: null, markedDates: null };
+
+  filters = inject(BookFilters);
 
   today = new Date();
   calendar: any;
 
   get formattedDate(): string {
-    const value: any = this.props.value || {};
+    const value: any = this.filters.date || {};
     const { from, to } = value;
 
     return from && to ? `${formatDate(from)} - ${formatDate(to)}` : '';
@@ -95,11 +98,11 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
   setDate = (to: Date) => {
     const from = this.state.from;
 
-    this.props.onChange('date', { from, to });
-    this.props.onChange('year', null);
+    this.filters.setFilter('date', { from, to });
+    this.filters.setFilter('year', null);
   };
 
-  clear = () => this.props.onChange('date', null);
+  clear = () => this.filters.setFilter('date', null);
   resetState = () => this.setState({ from: null, markedDates: null });
 }
 
