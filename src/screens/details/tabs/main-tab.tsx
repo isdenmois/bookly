@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
@@ -25,10 +25,10 @@ export class MainTab extends React.Component<Props> {
 
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
 
-        {!!book.editionCount && <ViewLineTouchable title='Изданий' value={book.editionCount} onPress={this.openEditions}/>}
+        {!!book.editionCount && <ViewLineTouchable title='Изданий' value={book.editionCount} onPress={this.openEditions} />}
 
         {!!book.language && <ViewLine title='Язык написания' value={book.language} />}
-        {!!book.title && !!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
+        {!!book.title && !!book.originalTitle && <ViewLineTouchable title='Оригинальное название' value={book.originalTitle} onPress={this.openTelegram} />}
 
         {!!book.otherTitles && <ViewLine title='Другие названия' value={book.otherTitles} />}
 
@@ -56,6 +56,8 @@ export class MainTab extends React.Component<Props> {
   openEditions = () => {
     this.props.navigation.push('Editions', { book: this.props.book });
   }
+
+  openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
 }
 
 const s = StyleSheet.create({
