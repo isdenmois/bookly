@@ -16,7 +16,7 @@ import { color } from 'types/colors';
 
 interface Props extends NavigationScreenProps {
   book: Book & BookExtended;
-  renderHeader: (scrollY?: Animated.Value, height?: number) => React.ReactNode;
+  renderHeader: (scrollY: Animated.Value, height: number, tabbar: any) => React.ReactNode;
   tabsPadding: number;
   isExist: boolean;
 }
@@ -35,14 +35,6 @@ const TABS = {
   DETAILS: { key: 'details', title: 'Детали', component: DetailsTab },
 };
 
-const COMPONENTS = {
-  main: MainTab,
-  children: ChildrenTab,
-  reviews: ReviewsTab,
-  similar: SimilarTab,
-  details: DetailsTab,
-};
-
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
 
 export class BookDetailsTabs extends React.Component<Props, State> {
@@ -55,7 +47,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
       ...(this.similarBooksVisible ? [TABS.SIMILAR] : []),
       TABS.DETAILS,
     ],
-    headerHeight: 271,
+    headerHeight: 0,
   };
   initialLayout = {
     height: 0,
@@ -107,44 +99,39 @@ export class BookDetailsTabs extends React.Component<Props, State> {
   renderTabBar = props => (
     <View style={{ position: 'relative' }}>
       <Animated.View
-        style={[
-          s.header,
-          {
-            translateY: this.scrollY.interpolate({
-              inputRange: [0, this.state.headerHeight - 120],
-              outputRange: [0, 120 - this.state.headerHeight],
-              extrapolate: 'clamp',
-            }),
-          },
-        ]}
+        style={
+          this.state.headerHeight
+            ? [
+                s.header,
+                {
+                  translateY: this.scrollY.interpolate({
+                    inputRange: [0, this.state.headerHeight - 110],
+                    outputRange: [0, -this.state.headerHeight + 110],
+                    extrapolate: 'clamp',
+                  }),
+                },
+              ]
+            : null
+        }
         onLayout={this.setHeaderHeight}
       >
-        {this.props.renderHeader(this.scrollY, this.state.headerHeight)}
-      </Animated.View>
-
-      <Animated.View
-        style={{
-          zIndex: 1,
-          overflow: 'hidden',
-          paddingBottom: 6,
-          translateY: this.scrollY.interpolate({
-            inputRange: [0, this.state.headerHeight - 100 + 2 * this.props.tabsPadding],
-            outputRange: [this.state.headerHeight + this.props.tabsPadding, 100 - this.props.tabsPadding],
-            extrapolate: 'clamp',
-          }),
-        }}
-      >
-        <TabBar
-          {...props}
-          scrollEnabled
-          getLabelText={getLabelText}
-          activeColor={color.PrimaryText}
-          inactiveColor={color.PrimaryText}
-          indicatorStyle={s.indicator}
-          labelStyle={s.label}
-          tabStyle={s.tabBar}
-          style={s.tab}
-        />
+        {this.props.renderHeader(
+          this.scrollY,
+          this.state.headerHeight,
+          <View style={{ overflow: 'hidden', paddingBottom: 4, zIndex: 5, backgroundColor: 'white' }}>
+            <TabBar
+              {...props}
+              scrollEnabled
+              getLabelText={getLabelText}
+              activeColor={color.PrimaryText}
+              inactiveColor={color.PrimaryText}
+              indicatorStyle={s.indicator}
+              labelStyle={s.label}
+              tabStyle={s.tabBar}
+              style={s.tab}
+            />
+          </View>,
+        )}
       </Animated.View>
     </View>
   );

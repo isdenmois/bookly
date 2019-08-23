@@ -45,13 +45,11 @@ export class BookDetails extends React.Component<Props> {
 
   render() {
     const book = this.props.book;
-    const renderHeader = book.thumbnail ? this.renderMainInfoWithThumbnail : this.renderMainInfoWithoutThumbnail;
-    const tabsPadding = book.thumbnail ? 26 : 0;
 
     return (
       <BookDetailsTabs
-        tabsPadding={tabsPadding}
-        renderHeader={renderHeader}
+        tabsPadding={0}
+        renderHeader={this.renderMainInfo}
         book={book}
         isExist={book && !!book.status}
         navigation={this.props.navigation}
@@ -59,140 +57,100 @@ export class BookDetails extends React.Component<Props> {
     );
   }
 
-  renderHeader(book: Book, scrollY: Animated.Value, headerHeight) {
+  renderHeader() {
     return (
-      <Animated.View
-        style={{
-          zIndex: 1,
-          translateY: scrollY.interpolate({
-            inputRange: [0, headerHeight - 120],
-            outputRange: [0, headerHeight - 120],
-            extrapolate: 'clamp',
-          }),
-        }}
-      >
-        <BookDetailsHeader bookId={book.id} onBack={this.props.onBack} />
-      </Animated.View>
+      <BookDetailsHeader bookId={this.props.book.id} onBack={this.props.onBack}>
+        {this.renderTitle()}
+      </BookDetailsHeader>
     );
   }
 
-  renderMainInfoWithThumbnail = (scrollY: Animated.Value, headerHeight) => {
-    const book = this.props.book;
-
+  renderTitle() {
     return (
-      <>
-        <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: getThumbnailUrl(book.thumbnail) }}>
-          <View style={s.darkOverlay}>
-            {this.renderHeader(book, scrollY, headerHeight)}
-
-            <View style={s.mainInformationContainer}>
-              <Animated.View
-                style={{
-                  opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 130], outputRange: [1, 0] }),
-                  translateX: scrollY.interpolate({
-                    inputRange: [0, headerHeight - 130, headerHeight - 129],
-                    outputRange: [0, 0, 500],
-                    extrapolate: 'clamp',
-                  }),
-                }}
-              >
-                <TouchableOpacity onPress={this.openChangeThumbnail} style={{ zIndex: 1 }}>
-                  <Thumbnail style={s.thumbnail} width={120} height={180} url={book.thumbnail} cache auto='none' />
-                </TouchableOpacity>
-              </Animated.View>
-
-              <Animated.View
-                style={[
-                  s.mainInformation,
-                  {
-                    translateX: scrollY.interpolate({
-                      inputRange: [0, headerHeight - 120],
-                      outputRange: [0, -70],
-                      extrapolate: 'clamp',
-                    }),
-                    translateY: scrollY.interpolate({
-                      inputRange: [0, headerHeight - 120],
-                      outputRange: [0, headerHeight - 217],
-                      extrapolate: 'clamp',
-                    }),
-                  },
-                ]}
-              >
-                <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
-                  {this.bookTitle}
-                </Text>
-                <Animated.View
-                  style={{
-                    opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 140], outputRange: [1, 0] }),
-                    translateX: scrollY.interpolate({
-                      inputRange: [0, headerHeight - 140, headerHeight - 139],
-                      outputRange: [0, 0, 500],
-                      extrapolate: 'clamp',
-                    }),
-                  }}
-                >
-                  <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
-                    <Text style={s.author}>{book.author}</Text>
-                  </TouchableWithoutFeedback>
-                </Animated.View>
-              </Animated.View>
-            </View>
-          </View>
-        </ImageBackground>
-
-        <Animated.View
-          style={[
-            s.statusButton,
-            { opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 140], outputRange: [1, 0] }) },
-          ]}
-        >
-          <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={book} />
-        </Animated.View>
-      </>
+      <TouchableOpacity style={s.titleWrapper} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
+        <Text style={s.title}>{this.bookTitle}</Text>
+      </TouchableOpacity>
     );
-  };
+  }
 
-  renderMainInfoWithoutThumbnail = (scrollY: Animated.Value, headerHeight) => {
-    const book = this.props.book;
+  renderAuthor() {
+    return (
+      <View>
+        <Text style={s.author} onLongPress={this.searchAuthor}>
+          {this.props.book.author}
+        </Text>
+        {!!this.props.book.thumbnail && <View style={s.thumbnailPlaceholder} />}
+      </View>
+    );
+  }
+
+  renderThumbnailBackground = children => (
+    <ImageBackground
+      style={s.imageBackground}
+      blurRadius={1.5}
+      source={{ uri: getThumbnailUrl(this.props.book.thumbnail) }}
+    >
+      {children}
+    </ImageBackground>
+  );
+
+  renderAvatarBackground = children => {
     const backgroundColor = getAvatarBgColor(this.bookTitle);
 
-    return (
-      <View style={{ backgroundColor }}>
-        <View style={s.darkOverlay}>
-          {this.renderHeader(book, scrollY, headerHeight)}
+    return <View style={{ backgroundColor }}>{children}</View>;
+  };
 
-          <Animated.View
-            style={[
-              s.mainInformationWithoutThumbnail,
-              {
-                translateY: scrollY.interpolate({
-                  inputRange: [0, headerHeight - 130],
-                  outputRange: [0, headerHeight - 130],
-                  extrapolate: 'clamp',
-                }),
-              },
-            ]}
-          >
-            <Text style={s.title} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
-              {this.bookTitle}
-            </Text>
-            <Animated.View
-              style={{
-                opacity: scrollY.interpolate({ inputRange: [0, headerHeight - 130], outputRange: [1, 0] }),
-                translateX: scrollY.interpolate({
-                  inputRange: [0, headerHeight - 130, headerHeight - 129],
-                  outputRange: [0, 0, 500],
-                  extrapolate: 'clamp',
-                }),
-              }}
-            >
-              <TouchableWithoutFeedback onLongPress={this.searchAuthor}>
-                <Text style={s.author}>{book.author}</Text>
-              </TouchableWithoutFeedback>
-              <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={book} />
-            </Animated.View>
-          </Animated.View>
+  renderSecondaryData() {
+    return (
+      <View style={s.status}>
+        <ReadButton ratingStyle={s.whiteRating} openChangeStatus={this.openChangeStatus} book={this.props.book} />
+      </View>
+    );
+  }
+
+  renderSecondaryWithThumbnailData() {
+    const book = this.props.book;
+
+    return (
+      <View style={s.mainInformationContainer}>
+        <View>
+          <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={book} />
+          {!!book.genre && <Text style={s.secondary}>{book.genre}</Text>}
+          {!!book.year && <Text style={s.secondary}>{book.year}</Text>}
         </View>
+
+        <TouchableOpacity onPress={this.openChangeThumbnail} style={{ translateY: -40, marginBottom: -40 }}>
+          <Thumbnail style={s.thumbnail} width={120} height={180} url={this.props.book.thumbnail} cache auto='none' />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  renderMainInfo = (scrollY: Animated.Value, headerHeight: number, tabbar: any) => {
+    const book = this.props.book;
+    const renderBackground = book.thumbnail ? this.renderThumbnailBackground : this.renderAvatarBackground;
+    const translateY = headerHeight
+      ? scrollY.interpolate({
+          inputRange: [0, headerHeight - 110],
+          outputRange: [0, headerHeight - 110],
+          extrapolate: 'clamp',
+        })
+      : null;
+
+    return (
+      <View style={{ backgroundColor: 'white', overflow: 'hidden' }}>
+        <Animated.View style={{ translateY }}>
+          {renderBackground(
+            <View style={s.darkOverlay}>
+              {this.renderHeader()}
+              {this.renderAuthor()}
+              {!book.thumbnail && this.renderSecondaryData()}
+            </View>,
+          )}
+
+          {!!book.thumbnail && this.renderSecondaryWithThumbnailData()}
+        </Animated.View>
+        {tabbar}
       </View>
     );
   };
@@ -236,41 +194,50 @@ const s = StyleSheet.create({
   } as ViewStyle,
   darkOverlay: {
     backgroundColor: 'rgba(0,0,0,.5)',
+    paddingBottom: 10,
   } as ViewStyle,
   mainInformationContainer: {
     flexDirection: 'row',
-    marginBottom: -50,
-    marginTop: MARGIN,
-    overflow: 'hidden',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    marginTop: 5,
   } as ViewStyle,
   thumbnail: {
     marginLeft: MARGIN,
     zIndex: 1,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderWidth: 5,
+    borderColor: 'white',
   } as ImageStyle,
-  mainInformation: {
-    marginLeft: MARGIN,
-    marginTop: MARGIN,
-    marginBottom: 65,
+  titleWrapper: {
     flex: 1,
-    overflow: 'hidden',
   } as ViewStyle,
   title: {
     color: color.PrimaryTextInverse,
     fontSize: 24,
+    lineHeight: 28,
+    fontFamily: 'sans-serif-medium',
   } as TextStyle,
   author: {
     color: color.PrimaryTextInverse,
+    fontSize: 24,
+    lineHeight: 26,
+    fontFamily: 'sans-serif-light',
+    paddingLeft: 52,
+    paddingRight: 20,
+  } as TextStyle,
+  secondary: {
+    color: color.PrimaryText,
     fontSize: 18,
+    marginTop: 15,
   } as TextStyle,
-  statusButton: {
+  thumbnailPlaceholder: {
+    width: 140,
+  } as ViewStyle,
+  status: {
+    paddingLeft: 52,
     alignSelf: 'flex-start',
-    marginLeft: READ_BUTTON_MARGIN,
-    marginBottom: 0,
-  } as TextStyle,
-  mainInformationWithoutThumbnail: {
-    alignItems: 'flex-start',
-    marginHorizontal: 15,
-    marginBottom: 15,
   } as ViewStyle,
   blackRating: {
     color: color.PrimaryText,

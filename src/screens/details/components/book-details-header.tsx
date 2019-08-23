@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
+import { Linking, StyleSheet, View, TextStyle, ViewStyle, Dimensions } from 'react-native';
 import { color } from 'types/colors';
 import { TouchIcon } from 'components';
 
@@ -15,21 +15,13 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
         <TouchIcon
           style={s.icon}
           paddingHorizontal={15}
-          paddingVertical={10}
           name='arrow-left'
           size={24}
           color='white'
           onPress={this.props.onBack}
         />
-        <TouchIcon
-          style={s.icon}
-          paddingHorizontal={15}
-          paddingVertical={10}
-          name='globe'
-          size={24}
-          color='white'
-          onPress={this.openWeb}
-        />
+        {this.props.children}
+        <TouchIcon style={s.icon} paddingHorizontal={15} name='globe' size={24} color='white' onPress={this.openWeb} />
       </View>
     );
   }
@@ -40,9 +32,9 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
 const s = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 30,
+    marginTop: 20,
+    paddingVertical: 10,
   } as ViewStyle,
   icon: {
     zIndex: 2,
