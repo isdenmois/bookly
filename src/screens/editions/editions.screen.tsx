@@ -12,7 +12,8 @@ import { BookExtended } from 'types/book-extended';
 import { Edition } from 'services/api/fantlab/editions';
 
 interface Props extends NavigationScreenProps {
-  book: BookExtended
+  editionIds: number[]
+  translators: any
 }
 
 @withNavigationProps()
@@ -24,7 +25,7 @@ export class EditionsListScreen extends React.Component<Props> {
       <View style={s.container}>
         <ScreenHeader title={'Список изданий'} />
         <ScrollView contentContainerStyle={s.scroll}>
-          <Fetcher api={this.api.editions} e={this.props.book.editionIds.join(',')}>
+          <Fetcher api={this.api.editions} e={this.props.editionIds.join(',')}>
             {this.renderEditionsList}
           </Fetcher>
         </ScrollView>
@@ -33,7 +34,7 @@ export class EditionsListScreen extends React.Component<Props> {
   }
 
   renderEditionsList = (edition: Edition) => {
-    return <EditionCard key={edition.id} edition={edition} translators={this.props.book.translators[edition.id]} />
+    return <EditionCard key={edition.id} edition={edition} translators={this.props.translators[edition.id]} />
   };
 }
 
