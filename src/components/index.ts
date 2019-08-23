@@ -4,6 +4,7 @@ export { BookItem } from './book-item';
 export { Button } from './button';
 export { Counter } from './counter';
 export { Dialog } from './dialog';
+export { ExpandableText } from './expandable-text'
 export { Fetcher } from './fetcher';
 export { ListItem } from './list-item';
 export { ReadButton } from './read-button';
