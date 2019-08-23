@@ -123,7 +123,7 @@ export class Fetcher extends React.PureComponent<Props> {
   renderError() {
     const error = this.state.error;
 
-    return <Text>{JSON.stringify(error)}</Text>;
+    return <Text>{error instanceof Error ? error.toString() : JSON.stringify(error)}</Text>;
   }
 
   renderList(list: any[]) {
@@ -229,10 +229,6 @@ function findModel(item, models) {
   }
 
   return record;
-}
-
-function getFields(collection) {
-  return _.map(collection.schema.columns, c => c.name);
 }
 
 export function EmptyResult({ text }) {

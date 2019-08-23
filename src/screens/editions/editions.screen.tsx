@@ -42,7 +42,6 @@ const s = StyleSheet.create({
   container: {
     backgroundColor: color.Background,
     flex: 1,
-    marginTop: 40,
     marginHorizontal: 10,
   } as ViewStyle,
   scroll: {
