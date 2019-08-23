@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import parser from 'bbcode-to-react';
 import { FantlabReview as IFantlabReview } from 'services/api/fantlab/review-list';
-import { Thumbnail } from 'components';
+import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { color } from 'types/colors';
 
@@ -11,19 +11,9 @@ interface Props {
   review: IFantlabReview;
 }
 
-interface State {
-  expanded: boolean;
-}
-
-const DEFAULT_BODY_LINES = 3;
-
-export class FantlabReview extends React.PureComponent<Props, State> {
-  state: State = { expanded: false };
-
+export class FantlabReview extends React.PureComponent<Props> {
   render() {
     const review = this.props.review;
-    const bodyLines = this.state.expanded ? null : DEFAULT_BODY_LINES;
-    const onPress = this.state.expanded ? null : this.toggleExpanded;
 
     return (
       <View style={s.container}>
@@ -46,18 +36,10 @@ export class FantlabReview extends React.PureComponent<Props, State> {
           <Text style={s.rating}>{review.likes}</Text>
         </View>
 
-        <Text style={s.body} numberOfLines={bodyLines} onPress={onPress}>
-          {parser.toReact(review.body)}
-        </Text>
-
-        <TouchableOpacity onPress={this.toggleExpanded}>
-          <Text style={s.toggleText}>{this.state.expanded ? 'Свернуть' : 'Читать далее'}</Text>
-        </TouchableOpacity>
+        <ExpandableText>{parser.toReact(review.body)}</ExpandableText>
       </View>
     );
   }
-
-  toggleExpanded = () => this.setState({ expanded: !this.state.expanded });
 }
 
 const s = StyleSheet.create({
@@ -94,14 +76,5 @@ const s = StyleSheet.create({
   } as TextStyle,
   icon: {
     marginLeft: 10,
-  } as TextStyle,
-  body: {
-    color: color.Review,
-    marginTop: 10,
-  } as TextStyle,
-  toggleText: {
-    paddingVertical: 5,
-    textAlign: 'right',
-    color: color.ReadMore,
   } as TextStyle,
 });
