@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
@@ -28,7 +28,7 @@ export class MainTab extends React.Component<Props> {
         {!!book.editionCount && <ViewLineTouchable title='Изданий' value={book.editionCount} onPress={this.openEditions} />}
 
         {!!book.language && <ViewLine title='Язык написания' value={book.language} />}
-        {!!book.title && !!book.originalTitle && <ViewLine title='Оригинальное название' value={book.originalTitle} />}
+        {!!book.title && !!book.originalTitle && <ViewLineTouchable title='Оригинальное название' value={book.originalTitle} onPress={this.openTelegram} />}
 
         {!!book.otherTitles && <ViewLine title='Другие названия' value={book.otherTitles} />}
 
@@ -57,6 +57,8 @@ export class MainTab extends React.Component<Props> {
     const { editionIds, translators } = this.props.book;
     this.props.navigation.push('Editions', { editionIds, translators });
   }
+
+  openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
 }
 
 const s = StyleSheet.create({
