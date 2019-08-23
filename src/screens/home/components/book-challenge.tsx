@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { Counter } from 'components';
-import { readBooksThisYearQuery, booksReadForecast } from '../home.service';
+import { readBooksThisYearQuery, booksReadForecast } from '../home.queries';
 
 interface Props {
   database: Database;

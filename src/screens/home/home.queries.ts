@@ -1,29 +1,7 @@
 import { Database, Q } from '@nozbe/watermelondb';
-import { SyncService, inject } from 'services';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
-
-export class HomeService {
-  syncService = inject(SyncService);
-  database = inject(Database);
-
-  async updateBook(book, title) {
-    await this.database.action(() =>
-      book.update(() => {
-        book.title = title;
-      }),
-    );
-
-    return this.syncService.sync();
-  }
-
-  async removeBook(book) {
-    await this.database.action(() => book.markAsDeleted());
-
-    return this.syncService.sync();
-  }
-}
 
 export function booksReadForecast(read: number, total: number): number {
   const yearProgress = dayOfYear() / 365;
