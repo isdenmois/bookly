@@ -25,3 +25,11 @@ export const mapBody = {
   thumbnail: r => r.image ? _.get(r.image.match(THUMBNAIL_ID), '0', null) : null,
   type: 'name_type',
 };
+
+export interface BookSimilar {
+  id: string
+  title: string
+  author: string
+  type: string
+  thumbnail: string;
+}

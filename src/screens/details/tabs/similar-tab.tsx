@@ -6,7 +6,7 @@ import { color } from 'types/colors';
 import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import { Fetcher, Thumbnail } from 'components';
-import { BookSimilar } from 'types/book-similar';
+import { BookSimilar } from 'services/api/fantlab/similar';
 import { BookExtended } from 'types/book-extended';
 import { withScroll } from './tab';
 

@@ -12,6 +12,8 @@ export function mapParams(login, password) {
   };
 }
 
+export type Request = (login: string, password: string) => Promise<FantlabLoginRequest>
+
 export interface FantlabLoginRequest {
   auth: number
   user_id?: number
