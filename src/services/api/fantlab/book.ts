@@ -93,7 +93,7 @@ function translators(w) {
   const translators = _.get(w, 'editions_info.translators', [])
   const translatorNames = {}
 
-  _.forEach(getEditions(w), el => {
+  getEditions(w).filter(e => e.translators).forEach(el => {
     translatorNames[el.edition_id] = el.translators.split(',').map(id => _.get(translators.find(t => t.id === id), 'name', ''))
   })
 

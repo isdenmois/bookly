@@ -4,16 +4,16 @@ import { color } from 'types/colors';
 import { Thumbnail } from 'components';
 import { thousandsSeparator } from 'utils/number-format';
 import { Edition } from 'services/api/fantlab/editions';
-const pluralize = require('pluralize-ru')
+const pluralize = require('pluralize-ru');
 
 interface Props {
-  edition: Edition
-  translators: string[]
+  edition: Edition;
+  translators: string[];
 }
 
 export class EditionCard extends React.PureComponent<Props> {
   render() {
-    const { edition, translators } = this.props
+    const { edition, translators } = this.props;
 
     return (
       <View style={s.card}>
@@ -27,7 +27,7 @@ export class EditionCard extends React.PureComponent<Props> {
         </View>
         <View>
           {this.title(edition)}
-          <Text style={s.descriontion}>{translators.join(', ')}</Text>
+          <Text style={s.descriontion}>{translators ? translators.join(', ') : 'Переводчик не указан'}</Text>
           <Text style={s.descriontion}>{this.pageCount(edition)}</Text>
           <Text style={s.descriontion}>{thousandsSeparator(edition.copies)} изданий</Text>
         </View>
@@ -37,15 +37,15 @@ export class EditionCard extends React.PureComponent<Props> {
 
   title = (edition: Edition) => {
     if (edition.published) {
-      return <Text style={s.title}>{edition.isbns.join('')}</Text>
+      return <Text style={s.title}>{edition.isbns.join('')}</Text>;
     }
 
-    return <Text style={s.title}>Издание запланировано</Text>
-  }
+    return <Text style={s.title}>Издание запланировано</Text>;
+  };
 
   pageCount = (edition: Edition) => {
-    return pluralize(edition.pages, '%d страниц', '%d страница', '%d страницы', '%d страниц')
-  }
+    return pluralize(edition.pages, '%d страниц', '%d страница', '%d страницы', '%d страниц');
+  };
 
   openEditionPage = () => Linking.openURL(`https:${this.props.edition.url}`);
 }
