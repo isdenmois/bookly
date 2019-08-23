@@ -57,7 +57,9 @@ export class BookList extends React.Component<Props> {
   };
 
   thumbnail(book) {
-    return <Thumbnail style={s.thumbnail} auto={null} width={60} height={60} title={book.title} url={book.thumbnail} cache />;
+    return (
+      <Thumbnail style={s.thumbnail} auto={null} width={60} height={60} title={book.title} url={book.thumbnail} cache />
+    );
   }
 }
 
@@ -66,7 +68,7 @@ const s = StyleSheet.create({
     maxHeight: 400,
   } as ViewStyle,
   listItem: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
   } as ViewStyle,
   row: {
     flex: 1,
@@ -77,11 +79,13 @@ const s = StyleSheet.create({
   title: {
     fontSize: 16,
     color: color.PrimaryText,
+    fontFamily: 'sans-serif-medium',
   } as TextStyle,
   author: {
     color: color.SecondaryText,
-    fontSize: 12,
+    fontSize: 16,
     marginTop: 5,
+    fontFamily: 'sans-serif-light',
   } as TextStyle,
   emptyText: {
     width: '100%',
