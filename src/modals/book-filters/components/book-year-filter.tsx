@@ -1,30 +1,32 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { inject } from 'services';
 import { ListItem } from 'components';
+import { BookFilters } from '../book-filters.service';
 
 interface Props {
-  value: string;
   onApply: () => void;
-  onChange: (type: string, value: any) => void;
 }
 
-export class BookYearFilter extends React.PureComponent<Props> {
-  render() {
-    return (
-      <ListItem
-        label='Год'
-        keyboardType='numeric'
-        value={this.props.value}
-        onChange={this.setYear}
-        onSubmit={this.props.onApply}
-        clearable
-      />
-    );
-  }
+export const BookYearFilter = observer((props: Props) => {
+  const filters = React.useMemo(() => inject(BookFilters), []);
+  const onChange = React.useCallback(value => setYear(filters, value), []);
 
-  setYear = value => {
-    if (!value || +value) {
-      this.props.onChange('year', +value || null);
-      this.props.onChange('date', null);
-    }
-  };
+  return (
+    <ListItem
+      label='Год'
+      keyboardType='numeric'
+      value={filters.year && filters.year.toString()}
+      onChange={onChange}
+      onSubmit={props.onApply}
+      clearable
+    />
+  );
+});
+
+function setYear(filters: BookFilters, value: string) {
+  if (!value || +value) {
+    filters.setFilter('year', +value || null);
+    filters.setFilter('date', null);
+  }
 }

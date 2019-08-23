@@ -3,12 +3,11 @@
   "configurations": [
     {
       "name": "Debug Android",
-      "program": "${workspaceRoot}/.vscode/launchReactNative.js",
+      "cwd": "${workspaceFolder}",
       "type": "reactnative",
       "request": "launch",
       "platform": "android",
-      "sourceMaps": true,
-      "outDir": "${workspaceRoot}/.vscode/.react"
+      "sourceMaps": true
     }
   ]
 }

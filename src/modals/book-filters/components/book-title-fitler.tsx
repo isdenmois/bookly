@@ -1,25 +1,25 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { inject } from 'services';
 import { ListItem } from 'components';
+import { BookFilters } from '../book-filters.service';
 
 interface Props {
-  value: string;
   onApply: () => void;
-  onChange: (type: string, value: any) => void;
 }
 
-export class BookTitleFilter extends React.PureComponent<Props> {
-  render() {
-    return (
-      <ListItem
-        label='Название'
-        keyboardType='default'
-        value={this.props.value}
-        onChange={this.setTitle}
-        onSubmit={this.props.onApply}
-        clearable
-      />
-    );
-  }
+export const BookTitleFilter = observer((props: Props) => {
+  const filters = React.useMemo(() => inject(BookFilters), []);
+  const setTitle = React.useCallback(value => filters.setFilter('title', value), []);
 
-  setTitle = value => this.props.onChange('title', value);
-}
+  return (
+    <ListItem
+      label='Название'
+      keyboardType='default'
+      value={filters.title}
+      onChange={setTitle}
+      onSubmit={props.onApply}
+      clearable
+    />
+  );
+});

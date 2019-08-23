@@ -1,31 +1,35 @@
 import React from 'react';
 import { TextInput, StyleSheet, TextStyle } from 'react-native';
 import { sortBy, prop } from 'rambdax';
-import { Q } from '@nozbe/watermelondb';
+import { Q, Database } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
+import { observer } from 'mobx-react';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
 import Author from 'store/author';
+import { inject } from 'services';
 import { EditableListItem } from './editable-list-item';
+import { BookFilters } from '../book-filters.service';
 
 interface Props {
   authors?: Author[];
-  value: string;
-  onChange: (type: string, authorId: string) => void;
+  status: BOOK_STATUSES;
 }
 
 interface State {
   name: string;
 }
 
-@withObservables(null, ({ database, status }) => {
-  const queries = [Q.on('books', 'status', status), Q.on('book_authors', '_status', Q.notEq('deleted'))];
+@withObservables(null, (props: Props) => {
+  const queries = [Q.on('books', 'status', props.status), Q.on('book_authors', '_status', Q.notEq('deleted'))];
+  const authors = inject(Database).collections.get('authors');
 
-  return {
-    authors: database.collections.get('authors').query(...queries),
-  };
+  return { authors: authors.query(...queries) };
 })
+@observer
 export class BookAuthorFilter extends React.PureComponent<Props, State> {
   state: State = { name: '' };
+  filters = inject(BookFilters);
 
   sortAuthors = sortBy(prop('name'));
 
@@ -43,7 +47,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
         title='Автор'
         fields={this.sortAuthors(authors)}
         labelKey='name'
-        value={this.props.value}
+        value={this.filters.author}
         onChange={this.setAuthor}
         clearable
       >
@@ -55,7 +59,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
   setName = name => this.setState({ name });
 
   setAuthor = value => {
-    this.props.onChange('author', value);
+    this.filters.setFilter('author', value);
     this.setState({ name: '' });
   };
 }
