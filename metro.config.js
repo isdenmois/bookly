@@ -2,6 +2,7 @@ const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceEx
 
 module.exports = {
   transformer: {
+    minifierPath: 'metro-minify-terser',
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
