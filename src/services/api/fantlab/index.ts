@@ -18,7 +18,7 @@ export class FantlabAPI {
   thumbnails = createApi(this, thumbnailsSchema);
   similar = createApi(this, similarSchema);
   reviewList = createApi(this, reviewListSchema);
-  markWork = createApi(this, markWorkSchema);
-  login = createApi(this, loginSchema);
+  markWork: markWorkSchema.Request = createApi(this, markWorkSchema);
+  login: loginSchema.Request = createApi(this, loginSchema);
   editions = createApi(this, editionsSchema);
 }
