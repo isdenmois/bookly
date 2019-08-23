@@ -35,8 +35,12 @@ export class BookSelectHeader extends React.Component<Props, State> {
 
     return (
       <View style={s.container}>
-        {!opened && <Text style={s.title}>{title}</Text>}
-        {!opened && <TouchIcon style={s.searchIcon} name='search' size={24} onPress={this.openSearch} />}
+        {!opened && (
+          <Text style={s.title} numberOfLines={1}>
+            {title}
+          </Text>
+        )}
+        {!opened && <TouchIcon name='search' size={20} onPress={this.openSearch} color={color.SecondaryText} />}
         {opened && (
           <SearchBar autoFocus style={s.searchBar} value={value} onChange={this.setValue} onSearch={this.search} />
         )}
@@ -55,26 +59,19 @@ export class BookSelectHeader extends React.Component<Props, State> {
 const s = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderBottomColor: color.Border,
-    borderBottomWidth: 0.5,
     alignItems: 'center',
-  } as ViewStyle,
-  searchIcon: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
   } as ViewStyle,
   searchBar: {
     flex: 1,
-    marginHorizontal: 10,
     height: 40,
     marginTop: 10,
-    marginBottom: 5,
   } as ViewStyle,
   title: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: 'sans-serif-medium',
     color: color.PrimaryText,
-    textAlign: 'center',
     paddingVertical: 12,
   } as TextStyle,
 });

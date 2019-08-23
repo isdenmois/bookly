@@ -62,8 +62,6 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   } as ViewStyle,
   button: {
-    borderTopColor: color.Border,
-    borderTopWidth: 0.5,
     paddingVertical: 20,
     backgroundColor: color.Primary,
   } as ViewStyle,

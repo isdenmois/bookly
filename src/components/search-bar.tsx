@@ -39,6 +39,7 @@ export class SearchBar extends React.Component<Props> {
           style={s.text}
           autoFocus={this.props.autoFocus}
           placeholder={this.props.placeholder}
+          placeholderTextColor={color.SecondaryText}
           value={value}
           onChangeText={onChange}
           onSubmitEditing={this.toSearch}
@@ -84,7 +85,7 @@ export class SearchBar extends React.Component<Props> {
 
 const s = StyleSheet.create({
   container: {
-    height: 44,
+    height: 40,
     backgroundColor: color.SearchBackground,
     borderRadius: 10,
     flexDirection: 'row',
@@ -101,10 +102,12 @@ const s = StyleSheet.create({
   } as ViewStyle,
   searchIcon: {
     padding: 10,
+    paddingRight: 5,
   } as ViewStyle,
   text: {
     flex: 1,
     marginHorizontal: 5,
-    paddingHorizontal: 5,
+    fontSize: 16,
+    padding: 0,
   } as TextStyle,
 });
