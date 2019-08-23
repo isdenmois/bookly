@@ -13,7 +13,7 @@ import { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { FantlabAPI } from 'services/api';
-import { Button, Dialog, ListItem, RatingSelect, Switcher, Thumbnail } from 'components';
+import { Button, Dialog, ListItem, RatingSelect, Switcher, Thumbnail, TouchIcon } from 'components';
 
 const statusOptions = [
   { key: BOOK_STATUSES.WISH, title: 'Хочу прочитать' },
@@ -84,13 +84,18 @@ export class ChangeStatusModal extends React.Component<Props> {
 
     return (
       <Dialog testID='changeStatusModal' style={s.dialog}>
-        <Thumbnail style={s.thumbnail} width={90} height={140} title={book.title} url={book.thumbnail} cache />
-        <Text style={s.title}>{book.title}</Text>
+        <View style={s.header}>
+          <TouchIcon name='arrow-left' style={s.icon} size={20} color={color.PrimaryText} onPress={this.onBack} />
+          <Text style={s.title} numberOfLines={1}>
+            {book.title}
+          </Text>
+        </View>
 
         <View style={s.list}>
           <ListItem
+            rowStyle={s.row}
             onPress={!statusEditable && this.toggleStatus}
-            icon={<Icon name='book-reader' size={20} color={color.PrimaryText} />}
+            icon={<Icon name='book-reader' style={s.icon} size={20} color={color.PrimaryText} />}
             border={!statusEditable}
             value={statusMap[status]}
           >
@@ -101,14 +106,15 @@ export class ChangeStatusModal extends React.Component<Props> {
 
           {status === BOOK_STATUSES.READ && (
             <ListItem
+              rowStyle={s.row}
               onPress={this.showDatePicker}
-              icon={<Icon name='calendar-alt' size={20} color={color.PrimaryText} />}
+              icon={<Icon name='calendar-alt' style={s.icon} size={20} color={color.PrimaryText} />}
               value={formatDate(this.state.date)}
             />
           )}
 
           {status === BOOK_STATUSES.READ && (
-            <ListItem icon={<Icon name='star' size={20} color={color.PrimaryText} />}>
+            <ListItem rowStyle={s.row} icon={<Icon name='star' style={s.icon} size={20} color={color.PrimaryText} />}>
               <RatingSelect value={this.state.rating} onChange={this.setRating} />
             </ListItem>
           )}
@@ -130,10 +136,13 @@ export class ChangeStatusModal extends React.Component<Props> {
           style={s.button}
           textStyle={s.buttonText}
           onPress={this.save}
+          bordered
         />
       </Dialog>
     );
   }
+
+  onBack = () => this.props.navigation.pop();
 
   toggleStatus = () => this.setState({ statusEditable: true });
   showDatePicker = () => this.setState({ dateEditable: true });
@@ -187,24 +196,21 @@ export class ChangeStatusModal extends React.Component<Props> {
 
 const s = StyleSheet.create({
   dialog: {
-    paddingHorizontal: 35,
+    paddingHorizontal: 25,
     paddingVertical: 15,
   } as ViewStyle,
-  thumbnail: {
-    position: 'relative',
-    marginTop: '-30%',
-    alignSelf: 'center',
-    borderRadius: 20,
-    borderColor: 'white',
-    borderWidth: 3,
-  } as ImageStyle,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  } as ViewStyle,
   title: {
     color: color.PrimaryText,
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: 'sans-serif-medium',
     alignSelf: 'center',
-    marginTop: 15,
     textAlign: 'center',
+    flex: 1,
+    marginLeft: 20,
   } as TextStyle,
   list: {
     marginTop: 15,
@@ -215,8 +221,14 @@ const s = StyleSheet.create({
   buttonText: {
     flex: 1,
   } as ViewStyle,
+  row: {
+    paddingLeft: 5,
+  },
+  icon: {
+    minWidth: 25,
+  },
   switcher: {
-    marginTop: 13.5,
+    marginTop: 14,
     marginBottom: 10,
   } as ViewStyle,
 });
