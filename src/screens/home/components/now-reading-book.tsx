@@ -8,7 +8,7 @@ import { color } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Navigation, inject } from 'services';
 import { ReadButton, TextXL, Thumbnail } from 'components';
-import { currentBooksQuery } from '../home.service';
+import { currentBooksQuery } from '../home.queries';
 
 interface Props extends Partial<NavigationScreenProps> {
   database: Database;

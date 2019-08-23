@@ -1,7 +1,7 @@
 import React from 'react';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
-import { currentBooksQuery } from '../home.service';
+import { currentBooksQuery } from '../home.queries';
 import { NowReadingBook } from './now-reading-book';
 import { EmptyBook } from './empty-book';
 

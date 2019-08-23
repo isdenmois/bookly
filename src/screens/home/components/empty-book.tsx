@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { Navigation, inject } from 'services';
 import { Button, TextM } from 'components';
-import { wishBooksQuery } from '../home.service';
+import { wishBooksQuery } from '../home.queries';
 
 interface Props {
   database: Database;

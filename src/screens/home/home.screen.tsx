@@ -1,11 +1,9 @@
 import React from 'react';
 import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { observer } from 'mobx-react';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { SyncService, Session, inject, provider } from 'services';
-import { HomeService } from './home.service';
+import { SyncService, Session, inject } from 'services';
 import { HomeHeader } from './components/header';
 import { CurrentBook } from './components/current-book';
 import { BookChallenge } from './components/book-challenge';
@@ -15,8 +13,6 @@ interface State {
   refreshing: boolean;
 }
 
-@provider(HomeService)
-@observer
 export class HomeScreen extends React.Component<NavigationScreenProps, State> {
   state: State = { refreshing: false };
 
