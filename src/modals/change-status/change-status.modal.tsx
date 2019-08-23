@@ -180,7 +180,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     }
 
     if (this.state.status === BOOK_STATUSES.READ && this.session.withFantlab) {
-      this.api.markWork({ bookId: this.props.book.id, mark: this.state.rating });
+      this.api.markWork(this.props.book.id, this.state.rating);
     }
   };
 }

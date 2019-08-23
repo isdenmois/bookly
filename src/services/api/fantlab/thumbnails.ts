@@ -16,3 +16,8 @@ function items(work) {
     url: edition.edition_id.toString(),
   }));
 }
+
+export interface FantlabThumnail {
+  id: number;
+  url: string;
+}

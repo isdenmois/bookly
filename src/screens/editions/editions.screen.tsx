@@ -8,12 +8,12 @@ import { FantlabAPI } from 'api';
 import { Fetcher, ScreenHeader } from 'components';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { BookExtended } from 'types/book-extended';
+import { EditionTranslators } from 'types/book-extended';
 import { Edition } from 'services/api/fantlab/editions';
 
 interface Props extends NavigationScreenProps {
-  editionIds: number[]
-  translators: any
+  editionIds: number[];
+  translators: EditionTranslators;
 }
 
 @withNavigationProps()
@@ -34,7 +34,7 @@ export class EditionsListScreen extends React.Component<Props> {
   }
 
   renderEditionsList = (edition: Edition) => {
-    return <EditionCard key={edition.id} edition={edition} translators={this.props.translators[edition.id]} />
+    return <EditionCard key={edition.id} edition={edition} translators={this.props.translators[edition.id]} />;
   };
 }
 
