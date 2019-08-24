@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { StyleSheet, View, ViewStyle, ScrollView, Linking } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { EditionCard } from './components/edition-card';
 import { inject } from 'services';
@@ -24,11 +24,14 @@ export class EditionsListScreen extends React.Component<Props> {
     return (
       <View style={s.container}>
         <ScreenHeader title={'Список изданий'} />
-        <ScrollView contentContainerStyle={s.scroll}>
-          <Fetcher api={this.api.editions} e={this.props.editionIds.join(',')}>
-            {this.renderEditionsList}
-          </Fetcher>
-        </ScrollView>
+        <Fetcher
+          contentContainerStyle={s.scroll}
+          api={this.api.editions}
+          e={this.props.editionIds.join(',')}
+          useFlatlist
+        >
+          {this.renderEditionsList}
+        </Fetcher>
       </View>
     );
   }

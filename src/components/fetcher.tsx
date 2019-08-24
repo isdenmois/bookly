@@ -1,14 +1,23 @@
 import React, { ReactNode } from 'react';
 import { Subscription } from 'rxjs';
 import _ from 'lodash';
-import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle, FlatList } from 'react-native';
 import { Database, Q } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { TextXL } from './text';
 import { Button } from './button';
 import { inject } from 'services';
 
-const OMIT_FIELDS = ['children', 'observe', 'error', 'api', 'empty', 'emptyText'];
+const OMIT_FIELDS = [
+  'children',
+  'observe',
+  'error',
+  'api',
+  'empty',
+  'emptyText',
+  'useFlatlist',
+  'contentContainerStyle',
+];
 
 interface Parameters {
   [prop: string]: any;
@@ -25,6 +34,8 @@ type Props = Parameters & {
   children?: ListItemRender | DataRender;
   renderResult?: DataRender;
   emptyText?: string;
+  useFlatlist?: boolean;
+  contentContainerStyle?: any;
   onLoad?: () => void;
 };
 
@@ -44,6 +55,8 @@ export class Fetcher extends React.PureComponent<Props> {
 
   subscription: Subscription;
   appending: boolean = false;
+
+  renderItem: any;
 
   isPropsChanged(prevProps) {
     let current, prev;
@@ -126,29 +139,42 @@ export class Fetcher extends React.PureComponent<Props> {
     return <Text>{error instanceof Error ? error.toString() : JSON.stringify(error)}</Text>;
   }
 
-  renderList(list: any[]) {
-    return _.map(list, (item, index) => this.props.children(item, index));
+  renderList(list: any[], footer?) {
+    if (!this.props.useFlatlist) {
+      const res = _.map(list, (item, index) => this.props.children(item, index));
+
+      return footer ? res.concat(footer) : res;
+    }
+
+    const renderItem = (this.renderItem = this.renderItem || (row => this.props.children(row.item, row.index)));
+
+    return (
+      <FlatList
+        contentContainerStyle={this.props.contentContainerStyle}
+        data={list}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        ListFooterComponent={footer}
+      />
+    );
   }
 
   renderPagination() {
     if (_.isEmpty(this.state.data.items)) {
       return this.renderEmpty();
     }
-    const list = this.renderList(this.state.data.items);
+    let footer = null;
 
-    if (!this.state.data.total || list.length >= this.state.data.total) {
-      return list;
-    }
-
-    return (
-      <>
-        {list}
-        <View style={s.loadMore}>
+    if (this.state.data.total && this.state.data.items.length < this.state.data.total) {
+      footer = (
+        <View key='load-more' style={s.loadMore}>
           {this.state.isLoading && <ActivityIndicator size='large' />}
           {!this.state.isLoading && <Button label='Загрузить еще' onPress={this.loadMore} />}
         </View>
-      </>
-    );
+      );
+    }
+
+    return this.renderList(this.state.data.items, footer);
   }
 
   append(data) {
@@ -229,6 +255,10 @@ function findModel(item, models) {
   }
 
   return record;
+}
+
+function keyExtractor(row) {
+  return row.id.toString();
 }
 
 export function EmptyResult({ text }) {
