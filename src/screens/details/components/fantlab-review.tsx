@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import parser from 'bbcode-to-react';
 import { FantlabReview as IFantlabReview } from 'services/api/fantlab/review-list';
 import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
+import { parser } from 'utils/bbcode';
 import { color } from 'types/colors';
 
 interface Props {

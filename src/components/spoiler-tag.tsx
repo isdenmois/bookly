@@ -1,11 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { Tag } from 'bbcode-to-react';
+import Tag from 'bbcode-to-react/lib/tag';
 import { color } from 'types/colors';
 
 export class SpoilerTag extends Tag {
   toReact() {
-    // Using parent getComponents() to get children components.
     return <SpoilerText>{super.getComponents()}</SpoilerText>;
   }
 }
