@@ -75,11 +75,10 @@ export class BookDetails extends React.Component<Props> {
 
   renderAuthor() {
     return (
-      <View>
+      <View style={this.props.book.thumbnail ? s.thumbnailPlaceholder : null}>
         <Text style={s.author} onLongPress={this.searchAuthor}>
           {this.props.book.author}
         </Text>
-        {!!this.props.book.thumbnail && <View style={s.thumbnailPlaceholder} />}
       </View>
     );
   }
@@ -243,7 +242,7 @@ const s = StyleSheet.create({
     marginTop: 15,
   } as TextStyle,
   thumbnailPlaceholder: {
-    width: 140,
+    paddingRight: 120,
   } as ViewStyle,
   status: {
     paddingLeft: 52,
