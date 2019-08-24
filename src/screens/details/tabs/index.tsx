@@ -81,7 +81,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
   setIndex = index => this.setState({ index });
 
   onScrollEnd = (y: number) => {
-    const topScroll = this.state.headerHeight - 95 + 2 * this.props.tabsPadding;
+    const topScroll = this.state.headerHeight - 110;
     this.y = y = Math.min(y, topScroll);
 
     _.forEach(this.tabCtrls, ctrl => {
@@ -149,6 +149,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         tabsPadding={this.props.tabsPadding}
         onScrollEnd={this.onScrollEnd}
         isExist={this.props.isExist}
+        withThumbnail={this.props.book.thumbnail}
         ref={ctrl => (this.tabCtrls[route.key] = ctrl)}
       />
     );

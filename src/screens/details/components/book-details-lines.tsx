@@ -24,7 +24,8 @@ interface ViewListProps {
 }
 
 interface ViewListTouchableProps extends ViewListProps {
-  onPress: () => void;
+  onPress?: () => void;
+  onLongPress?: () => void;
 }
 
 interface ViewLineModelRemoveProps {
@@ -51,7 +52,7 @@ export const ViewLine = (props: ViewListProps) => (
 export const ViewLineTouchable = (props: ViewListTouchableProps) => (
   <View style={s.row}>
     <Text style={s.title}>{props.title}</Text>
-    <TouchableOpacity onPress={props.onPress} style={s.value} hitSlop={hitSlop}>
+    <TouchableOpacity onPress={props.onPress} onLongPress={props.onLongPress} style={s.value} hitSlop={hitSlop}>
       <Text style={s.value}>{props.value}</Text>
     </TouchableOpacity>
   </View>
