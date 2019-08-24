@@ -12,7 +12,8 @@ export interface BookExtended extends BookData {
   parent: ParentBook[];
   children: ChildBook[];
   editionIds: number[]
-  translators: EditionTranslators
+  editionTranslators: EditionTranslators,
+  translators: string[]
 }
 
 export interface ParentBook {
@@ -30,4 +31,10 @@ export interface ChildBook {
 
 export interface EditionTranslators {
   [editionId: number]: string[]
+}
+
+export interface Translator {
+  id: string;
+  name: string;
+  count: number;
 }

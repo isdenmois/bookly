@@ -97,6 +97,7 @@ const s = StyleSheet.create({
   headerTitle: {
     color: color.SecondaryText,
     fontSize: 14,
+    marginBottom: 10,
   } as TextStyle,
   value: {
     color: color.PrimaryText,
