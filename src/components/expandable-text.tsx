@@ -1,11 +1,13 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, TextStyle } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, TextStyle, Insets } from 'react-native';
 import { color } from 'types/colors';
 
 interface Props {
   numberOfLines?: number;
   children: React.ReactNode;
 }
+
+const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export function ExpandableText(props: Props) {
   const [expanded, setExpanded] = React.useState(false);
@@ -19,7 +21,7 @@ export function ExpandableText(props: Props) {
         {props.children}
       </Text>
 
-      <TouchableOpacity onPress={toggleExpanded}>
+      <TouchableOpacity onPress={toggleExpanded} hitSlop={hitSlop}>
         <Text style={s.toggleText}>{expanded ? 'Свернуть' : 'Читать далее'}</Text>
       </TouchableOpacity>
     </>
