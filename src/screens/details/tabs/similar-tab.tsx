@@ -20,22 +20,17 @@ export class SimilarTab extends React.Component<Props> {
 
   render() {
     return (
-      <Fetcher
-        bookId={this.props.book.id}
-        api={this.api.similar}
-        emptyText='Похожие книги не найдены'
-        renderResult={this.renderResult}
-      />
+      <Fetcher bookId={this.props.book.id} api={this.api.similar} emptyText='Похожие книги не найдены'>
+        {this.renderBook}
+      </Fetcher>
     );
   }
 
-  renderResult = (data: BookSimilar[]) => {
-    return <View>{_.map(data, book => this.renderBook(book))}</View>;
-  };
+  renderBook = (book: BookSimilar, index: number) => {
+    const style = index === 0 ? s.firstRow : s.row;
 
-  renderBook = (book: BookSimilar) => {
     return (
-      <TouchableOpacity key={book.id} onPress={() => this.openBook(book)} style={s.row}>
+      <TouchableOpacity key={book.id} onPress={() => this.openBook(book)} style={style}>
         <Thumbnail auto='none' title={book.title} url={book.thumbnail} width={50} height={80} />
 
         <View style={s.info}>
@@ -52,14 +47,14 @@ export class SimilarTab extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
-  header: {
-    color: color.SecondaryText,
-    fontSize: 14,
-  } as TextStyle,
   row: {
     flexDirection: 'row',
     paddingVertical: 10,
   } as ViewStyle,
+  firstRow: {
+    flexDirection: 'row',
+    paddingBottom: 10,
+  },
   info: {
     marginLeft: 10,
     flex: 1,
@@ -70,6 +65,7 @@ const s = StyleSheet.create({
   } as TextStyle,
   author: {
     color: color.SecondaryText,
-    fontSize: 14,
+    fontFamily: 'sans-serif-light',
+    fontSize: 18,
   } as TextStyle,
 });

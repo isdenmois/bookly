@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { BookExtended } from 'types/book-extended';
 import { ViewLineTouchable } from '../components/book-details-lines';
@@ -13,13 +13,14 @@ interface Props extends NavigationScreenProps {
 export class ChildrenTab extends React.PureComponent<Props> {
   render() {
     return (
-      <View style={s.childrenBooks}>
-        {this.props.book.children.map(book => (
+      <View>
+        {this.props.book.children.map((book, index) => (
           <ViewLineTouchable
             key={book.id}
             onPress={() => this.openBook(book)}
             title={book.type}
             value={this.getChildBookTitle(book)}
+            first={!index}
           />
         ))}
       </View>
@@ -38,9 +39,3 @@ export class ChildrenTab extends React.PureComponent<Props> {
     this.props.navigation.push('Details', { bookId: book.id });
   }
 }
-
-const s = StyleSheet.create({
-  childrenBooks: {
-    marginTop: 15,
-  } as ViewStyle,
-});
