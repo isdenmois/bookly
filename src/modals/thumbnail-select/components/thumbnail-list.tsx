@@ -35,17 +35,17 @@ export class ThumbnailList extends React.PureComponent<Props> {
 
   renderThumbnail = (thumbnail: FantlabThumnail) => {
     const isSelected = thumbnail.url === this.props.selected;
-    const ViewComponent: any = isSelected ? View : TouchableOpacity;
+    const onPress: any = isSelected ? null : () => this.props.onSelect(thumbnail.url);
 
     return (
-      <ViewComponent key={thumbnail.id} style={s.thumbnail} onPress={() => this.props.onSelect(thumbnail.url)}>
+      <TouchableOpacity key={thumbnail.id} style={s.thumbnail} onPress={onPress}>
         <Thumbnail url={thumbnail.url} auto='width' height={120} />
         {isSelected && (
           <View style={s.check}>
             <Icon name='check' size={12} color={color.PrimaryTextInverse} />
           </View>
         )}
-      </ViewComponent>
+      </TouchableOpacity>
     );
   };
 }

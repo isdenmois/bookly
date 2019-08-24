@@ -32,7 +32,7 @@ export function Thumbnail({ auto, style, title, width, height, url, resizeMode, 
   url = getThumbnailUrl(url);
 
   if (auto === 'height' || auto === 'width') {
-    return <AutoSizeImage auto={auto} style={style} width={width} height={height} url={url} />;
+    return <AutoSizeImage auto={auto} style={style} width={width} height={height} url={url} cache={cache} />;
   }
 
   const source = { uri: url, cache: cache ? Image.cacheControl.immutable : Image.cacheControl.web };

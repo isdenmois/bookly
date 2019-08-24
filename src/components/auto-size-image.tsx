@@ -7,6 +7,7 @@ interface Props {
   height: number;
   width?: number;
   style?: ImageStyle;
+  cache?: boolean;
 }
 
 interface ImageSize {
@@ -16,13 +17,34 @@ interface ImageSize {
 
 const CACHE: Map<string, ImageSize> = new Map();
 
-export class AutoSizeImage extends React.Component<Props, ImageSize> {
+export class AutoSizeImage extends React.PureComponent<Props, ImageSize> {
   state: ImageSize = this.getInitialState();
+  private _source = null;
+  private _style = null;
+
+  get source() {
+    if (!this._source || this.props.url !== this._source.uri) {
+      this._source = {
+        uri: this.props.url,
+        cache: this.props.cache ? Image.cacheControl.immutable : Image.cacheControl.web,
+      };
+    }
+
+    return this._source;
+  }
+
+  get style() {
+    if (!this._style || this._style[1] !== this.state) {
+      this._style = [this.props.style, this.state];
+    }
+
+    return this._style;
+  }
 
   render() {
-    const style = [this.props.style, this.state];
-
-    return <Image style={style} source={{ uri: this.props.url }} onLoad={this.setSize} />;
+    return (
+      <Image style={this.style} source={this.source} onLoad={this.setSize} resizeMode={Image.resizeMode.stretch} />
+    );
   }
 
   getInitialState(): ImageSize {
@@ -50,7 +72,7 @@ export class AutoSizeImage extends React.Component<Props, ImageSize> {
       CACHE.set(this.props.url, { width: event.nativeEvent.width, height: event.nativeEvent.height });
     }
 
-    const size = this.getImageSize(event.nativeEvent);
+    const size = this.getImageSize(CACHE.get(this.props.url));
 
     if (size.height !== this.state.height || size.width !== this.state.width) {
       this.setState(size);
