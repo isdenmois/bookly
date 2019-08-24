@@ -12,7 +12,7 @@ export class HomeHeader extends React.Component<any, State> {
   render() {
     return (
       <SearchBar
-        placeholder='Search books'
+        placeholder='Поиск по FantLab'
         value={this.state.query}
         onChange={this.queryChange}
         onSearch={this.onSearch}
