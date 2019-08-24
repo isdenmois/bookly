@@ -104,7 +104,7 @@ function editionTranslators(w) {
 function translators(w) {
   let translations = _.find(w.translations, { lang_id: 1 });
   translations = _.get(translations, 'translations') || [];
-  translations = translations.map(t => _.map(_.get(t, 'translators'), 'short_name').join(', '))
+  translations = translations.map(t => _.map(_.get(t, 'translators'), 'short_name').join(', ')).filter(t => t)
 
   return translations.sort();
 }
