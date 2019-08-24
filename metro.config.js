@@ -1,4 +1,5 @@
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
+const blacklist = require('metro-config/src/defaults/blacklist');
 
 module.exports = {
   transformer: {
@@ -14,5 +15,6 @@ module.exports = {
     sourceExts: process.env.RN_SRC_EXT
       ? process.env.RN_SRC_EXT.split(',').concat(defaultSourceExts)
       : defaultSourceExts,
+    blacklistRE: blacklist([/node_modules\/bbcode-to-react\/(dist|lib\/tags)\/.*/]),
   },
 };

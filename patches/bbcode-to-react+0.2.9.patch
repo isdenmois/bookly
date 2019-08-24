@@ -1,0 +1,40 @@
+diff --git a/node_modules/bbcode-to-react/lib/parser.js b/node_modules/bbcode-to-react/lib/parser.js
+index d1b77ac..50587f2 100644
+--- a/node_modules/bbcode-to-react/lib/parser.js
++++ b/node_modules/bbcode-to-react/lib/parser.js
+@@ -13,10 +13,6 @@ var _react2 = _interopRequireDefault(_react);
+ 
+ var _constants = require('./constants');
+ 
+-var _tags = require('./tags');
+-
+-var _tags2 = _interopRequireDefault(_tags);
+-
+ var _tag = require('./tag');
+ 
+ var _tag2 = _interopRequireDefault(_tag);
+@@ -31,24 +27,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
+ 
+ var Parser = function () {
+   function Parser() {
+-    var _this = this;
+-
+-    var allowedTags = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+-
+     _classCallCheck(this, Parser);
+ 
+     this.tags = {};
+ 
+-    if (!allowedTags) {
+-      this.tags = _tags2.default;
+-    } else {
+-      allowedTags.forEach(function (name) {
+-        if (_tags2.default[name]) {
+-          _this.tags[name] = _tags2.default[name];
+-        }
+-      });
+-    }
+-
+     this.renderer = new _renderer2.default();
+   }
+ 

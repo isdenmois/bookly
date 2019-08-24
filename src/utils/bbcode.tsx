@@ -9,7 +9,7 @@ class TextTag extends Tag {
   }
 }
 
-export const parser = new Parser([]);
+export const parser = new Parser();
 
 parser.registerTag('spoiler', SpoilerTag);
 parser.registerTag('*', TextTag);
