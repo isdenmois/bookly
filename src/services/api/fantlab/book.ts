@@ -35,6 +35,7 @@ export const mapBody = {
   children,
   editionIds,
   translators,
+  editionTranslators,
 };
 
 function editionCount(book) {
@@ -89,7 +90,7 @@ function editionIds(w) {
   return getEditions(w).map(el => el.edition_id)
 }
 
-function translators(w) {
+function editionTranslators(w) {
   const translators = _.get(w, 'editions_info.translators', [])
   const translatorNames = {}
 
@@ -98,4 +99,12 @@ function translators(w) {
   })
 
   return translatorNames
+}
+
+function translators(w) {
+  let translations = _.find(w.translations, { lang_id: 1 });
+  translations = _.get(translations, 'translations') || [];
+  translations = translations.map(t => _.map(_.get(t, 'translators'), 'short_name').join(', '))
+
+  return translations.sort();
 }

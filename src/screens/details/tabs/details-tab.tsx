@@ -35,6 +35,8 @@ export class DetailsTab extends React.PureComponent<Props> {
         {withGenre && !!book.genre && <ViewLine title='Жанр' value={book.genre} />}
         {withGenre && !!book.year && <ViewLine title='Год' value={book.year} />}
 
+        {this.renderTranslators()}
+
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
 
         {!!book.editionCount && (
@@ -57,6 +59,17 @@ export class DetailsTab extends React.PureComponent<Props> {
     );
   }
 
+  renderTranslators() {
+    if (!this.props.book.translators) {
+      return null;
+    }
+
+    const translators = this.props.book.translators;
+    const title = translators.length > 1 ? 'Переводчики' : 'Переводчик';
+
+    return <ViewLine title={title} value={translators.join('\n')} />;
+  }
+
   renderParentBooks() {
     return (
       <View style={s.parentBooks}>
@@ -74,8 +87,9 @@ export class DetailsTab extends React.PureComponent<Props> {
   }
 
   openEditions = () => {
-    const { editionIds, translators } = this.props.book;
-    this.props.navigation.push('Editions', { editionIds, translators });
+    const { editionIds, editionTranslators } = this.props.book;
+
+    this.props.navigation.push('Editions', { editionIds, translators: editionTranslators });
   };
 
   openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
@@ -85,6 +99,7 @@ const s = StyleSheet.create({
   header: {
     color: color.SecondaryText,
     fontSize: 14,
+    marginBottom: 10,
   } as TextStyle,
   parentBooks: {
     marginTop: 10,

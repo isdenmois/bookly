@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, TextStyle, ViewStyle, Text, TouchableOpacity, Linking } from 'react-native';
+import pluralize from 'pluralize-ru';
 import { color } from 'types/colors';
 import { Thumbnail } from 'components';
 import { thousandsSeparator } from 'utils/number-format';
 import { Edition } from 'services/api/fantlab/editions';
-const pluralize = require('pluralize-ru');
 
 interface Props {
   edition: Edition;
@@ -69,11 +69,11 @@ const s = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
     justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   } as ViewStyle,
-  info:{
-    flex:1,
-  }as ViewStyle,
+  info: {
+    flex: 1,
+  } as ViewStyle,
   title: {
     fontFamily: 'sans-serif-medium',
     color: color.PrimaryText,
