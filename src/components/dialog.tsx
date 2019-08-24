@@ -65,16 +65,18 @@ const s = StyleSheet.create({
     backgroundColor: color.Black,
   } as ViewStyle,
   modal: {
-    marginTop: 50,
+    paddingTop: 50,
     paddingHorizontal: 20,
-    marginBottom: 100,
+    paddingBottom: 100,
     maxWidth: 400,
     alignSelf: 'center',
+    flexDirection: 'row',
   } as ViewStyle,
   modalView: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     backgroundColor: color.Background,
+    flex: 1,
   } as ViewStyle,
   header: {
     flexDirection: 'row',
