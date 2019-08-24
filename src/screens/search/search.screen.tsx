@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { StyleSheet, ScrollView, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
@@ -36,12 +36,15 @@ export class SearchScreen extends React.Component<Props, State> {
           onSearch={this.search}
           onBack={this.goBack}
         />
-
-        <ScrollView contentContainerStyle={s.scroll}>
-          <Fetcher api={this.api.searchBooks} q={this.state.q} emptyText='Книги не найдены'>
-            {this.renderResult}
-          </Fetcher>
-        </ScrollView>
+        <Fetcher
+          contentContainerStyle={s.scroll}
+          api={this.api.searchBooks}
+          q={this.state.q}
+          emptyText='Книги не найдены'
+          useFlatlist
+        >
+          {this.renderResult}
+        </Fetcher>
       </View>
     );
   }
