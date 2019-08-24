@@ -77,8 +77,8 @@ export class SearchBar extends React.Component<Props> {
   toSearch = () => {
     if (this.props.value) {
       this.props.onSearch(this.props.value);
-    } else {
-      this.props.onClose && this.props.onClose();
+    } else if (this.props.onClose) {
+      this.props.onClose();
     }
   };
 }
