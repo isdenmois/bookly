@@ -12,8 +12,32 @@ interface Props {
 }
 
 export class EditionCard extends React.PureComponent<Props> {
+  get title() {
+    const edition = this.props.edition;
+
+    if (edition.published) {
+      return edition.isbns.join(', ') || 'Без ISBN';
+    }
+
+    return 'Издание запланировано';
+  }
+
+  get translators() {
+    const translators = this.props.translators;
+
+    if (translators) {
+      return translators.join(', ');
+    }
+
+    return 'Переводчик не указан';
+  }
+
+  get pageCount() {
+    return pluralize(this.props.edition.pages, '%d страниц', '%d страница', '%d страницы', '%d страниц');
+  }
+
   render() {
-    const { edition, translators } = this.props;
+    const edition = this.props.edition;
 
     return (
       <View style={s.card}>
@@ -26,27 +50,15 @@ export class EditionCard extends React.PureComponent<Props> {
           </View>
         </View>
 
-        <View>
-          {this.title(edition)}
-          <Text style={s.description}>{translators ? translators.join(', ') : 'Переводчик не указан'}</Text>
-          <Text style={s.description}>{this.pageCount(edition)}</Text>
+        <View style={s.info}>
+          <Text style={s.title}>{this.title}</Text>
+          <Text style={s.description}>{this.translators}</Text>
+          <Text style={s.description}>{this.pageCount}</Text>
           <Text style={s.description}>{thousandsSeparator(edition.copies)} изданий</Text>
         </View>
       </View>
     );
   }
-
-  title = (edition: Edition) => {
-    if (edition.published) {
-      return <Text style={s.title}>{edition.isbns.join(', ')}</Text>;
-    }
-
-    return <Text style={s.title}>Издание запланировано</Text>;
-  };
-
-  pageCount = (edition: Edition) => {
-    return pluralize(edition.pages, '%d страниц', '%d страница', '%d страницы', '%d страниц');
-  };
 
   openEditionPage = () => Linking.openURL(`https:${this.props.edition.url}`);
 }
@@ -57,13 +69,15 @@ const s = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'flex-start'
   } as ViewStyle,
+  info:{
+    flex:1,
+  }as ViewStyle,
   title: {
     fontFamily: 'sans-serif-medium',
     color: color.PrimaryText,
     marginBottom: 10,
-    flexWrap: 'wrap',
   } as TextStyle,
   thumbnail: {
     marginRight: 20,
