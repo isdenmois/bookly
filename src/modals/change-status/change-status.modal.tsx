@@ -208,7 +208,6 @@ const s = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'sans-serif-medium',
     alignSelf: 'center',
-    textAlign: 'center',
     flex: 1,
     marginLeft: 20,
   } as TextStyle,
