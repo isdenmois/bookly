@@ -69,7 +69,7 @@ export class DetailsTab extends React.PureComponent<Props> {
   }
 
   renderTranslators() {
-    if (!this.props.book.translators) {
+    if (!this.props.book.translators.length) {
       return null;
     }
 
