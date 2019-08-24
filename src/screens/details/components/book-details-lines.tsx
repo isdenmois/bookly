@@ -13,7 +13,6 @@ import {
 import { Model, Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { inject } from 'services';
-import { ExpandableText } from 'components';
 
 interface Props {
   description: string;
@@ -38,7 +37,7 @@ const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 export const BookDescriptionLine = (props: Props) => (
   <View style={s.descriptionRow}>
     <Text style={s.headerTitle}>ОПИСАНИЕ</Text>
-    <ExpandableText>{props.description}</ExpandableText>
+    <Text style={s.value}>{props.description}</Text>
   </View>
 );
 
