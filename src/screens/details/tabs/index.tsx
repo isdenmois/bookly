@@ -7,7 +7,6 @@ import { Scene } from 'react-native-tab-view/src/types';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
-import { MainTab } from './main-tab';
 import { ChildrenTab } from './children-tab';
 import { ReviewsTab } from './reviews-tab';
 import { SimilarTab } from './similar-tab';
@@ -28,7 +27,7 @@ interface State {
 }
 
 const TABS = {
-  MAIN: { key: 'main', title: 'Кратко', component: MainTab },
+  MAIN: { key: 'main', title: 'Кратко', component: DetailsTab },
   CHILDREN: { key: 'children', title: 'Состав', component: ChildrenTab },
   REVIEWS: { key: 'reviews', title: 'Отзывы', component: ReviewsTab },
   SIMILAR: { key: 'similar', title: 'Похожие', component: SimilarTab },
@@ -141,6 +140,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
 
     return (
       <Component
+        tab={route.key}
         book={this.props.book}
         navigation={this.props.navigation}
         y={this.y}

@@ -20,7 +20,6 @@ export class ChildrenTab extends React.PureComponent<Props> {
             onPress={() => this.openBook(book)}
             title={book.type}
             value={this.getChildBookTitle(book)}
-            first={!index}
           />
         ))}
       </View>

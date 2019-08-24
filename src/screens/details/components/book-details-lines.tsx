@@ -22,7 +22,6 @@ interface Props {
 interface ViewListProps {
   title: string;
   value?: any;
-  first?: boolean;
 }
 
 interface ViewListTouchableProps extends ViewListProps {
@@ -44,14 +43,14 @@ export const BookDescriptionLine = (props: Props) => (
 );
 
 export const ViewLine = (props: ViewListProps) => (
-  <View style={props.first ? null : s.row}>
+  <View style={s.row}>
     <Text style={s.title}>{props.title}</Text>
     <Text style={s.value}>{props.value}</Text>
   </View>
 );
 
 export const ViewLineTouchable = (props: ViewListTouchableProps) => (
-  <View style={props.first ? null : s.row}>
+  <View style={s.row}>
     <Text style={s.title}>{props.title}</Text>
     <TouchableOpacity onPress={props.onPress} style={s.value} hitSlop={hitSlop}>
       <Text style={s.value}>{props.value}</Text>
@@ -86,10 +85,11 @@ function removeModel(model: any) {
 
 const s = StyleSheet.create({
   row: {
-    marginVertical: 10,
+    marginBottom: 20,
   } as ViewStyle,
   descriptionRow: {
-    marginVertical: 15,
+    marginTop: 10,
+    marginBottom: 20,
   } as ViewStyle,
   title: {
     color: color.SecondaryText,
