@@ -112,7 +112,7 @@ export class BookDetails extends React.Component<Props> {
 
     return (
       <View style={s.mainInformationContainer}>
-        <View>
+        <View style={s.secondaryBlock}>
           <View style={s.ratingButton}>
             <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={book} />
           </View>
@@ -236,10 +236,14 @@ const s = StyleSheet.create({
     paddingLeft: 52,
     paddingRight: 20,
   } as TextStyle,
+  secondaryBlock: {
+    flex: 1,
+  } as ViewStyle,
   secondary: {
     color: color.PrimaryText,
     fontSize: 18,
     marginTop: 15,
+    lineHeight: 20,
   } as TextStyle,
   thumbnailPlaceholder: {
     paddingRight: 120,
