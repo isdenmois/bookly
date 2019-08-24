@@ -59,7 +59,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   bordered: {
     backgroundColor: 'transparent',
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: color.Primary,
   } as ViewStyle,
   text: {
