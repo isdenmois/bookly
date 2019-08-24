@@ -17,7 +17,7 @@ export class EditionCard extends React.PureComponent<Props> {
 
     return (
       <View style={s.card}>
-        <View style={{ marginRight: 20 }}>
+        <View style={s.thumbnail}>
           <TouchableOpacity activeOpacity={0.5} onPress={this.openEditionPage}>
             <Thumbnail auto={null} width={76} height={117} url={edition.thumbnail} />
           </TouchableOpacity>
@@ -25,11 +25,12 @@ export class EditionCard extends React.PureComponent<Props> {
             <Text style={s.yearText}>{edition.year}</Text>
           </View>
         </View>
+
         <View>
           {this.title(edition)}
-          <Text style={s.descriontion}>{translators ? translators.join(', ') : 'Переводчик не указан'}</Text>
-          <Text style={s.descriontion}>{this.pageCount(edition)}</Text>
-          <Text style={s.descriontion}>{thousandsSeparator(edition.copies)} изданий</Text>
+          <Text style={s.description}>{translators ? translators.join(', ') : 'Переводчик не указан'}</Text>
+          <Text style={s.description}>{this.pageCount(edition)}</Text>
+          <Text style={s.description}>{thousandsSeparator(edition.copies)} изданий</Text>
         </View>
       </View>
     );
@@ -37,7 +38,7 @@ export class EditionCard extends React.PureComponent<Props> {
 
   title = (edition: Edition) => {
     if (edition.published) {
-      return <Text style={s.title}>{edition.isbns.join('')}</Text>;
+      return <Text style={s.title}>{edition.isbns.join(', ')}</Text>;
     }
 
     return <Text style={s.title}>Издание запланировано</Text>;
@@ -56,13 +57,19 @@ const s = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
     justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   } as ViewStyle,
   title: {
-    fontWeight: '500',
+    fontFamily: 'sans-serif-medium',
     color: color.PrimaryText,
     marginBottom: 10,
+    flexWrap: 'wrap',
   } as TextStyle,
-  descriontion: {
+  thumbnail: {
+    marginRight: 20,
+    position: 'relative',
+  } as ViewStyle,
+  description: {
     fontSize: 14,
     color: color.SecondaryText,
     marginBottom: 10,
