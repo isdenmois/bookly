@@ -54,7 +54,7 @@ export class EditionCard extends React.PureComponent<Props> {
           <Text style={s.title}>{this.title}</Text>
           <Text style={s.description}>{this.translators}</Text>
           <Text style={s.description}>{this.pageCount}</Text>
-          <Text style={s.description}>{thousandsSeparator(edition.copies)} изданий</Text>
+          <Text style={s.description}>{thousandsSeparator(edition.copies)} экз.</Text>
         </View>
       </View>
     );
