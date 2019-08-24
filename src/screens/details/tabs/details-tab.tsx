@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking, ToastAndroid } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
@@ -42,7 +42,12 @@ export class DetailsTab extends React.PureComponent<Props> {
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
 
         {!!book.editionCount && (
-          <ViewLineTouchable title='Изданий' value={book.editionCount} onPress={this.openEditions} />
+          <ViewLineTouchable
+            title='Изданий'
+            value={book.editionCount}
+            onPress={this.openEditions}
+            onLongPress={this.openChangeThumbnail}
+          />
         )}
 
         {!!book.language && <ViewLine title='Язык написания' value={book.language} />}
@@ -97,6 +102,18 @@ export class DetailsTab extends React.PureComponent<Props> {
   };
 
   openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
+
+  openChangeThumbnail = () => {
+    if (!this.props.book.status) {
+      return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
+    }
+
+    if (this.props.book.editionCount <= 1) {
+      return ToastAndroid.show('Недостаточно изданий для выбора', ToastAndroid.SHORT);
+    }
+
+    this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.book });
+  };
 }
 
 const s = StyleSheet.create({
