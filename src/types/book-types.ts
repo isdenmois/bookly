@@ -9,6 +9,7 @@ export const BOOK_TYPES = {
   poem: 'poem',
   piece: 'piece',
   cycle: 'cycle',
+  conditionalcycle: 'conditionalcycle',
   epic: 'epic',
   na: 'na',
 };
@@ -24,6 +25,7 @@ export const BOOK_TYPE_NAMES = {
   [BOOK_TYPES.poem]: 'Стихотворение',
   [BOOK_TYPES.piece]: 'Пьеса',
   [BOOK_TYPES.cycle]: 'Цикл',
+  [BOOK_TYPES.conditionalcycle]: 'Условный цикл',
   [BOOK_TYPES.epic]: 'Роман-эпопея',
   [BOOK_TYPES.na]: 'Не определено',
 };
