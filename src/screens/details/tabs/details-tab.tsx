@@ -21,6 +21,8 @@ interface Props extends NavigationScreenProps {
   tab: string;
 }
 
+const TITLE_SEPARATOR = /\s*;\s*/g;
+
 @withScroll
 export class DetailsTab extends React.PureComponent<Props> {
   render() {
@@ -48,7 +50,9 @@ export class DetailsTab extends React.PureComponent<Props> {
           <ViewLineTouchable title='Оригинальное название' value={book.originalTitle} onPress={this.openTelegram} />
         )}
 
-        {!!book.otherTitles && <ViewLine title='Другие названия' value={book.otherTitles} />}
+        {!!book.otherTitles && (
+          <ViewLine title='Другие названия' value={book.otherTitles.replace(TITLE_SEPARATOR, '\n')} />
+        )}
 
         {all && !!book.description && <BookDescriptionLine description={book.description} />}
 
