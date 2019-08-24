@@ -114,12 +114,15 @@ export class BookDetails extends React.Component<Props> {
     return (
       <View style={s.mainInformationContainer}>
         <View>
-          <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={book} />
+          <View style={s.ratingButton}>
+            <ReadButton ratingStyle={s.blackRating} openChangeStatus={this.openChangeStatus} book={book} />
+          </View>
+
           {!!book.genre && <Text style={s.secondary}>{book.genre}</Text>}
           {!!book.year && <Text style={s.secondary}>{book.year}</Text>}
         </View>
 
-        <TouchableOpacity onPress={this.openChangeThumbnail} style={{ translateY: -40, marginBottom: -40 }}>
+        <TouchableOpacity onPress={this.openChangeThumbnail} style={s.thumbnailContainer}>
           <Thumbnail style={s.thumbnail} width={120} height={180} url={this.props.book.thumbnail} cache auto='none' />
         </TouchableOpacity>
       </View>
@@ -201,6 +204,13 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     marginTop: 5,
+  } as ViewStyle,
+  ratingButton: {
+    alignSelf: 'flex-start',
+  } as ViewStyle,
+  thumbnailContainer: {
+    transform: [{ translateY: -40 }],
+    marginBottom: -40,
   } as ViewStyle,
   thumbnail: {
     marginLeft: MARGIN,
