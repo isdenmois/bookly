@@ -66,8 +66,10 @@ const s = StyleSheet.create({
   } as ViewStyle,
   modal: {
     marginTop: 50,
-    marginHorizontal: 20,
+    paddingHorizontal: 20,
     marginBottom: 100,
+    maxWidth: 400,
+    alignSelf: 'center',
   } as ViewStyle,
   modalView: {
     borderTopLeftRadius: 10,
