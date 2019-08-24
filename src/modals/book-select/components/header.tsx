@@ -42,7 +42,14 @@ export class BookSelectHeader extends React.Component<Props, State> {
         )}
         {!opened && <TouchIcon name='search' size={20} onPress={this.openSearch} color={color.SecondaryText} />}
         {opened && (
-          <SearchBar autoFocus style={s.searchBar} value={value} onChange={this.setValue} onSearch={this.search} />
+          <SearchBar
+            autoFocus
+            style={s.searchBar}
+            value={value}
+            onChange={this.setValue}
+            onSearch={this.search}
+            onClose={this.search}
+          />
         )}
       </View>
     );
@@ -52,7 +59,10 @@ export class BookSelectHeader extends React.Component<Props, State> {
   setValue = value => this.setState({ value });
   search = () => {
     this.setState({ opened: false });
-    this.props.onChange(this.state.value);
+
+    if (this.props.search !== this.state.value) {
+      this.props.onChange(this.state.value);
+    }
   };
 }
 
