@@ -13,12 +13,12 @@ import * as editionsSchema from './editions';
 export class FantlabAPI {
   baseUrl = FANTLAB_URL;
 
-  searchBooks = createApi(this, searchBooksSchema);
-  book = createApi(this, bookSchema);
-  thumbnails = createApi(this, thumbnailsSchema);
-  similar = createApi(this, similarSchema);
-  reviewList = createApi(this, reviewListSchema);
-  markWork: markWorkSchema.Request = createApi(this, markWorkSchema);
-  login: loginSchema.Request = createApi(this, loginSchema);
-  editions = createApi(this, editionsSchema);
+  searchBooks = createApi(this, searchBooksSchema) as searchBooksSchema.Request;
+  book = createApi(this, bookSchema) as bookSchema.Request;
+  thumbnails = createApi(this, thumbnailsSchema) as thumbnailsSchema.Request;
+  similar = createApi(this, similarSchema) as similarSchema.Request;
+  reviewList = createApi(this, reviewListSchema) as reviewListSchema.Request;
+  markWork = createApi(this, markWorkSchema) as markWorkSchema.Request;
+  login = createApi(this, loginSchema) as loginSchema.Request;
+  editions = createApi(this, editionsSchema) as editionsSchema.Request;
 }

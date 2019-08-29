@@ -38,7 +38,6 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
   title = 'Прочитано';
 
   render() {
-    const { navigation } = this.props;
     const { query, sort } = this.state;
 
     return (

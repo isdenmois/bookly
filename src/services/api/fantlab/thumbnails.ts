@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import { Params } from './book';
+
 export { url, cache, mapParams } from './book';
 
 export const mapBody = { items };
@@ -16,6 +18,8 @@ function items(work) {
     url: edition.edition_id.toString(),
   }));
 }
+
+export type Request = (p: Params) => Promise<FantlabThumnail>;
 
 export interface FantlabThumnail {
   id: number;
