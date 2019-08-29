@@ -24,22 +24,21 @@ export function clearCache() {
   ToastAndroid.show('Очищен API Cache', ToastAndroid.SHORT);
 }
 
-type Schema<T> = {
+type Schema<P> = {
   url: string;
   method?: string;
   baseUrl?: string;
   contentType?: string;
-  mapParams?: Function;
+  mapParams?: P;
   mapBody?: any;
   cache?: boolean;
   redirect?: string;
-  Request?: T;
   [key: string]: any;
 };
 
-export function createApi<T>(context, schema: Schema<T>): T {
+export function createApi<P>(context, schema: Schema<P>): P {
   const api = function(...args) {
-    const params = schema.mapParams ? schema.mapParams.apply(null, args) : {};
+    const params = schema.mapParams ? (schema.mapParams as any).apply(null, args) : {};
     const url = `${schema.baseUrl || context.baseUrl}${createUrl(schema.url, params.query || {})}`;
 
     return sendReq(schema, params, url);

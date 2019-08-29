@@ -4,10 +4,10 @@ export const url = '/search-works';
 
 export const collection = 'books';
 
-export function mapParams({ q, page }) {
+export function mapParams({ q, page }: { q: string; page?: number }): Promise<any> {
   return {
     query: { page, q: q.trim().replace(/\s+/g, '+') },
-  };
+  } as any;
 }
 
 export const mapBody = {
@@ -23,5 +23,3 @@ export const mapBody = {
     })),
   total: 'total',
 };
-
-export type Request = (p: { q: string }) => Promise<any>;

@@ -6,10 +6,8 @@ export const url = '/work:bookId/ajaxsetmark:{mark}towork:bookId';
 
 export const needAuth = true;
 
-export function mapParams(bookId, mark) {
+export function mapParams(bookId: string, mark: number): Promise<void> {
   return {
     query: { bookId, mark },
-  };
+  } as any;
 }
-
-export type Request = (bookId: string, mark: number) => Promise<void>;

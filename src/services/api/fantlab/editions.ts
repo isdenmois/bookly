@@ -2,10 +2,10 @@ import _ from 'lodash';
 
 export const url = '/search-ids';
 
-export function mapParams({ e }) {
+export function mapParams({ e }: { e: string }): Promise<Edition> {
   return {
     query: { e },
-  };
+  } as any;
 }
 
 export const mapBody = {
@@ -27,5 +27,3 @@ export interface Edition {
   url: string;
   year: number;
 }
-
-export type Request = (p: { e: string }) => Promise<Edition[]>;
