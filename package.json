@@ -74,6 +74,7 @@
     "eslint-plugin-prettier": "3.1.0",
     "eslint-plugin-react": "7.14.2",
     "express": "4.17.1",
+    "husky": "3.0.4",
     "jest": "24.9.0",
     "jetifier": "1.6.4",
     "metro-minify-terser": "0.56.0",
@@ -81,6 +82,7 @@
     "patch-package": "6.1.2",
     "postinstall-postinstall": "2.0.0",
     "prettier": "1.18.2",
+    "pretty-quick": "1.11.1",
     "proxy-polyfill": "0.3.0",
     "react-native-dotenv": "0.2.0",
     "react-native-typescript-transformer": "1.2.13",
@@ -112,5 +114,10 @@
       }
     },
     "test-runner": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
