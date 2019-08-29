@@ -104,12 +104,8 @@ export class DetailsTab extends React.PureComponent<Props> {
   openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
 
   openChangeThumbnail = () => {
-    if (!this.props.book.status) {
+    if (!this.props.isExist) {
       return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
-    }
-
-    if (this.props.book.editionCount <= 1) {
-      return ToastAndroid.show('Недостаточно изданий для выбора', ToastAndroid.SHORT);
     }
 
     this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.book });
