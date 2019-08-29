@@ -4,8 +4,9 @@ import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
 import { FantlabAPI } from 'api';
 import { Fetcher } from 'components';
+import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
-import { BookDetails } from './components/book-details';
+import { BookDetailsTabs } from './components/book-details-tabs';
 
 interface Props extends NavigationScreenProps {
   bookId: string;
@@ -23,8 +24,8 @@ export class DetailsScreen extends React.Component<Props> {
     );
   }
 
-  renderResult = (book: BookExtended) => {
-    return <BookDetails book={book} onBack={this.goBack} navigation={this.props.navigation} />;
+  renderResult = (book: Book & BookExtended) => {
+    return <BookDetailsTabs book={book} isExist={book && !!book.status} navigation={this.props.navigation} />;
   };
 
   goBack = () => this.props.navigation.goBack();

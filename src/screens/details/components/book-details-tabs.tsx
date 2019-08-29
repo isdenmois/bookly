@@ -1,22 +1,23 @@
 import React from 'react';
 import _ from 'lodash';
+import { of } from 'rxjs';
+import withObservables from '@nozbe/with-observables';
 import { NavigationScreenProps } from 'react-navigation';
-import { Animated, StyleSheet, Dimensions, View, ViewStyle, TextStyle } from 'react-native';
+import { Animated, StyleSheet, Dimensions, ViewStyle, TextStyle } from 'react-native';
 import { TabView, TabBar, Route } from 'react-native-tab-view';
 import { Scene } from 'react-native-tab-view/src/types';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
-import { ChildrenTab } from './children-tab';
-import { ReviewsTab } from './reviews-tab';
-import { SimilarTab } from './similar-tab';
-import { DetailsTab } from './details-tab';
+import { ChildrenTab } from '../tabs/children-tab';
+import { ReviewsTab } from '../tabs/reviews-tab';
+import { SimilarTab } from '../tabs/similar-tab';
+import { DetailsTab } from '../tabs/details-tab';
 import { color } from 'types/colors';
+import { BookMainInfo } from './book-main-info';
 
 interface Props extends NavigationScreenProps {
   book: Book & BookExtended;
-  renderHeader: (scrollY: Animated.Value, height: number, tabbar: any) => React.ReactNode;
-  tabsPadding: number;
   isExist: boolean;
 }
 
@@ -36,6 +37,9 @@ const TABS = {
 
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
 
+@withObservables(['book'], ({ book }) => ({
+  book: book.observe ? book : of(book),
+}))
 export class BookDetailsTabs extends React.Component<Props, State> {
   state: State = {
     index: 0,
@@ -96,43 +100,25 @@ export class BookDetailsTabs extends React.Component<Props, State> {
   };
 
   renderTabBar = props => (
-    <View style={{ position: 'relative' }}>
-      <Animated.View
-        style={
-          this.state.headerHeight
-            ? [
-                s.header,
-                {
-                  translateY: this.scrollY.interpolate({
-                    inputRange: [0, this.state.headerHeight - 110],
-                    outputRange: [0, -this.state.headerHeight + 110],
-                    extrapolate: 'clamp',
-                  }),
-                },
-              ]
-            : null
-        }
-        onLayout={this.setHeaderHeight}
-      >
-        {this.props.renderHeader(
-          this.scrollY,
-          this.state.headerHeight,
-          <View style={{ overflow: 'hidden', paddingBottom: 4, zIndex: 5, backgroundColor: 'white' }}>
-            <TabBar
-              {...props}
-              scrollEnabled
-              getLabelText={getLabelText}
-              activeColor={color.PrimaryText}
-              inactiveColor={color.PrimaryText}
-              indicatorStyle={s.indicator}
-              labelStyle={s.label}
-              tabStyle={s.tabBar}
-              style={s.tab}
-            />
-          </View>,
-        )}
-      </Animated.View>
-    </View>
+    <BookMainInfo
+      book={this.props.book}
+      scrollY={this.scrollY}
+      headerHeight={this.state.headerHeight}
+      navigation={this.props.navigation}
+      onLayout={this.setHeaderHeight}
+    >
+      <TabBar
+        {...props}
+        scrollEnabled
+        getLabelText={getLabelText}
+        activeColor={color.PrimaryText}
+        inactiveColor={color.PrimaryText}
+        indicatorStyle={s.indicator}
+        labelStyle={s.label}
+        tabStyle={s.tabBar}
+        style={s.tab}
+      />
+    </BookMainInfo>
   );
 
   renderScene = ({ route }: Scene<Route & { component: any }>) => {
@@ -146,7 +132,6 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         y={this.y}
         scrollY={this.scrollY}
         headerHeight={this.state.headerHeight}
-        tabsPadding={this.props.tabsPadding}
         onScrollEnd={this.onScrollEnd}
         isExist={this.props.isExist}
         withThumbnail={this.props.book.thumbnail}
@@ -182,13 +167,6 @@ const s = StyleSheet.create({
   } as ViewStyle,
   tab: {
     backgroundColor: color.Background,
-    zIndex: 1,
-  } as ViewStyle,
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
     zIndex: 1,
   } as ViewStyle,
 });
