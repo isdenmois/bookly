@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { BookExtended } from 'types/book-extended';
 
 export const url = '/work/:bookId/extended';
 
@@ -6,7 +7,7 @@ export const cache = true;
 
 export const collection = 'books';
 
-export function mapParams({ bookId }) {
+export function mapParams({ bookId }: Params) {
   return {
     query: { bookId },
   };
@@ -37,6 +38,10 @@ export const mapBody = {
   translators,
   editionTranslators,
 };
+
+export type Params = { bookId: string };
+
+export type Request = (params: Params) => Promise<BookExtended>;
 
 function editionCount(book) {
   const ru = _.find(_.get(book, 'editions_info.langs'), { lang_code: 'ru' });
@@ -82,29 +87,33 @@ function children(w) {
 }
 
 function getEditions(w) {
-  const RUSSIAN_EDITION = 10
-  return _.get(w, `editions_blocks.${RUSSIAN_EDITION}.list`, [])
+  const RUSSIAN_EDITION = 10;
+  return _.get(w, `editions_blocks.${RUSSIAN_EDITION}.list`, []);
 }
 
 function editionIds(w) {
-  return getEditions(w).map(el => el.edition_id)
+  return getEditions(w).map(el => el.edition_id);
 }
 
 function editionTranslators(w) {
-  const translators = _.get(w, 'editions_info.translators', [])
-  const translatorNames = {}
+  const translators = _.get(w, 'editions_info.translators', []);
+  const translatorNames = {};
 
-  getEditions(w).filter(e => e.translators).forEach(el => {
-    translatorNames[el.edition_id] = el.translators.split(',').map(id => _.get(translators.find(t => t.id === id), 'name', ''))
-  })
+  getEditions(w)
+    .filter(e => e.translators)
+    .forEach(el => {
+      translatorNames[el.edition_id] = el.translators
+        .split(',')
+        .map(id => _.get(translators.find(t => t.id === id), 'name', ''));
+    });
 
-  return translatorNames
+  return translatorNames;
 }
 
 function translators(w) {
   let translations = _.find(w.translations, { lang_id: 1 });
   translations = _.get(translations, 'translations') || [];
-  translations = translations.map(t => _.map(_.get(t, 'translators'), 'short_name').join(', ')).filter(t => t)
+  translations = translations.map(t => _.map(_.get(t, 'translators'), 'short_name').join(', ')).filter(t => t);
 
   return translations.sort();
 }

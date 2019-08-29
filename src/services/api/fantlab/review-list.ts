@@ -24,6 +24,8 @@ export const mapBody = {
   total: 'total_count',
 };
 
+export type Request = (p: Params) => Promise<FantlabReview[]>;
+
 export interface ReviewList {
   items: FantlabReview[];
   total: number;
@@ -37,4 +39,9 @@ export interface FantlabReview {
   rating: number;
   user: string;
   userAvatar: string;
+}
+
+interface Params {
+  bookId: string;
+  sort: string;
 }

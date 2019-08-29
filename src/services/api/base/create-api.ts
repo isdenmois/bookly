@@ -24,8 +24,21 @@ export function clearCache() {
   ToastAndroid.show('Очищен API Cache', ToastAndroid.SHORT);
 }
 
-export function createApi(context, schema) {
-  const api = function (...args) {
+type Schema<T> = {
+  url: string;
+  method?: string;
+  baseUrl?: string;
+  contentType?: string;
+  mapParams?: Function;
+  mapBody?: any;
+  cache?: boolean;
+  redirect?: string;
+  Request?: T;
+  [key: string]: any;
+};
+
+export function createApi<T>(context, schema: Schema<T>): T {
+  const api = function(...args) {
     const params = schema.mapParams ? schema.mapParams.apply(null, args) : {};
     const url = `${schema.baseUrl || context.baseUrl}${createUrl(schema.url, params.query || {})}`;
 
@@ -34,7 +47,7 @@ export function createApi(context, schema) {
 
   api.schema = schema;
 
-  return api;
+  return api as any;
 }
 
 function sendReq(schema, params, url) {
@@ -65,8 +78,7 @@ function fetchData(url, schema, params) {
     return auth(url, schema, params);
   }
 
-  return fetch(url, createFetchParams(schema, params.body))
-    .then(r => handleErrors(r, schema, params, url))
+  return fetch(url, createFetchParams(schema, params.body)).then(r => handleErrors(r, schema, params, url));
 }
 
 function handleErrors(response, schema, params, url) {
@@ -82,5 +94,5 @@ function auth(url, schema, params) {
     const onSuccess = () => fetchData(url, schema, params).then(resolve);
 
     inject(Navigation).navigate('/modal/fantlab-login', { onSuccess });
-  })
+  });
 }

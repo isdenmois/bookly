@@ -19,27 +19,23 @@ const OMIT_FIELDS = [
   'contentContainerStyle',
 ];
 
-interface Parameters {
-  [prop: string]: any;
-}
-
 type ListItemRender = (item: any, index?: number) => ReactNode;
 type DataRender = (item: any) => ReactNode;
 
-type Props = Parameters & {
-  api: (props: any) => Promise<any>;
-  key?: string;
+type Props<P = {}> = {
+  api: (props: P) => Promise<any>;
+  children: ListItemRender | DataRender;
   empty?: any;
   observe?: string[];
-  children?: ListItemRender | DataRender;
   renderResult?: DataRender;
   emptyText?: string;
   useFlatlist?: boolean;
   contentContainerStyle?: any;
   onLoad?: () => void;
-};
+  selected?: any;
+} & P;
 
-export class Fetcher extends React.PureComponent<Props> {
+export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   static defaultProps: Partial<Props> = {
     empty: EmptyResult,
     emptyText: 'Ничего не найдено',
