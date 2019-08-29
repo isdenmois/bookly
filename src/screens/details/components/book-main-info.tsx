@@ -4,7 +4,6 @@ import {
   ImageBackground,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
   StyleSheet,
   ViewStyle,
@@ -14,9 +13,7 @@ import {
   Clipboard,
   Linking,
 } from 'react-native';
-import { of } from 'rxjs';
 import { NavigationScreenProps } from 'react-navigation';
-import withObservables from '@nozbe/with-observables';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
@@ -24,52 +21,78 @@ import { ReadButton, Thumbnail } from 'components';
 import { getThumbnailUrl } from 'components/thumbnail';
 import { getAvatarBgColor } from 'components/avatar';
 import { BookDetailsHeader } from './book-details-header';
-import { BookDetailsTabs } from '../tabs';
 
 interface Props extends NavigationScreenProps {
   book: Book & BookExtended;
-  onBack: () => void;
+  scrollY: Animated.Value;
+  headerHeight: number;
+  onLayout: Function;
 }
 
-const THUMBNAIL_WIDTH = 120;
 const MARGIN = 30;
-const READ_BUTTON_MARGIN = 2 * MARGIN + THUMBNAIL_WIDTH;
 
-@withObservables(['book'], ({ book }) => ({
-  book: book.observe ? book : of(book),
-}))
-export class BookDetails extends React.Component<Props> {
+export class BookMainInfo extends React.PureComponent<Props> {
   get bookTitle() {
     return this.props.book.title || this.props.book.originalTitle;
   }
 
   render() {
     const book = this.props.book;
+    const renderBackground = book.thumbnail ? this.renderThumbnailBackground : this.renderAvatarBackground;
+    const scrollY = this.props.scrollY;
+    const headerHeight = this.props.headerHeight;
+    const translateY = headerHeight
+      ? scrollY.interpolate({
+          inputRange: [0, headerHeight - 110],
+          outputRange: [0, headerHeight - 110],
+          extrapolate: 'clamp',
+        })
+      : null;
+    const headerStyle = headerHeight
+      ? [
+          s.header,
+          {
+            translateY: scrollY.interpolate({
+              inputRange: [0, headerHeight - 110],
+              outputRange: [0, -headerHeight + 110],
+              extrapolate: 'clamp',
+            }),
+          },
+        ]
+      : null;
 
     return (
-      <BookDetailsTabs
-        tabsPadding={0}
-        renderHeader={this.renderMainInfo}
-        book={book}
-        isExist={book && !!book.status}
-        navigation={this.props.navigation}
-      />
+      <View style={{ position: 'relative' }}>
+        <Animated.View style={headerStyle} onLayout={this.props.onLayout}>
+          <View style={{ backgroundColor: 'white', overflow: 'hidden' }}>
+            <Animated.View style={{ translateY }}>
+              {renderBackground(
+                <View style={s.darkOverlay}>
+                  {this.renderHeader()}
+                  {this.renderAuthor()}
+                  {!book.thumbnail && this.renderSecondaryData()}
+                </View>,
+              )}
+
+              {!!book.thumbnail && this.renderSecondaryWithThumbnailData()}
+            </Animated.View>
+
+            <View style={{ overflow: 'hidden', paddingBottom: 4, zIndex: 5, backgroundColor: 'white' }}>
+              {this.props.children}
+            </View>
+          </View>
+        </Animated.View>
+      </View>
     );
   }
 
   renderHeader() {
     return (
-      <BookDetailsHeader bookId={this.props.book.id} onBack={this.props.onBack}>
-        {this.renderTitle()}
+      <BookDetailsHeader bookId={this.props.book.id} navigation={this.props.navigation}>
+        <TouchableOpacity style={s.titleWrapper} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
+          <Text style={s.title}>{this.bookTitle}</Text>
+        </TouchableOpacity>
       </BookDetailsHeader>
-    );
-  }
-
-  renderTitle() {
-    return (
-      <TouchableOpacity style={s.titleWrapper} onPress={this.copyBookTitle} onLongPress={this.openTelegram}>
-        <Text style={s.title}>{this.bookTitle}</Text>
-      </TouchableOpacity>
     );
   }
 
@@ -127,35 +150,6 @@ export class BookDetails extends React.Component<Props> {
       </View>
     );
   }
-
-  renderMainInfo = (scrollY: Animated.Value, headerHeight: number, tabbar: any) => {
-    const book = this.props.book;
-    const renderBackground = book.thumbnail ? this.renderThumbnailBackground : this.renderAvatarBackground;
-    const translateY = headerHeight
-      ? scrollY.interpolate({
-          inputRange: [0, headerHeight - 110],
-          outputRange: [0, headerHeight - 110],
-          extrapolate: 'clamp',
-        })
-      : null;
-
-    return (
-      <View style={{ backgroundColor: 'white', overflow: 'hidden' }}>
-        <Animated.View style={{ translateY }}>
-          {renderBackground(
-            <View style={s.darkOverlay}>
-              {this.renderHeader()}
-              {this.renderAuthor()}
-              {!book.thumbnail && this.renderSecondaryData()}
-            </View>,
-          )}
-
-          {!!book.thumbnail && this.renderSecondaryWithThumbnailData()}
-        </Animated.View>
-        {tabbar}
-      </View>
-    );
-  };
 
   openTelegram = () => Linking.openURL(`tg://share?text=${this.bookTitle}`);
 
@@ -260,4 +254,11 @@ const s = StyleSheet.create({
     color: color.PrimaryTextInverse,
     fontSize: 18,
   } as TextStyle,
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  } as ViewStyle,
 });

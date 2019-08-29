@@ -1,11 +1,11 @@
 import React from 'react';
-import { Linking, StyleSheet, View, TextStyle, ViewStyle, Dimensions } from 'react-native';
+import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import { TouchIcon } from 'components';
 
-interface Props {
+interface Props extends NavigationScreenProps {
   bookId: string;
-  onBack: () => void;
 }
 
 export class BookDetailsHeader extends React.PureComponent<Props> {
@@ -18,7 +18,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
           name='arrow-left'
           size={24}
           color='white'
-          onPress={this.props.onBack}
+          onPress={this.goBack}
         />
         {this.props.children}
         <TouchIcon style={s.icon} paddingHorizontal={15} name='globe' size={24} color='white' onPress={this.openWeb} />
@@ -27,6 +27,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
   }
 
   openWeb = () => Linking.openURL(`https://fantlab.ru/work${this.props.bookId}`);
+  goBack = () => this.props.navigation.goBack();
 }
 
 const s = StyleSheet.create({
