@@ -33,7 +33,7 @@ type Props<P = {}> = {
   contentContainerStyle?: any;
   onLoad?: () => void;
   selected?: any;
-} & P;
+} & Omit<P, 'page'>;
 
 export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   static defaultProps: Partial<Props> = {

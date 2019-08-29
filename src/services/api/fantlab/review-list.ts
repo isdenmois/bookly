@@ -4,10 +4,10 @@ export const url = '/work/:bookId/responses';
 
 export const cache = true;
 
-export function mapParams({ bookId, page, sort }) {
+export function mapParams({ bookId, page, sort }: Params): Promise<ReviewList> {
   return {
     query: { bookId, page, sort },
-  };
+  } as any;
 }
 
 export const mapBody = {
@@ -23,8 +23,6 @@ export const mapBody = {
     })),
   total: 'total_count',
 };
-
-export type Request = (p: Params) => Promise<FantlabReview[]>;
 
 export interface ReviewList {
   items: FantlabReview[];
@@ -44,4 +42,5 @@ export interface FantlabReview {
 interface Params {
   bookId: string;
   sort: string;
+  page?: number;
 }

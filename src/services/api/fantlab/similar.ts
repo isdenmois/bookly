@@ -5,10 +5,10 @@ export const url = '/work/:bookId/similars';
 
 export const cache = true;
 
-export function mapParams({ bookId }: Params) {
+export function mapParams({ bookId }: Params): Promise<BookSimilar[]> {
   return {
     query: { bookId },
-  };
+  } as any;
 }
 
 const THUMBNAIL_ID = /(\d+$)/;
@@ -33,8 +33,6 @@ export interface BookSimilar {
   type: string;
   thumbnail: string;
 }
-
-export type Request = (p: Params) => Promise<BookSimilar[]>;
 
 interface Params {
   bookId: string;

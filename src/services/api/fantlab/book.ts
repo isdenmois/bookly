@@ -7,10 +7,10 @@ export const cache = true;
 
 export const collection = 'books';
 
-export function mapParams({ bookId }: Params) {
+export function mapParams({ bookId }: Params): Promise<BookExtended> {
   return {
     query: { bookId },
-  };
+  } as any;
 }
 
 const THUMBNAIL_ID = /(\d+$)/;
@@ -40,8 +40,6 @@ export const mapBody = {
 };
 
 export type Params = { bookId: string };
-
-export type Request = (params: Params) => Promise<BookExtended>;
 
 function editionCount(book) {
   const ru = _.find(_.get(book, 'editions_info.langs'), { lang_code: 'ru' });
