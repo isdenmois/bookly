@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { BOOK_TYPES } from 'types/book-types';
-import { API } from '../base/api';
+import { api } from '../base/api';
 
 const THUMBNAIL_ID = /(\d+$)/;
 const types = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
@@ -17,11 +17,10 @@ const response = {
   type: 'name_type',
 };
 
-export default (api: API<Params>) =>
-  api
-    .get('/work/:bookId/similars', true)
-    .filterBefore(row => row && row.type === 'work' && types.includes(row.name_type_icon))
-    .response(response);
+export default api
+  .get<Params>('/work/:bookId/similars', true)
+  .filterBefore(row => row && row.type === 'work' && types.includes(row.name_type_icon))
+  .response(response);
 
 export interface BookSimilar {
   id: string;

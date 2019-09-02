@@ -1,14 +1,13 @@
 import _ from 'lodash';
-import { API } from '../base/api';
+import { api } from '../base/api';
 
 type PushChanges = (sync: number, changes: any) => Promise<void>;
 
-export default (api: API<any, PushChanges>) =>
-  api
-    .post('/:userId')
-    .contentType('application/json')
-    .query(sync => ({ sync: sync - 1 }))
-    .body((sync, body) => preparePushChanges(body));
+export default api
+  .post<PushChanges>('/:userId')
+  .contentType('application/json')
+  .query(sync => ({ sync: sync - 1 }))
+  .body((sync, body) => preparePushChanges(body));
 
 function preparePushChanges(changes) {
   return {

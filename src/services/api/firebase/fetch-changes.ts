@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { API } from '../base/api';
+import { api } from '../base/api';
 
 const response = {
   authors: 'authors',
@@ -8,11 +8,10 @@ const response = {
   reviews: parseReviews,
 };
 
-export default (api: API) =>
-  api
-    .get('/:userId')
-    .query(sync => ({ sync }))
-    .response(response);
+export default api
+  .get<number>('/:userId')
+  .query(sync => ({ sync }))
+  .response(response);
 
 function parseBooks(changes) {
   changes.books.created = _.map(changes.books.created, bookParse);

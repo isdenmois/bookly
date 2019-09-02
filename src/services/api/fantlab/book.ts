@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { API } from '../base/api';
+import { api } from '../base/api';
 
 const THUMBNAIL_ID = /(\d+$)/;
 
@@ -29,7 +29,7 @@ const response = {
 
 export type Params = { bookId: string };
 
-export default (api: API<Params>) => api.get('/work/:bookId/extended').response(response);
+export default api.get<Params>('/work/:bookId/extended').response(response);
 
 function editionCount(book) {
   const ru = _.find(_.get(book, 'editions_info.langs'), { lang_code: 'ru' });

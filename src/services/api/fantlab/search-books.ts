@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { API } from '../base/api';
+import { api } from '../base/api';
 
 type Params = { q: string };
 
@@ -17,8 +17,7 @@ const response = {
   total: 'total',
 };
 
-export default (api: API<Params>) =>
-  api
-    .get('/search-works')
-    .query('q', q => q.trim().replace(/\s+/g, '+'))
-    .response(response);
+export default api
+  .get<Params>('/search-works')
+  .query('q', q => q.trim().replace(/\s+/g, '+'))
+  .response(response);
