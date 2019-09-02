@@ -3,7 +3,7 @@ import { API } from '../base/api';
 
 const THUMBNAIL_ID = /(\d+$)/;
 
-const mapBody = {
+const response = {
   id: 'work_id',
   title: w => w.work_name || w.work_name_orig,
   author: w => _.map(w.authors, a => a.name).join(', '),
@@ -29,7 +29,7 @@ const mapBody = {
 
 export type Params = { bookId: string };
 
-export default (api: API<Params>) => api.get('/work/:bookId/extended').mapBody(mapBody);
+export default (api: API<Params>) => api.get('/work/:bookId/extended').response(response);
 
 function editionCount(book) {
   const ru = _.find(_.get(book, 'editions_info.langs'), { lang_code: 'ru' });

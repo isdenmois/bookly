@@ -20,11 +20,15 @@ export function createUrl(url: string, params) {
   return _.isEmpty(params) ? url : `${url}?${queryParams(params)}`;
 }
 
+export function getUrlParams(url: string): string[] {
+  return _.uniq((url.match(PARAMS_REGEX) || []).map(str => str.replace(DELIMITERS, '')));
+}
+
 /**
  * Заменяет параметры в URL
  */
 function replaceUrlParams(url, params) {
-  const urlParams: string[] = _.uniq((url.match(PARAMS_REGEX) || []).map(str => str.replace(DELIMITERS, '')));
+  const urlParams: string[] = getUrlParams(url);
 
   urlParams.forEach(param => {
     url = url.replace(new RegExp(`:[{]?${param}[}]?`, 'g'), params[param]);
@@ -36,7 +40,7 @@ function replaceUrlParams(url, params) {
 /**
  * Формирует query-params
  */
-function queryParams(params) {
+export function queryParams(params) {
   return Object.keys(params)
     .map(key => {
       const value = params[key];

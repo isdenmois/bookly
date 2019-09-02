@@ -1,18 +1,18 @@
 import { FANTLAB_URL } from 'services/config';
-import { createApi, createApi2 } from '../base';
+import { createApi } from '../base';
 
 import searchBooksSchema from './search-books';
 import bookSchema from './book';
-import * as thumbnailsSchema from './thumbnails';
-import * as similarSchema from './similar';
-import * as reviewListSchema from './review-list';
-import * as markWorkSchema from './mark-work';
-import * as loginSchema from './login';
-import * as editionsSchema from './editions';
+import thumbnailsSchema from './thumbnails';
+import similarSchema from './similar';
+import reviewListSchema from './review-list';
+import markWorkSchema from './mark-work';
+import loginSchema from './login';
+import editionsSchema from './editions';
 
 export class FantlabAPI {
-  searchBooks = createApi2(FANTLAB_URL, searchBooksSchema);
-  book = createApi2(FANTLAB_URL, bookSchema);
+  searchBooks = createApi(FANTLAB_URL, searchBooksSchema);
+  book = createApi(FANTLAB_URL, bookSchema);
   thumbnails = createApi(FANTLAB_URL, thumbnailsSchema);
   similar = createApi(FANTLAB_URL, similarSchema);
   reviewList = createApi(FANTLAB_URL, reviewListSchema);

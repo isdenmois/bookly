@@ -1,17 +1,12 @@
 import _ from 'lodash';
+import { API } from '../base/api';
 
-export const url = '/:userId';
-
-export const method = 'POST';
-
-export const contentType = 'application/json';
-
-export function mapParams(sync, body) {
-  return {
-    query: { sync: sync - 1 },
-    body: preparePushChanges(body),
-  };
-}
+export default (api: API) =>
+  api
+    .post('/:userId')
+    .contentType('application/json')
+    .query(sync => ({ sync: sync - 1 }))
+    .body((sync, body) => preparePushChanges(body));
 
 function preparePushChanges(changes) {
   return {

@@ -1,16 +1,7 @@
 import _ from 'lodash';
+import { API } from '../base/api';
 
-export const url = '/work/:bookId/responses';
-
-export const cache = true;
-
-export function mapParams({ bookId, page, sort }: Params): Promise<ReviewList> {
-  return {
-    query: { bookId, page, sort },
-  } as any;
-}
-
-export const mapBody = {
+const response = {
   items: l =>
     _.map(l.items, r => ({
       id: `f_${r.response_id}`,
@@ -23,6 +14,17 @@ export const mapBody = {
     })),
   total: 'total_count',
 };
+
+interface Params {
+  bookId: string;
+  sort: string;
+}
+
+export default (api: API<Params>) =>
+  api
+    .get('/work/:bookId/responses', true)
+    .query('sort')
+    .response(response);
 
 export interface ReviewList {
   items: FantlabReview[];
@@ -37,10 +39,4 @@ export interface FantlabReview {
   rating: number;
   user: string;
   userAvatar: string;
-}
-
-interface Params {
-  bookId: string;
-  sort: string;
-  page?: number;
 }

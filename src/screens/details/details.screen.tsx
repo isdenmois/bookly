@@ -18,7 +18,7 @@ export class DetailsScreen extends React.Component<Props> {
 
   render() {
     return (
-      <Fetcher api={this.api.book} bookId={this.props.bookId}>
+      <Fetcher api={this.api.book} bookId={this.props.bookId} collection='books'>
         {this.renderResult}
       </Fetcher>
     );

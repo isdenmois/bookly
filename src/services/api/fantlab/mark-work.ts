@@ -1,13 +1,11 @@
 import { FANTLAB_LOGIN_URL } from 'services/config';
+import { API } from '../base/api';
 
-export const baseUrl = FANTLAB_LOGIN_URL;
+type MarkWork = (bookId: string, mark: number) => Promise<void>;
 
-export const url = '/work:bookId/ajaxsetmark:{mark}towork:bookId';
-
-export const needAuth = true;
-
-export function mapParams(bookId: string, mark: number): Promise<void> {
-  return {
-    query: { bookId, mark },
-  } as any;
-}
+export default (api: API<any, MarkWork>) =>
+  api
+    .baseUrl(FANTLAB_LOGIN_URL)
+    .get('/work:bookId/ajaxsetmark:{mark}towork:bookId')
+    .withAuth()
+    .query((bookId: string, mark: number) => ({ bookId, mark }));

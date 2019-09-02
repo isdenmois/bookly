@@ -1,1 +1,1 @@
-export { createApi, createApi2 } from './create-api';
+export { createApi } from './create-api';

@@ -3,7 +3,7 @@ import { API } from '../base/api';
 
 type Params = { q: string };
 
-const map = {
+const response = {
   items: result =>
     _.map(result.matches, (w: any) => ({
       id: w.work_id.toString(),
@@ -21,4 +21,4 @@ export default (api: API<Params>) =>
   api
     .get('/search-works')
     .query('q', q => q.trim().replace(/\s+/g, '+'))
-    .mapBody(map);
+    .response(response);
