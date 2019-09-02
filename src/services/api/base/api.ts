@@ -1,16 +1,8 @@
 type DefaultFn<Params> = (params: Params) => Promise<any>;
 
 export type Pagination<T> = T & { page: number };
-export type ApiDefinition<Result extends Function> = (api: API<any, Result>) => any;
 
-export interface API<Params = any, Fn extends Function = DefaultFn<Params>> {
-  /**
-   * Overrides base url
-   * @param url - URL
-   * @example api.baseUrl('http://localhost').get('/status')
-   */
-  baseUrl(url: string): Omit<this, 'baseUrl'>;
-
+interface ApiCreator {
   /**
    * Creates GET request
    * @param url - URL
@@ -18,64 +10,87 @@ export interface API<Params = any, Fn extends Function = DefaultFn<Params>> {
    * @example api.get('/')
    * @example api.get('/', true)
    */
-  get(url: string, cache?: boolean): Omit<this, 'get' | 'post' | 'put' | 'body' | 'baseUrl'>;
+  get<T extends Function>(url: string, cache?: boolean): API<T>;
+  get<T>(url: string, cache?: boolean): API<DefaultFn<T>>;
 
   /**
    * Creates POST request
    * @param url - URL
    * @example api.post('/')
    */
-  post(url: string): Omit<this, 'get' | 'post' | 'put' | 'baseUrl'>;
+  post<T extends Function>(url: string): API<T>;
 
   /**
    * Creates PUT request
    * @param url - URL
    * @example api.put('/')
    */
-  put(url: string): Omit<this, 'get' | 'post' | 'put' | 'baseUrl'>;
+  put<T extends Function>(url: string): API<T>;
+}
+
+export const api: ApiCreator = {
+  get(url, cache) {
+    return new APIBuilder('GET', url, cache);
+  },
+  post(url) {
+    return new APIBuilder('POST', url);
+  },
+  put(url) {
+    return new APIBuilder('PUT', url);
+  },
+} as any;
+
+export interface API<Fn extends Function> {
+  /**
+   * Overrides base url
+   * @param url - URL
+   * @example api.get('/status').baseUrl('http://localhost')
+   */
+  baseUrl(url: string): this;
 
   /**
    * Defines Content-Type header for request
    * @default 'application/json'
    * @param type - header value
-   * @example api.contentType('application/xml')
+   * @example api.get('/').contentType('application/xml')
    */
-  contentType(type: string): Omit<this, 'get' | 'post' | 'put' | 'contentType' | 'baseUrl'>;
+  contentType(type: string): this;
 
   /**
    * Marks schema as auth required
+   * @example api.get('/').withAuth()
    */
-  withAuth(): Omit<this, 'get' | 'post' | 'put' | 'contentType' | 'baseUrl' | 'withAuth'>;
+  withAuth(): this;
 
   /**
    * Sets request redirect options for fetch
    * @param redirect - header value
-   * @example api.redirect('manual')
+   * @example api.get('/').redirect('manual')
    */
-  redirect(redirect: RequestRedirect): Omit<this, 'get' | 'post' | 'put' | 'redirect'>;
+  redirect(redirect: RequestRedirect): this;
 
   /**
    * Adds param to query params
    * @param param - param name
    * @example
-   * getWork = createApi(api => api.get('/work').query('id'))
+   * getWork = createApi(api.get('/work').query('id'))
    *
    * getWork({id: 1, q: 2}) // Will send request to /work?id=1 and ignore q param
    */
-  query(param: string): Pick<this, 'query' | 'body' | 'response' | 'filterBefore' | 'filter'>;
+  query(param: string): this;
 
   /**
    * Creates query params from execute function arguments
    * @param param - function that creates query params
    * @example
-   * schema = api => api
+   * schema = api
    *   .get('/login')
    *   .query((login, password) => ({ login, password }))
    * login = createApi(schema)
    *
    * login('user', 'pass') // Will send request to /login?user=user&password=pass
    */
-  query(map: Function): Pick<this, 'query' | 'body' | 'response' | 'filterBefore' | 'filter'>;
+  query(map: Function): this;
 
   /**
    * Picks fields
@@ -85,74 +100,76 @@ export interface API<Params = any, Fn extends Function = DefaultFn<Params>> {
    *   .get('/search')
    *   .query(['bookId', 'sort'])
    */
-  query(fields: string[]): Pick<this, 'query' | 'body' | 'response' | 'filterBefore' | 'filter'>;
+  query(fields: string[]): this;
 
   /**
    * Maps value and adds param to query params
    * @param param - param name
    * @param map - function that maps param value
    * @example
-   * schema = api => api
+   * schema = api
    *   .get('/search')
    *   .query('q', q => q.trim().replace(' ', '+'))
    * search = createApi(schema)
    *
    * search({ q: 'stephen king ' }) // Will send request to /search?q=stephen+king
    */
-  query(param: string, map: Function): Pick<this, 'query' | 'body' | 'response' | 'filterBefore' | 'filter'>;
+  query(param: string, map: Function): this;
 
   /**
    * Creates body from execute function arguments
    * @param map - function that creates body
    * @example
-   * schema = api => api
+   * schema = api
    *   .post('/login')
    *   .body((login, password) => ({ login, password }))
    * login = createApi(schema)
    *
    * login('user', 'pass') // Will send request to /login with body: user=user&password=pass
    */
-  body(map: Function): Pick<this, 'response' | 'filterBefore' | 'filter'>;
+  body(map: Function): this;
 
   /**
    * Filters array before response mapping
    * @param predicate - Filter predicate
    */
-  filterBefore(predicate: Function | string | any): Pick<this, 'response' | 'filter'>;
+  filterBefore(predicate: Function | string | any): this;
 
   /**
    * Map response with map schema
    * @param object - map schema
    * @example
-   * api.response({id: 'work_id'})
+   * api.get('/').response({id: 'work_id'})
    */
-  response(object: any): Pick<this, 'filter'>;
+  response(object: any): this;
 
   /**
    * Map response with function
    * @param fn - function
    * @example
-   * api.response(r => r.items.map(i => i.id))
+   * api.get('/').response(r => r.items.map(i => i.id))
    */
-  response(fn: Function): Pick<this, 'filter'>;
+  response(fn: Function): this;
 
   /**
    * Filter mapped result
    * @param fn - Filter predicate
    * @example
-   * schema = api => api
+   * schema = api
    *   .get('/books')
    *   .filter('thumbnail') // Only books with thumbnail
    * @example
-   * schema = api => api
+   * schema = api
    *   .get('/books')
    *   .filter({type: 'novel'}) // Only novels
    * @example
-   * schema = api => api
+   * schema = api
    *   .get('/books')
    *   .filter(b => b.year > 2000) // Only books published after 2000
    */
-  filter(predicate: Function | string | any): Pick<this, never>;
+  filter(predicate: Function | string | any): this;
+
+  get(): Schema;
 }
 
 export interface Schema {
@@ -170,31 +187,18 @@ export interface Schema {
   filterBefore?: Function;
 }
 
-export class APIBuilder {
+class APIBuilder {
   r: Schema = {} as any;
 
-  private m(method: string, url: string, cache?: boolean) {
+  constructor(method: string, url: string, cache?: boolean) {
     this.r.method = method;
     this.r.url = url;
     this.r.cache = cache;
-    return this;
   }
 
   baseUrl(url: string) {
     this.r.baseUrl = url;
     return this;
-  }
-
-  get(url: string, cache?: boolean) {
-    return this.m('GET', url, cache);
-  }
-
-  post(url: string): this {
-    return this.m('POST', url);
-  }
-
-  put(url: string): this {
-    return this.m('PUT', url);
   }
 
   withAuth(): this {
@@ -244,7 +248,7 @@ export class APIBuilder {
     return this;
   }
 
-  create() {
+  get() {
     return this.r;
   }
 }

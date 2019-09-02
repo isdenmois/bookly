@@ -7,7 +7,7 @@ import { Session } from 'services/session';
 import { createUrl, getUrlParams } from './create-url';
 import { createFetchParams } from './create-params';
 import { parseResult } from './parse-result';
-import { APIBuilder, ApiDefinition, Schema } from './api';
+import { Schema, API } from './api';
 
 const cacheStore = new Map();
 
@@ -25,11 +25,8 @@ export function clearCache() {
   ToastAndroid.show('Очищен API Cache', ToastAndroid.SHORT);
 }
 
-export function createApi<T extends Function>(baseUrl: string, builder: ApiDefinition<T>): T {
-  const api = new APIBuilder();
-  const schema = api.create();
-
-  builder(api);
+export function createApi<T extends Function>(baseUrl: string, api: API<T>): T {
+  const schema = api.get();
 
   return function(...args) {
     const query = createQuery(schema.url, schema.query, args);

@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import { API } from '../base/api';
+import { api } from '../base/api';
 
 interface Params {
   bookId: string;
 }
 
-export default (api: API<Params>) => api.get('/work/:bookId/extended', true).response(response);
+export default api.get<Params>('/work/:bookId/extended', true).response(response);
 
 export interface FantlabThumnail {
   id: number;

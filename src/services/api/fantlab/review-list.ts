@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { API } from '../base/api';
+import { api } from '../base/api';
 
 const response = {
   items: l =>
@@ -20,11 +20,10 @@ interface Params {
   sort: string;
 }
 
-export default (api: API<Params>) =>
-  api
-    .get('/work/:bookId/responses', true)
-    .query('sort')
-    .response(response);
+export default api
+  .get<Params>('/work/:bookId/responses', true)
+  .query('sort')
+  .response(response);
 
 export interface ReviewList {
   items: FantlabReview[];
