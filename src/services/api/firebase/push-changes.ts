@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import { API } from '../base/api';
 
-export default (api: API) =>
+type PushChanges = (sync: number, changes: any) => Promise<void>;
+
+export default (api: API<any, PushChanges>) =>
   api
     .post('/:userId')
     .contentType('application/json')
