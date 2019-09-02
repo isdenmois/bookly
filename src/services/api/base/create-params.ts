@@ -1,17 +1,15 @@
 import _ from 'lodash';
 import { inject } from 'services/inject/inject';
 import { Session } from 'services/session';
+import { queryParams } from './create-url';
+import { Schema } from './api';
 
-export function createFetchParams(schema, body) {
+export function createFetchParams(schema: Schema, body) {
   const params: any = {
-    method: schema.method || 'GET',
+    method: schema.method,
   };
 
-  params.headers = _.invoke(schema, 'headers') || {};
-
-  if (schema.contentType) {
-    params.headers['Content-Type'] = schema.contentType;
-  }
+  params.headers = _.get(schema, 'headers') || {};
 
   if (schema.needAuth) {
     params.headers.Cookie = `fl_s=${inject(Session).fantlabAuth}`;
@@ -21,8 +19,12 @@ export function createFetchParams(schema, body) {
     params.redirect = schema.redirect;
   }
 
-  if (body) {
-    params.body = params.headers['Content-Type'] === 'application/json' ? JSON.stringify(body) : body;
+  if (body && params.headers['Content-Type'] === 'application/json') {
+    params.body = JSON.stringify(body);
+  }
+
+  if (body && params.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+    params.body = queryParams(body);
   }
 
   return params;

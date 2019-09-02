@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { inject } from 'services/inject/inject';
 import { Navigation } from 'services/navigation';
 import { Session } from 'services/session';
-import { createUrl } from './create-url';
+import { createUrl, getUrlParams } from './create-url';
 import { createFetchParams } from './create-params';
 import { parseResult } from './parse-result';
-import { API } from './api';
+import { API, APIBuilder, ApiDefinition, Schema } from './api';
 
 const cacheStore = new Map();
 
@@ -25,45 +25,52 @@ export function clearCache() {
   ToastAndroid.show('Очищен API Cache', ToastAndroid.SHORT);
 }
 
-type Schema<P> = {
-  url: string;
-  method?: string;
-  baseUrl?: string;
-  contentType?: string;
-  mapParams?: P;
-  mapBody?: any;
-  cache?: boolean;
-  redirect?: string;
-  [key: string]: any;
-};
+export function createApi<T extends Function>(baseUrl: string, builder: ApiDefinition<T>): T {
+  const api = new APIBuilder();
+  const schema = api.create();
 
-type ApiBuilder<Result extends Function> = (api: API<any, Result>) => any;
-export function createApi2<T extends Function>(baseUrl: string, builder: ApiBuilder<T>): T {
-  const api = new API();
   builder(api);
 
-  return createApi(baseUrl, api.create());
+  return function(...args) {
+    const query = createQuery(schema.url, schema.query, args);
+    const body = schema.body ? schema.body.apply(null, args) : _.get(args, [0, 'body']);
+    const url = `${schema.baseUrl || baseUrl}${createUrl(schema.url, query || {})}`;
+
+    return sendReq(schema, body, url);
+  } as any;
 }
 
-export function createApi<P>(baseUrl: string, schema: Schema<P>): P {
-  const api = function(...args) {
-    const params = schema.mapParams ? (schema.mapParams as any).apply(null, args) : {};
-    const url = `${schema.baseUrl || baseUrl}${createUrl(schema.url, params.query || {})}`;
+function createQuery(url, query, args) {
+  if (typeof query === 'function') {
+    return query.apply(null, args);
+  }
+  const urlParams = getUrlParams(url).concat('page');
 
-    return sendReq(schema, params, url);
-  };
+  if (Array.isArray(query)) {
+    return _.pick(args[0], query.concat(urlParams));
+  }
 
-  api.schema = schema;
+  const result = _.pick(args[0], urlParams);
 
-  return api as any;
+  _.forEach(query, (value, key) => {
+    if (!args[0][key]) return;
+
+    if (typeof value === 'function') {
+      result[key] = value(args[0][key]);
+    } else {
+      result[key] = args[0][value];
+    }
+  });
+
+  return result;
 }
 
-function sendReq(schema, params, url) {
+function sendReq(schema: Schema, body, url) {
   if (schema.cache && cacheStore.has(url)) {
     return parseResult(schema, cacheStore.get(url));
   }
 
-  return fetchData(url, schema, params)
+  return fetchData(url, schema, body)
     .then(r => r.json())
     .then(data => {
       if (schema.cache) {
@@ -81,25 +88,25 @@ function sendReq(schema, params, url) {
     .then(response => parseResult(schema, response));
 }
 
-function fetchData(url, schema, params) {
+function fetchData(url, schema: Schema, body) {
   if (schema.needAuth && !inject(Session).fantlabAuth) {
-    return auth(url, schema, params);
+    return auth(url, schema, body);
   }
 
-  return fetch(url, createFetchParams(schema, params.body)).then(r => handleErrors(r, schema, params, url));
+  return fetch(url, createFetchParams(schema, body)).then(r => handleErrors(r, schema, body, url));
 }
 
-function handleErrors(response, schema, params, url) {
+function handleErrors(response, schema: Schema, body, url) {
   if (!response.ok && schema.needAuth) {
-    return auth(url, schema, params);
+    return auth(url, schema, body);
   }
 
   return response;
 }
 
-function auth(url, schema, params) {
+function auth(url, schema: Schema, body) {
   return new Promise(resolve => {
-    const onSuccess = () => fetchData(url, schema, params).then(resolve);
+    const onSuccess = () => fetchData(url, schema, body).then(resolve);
 
     inject(Navigation).navigate('/modal/fantlab-login', { onSuccess });
   });

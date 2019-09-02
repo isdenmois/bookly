@@ -1,16 +1,12 @@
 import _ from 'lodash';
+import { API } from '../base/api';
 
-export const url = '/search-ids';
-
-export function mapParams({ e }: { e: string }): Promise<Edition> {
-  return {
-    query: { e },
-  } as any;
-}
-
-export const mapBody = {
-  items: obj => editions(obj.editions),
-};
+type Params = { e: string };
+export default (api: API<Params>) =>
+  api
+    .get('/search-ids')
+    .query('e')
+    .response(obj => editions(obj.editions));
 
 function editions(e) {
   return _.map(e, el => ({ ...el, thumbnail: el.image ? `https:${el.image}` : null }));

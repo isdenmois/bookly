@@ -1,16 +1,4 @@
-export const method = 'POST';
-
-export const url = '/login';
-
-export const contentType = 'application/x-www-form-urlencoded';
-
-export const redirect = 'manual';
-
-export function mapParams(login: string, password: string): Promise<FantlabLoginRequest> {
-  return {
-    body: `login=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}`,
-  } as any;
-}
+import { API } from '../base/api';
 
 export interface FantlabLoginRequest {
   auth: number;
@@ -19,3 +7,12 @@ export interface FantlabLoginRequest {
   'X-Session'?: string;
   error_msg?: string;
 }
+
+type Login = (login: string, password: string) => Promise<FantlabLoginRequest>;
+
+export default (api: API<any, Login>) =>
+  api
+    .post('/login')
+    .contentType('application/x-www-form-urlencoded')
+    .redirect('manual')
+    .body((login, password) => ({ login, password }));

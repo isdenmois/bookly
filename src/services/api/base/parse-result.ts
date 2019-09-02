@@ -1,14 +1,32 @@
 import _ from 'lodash';
+import { Schema } from './api';
 
-export function parseResult(schema, response) {
+export function parseResult(schema: Schema, response) {
   return Promise.resolve(response)
-    .then(data => (Array.isArray(data) && schema.filter ? data.filter(schema.filter) : data))
-    .then(data => (schema.mapBody ? mapResult(schema.mapBody, data) : data));
+    .then(data => (schema.filterBefore ? filter(data, schema.filterBefore) : data))
+    .then(data => (schema.response ? mapResult(schema.response, data) : data))
+    .then(data => (schema.filter ? filter(data, schema.filter) : data));
+}
+
+function filter(data, fn) {
+  if (Array.isArray(data)) {
+    return _.filter(data, fn);
+  }
+
+  if (data && Array.isArray(data.items)) {
+    data.items = _.filter(data.items, fn);
+  }
+
+  return data;
 }
 
 function mapResult(map, data) {
   if (_.isArray(data)) {
     return _.map(data, obj => mapObject(map, obj));
+  }
+
+  if (typeof map === 'function') {
+    return map(data);
   }
 
   return mapObject(map, data);

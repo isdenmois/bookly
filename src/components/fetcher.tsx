@@ -17,6 +17,7 @@ const OMIT_FIELDS = [
   'emptyText',
   'useFlatlist',
   'contentContainerStyle',
+  'collection',
 ];
 
 type ListItemRender = (item: any, index?: number) => ReactNode;
@@ -33,6 +34,7 @@ type Props<P = {}> = {
   contentContainerStyle?: any;
   onLoad?: () => void;
   selected?: any;
+  collection?: 'books' | 'authors' | 'reviews';
 } & Omit<P, 'page'>;
 
 export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
@@ -116,7 +118,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
     this.appending = append;
 
     this.props
-      .api({ ...this.props, page: this.page })
+      .api({ ...this.props, page: this.page } as any)
       .then(data => new Promise(resolve => this.setState({ data: append ? this.append(data) : data }, resolve)))
       .then(() => this.mapDatabase())
       .catch(error => this.setState({ isLoading: false, error }))
@@ -198,7 +200,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   }
 
   mapDatabase() {
-    if (this.state.data && (this.props.api as any).schema.collection) {
+    if (this.state.data && this.props.collection) {
       this.subscribe();
     } else {
       this.setState({ isLoading: false });
@@ -206,10 +208,8 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   }
 
   subscribe() {
-    const { schema } = this.props.api as any;
-
     const query = inject(Database)
-      .collections.get(schema.collection)
+      .collections.get(this.props.collection)
       .query(Q.where('id', Q.oneOf(getIds(this.state.data))))
       .observe();
 

@@ -1,10 +1,18 @@
 import _ from 'lodash';
+import { API } from '../base/api';
 
-export { url, cache, mapParams } from './book';
+interface Params {
+  bookId: string;
+}
 
-export const mapBody = { items };
+export default (api: API<Params>) => api.get('/work/:bookId/extended', true).response(response);
 
-function items(work) {
+export interface FantlabThumnail {
+  id: number;
+  url: string;
+}
+
+function response(work) {
   const paper = _.find(work.editions_blocks, { block: 'paper' }) || _.head(Object.values(work.editions_blocks));
 
   if (!paper) {
@@ -15,9 +23,4 @@ function items(work) {
     id: edition.edition_id,
     url: edition.edition_id.toString(),
   }));
-}
-
-export interface FantlabThumnail {
-  id: number;
-  url: string;
 }

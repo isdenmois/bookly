@@ -1,18 +1,18 @@
 import _ from 'lodash';
-export const url = '/:userId';
+import { API } from '../base/api';
 
-export function mapParams(sync) {
-  return {
-    query: { sync },
-  };
-}
-
-export const mapBody = {
+const response = {
   authors: 'authors',
   books: parseBooks,
   book_authors: parseBookAuthors,
   reviews: parseReviews,
 };
+
+export default (api: API) =>
+  api
+    .get('/:userId')
+    .query(sync => ({ sync }))
+    .response(response);
 
 function parseBooks(changes) {
   changes.books.created = _.map(changes.books.created, bookParse);

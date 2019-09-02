@@ -40,6 +40,7 @@ export class SearchScreen extends React.Component<Props, State> {
           contentContainerStyle={s.scroll}
           api={this.api.searchBooks}
           q={this.state.q}
+          collection='books'
           emptyText='Книги не найдены'
           useFlatlist
         >
