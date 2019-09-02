@@ -1,21 +1,9 @@
 import _ from 'lodash';
-import { BookExtended } from 'types/book-extended';
-
-export const url = '/work/:bookId/extended';
-
-export const cache = true;
-
-export const collection = 'books';
-
-export function mapParams({ bookId }: Params): Promise<BookExtended> {
-  return {
-    query: { bookId },
-  } as any;
-}
+import { API } from '../base/api';
 
 const THUMBNAIL_ID = /(\d+$)/;
 
-export const mapBody = {
+const mapBody = {
   id: 'work_id',
   title: w => w.work_name || w.work_name_orig,
   author: w => _.map(w.authors, a => a.name).join(', '),
@@ -40,6 +28,8 @@ export const mapBody = {
 };
 
 export type Params = { bookId: string };
+
+export default (api: API<Params>) => api.get('/work/:bookId/extended').mapBody(mapBody);
 
 function editionCount(book) {
   const ru = _.find(_.get(book, 'editions_info.langs'), { lang_code: 'ru' });
