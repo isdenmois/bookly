@@ -7,7 +7,7 @@ import { Session } from 'services/session';
 import { createUrl, getUrlParams } from './create-url';
 import { createFetchParams } from './create-params';
 import { parseResult } from './parse-result';
-import { API, APIBuilder, ApiDefinition, Schema } from './api';
+import { APIBuilder, ApiDefinition, Schema } from './api';
 
 const cacheStore = new Map();
 
