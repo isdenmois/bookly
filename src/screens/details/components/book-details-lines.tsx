@@ -59,7 +59,7 @@ export const ViewLineTouchable = (props: ViewListTouchableProps) => (
 );
 
 export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
-  const onPress = React.useCallback(() => confirmRemoveModel(props.model, props.warning), [props.model]);
+  const onPress = React.useCallback(() => confirmRemoveModel(props.model, props.warning), [props.model, props.warning]);
 
   return (
     <View style={s.row}>

@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactNode, useCallback } from 'react';
+import React, { ReactChild, ReactNode } from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { Navigation, inject } from 'services';

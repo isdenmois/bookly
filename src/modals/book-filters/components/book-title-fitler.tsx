@@ -10,7 +10,7 @@ interface Props {
 
 export const BookTitleFilter = observer((props: Props) => {
   const filters = React.useMemo(() => inject(BookFilters), []);
-  const setTitle = React.useCallback(value => filters.setFilter('title', value), []);
+  const setTitle = React.useCallback(value => filters.setFilter('title', value), [filters]);
 
   return (
     <ListItem

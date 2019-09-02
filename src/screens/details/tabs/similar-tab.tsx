@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';

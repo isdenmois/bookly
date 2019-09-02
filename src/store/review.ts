@@ -1,8 +1,7 @@
-
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
 import { action, field, date, immutableRelation } from '@nozbe/watermelondb/decorators';
-import format from 'date-fns/format'
+import format from 'date-fns/format';
 
 type ReviewFields = 'id' | 'date' | 'body';
 
@@ -34,7 +33,7 @@ export async function createReview(database, book, body) {
 
     created.setHours(12, 0, 0, 0);
 
-    review.book.id = book.id
+    review.book.id = book.id;
     review.date = created;
     review.body = body;
   });

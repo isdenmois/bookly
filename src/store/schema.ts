@@ -34,7 +34,7 @@ export const schema = appSchema({
         { name: 'book_id', type: 'string', isIndexed: true },
         { name: 'date', type: 'number' },
         { name: 'body', type: 'string' },
-      ]
-    })
+      ],
+    }),
   ],
 });

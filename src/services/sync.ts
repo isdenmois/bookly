@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { observable } from 'mobx';
 import { synchronize } from '@nozbe/watermelondb/sync';
 import { getLastPulledAt } from '@nozbe/watermelondb/sync/impl';
@@ -19,7 +18,7 @@ export class SyncService {
       return null;
     }
 
-    await synchronize(this);
+    await synchronize(this as any);
 
     this.lastPulledAt = await getLastPulledAt(this.database);
   }

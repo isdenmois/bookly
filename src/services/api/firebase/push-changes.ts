@@ -51,7 +51,7 @@ function bookSerialize(book) {
 }
 
 function reviewSerialize(review) {
-  return _.omitBy(_.pick(review, ['id', 'date', 'body']), isEmpty)
+  return _.omitBy(_.pick(review, ['id', 'date', 'body']), isEmpty);
 }
 
 function isEmpty(value) {

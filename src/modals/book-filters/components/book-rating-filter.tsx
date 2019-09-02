@@ -9,8 +9,8 @@ import { BookFilters } from '../book-filters.service';
 
 export const BookRatingFilter = observer(() => {
   const filters = React.useMemo(() => inject(BookFilters), []);
-  const setRating = React.useCallback(value => filters.setFilter('rating', value), []);
-  const clear = React.useCallback(() => filters.setFilter('rating', null), []);
+  const setRating = React.useCallback(value => filters.setFilter('rating', value), [filters]);
+  const clear = React.useCallback(() => filters.setFilter('rating', null), [filters]);
 
   return (
     <OpenableListItem title='Рейтинг' viewValue={formatRating(filters.rating)} onClear={clear}>
