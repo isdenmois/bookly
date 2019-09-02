@@ -1,16 +1,9 @@
 import _ from 'lodash';
+import { API } from '../base/api';
 
-export const url = '/search-works';
+type Params = { q: string };
 
-export const collection = 'books';
-
-export function mapParams({ q, page }: { q: string; page?: number }): Promise<any> {
-  return {
-    query: { page, q: q.trim().replace(/\s+/g, '+') },
-  } as any;
-}
-
-export const mapBody = {
+const map = {
   items: result =>
     _.map(result.matches, (w: any) => ({
       id: w.work_id.toString(),
@@ -23,3 +16,9 @@ export const mapBody = {
     })),
   total: 'total',
 };
+
+export default (api: API<Params>) =>
+  api
+    .get('/search-works')
+    .query('q', q => q.trim().replace(/\s+/g, '+'))
+    .mapBody(map);

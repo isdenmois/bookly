@@ -7,6 +7,7 @@ import { Session } from 'services/session';
 import { createUrl } from './create-url';
 import { createFetchParams } from './create-params';
 import { parseResult } from './parse-result';
+import { API } from './api';
 
 const cacheStore = new Map();
 
@@ -36,10 +37,18 @@ type Schema<P> = {
   [key: string]: any;
 };
 
-export function createApi<P>(context, schema: Schema<P>): P {
+type ApiBuilder<Result extends Function> = (api: API<any, Result>) => any;
+export function createApi2<T extends Function>(baseUrl: string, builder: ApiBuilder<T>): T {
+  const api = new API();
+  builder(api);
+
+  return createApi(baseUrl, api.create());
+}
+
+export function createApi<P>(baseUrl: string, schema: Schema<P>): P {
   const api = function(...args) {
     const params = schema.mapParams ? (schema.mapParams as any).apply(null, args) : {};
-    const url = `${schema.baseUrl || context.baseUrl}${createUrl(schema.url, params.query || {})}`;
+    const url = `${schema.baseUrl || baseUrl}${createUrl(schema.url, params.query || {})}`;
 
     return sendReq(schema, params, url);
   };
