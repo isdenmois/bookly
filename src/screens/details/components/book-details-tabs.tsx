@@ -37,6 +37,8 @@ const TABS = {
 
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
 
+const HEADER_HEIGHT = 110;
+
 @withObservables(['book'], ({ book }) => ({
   book: book.observe ? book : of(book),
 }))
@@ -85,7 +87,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
   setIndex = index => this.setState({ index });
 
   onScrollEnd = (y: number) => {
-    const topScroll = this.state.headerHeight - 110;
+    const topScroll = this.state.headerHeight - HEADER_HEIGHT;
     this.y = y = Math.min(y, topScroll);
 
     _.forEach(this.tabCtrls, ctrl => {
