@@ -10,7 +10,7 @@ interface Props {
 
 export const BookYearFilter = observer((props: Props) => {
   const filters = React.useMemo(() => inject(BookFilters), []);
-  const onChange = React.useCallback(value => setYear(filters, value), []);
+  const onChange = React.useCallback(value => setYear(filters, value), [filters]);
 
   return (
     <ListItem

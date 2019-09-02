@@ -74,7 +74,7 @@ function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout }) {
             },
           ]
         : null,
-    [headerHeight],
+    [headerHeight, scrollY],
   );
   const childrenStyle = React.useMemo(
     () =>
@@ -87,7 +87,7 @@ function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout }) {
             }),
           }
         : null,
-    [headerHeight],
+    [headerHeight, scrollY],
   );
 
   return (
@@ -134,7 +134,7 @@ function Header({ bookTitle, navigation, bookId }) {
 }
 
 function BookAuthor({ book, navigation }) {
-  const searchAuthor = React.useCallback(() => navigation.push('Search', { query: book.author }), [book]);
+  const searchAuthor = React.useCallback(() => navigation.push('Search', { query: book.author }), [book, navigation]);
 
   return (
     <View style={book.thumbnail ? s.thumbnailPlaceholder : null}>

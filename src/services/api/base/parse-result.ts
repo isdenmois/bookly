@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export function parseResult(schema, response) {
   return Promise.resolve(response)
-    .then(data => Array.isArray(data) && schema.filter ? data.filter(schema.filter) : data)
+    .then(data => (Array.isArray(data) && schema.filter ? data.filter(schema.filter) : data))
     .then(data => (schema.mapBody ? mapResult(schema.mapBody, data) : data));
 }
 

@@ -12,7 +12,7 @@ export function createUrl(url: string, params) {
   if (url.includes(':userId')) {
     const session = inject(Session);
 
-    url = url.replace(':userId', session.userId)
+    url = url.replace(':userId', session.userId);
   }
 
   [url, params] = replaceUrlParams(url, params);

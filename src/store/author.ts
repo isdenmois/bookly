@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Model, Q } from '@nozbe/watermelondb';
-import { field, lazy } from '@nozbe/watermelondb/decorators';
+import { field } from '@nozbe/watermelondb/decorators';
 
 type AuthorFields = 'id' | 'name';
 
@@ -18,7 +18,9 @@ export default class Author extends Model {
 }
 
 export async function prepareMissedAuthors(database, authors) {
-  if (!authors || !authors.length) return [];
+  if (!authors || !authors.length) {
+    return [];
+  }
 
   const authorsCollection = database.collections.get('authors');
   const exists = await findExistsAuthors(authorsCollection, authors);

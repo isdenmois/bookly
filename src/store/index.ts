@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { Subject } from 'rxjs'
+import { Subject } from 'rxjs';
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import { patchMethod } from 'utils/patch-method'
+import { patchMethod } from 'utils/patch-method';
 
-import { migrations } from './migrations'
+import { migrations } from './migrations';
 import { schema } from './schema';
 import Book from './book';
 import Author from './author';
@@ -23,10 +23,10 @@ const changes = new Subject();
 
 const isSyncStatusUpdated = model => model.syncStatus && model.syncStatus !== 'synced';
 
-patchMethod(database, 'batch', function () {
+patchMethod(database, 'batch', function() {
   if (arguments.length && _.some(arguments, isSyncStatusUpdated)) {
     changes.next();
   }
-})
+});
 
 export const onChanges = changes.asObservable();

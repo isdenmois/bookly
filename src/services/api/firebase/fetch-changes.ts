@@ -47,7 +47,7 @@ function bookParse(book) {
 }
 
 function reviewParse(review) {
-  [review.book_id] = review.id.split('_')
+  [review.book_id] = review.id.split('_');
 
-  return review
+  return review;
 }

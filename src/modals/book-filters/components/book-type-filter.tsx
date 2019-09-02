@@ -7,7 +7,7 @@ import { BookFilters } from '../book-filters.service';
 
 export const BookTypeFilter = observer(() => {
   const filters = React.useMemo(() => inject(BookFilters), []);
-  const setType = React.useCallback(value => filters.setFilter('type', value), []);
+  const setType = React.useCallback(value => filters.setFilter('type', value), [filters]);
 
   return (
     <EditableListItem

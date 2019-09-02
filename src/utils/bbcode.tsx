@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text } from 'react-native';
 import Parser from 'bbcode-to-react/lib/parser';
 import Tag from 'bbcode-to-react/lib/tag';

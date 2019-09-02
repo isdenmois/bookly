@@ -78,7 +78,7 @@ export class Session {
       totalBooks: this.totalBooks,
       fantlabAuth: this.fantlabAuth,
       withFantlab: this.withFantlab,
-      defaultSort: this.defaultSort
+      defaultSort: this.defaultSort,
     });
 
     AsyncStorage.setItem(SESSION_KEY, session);

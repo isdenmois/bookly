@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Text, StyleSheet, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
+import { Text, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -13,7 +13,7 @@ import { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { FantlabAPI } from 'services/api';
-import { Button, Dialog, ListItem, RatingSelect, Switcher, Thumbnail, TouchIcon } from 'components';
+import { Button, Dialog, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
 
 const statusOptions = [
   { key: BOOK_STATUSES.WISH, title: 'Хочу прочитать' },

@@ -85,8 +85,9 @@ export const ReviewsTab = withScroll(ReviewsTabComponent);
 ReviewsTabComponent.Fixed = AddButton;
 
 function SelectReviewSort(props: SelectReviewSortProps) {
-  const onPress = React.useCallback(() => props.setSort(props.sort), [props.sort]);
-  const isSelected = props.sort === props.selected;
+  const { setSort, sort } = props;
+  const onPress = React.useCallback(() => setSort(sort), [setSort, sort]);
+  const isSelected = sort === props.selected;
   const Component: any = isSelected ? View : TouchableOpacity;
 
   return (

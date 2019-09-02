@@ -56,7 +56,7 @@ export const loadNavigationState = async () => {
 };
 
 export const create = route => {
-  useScreens(true);
+  useScreens(true); // eslint-disable-line react-hooks/rules-of-hooks
   return createAppContainer(createNavigator(route));
 };
 

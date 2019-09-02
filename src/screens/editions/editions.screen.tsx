@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { EditionCard } from './components/edition-card';

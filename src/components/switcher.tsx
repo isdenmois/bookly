@@ -21,7 +21,7 @@ export class Switcher extends React.Component<Props> {
     const lastIndex = this.props.options.length - 1;
 
     return (
-      <View style={[s.container, this.props.style]}>
+      <View style={[s.container, style]}>
         {this.props.options.map((option, index) => (
           <TouchableOpacity
             style={cn('option', { selected: option.key === value, lastOption: index === lastIndex })}

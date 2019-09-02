@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, TextInput, StyleSheet, ViewStyle, TextStyle, Alert, ToastAndroid } from 'react-native';
+import { ScrollView, TextInput, StyleSheet, ViewStyle, TextStyle, ToastAndroid } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { withNavigationProps } from 'utils/with-navigation-props';

@@ -18,5 +18,5 @@ export const color = {
   Border: '#E0E0E0',
   BlueIcon: '#0D47A1',
   Review: '#454754',
-  ReadMore: '#4E342E'
+  ReadMore: '#4E342E',
 };

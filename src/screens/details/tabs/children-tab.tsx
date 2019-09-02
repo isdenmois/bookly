@@ -14,7 +14,7 @@ export class ChildrenTab extends React.PureComponent<Props> {
   render() {
     return (
       <View>
-        {this.props.book.children.map((book, index) => (
+        {this.props.book.children.map(book => (
           <ViewLineTouchable
             key={book.id}
             onPress={() => this.openBook(book)}
