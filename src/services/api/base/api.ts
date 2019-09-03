@@ -1,3 +1,5 @@
+import { createApi } from './create-api';
+
 type DefaultFn<Params> = (params: Params) => Promise<any>;
 
 export type Pagination<T> = T & { page: number };
@@ -41,13 +43,6 @@ export const api: ApiCreator = {
 } as any;
 
 export interface API<Fn extends Function> {
-  /**
-   * Overrides base url
-   * @param url - URL
-   * @example api.get('/status').baseUrl('http://localhost')
-   */
-  baseUrl(url: string): this;
-
   /**
    * Defines Content-Type header for request
    * @default 'application/json'
@@ -169,7 +164,7 @@ export interface API<Fn extends Function> {
    */
   filter(predicate: Function | string | any): this;
 
-  get(): Schema;
+  create(baseUrl: string): Fn;
 }
 
 export interface Schema {
@@ -248,7 +243,7 @@ class APIBuilder {
     return this;
   }
 
-  get() {
-    return this.r;
+  create(baseUrl: string) {
+    return createApi(baseUrl, this.r);
   }
 }
