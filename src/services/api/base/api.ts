@@ -49,20 +49,20 @@ export interface API<Fn extends Function> {
    * @param type - header value
    * @example api.get('/').contentType('application/xml')
    */
-  contentType(type: string): this;
+  contentType(type: string): Omit<this, 'contentType'>;
 
   /**
    * Marks schema as auth required
    * @example api.get('/').withAuth()
    */
-  withAuth(): this;
+  withAuth(): Omit<this, 'withAuth'>;
 
   /**
    * Sets request redirect options for fetch
    * @param redirect - header value
    * @example api.get('/').redirect('manual')
    */
-  redirect(redirect: RequestRedirect): this;
+  redirect(redirect: RequestRedirect): Omit<this, 'redirect'>;
 
   /**
    * Adds param to query params
@@ -72,7 +72,7 @@ export interface API<Fn extends Function> {
    *
    * getWork({id: 1, q: 2}) // Will send request to /work?id=1 and ignore q param
    */
-  query(param: string): this;
+  query(param: string): Omit<this, 'contentType' | 'withAuth' | 'redirect'>;
 
   /**
    * Creates query params from execute function arguments
@@ -85,7 +85,7 @@ export interface API<Fn extends Function> {
    *
    * login('user', 'pass') // Will send request to /login?user=user&password=pass
    */
-  query(map: Function): this;
+  query(map: Function): Omit<this, 'contentType' | 'withAuth' | 'redirect'>;
 
   /**
    * Picks fields
@@ -95,7 +95,7 @@ export interface API<Fn extends Function> {
    *   .get('/search')
    *   .query(['bookId', 'sort'])
    */
-  query(fields: string[]): this;
+  query(fields: string[]): Omit<this, 'contentType' | 'withAuth' | 'redirect'>;
 
   /**
    * Maps value and adds param to query params
@@ -109,7 +109,7 @@ export interface API<Fn extends Function> {
    *
    * search({ q: 'stephen king ' }) // Will send request to /search?q=stephen+king
    */
-  query(param: string, map: Function): this;
+  query(param: string, map: Function): Omit<this, 'contentType' | 'withAuth' | 'redirect'>;
 
   /**
    * Creates body from execute function arguments
@@ -122,13 +122,13 @@ export interface API<Fn extends Function> {
    *
    * login('user', 'pass') // Will send request to /login with body: user=user&password=pass
    */
-  body(map: Function): this;
+  body(map: Function): Pick<this, 'filterBefore' | 'response' | 'filter' | 'create'>;
 
   /**
    * Filters array before response mapping
    * @param predicate - Filter predicate
    */
-  filterBefore(predicate: Function | string | any): this;
+  filterBefore(predicate: Function | string | any): Pick<this, 'response' | 'filter' | 'create'>;
 
   /**
    * Map response with map schema
@@ -136,7 +136,7 @@ export interface API<Fn extends Function> {
    * @example
    * api.get('/').response({id: 'work_id'})
    */
-  response(object: any): this;
+  response(object: any): Pick<this, 'filter' | 'create'>;
 
   /**
    * Map response with function
@@ -144,7 +144,7 @@ export interface API<Fn extends Function> {
    * @example
    * api.get('/').response(r => r.items.map(i => i.id))
    */
-  response(fn: Function): this;
+  response(fn: Function): Pick<this, 'filter' | 'create'>;
 
   /**
    * Filter mapped result
@@ -162,7 +162,7 @@ export interface API<Fn extends Function> {
    *   .get('/books')
    *   .filter(b => b.year > 2000) // Only books published after 2000
    */
-  filter(predicate: Function | string | any): this;
+  filter(predicate: Function | string | any): Pick<this, 'create'>;
 
   create(baseUrl: string): Fn;
 }
