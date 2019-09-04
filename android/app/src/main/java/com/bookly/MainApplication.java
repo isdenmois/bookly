@@ -1,7 +1,6 @@
 package com.bookly;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
