@@ -12,15 +12,20 @@ export class LoginStore {
     this.login = login.trim();
   }
 
-  @action submit() {
+  @action async submit() {
     this.submitting = true;
 
-    const promise = Promise.resolve(this.session.setSession(this.login))
-      .then(() => this.syncService.sync())
-      .then(() => (this.login = ''));
+    this.session.setSession(this.login);
 
-    promise.finally(() => (this.submitting = false));
-
-    return promise;
+    try {
+      await this.syncService.sync();
+      this.login = '';
+    } catch (e) {
+      console.error(e);
+      this.session.setSession(null);
+      throw e;
+    } finally {
+      this.submitting = false;
+    }
   }
 }
