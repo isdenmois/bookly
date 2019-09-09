@@ -1,4 +1,4 @@
-import { FANTLAB_URL, FANTLAB_LOGIN_URL } from 'services/config';
+import { FANTLAB_URL, FANTLAB_ROOT_URL } from 'services/config';
 
 import searchBooksSchema from './search-books';
 import bookSchema from './book';
@@ -16,8 +16,8 @@ export class FantlabAPI {
   thumbnails = thumbnailsSchema.create(FANTLAB_URL);
   similar = similarSchema.create(FANTLAB_URL);
   reviewList = reviewListSchema.create(FANTLAB_URL);
-  markWork = markWorkSchema.create(FANTLAB_LOGIN_URL);
+  markWork = markWorkSchema.create(FANTLAB_ROOT_URL);
   login = loginSchema.create(FANTLAB_URL);
   editions = editionsSchema.create(FANTLAB_URL);
-  reviewVote = reviewVoteSchema.create(FANTLAB_LOGIN_URL);
+  reviewVote = reviewVoteSchema.create(FANTLAB_ROOT_URL);
 }
