@@ -8,11 +8,12 @@ export function createFetchParams(schema: Schema, body) {
   const params: any = {
     method: schema.method,
   };
+  const session = inject(Session);
 
   params.headers = _.get(schema, 'headers') || {};
 
-  if (schema.needAuth) {
-    params.headers.Cookie = `fl_s=${inject(Session).fantlabAuth}`;
+  if (schema.needAuth || (schema.passiveAuth && session.fantlabAuth)) {
+    params.headers.Cookie = `fl_s=${session.fantlabAuth}`;
   }
 
   if (schema.redirect) {

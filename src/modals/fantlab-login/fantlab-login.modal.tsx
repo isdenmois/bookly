@@ -10,6 +10,7 @@ import { Button, Dialog, ListItem } from 'components';
 
 interface Props extends NavigationScreenProps {
   onSuccess: () => void;
+  onClose: () => void;
 }
 
 @withNavigationProps()
@@ -32,7 +33,7 @@ export class FantlabLoginModal extends React.Component<Props> {
 
   render() {
     return (
-      <Dialog style={s.container} title='Fantlab логин'>
+      <Dialog style={s.container} title='Fantlab логин' onClose={this.props.onClose}>
         {this.state.error && <Text style={s.error}>{this.state.error.toString()}</Text>}
 
         <ListItem rowStyle={s.list}>

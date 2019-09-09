@@ -1,5 +1,6 @@
 export const color = {
   Black: '#000',
+  Red: '#F44336',
 
   PrimaryText: '#000',
   PrimaryTextInverse: '#FFF',

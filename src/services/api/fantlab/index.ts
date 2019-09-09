@@ -8,6 +8,7 @@ import reviewListSchema from './review-list';
 import markWorkSchema from './mark-work';
 import loginSchema from './login';
 import editionsSchema from './editions';
+import reviewVoteSchema from './review-vote';
 
 export class FantlabAPI {
   searchBooks = searchBooksSchema.create(FANTLAB_URL);
@@ -18,4 +19,5 @@ export class FantlabAPI {
   markWork = markWorkSchema.create(FANTLAB_LOGIN_URL);
   login = loginSchema.create(FANTLAB_URL);
   editions = editionsSchema.create(FANTLAB_URL);
+  reviewVote = reviewVoteSchema.create(FANTLAB_LOGIN_URL);
 }
