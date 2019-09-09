@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native'
 import { NavigationScreenProps } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { SyncService, Session, inject } from 'services';
+import { SyncService, inject } from 'services';
 import { HomeHeader } from './components/header';
 import { CurrentBook } from './components/current-book';
 import { BookChallenge } from './components/book-challenge';
@@ -18,7 +18,6 @@ export class HomeScreen extends React.Component<NavigationScreenProps, State> {
 
   database = inject(Database);
   syncService = inject(SyncService);
-  session = inject(Session);
 
   render() {
     return (
@@ -27,7 +26,7 @@ export class HomeScreen extends React.Component<NavigationScreenProps, State> {
 
         <CurrentBook database={this.database} />
 
-        <BookChallenge database={this.database} totalBooks={this.session.totalBooks} />
+        <BookChallenge database={this.database} />
 
         <NavigationLinks database={this.database} />
       </ScrollView>

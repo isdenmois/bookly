@@ -1,54 +1,34 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
+import { observer } from 'mobx-react';
 import { Database } from '@nozbe/watermelondb';
 import { Counter } from 'components';
 import { readBooksThisYearQuery, booksReadForecast } from '../home.queries';
+import { inject, Session } from 'services';
 
 interface Props {
   database: Database;
-  totalBooks: number;
   readCount?: number;
 }
 
-interface State {
-  totalBooks: number;
-  readCount: number;
-  forecast: number;
+function BookChallengeComponent({ readCount }: Props) {
+  const session = inject(Session);
+  const totalBooks = session.totalBooks;
+  const forecast = useMemo(() => booksReadForecast(readCount, totalBooks), [readCount, totalBooks]);
+
+  return (
+    <View style={s.row}>
+      <Counter label='Прочитано' value={readCount} />
+      <Counter label='Запланировано' value={totalBooks} />
+      <Counter label='Опережение' value={forecast} />
+    </View>
+  );
 }
 
-@withObservables(null, ({ database }) => ({
+export const BookChallenge = withObservables(null, ({ database }: Props) => ({
   readCount: readBooksThisYearQuery(database).observeCount(),
-}))
-export class BookChallenge extends React.Component<Props, State> {
-  static getDerivedStateFromProps(props: Props, state: State) {
-    if (!state || props.readCount !== state.readCount || props.totalBooks !== state.totalBooks) {
-      return {
-        totalBooks: props.totalBooks,
-        readCount: props.readCount,
-        forecast: booksReadForecast(props.readCount, props.totalBooks),
-      };
-    }
-
-    return null;
-  }
-
-  state: State = {
-    totalBooks: this.props.totalBooks,
-    readCount: this.props.readCount,
-    forecast: booksReadForecast(this.props.readCount, this.props.totalBooks),
-  };
-
-  render() {
-    return (
-      <View style={s.row}>
-        <Counter label='Прочитано' value={this.props.readCount} />
-        <Counter label='Запланировано' value={this.props.totalBooks} />
-        <Counter label='Опережение' value={this.state.forecast} />
-      </View>
-    );
-  }
-}
+}))(observer(BookChallengeComponent));
 
 const s = StyleSheet.create({
   row: {
