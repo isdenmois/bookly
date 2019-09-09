@@ -96,6 +96,15 @@ function handleErrors(response, schema: Schema, body, url) {
     return auth(url, schema, body);
   }
 
+  if (!response.ok) {
+    // TODO: show errors
+    const error = _.includes(response.headers.get('content-type'), 'application/json')
+      ? response.json()
+      : response.text();
+
+    return error.then(e => Promise.reject(e));
+  }
+
   return response;
 }
 
