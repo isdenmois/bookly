@@ -25,6 +25,20 @@ export function clearCache() {
   ToastAndroid.show('Очищен API Cache', ToastAndroid.SHORT);
 }
 
+export function removeFromCache(url: string) {
+  for (let key of cacheStore.keys()) {
+    if (key.includes(url)) {
+      cacheStore.delete(key);
+    }
+  }
+
+  if (__DEV__) {
+    const cache = {};
+    cacheStore.forEach((value, u) => (cache[u] = value));
+    AsyncStorage.setItem('DEV_API_CACHE', JSON.stringify(cache));
+  }
+}
+
 export function createApi<T extends Function>(baseUrl: string, schema: Schema): T {
   return function(...args) {
     const query = createQuery(schema.url, schema.query, args);
@@ -66,7 +80,7 @@ function sendReq(schema: Schema, body, url) {
   }
 
   return fetchData(url, schema, body)
-    .then(r => r.json())
+    .then(r => !schema.notParse && r.json())
     .then(data => {
       if (schema.cache) {
         cacheStore.set(url, data);
@@ -109,9 +123,9 @@ function handleErrors(response, schema: Schema, body, url) {
 }
 
 function auth(url, schema: Schema, body) {
-  return new Promise(resolve => {
+  return new Promise((resolve, onClose) => {
     const onSuccess = () => fetchData(url, schema, body).then(resolve);
 
-    inject(Navigation).navigate('/modal/fantlab-login', { onSuccess });
+    inject(Navigation).navigate('/modal/fantlab-login', { onSuccess, onClose });
   });
 }

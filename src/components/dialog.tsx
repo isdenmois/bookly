@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactNode } from 'react';
+import React, { ReactChild, ReactNode, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { Navigation, inject } from 'services';
@@ -11,12 +11,18 @@ interface Props {
   children: ReactNode;
   testID?: string;
   onApply?: () => void;
+  onClose?: () => void;
 }
 
 export const Dialog = (props: Props) => {
+  const back = useCallback(() => {
+    onBack();
+    props.onClose && props.onClose();
+  }, [props.onClose]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <View testID={props.testID} style={s.container}>
-      <TouchableWithoutFeedback onPress={onBack}>
+      <TouchableWithoutFeedback onPress={back}>
         <View style={s.backdrop} />
       </TouchableWithoutFeedback>
 

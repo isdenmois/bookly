@@ -1,19 +1,28 @@
 import React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { FantlabReview as IFantlabReview } from 'services/api/fantlab/review-list';
 import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { parser } from 'utils/bbcode';
 import { color } from 'types/colors';
+import { Session, inject } from 'services';
+import { FantlabAPI } from 'services/api';
 
 interface Props {
   review: IFantlabReview;
 }
 
 export class FantlabReview extends React.PureComponent<Props> {
+  session = inject(Session);
+  api = inject(FantlabAPI);
+
+  state = { likes: this.props.review.likes, isLiked: false };
+
   render() {
     const review = this.props.review;
+    const { isLiked, likes } = this.state;
+    const LikeComponent: any = this.session.withFantlab && !isLiked ? TouchableOpacity : View;
 
     return (
       <View style={s.container}>
@@ -32,14 +41,41 @@ export class FantlabReview extends React.PureComponent<Props> {
           </View>
           <Icon style={s.icon} name='star' size={16} color={color.PrimaryText} />
           <Text style={s.rating}>{review.rating}</Text>
-          <Icon style={s.icon} name='heart' size={16} color={color.PrimaryText} />
-          <Text style={s.rating}>{review.likes}</Text>
+
+          <LikeComponent style={s.like} onPress={this.vote}>
+            <Icon
+              style={s.icon}
+              name='heart'
+              size={16}
+              color={isLiked ? color.Red : color.PrimaryText}
+              solid={isLiked}
+            />
+            <Text style={s.rating}>{likes}</Text>
+          </LikeComponent>
         </View>
 
         <ExpandableText>{parser.toReact(review.body)}</ExpandableText>
       </View>
     );
   }
+
+  vote = async () => {
+    const oldLikes = this.state.likes;
+
+    try {
+      this.setState({ isLiked: true, likes: oldLikes + 1 });
+
+      await this.api.reviewVote(this.props.review.id.replace(/^f_/, ''));
+
+      ToastAndroid.show('Лайк поставлен', ToastAndroid.SHORT);
+    } catch (e) {
+      this.setState({ isLiked: false, likes: oldLikes });
+
+      console.error(e);
+
+      ToastAndroid.show('Не удалось поставить лайк', ToastAndroid.SHORT);
+    }
+  };
 }
 
 const s = StyleSheet.create({
@@ -77,4 +113,7 @@ const s = StyleSheet.create({
   icon: {
     marginLeft: 10,
   } as TextStyle,
+  like: {
+    flexDirection: 'row',
+  } as ViewStyle,
 });

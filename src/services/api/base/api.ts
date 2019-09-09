@@ -55,7 +55,19 @@ export interface API<Fn extends Function> {
    * Marks schema as auth required
    * @example api.get('/').withAuth()
    */
-  withAuth(): Omit<this, 'withAuth'>;
+  withAuth(): Omit<this, 'withAuth' | 'withPassiveAuth'>;
+
+  /**
+   * Allows use auth but without requiring
+   * @example api.get('/').withAuth()
+   */
+  withPassiveAuth(): Omit<this, 'withAuth' | 'withPassiveAuth'>;
+
+  /**
+   * Disable parsing JSON
+   * @example api.get('/').withAuth()
+   */
+  notParse(): Omit<this, 'notParse'>;
 
   /**
    * Sets request redirect options for fetch
@@ -177,7 +189,9 @@ export interface Schema {
   response?: any | Function;
   query?: any | Function;
   body?: Function;
+  notParse?: boolean;
   needAuth?: boolean;
+  passiveAuth?: boolean;
   filter?: Function;
   filterBefore?: Function;
 }
@@ -198,6 +212,16 @@ class APIBuilder {
 
   withAuth(): this {
     this.r.needAuth = true;
+    return this;
+  }
+
+  withPassiveAuth(): this {
+    this.r.passiveAuth = true;
+    return this;
+  }
+
+  notParse(): this {
+    this.r.notParse = true;
     return this;
   }
 
