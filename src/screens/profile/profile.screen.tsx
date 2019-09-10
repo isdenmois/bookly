@@ -10,6 +10,7 @@ import { Button, ScreenHeader, ListItem } from 'components';
 import { ChallengeEditor } from './components/challenge-editor';
 import { WithFantlabToggler } from './components/with-fantlab-toggler';
 import { BookListSort } from './components/book-list-sort';
+import { RemoveDeleted } from './components/remove-deleted';
 
 export class ProfileScreen extends React.Component<NavigationScreenProps> {
   session = inject(Session);
@@ -24,6 +25,7 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
           <ChallengeEditor />
           <WithFantlabToggler />
           <BookListSort />
+          <RemoveDeleted />
 
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
         </View>
