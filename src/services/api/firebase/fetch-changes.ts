@@ -9,7 +9,7 @@ const response = {
 };
 
 export default api
-  .get<number>('/:userId')
+  .get<number>('/sync/:userId')
   .query(sync => ({ sync }))
   .response(response);
 

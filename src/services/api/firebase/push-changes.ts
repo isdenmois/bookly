@@ -4,7 +4,7 @@ import { api } from '../base/api';
 type PushChanges = (sync: number, changes: any) => Promise<void>;
 
 export default api
-  .post<PushChanges>('/:userId')
+  .post<PushChanges>('/sync/:userId')
   .contentType('application/json')
   .query(sync => ({ sync: sync - 1 }))
   .body((sync, body) => preparePushChanges(body));
