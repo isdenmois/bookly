@@ -2,6 +2,7 @@ import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-community/async-storage';
 import { database, onChanges } from 'store';
 import { provider, asValue, asRef } from 'services/inject/provider';
 
@@ -25,7 +26,16 @@ class App extends React.Component<any> {
   loadNavigationState: Function = null;
   persistNavigationState: Function = null;
 
-  sync = () => this.syncService.sync();
+  sync = async () => {
+    const lastSync: number = +(await AsyncStorage.getItem('lastSync')) || 0;
+    const hour = 60 * 60 * 1000;
+    const now = Date.now();
+
+    if (now - lastSync > hour) {
+      await this.syncService.sync();
+      AsyncStorage.setItem('lastSync', now.toString());
+    }
+  };
 
   subscription = onChanges.subscribe(this.sync);
 
