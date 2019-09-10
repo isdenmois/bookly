@@ -26,6 +26,7 @@ interface Props {
   keyboardType?: KeyboardTypeOptions;
   placeholder?: string;
   clearable?: boolean;
+  disabled?: boolean;
   style?: ViewStyle;
   rowStyle?: ViewStyle;
   onPress?: () => void;
@@ -42,14 +43,14 @@ export class ListItem extends React.Component<Props> {
   input: TextInput;
 
   render() {
-    const { style, icon, counter, first, border, selected, label, children } = this.props;
+    const { style, icon, counter, first, border, selected, label, disabled, children } = this.props;
     const isEditable = Boolean(this.props.onChange);
-    const Container: any = this.props.onPress || isEditable ? TouchableOpacity : View;
+    const Container: any = (this.props.onPress || isEditable) && !disabled ? TouchableOpacity : View;
 
     return (
       <Container style={[s.container, style]} onPress={this.onPress}>
         {!!icon && <View style={s.icon}>{icon}</View>}
-        <View style={[...cn({ border, borderFirst: first }), this.props.rowStyle]}>
+        <View style={[...cn({ border, borderFirst: first, disabled }), this.props.rowStyle]}>
           {!!label && <TextM style={s.label}>{label}</TextM>}
           {!children && !isEditable && <TextM style={cn('text', { textRight: !!label })}>{this.props.value}</TextM>}
           {!children && isEditable && (
@@ -135,6 +136,9 @@ const s = StyleSheet.create({
   } as TextStyle,
   icon: {
     marginRight: 15,
+  } as ViewStyle,
+  disabled: {
+    opacity: 0.3,
   } as ViewStyle,
 });
 const cn = classnames(s);
