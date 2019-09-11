@@ -6,7 +6,7 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 export class BookFilters {
   @observable title: string = null;
   @observable year: number = null;
-  @observable author: string = null;
+  @observable.ref author: any = null;
   @observable type: any = null;
   @observable.ref date: Interval<Date> = null;
   @observable.ref rating: Interval<number> = null;
@@ -20,7 +20,7 @@ export class BookFilters {
   }
 
   @action setFilter(filter: keyof IBookFilters, value: any) {
-    this[filter] = value;
+    (this[filter] as any) = value;
     this.changed = true;
   }
 

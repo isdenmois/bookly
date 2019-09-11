@@ -12,6 +12,7 @@ export { Rating, RatingSelect, SwipeRating } from './rating';
 export { ScreenHeader } from './screen-header';
 export { SearchBar } from './search-bar';
 export { Switcher } from './switcher';
+export { Tag } from './tag';
 export { TextXs, TextS, TextM, TextL, TextXL } from './text';
 export { Thumbnail } from './thumbnail';
 export { TouchIcon } from './touch-icon';

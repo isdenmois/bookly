@@ -43,8 +43,8 @@ function yearFilter(year: number) {
   return Q.where('date', dateFilter);
 }
 
-function authorFilter(id: string) {
-  return Q.on('book_authors', 'author_id', id);
+function authorFilter(author) {
+  return Q.on('book_authors', 'author_id', author.id);
 }
 
 function dateFilter({ from, to }: Interval<Date>) {

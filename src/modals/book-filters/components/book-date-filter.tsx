@@ -23,6 +23,13 @@ interface State {
 const HALF_DAY = 12 * 60 * 60 * 1000;
 const MARKED_DAY = { startingDay: true, color: color.Primary };
 
+export function formatPeriod(period) {
+  const value: any = period || {};
+  const { from, to } = value;
+
+  return from && to ? `${formatDate(from)} - ${formatDate(to)}` : '';
+}
+
 @observer
 export class BookDateFilter extends React.PureComponent<Props, State> {
   state: State = { opened: false, from: null, markedDates: null };
@@ -32,16 +39,11 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
   today = new Date();
   calendar: any;
 
-  get formattedDate(): string {
-    const value: any = this.filters.date || {};
-    const { from, to } = value;
-
-    return from && to ? `${formatDate(from)} - ${formatDate(to)}` : '';
-  }
-
   render() {
+    const date = formatPeriod(this.filters.date);
+
     return (
-      <OpenableListItem title='Дата' viewValue={this.formattedDate} onClear={this.clear} onClose={this.resetState}>
+      <OpenableListItem title='Дата' viewValue={date} onClear={this.clear} onClose={this.resetState}>
         <View style={s.calendarRow}>
           <TouchIcon
             paddingVertical={16}
