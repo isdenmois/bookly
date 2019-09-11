@@ -1,7 +1,7 @@
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
 import { action, field, date, immutableRelation } from '@nozbe/watermelondb/decorators';
-import format from 'date-fns/format';
+import { format } from 'utils/date';
 
 type ReviewFields = 'id' | 'date' | 'body';
 

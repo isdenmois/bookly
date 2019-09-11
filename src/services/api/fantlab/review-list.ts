@@ -7,7 +7,7 @@ const response = {
       id: `f_${r.response_id}`,
       body: r.response_text,
       likes: +r.response_votes || 0,
-      date: r.response_date_iso,
+      date: `${r.response_date_iso}:00`,
       rating: r.mark,
       user: r.user_name,
       userAvatar: r.user_avatar ? `http:${r.user_avatar}` : null,
