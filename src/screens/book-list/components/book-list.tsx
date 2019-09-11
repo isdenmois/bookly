@@ -4,16 +4,19 @@ import { FlatList, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
-import { BookSort } from 'types/book-filters';
+import { BookSort, BookFilters } from 'types/book-filters';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BookItem } from 'components';
 import { EmptyResult } from 'components/fetcher';
+import { BookListFilters } from './book-list-filters';
 
 interface Props {
   query: Where[];
   sort: BookSort;
   database: Database;
+  filters: Partial<BookFilters>;
+  onChange: (filters: Partial<BookFilters>) => void;
   books?: Book[];
 }
 
@@ -39,8 +42,17 @@ export class BookList extends React.PureComponent<Props> {
         initialNumToRender={24}
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
-        ListHeaderComponent={<Text style={s.found}>Найдено: {books.length}</Text>}
+        ListHeaderComponent={this.renderHeader()}
       />
+    );
+  }
+
+  private renderHeader() {
+    return (
+      <>
+        <BookListFilters filters={this.props.filters} onChange={this.props.onChange} />
+        <Text style={s.found}>Найдено: {this.props.books.length}</Text>
+      </>
     );
   }
 

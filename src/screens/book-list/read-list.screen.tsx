@@ -38,12 +38,12 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
   title = 'Прочитано';
 
   render() {
-    const { query, sort } = this.state;
+    const { query, sort, filters } = this.state;
 
     return (
       <View style={s.container}>
         <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={this.setSearch} />
-        <BookList database={this.database} query={query} sort={sort} />
+        <BookList database={this.database} query={query} sort={sort} filters={filters} onChange={this.setFilters} />
         <View style={s.buttonContainer}>
           <Button
             label='ФИЛЬТРЫ'
@@ -57,7 +57,7 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
     );
   }
 
-  setFilters = (filters, sort) => this.setState(createQueryState(filters, sort));
+  setFilters = (filters, sort = this.state.sort) => this.setState(createQueryState(filters, sort));
   setSearch = title => this.setState(createQueryState(this.createTitleFilter(title && title.trim()), this.state.sort));
 
   createTitleFilter(title: string) {

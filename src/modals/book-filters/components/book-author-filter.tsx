@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { TextInput, StyleSheet, TextStyle } from 'react-native';
 import { sortBy, prop } from 'rambdax';
 import { Q, Database } from '@nozbe/watermelondb';
@@ -37,6 +38,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
     if (!this.props.authors) return null;
     let authors = this.props.authors;
     const name = this.state.name.toLowerCase();
+    const author = this.filters.author;
 
     if (this.state.name) {
       authors = authors.filter(a => a.name.toLowerCase().indexOf(name) >= 0);
@@ -47,7 +49,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
         title='Автор'
         fields={this.sortAuthors(authors)}
         labelKey='name'
-        value={this.filters.author}
+        value={author && author.id}
         onChange={this.setAuthor}
         clearable
       >
@@ -58,8 +60,10 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
 
   setName = name => this.setState({ name });
 
-  setAuthor = value => {
-    this.filters.setFilter('author', value);
+  setAuthor = id => {
+    const author = _.find(this.props.authors, { id });
+
+    this.filters.setFilter('author', author && _.pick(author, ['id', 'name']));
     this.setState({ name: '' });
   };
 }
