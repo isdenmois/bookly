@@ -34,6 +34,8 @@ interface Props extends NavigationScreenProps {
   status: BOOK_STATUSES;
 }
 
+let defaultDate: Date;
+
 @withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
   db = inject(Database);
@@ -55,9 +57,11 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   get defaultDate() {
-    const book = this.props.book;
+    if (this.session.saveDateInChangeStatus) {
+      return defaultDate || new Date();
+    }
 
-    return book.date || new Date();
+    return new Date();
   }
 
   get defaultRating() {
@@ -142,7 +146,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     );
   }
 
-  onBack = () => this.props.navigation.pop();
+  onBack = () => this.props.navigation.goBack();
 
   toggleStatus = () => this.setState({ statusEditable: true });
   showDatePicker = () => this.setState({ dateEditable: true });
@@ -181,7 +185,9 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   save = () => {
-    this.props.navigation.pop();
+    defaultDate = this.state.date;
+    this.props.navigation.goBack();
+
     if (this.isCreation) {
       this.createBook();
     } else {
