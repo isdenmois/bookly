@@ -18,6 +18,7 @@ const OMIT_FIELDS = [
   'useFlatlist',
   'contentContainerStyle',
   'collection',
+  'sort',
 ];
 
 type ListItemRender = (item: any, index?: number) => ReactNode;
@@ -35,6 +36,7 @@ type Props<P = {}> = {
   onLoad?: () => void;
   selected?: any;
   collection?: 'books' | 'authors' | 'reviews';
+  sort?: string;
 } & Omit<P, 'page'>;
 
 export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
@@ -74,9 +76,13 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
     this.fetchData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (this.isPropsChanged(prevProps)) {
       this.fetchData();
+    }
+
+    if (prevProps.sort !== this.props.sort) {
+      this.setState({ data: getSortedData(this.state.data, this.props.sort) });
     }
   }
 
@@ -113,13 +119,20 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   }
 
   fetchData(append?: boolean) {
+    const sort = this.props.sort;
+
     this.unsubscribe();
     this.setState({ isLoading: true, data: append ? this.state.data : null, error: null });
     this.appending = append;
 
     this.props
       .api({ ...this.props, page: this.page } as any)
-      .then(data => new Promise(resolve => this.setState({ data: append ? this.append(data) : data }, resolve)))
+      .then(
+        data =>
+          new Promise(resolve =>
+            this.setState({ data: append ? this.append(data) : getSortedData(data, sort) }, resolve),
+          ),
+      )
       .then(() => this.mapDatabase())
       .catch(error => this.setState({ isLoading: false, error }))
       .then(() => this.props.onLoad && setTimeout(this.props.onLoad));
@@ -213,7 +226,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
       .query(Q.where('id', Q.oneOf(getIds(this.state.data))))
       .observe();
 
-    this.subscription = query.subscribe(this.mapModelsToData);
+    this.subscription = query.subscribe(this.mapModelsToData) as any;
   }
 }
 
@@ -255,6 +268,32 @@ function findModel(item, models) {
 
 function keyExtractor(row) {
   return row.id.toString();
+}
+
+function getSortedData(data: any, sort: string) {
+  if (!sort) {
+    return data;
+  }
+
+  if (Array.isArray(data)) {
+    return order(data, sort);
+  }
+
+  if (data && !data.total) {
+    return {
+      items: order(data.items, sort),
+    };
+  }
+
+  return data;
+}
+
+function order(array, sort) {
+  if (sort.startsWith('-')) {
+    return _.orderBy(array, sort.slice(1)).reverse();
+  }
+
+  return _.orderBy(array, sort);
 }
 
 export function EmptyResult({ text }) {
