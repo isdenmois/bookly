@@ -27,6 +27,7 @@ export class EditionsListScreen extends React.Component<Props> {
           contentContainerStyle={s.scroll}
           api={this.api.editions}
           e={this.props.editionIds.join(',')}
+          sort='-year'
           useFlatlist
         >
           {this.renderEditionsList}
