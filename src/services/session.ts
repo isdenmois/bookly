@@ -10,6 +10,7 @@ export class Session {
   @observable userId: string = null;
   @observable totalBooks: number = INITIAL_BOOKS_COUNT;
   @observable withFantlab: boolean = true;
+  @observable saveDateInChangeStatus: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
   fantlabAuth: string = '';
 
@@ -21,6 +22,7 @@ export class Session {
         this.totalBooks = session.totalBooks || INITIAL_BOOKS_COUNT;
         this.fantlabAuth = session.fantlabAuth || '';
         this.withFantlab = session.withFantlab;
+        this.saveDateInChangeStatus = session.saveDateInChangeStatus;
         this.defaultSort = session.defaultSort || INITIAL_SORT;
       })
       .catch(error => console.warn(error.toString()));
@@ -56,6 +58,14 @@ export class Session {
     }
   }
 
+  @action setSaveDateInChangeStatus(saveDateInChangeStatus) {
+    if (this.saveDateInChangeStatus !== saveDateInChangeStatus) {
+      this.saveDateInChangeStatus = saveDateInChangeStatus;
+
+      this.serializeSession();
+    }
+  }
+
   @action setSession(userId: string = null) {
     this.userId = userId;
 
@@ -67,6 +77,7 @@ export class Session {
     this.totalBooks = INITIAL_BOOKS_COUNT;
     this.fantlabAuth = '';
     this.withFantlab = true;
+    this.saveDateInChangeStatus = false;
     this.defaultSort = INITIAL_SORT;
 
     return AsyncStorage.clear();
@@ -78,6 +89,7 @@ export class Session {
       totalBooks: this.totalBooks,
       fantlabAuth: this.fantlabAuth,
       withFantlab: this.withFantlab,
+      saveDateInChangeStatus: this.saveDateInChangeStatus,
       defaultSort: this.defaultSort,
     });
 

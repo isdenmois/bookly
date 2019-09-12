@@ -8,7 +8,7 @@ import { Session, inject } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { Button, ScreenHeader, ListItem } from 'components';
 import { ChallengeEditor } from './components/challenge-editor';
-import { WithFantlabToggler } from './components/with-fantlab-toggler';
+import { SessionParamToggler } from './components/session-param-toggler';
 import { BookListSort } from './components/book-list-sort';
 import { RemoveDeleted } from './components/remove-deleted';
 
@@ -23,7 +23,8 @@ export class ProfileScreen extends React.Component<NavigationScreenProps> {
 
         <View style={s.content}>
           <ChallengeEditor />
-          <WithFantlabToggler />
+          <SessionParamToggler title='Синхронизировать с Fantlab' param='withFantlab' />
+          <SessionParamToggler title='Сохранять дату в диалоге смене статуса' param='saveDateInChangeStatus' />
           <BookListSort />
           <RemoveDeleted />
 
