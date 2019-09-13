@@ -9,7 +9,7 @@ import { inject, Session } from 'services';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { BookData, createBook } from 'store/book';
+import Book, { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { FantlabAPI } from 'services/api';
@@ -57,6 +57,12 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   get defaultDate() {
+    const book: Book = this.props.book;
+
+    if (book.status === BOOK_STATUSES.READ) {
+      return book.date;
+    }
+
     if (this.session.saveDateInChangeStatus) {
       return defaultDate || new Date();
     }
