@@ -15,7 +15,7 @@ export class FantlabReviewList extends React.Component<Props> {
 
   render() {
     return (
-      <Fetcher api={this.api.reviewList} bookId={this.props.bookId} sort={this.props.sort}>
+      <Fetcher api={this.api.reviewList} bookId={this.props.bookId} sortBy={this.props.sort}>
         {this.renderReview}
       </Fetcher>
     );

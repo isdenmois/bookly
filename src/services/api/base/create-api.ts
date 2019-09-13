@@ -62,7 +62,7 @@ function createQuery(url, query, args) {
   const result = _.pick(args[0], urlParams);
 
   _.forEach(query, (value, key) => {
-    if (!args[0][key]) return;
+    if (!args[0][key] && !args[0][value]) return;
 
     if (typeof value === 'function') {
       result[key] = value(args[0][key]);

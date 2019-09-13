@@ -17,12 +17,12 @@ const response = {
 
 interface Params {
   bookId: string;
-  sort: string;
+  sortBy: string;
 }
 
 export default api
   .get<Params>('/work/:bookId/responses', true)
-  .query('sort')
+  .query('sort', 'sortBy')
   .response(response);
 
 export interface ReviewList {
