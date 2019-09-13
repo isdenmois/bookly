@@ -121,7 +121,7 @@ export interface API<Fn extends Function> {
    *
    * search({ q: 'stephen king ' }) // Will send request to /search?q=stephen+king
    */
-  query(param: string, map: Function): Omit<this, 'contentType' | 'withAuth' | 'redirect'>;
+  query(param: string, map: Function | string): Omit<this, 'contentType' | 'withAuth' | 'redirect'>;
 
   /**
    * Creates body from execute function arguments
