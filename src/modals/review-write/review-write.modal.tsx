@@ -66,7 +66,7 @@ export class ReviewWriteModal extends React.Component<Props, State> {
       this.createReview();
     }
 
-    this.props.navigation.pop();
+    this.props.navigation.goBack();
   };
 
   async updateReview() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
 import { color } from 'types/colors';
 import { inject } from 'services';
 import { FantlabAPI } from 'api';
@@ -9,8 +9,9 @@ import { BookSimilar } from 'services/api/fantlab/similar';
 import { BookExtended } from 'types/book-extended';
 import { withScroll } from './tab';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   book: BookExtended;
+  navigation: NavigationStackProp;
 }
 
 @withScroll
