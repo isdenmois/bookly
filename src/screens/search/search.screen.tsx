@@ -54,7 +54,7 @@ export class SearchScreen extends React.Component<Props, State> {
     return <BookItem key={book.id} book={book} />;
   };
 
-  goBack = () => this.props.navigation.pop();
+  goBack = () => this.props.navigation.goBack();
   setQuery = query => this.setState({ query });
   search = () => this.setState({ q: this.state.query });
 }

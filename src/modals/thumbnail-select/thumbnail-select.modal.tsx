@@ -35,7 +35,7 @@ export class ThumbnailSelectModal extends React.Component<Props, State> {
 
   setThumbnail = selected => this.setState({ selected });
 
-  close = () => this.props.navigation.pop();
+  close = () => this.props.navigation.goBack();
   save = () => {
     this.close();
     this.updateBook();

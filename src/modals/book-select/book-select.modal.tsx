@@ -51,7 +51,7 @@ export class BookSelectModal extends React.Component<NavigationScreenProps, Stat
 
   setBookSelected = () => {
     this.updateBook();
-    this.props.navigation.pop();
+    this.props.navigation.goBack();
   };
 }
 

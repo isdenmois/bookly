@@ -76,7 +76,7 @@ export class BookFiltersModal extends React.Component<Props> {
 
   setSort = (sort: BookSort) => this.service.setSort(sort);
 
-  close = () => this.props.navigation.pop();
+  close = () => this.props.navigation.goBack();
   save = () => {
     const fields = this.props.filterFields;
 

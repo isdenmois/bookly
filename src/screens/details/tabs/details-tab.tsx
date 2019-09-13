@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking, ToastAndroid } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book from 'store/book';
@@ -15,7 +15,8 @@ import {
 } from '../components/book-details-lines';
 import { withScroll } from './tab';
 
-interface Props extends NavigationScreenProps {
+interface Props {
+  navigation: NavigationStackProp;
   book: Book & BookExtended;
   isExist: boolean;
   tab: string;
@@ -108,7 +109,7 @@ export class DetailsTab extends React.PureComponent<Props> {
       return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
     }
 
-    this.props.navigation.navigate('/modal/thumbnail-select', { book: this.props.book });
+    this.props.navigation.push('/modal/thumbnail-select', { book: this.props.book });
   };
 }
 

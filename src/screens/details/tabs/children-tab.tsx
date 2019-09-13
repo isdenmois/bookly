@@ -1,12 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
 import { BookExtended } from 'types/book-extended';
 import { ViewLineTouchable } from '../components/book-details-lines';
 import { withScroll } from './tab';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   book: BookExtended;
+  navigation: NavigationStackProp;
 }
 
 @withScroll

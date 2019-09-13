@@ -99,7 +99,7 @@ export class FantlabLoginModal extends React.Component<Props> {
     }
 
     this.session.setAuth(result['X-Session']);
-    this.props.navigation.pop();
+    this.props.navigation.goBack();
     this.props.onSuccess();
   };
 }

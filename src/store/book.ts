@@ -19,15 +19,15 @@ export default class Book extends Model {
     reviews: { type: 'has_many', foreignKey: 'book_id' },
   };
 
-  @field('title') title;
-  @field('author') author;
-  @field('status') status;
-  @field('thumbnail') thumbnail;
-  @field('rating') rating;
-  @date('date') date;
+  @field('title') title: string;
+  @field('author') author: string;
+  @field('status') status: BOOK_STATUSES;
+  @field('thumbnail') thumbnail: string;
+  @field('rating') rating: number;
+  @date('date') date: Date;
   @field('type') type;
-  @field('search') search;
-  @readonly @date('created_at') createdAt;
+  @field('search') search: string;
+  @readonly @date('created_at') createdAt: Date;
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;

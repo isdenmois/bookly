@@ -13,7 +13,7 @@ export default class Author extends Model {
     books: { type: 'belongs_to', key: 'book_id', table: 'book_authors' },
   };
 
-  @field('name') name;
+  @field('name') name: string;
   // @lazy books = this.collections.get('books').query(Q.on('book_authors', 'author_id', this.id));
 }
 
