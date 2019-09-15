@@ -126,7 +126,7 @@ function Header({ bookTitle, navigation, bookId }) {
 
   return (
     <BookDetailsHeader bookId={bookId} navigation={navigation}>
-      <TouchableOpacity style={s.titleWrapper} onPress={copyBookTitle} onLongPress={openTelegram}>
+      <TouchableOpacity style={s.titleWrapper} onPress={openTelegram} onLongPress={copyBookTitle}>
         <Text style={s.title}>{bookTitle}</Text>
       </TouchableOpacity>
     </BookDetailsHeader>
@@ -138,7 +138,7 @@ function BookAuthor({ book, navigation }) {
 
   return (
     <View style={book.thumbnail ? s.thumbnailPlaceholder : null}>
-      <Text style={s.author} onLongPress={searchAuthor}>
+      <Text style={s.author} onPress={searchAuthor}>
         {book.author}
       </Text>
     </View>
