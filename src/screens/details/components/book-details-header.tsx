@@ -9,6 +9,14 @@ interface Props extends NavigationScreenProps {
 }
 
 export class BookDetailsHeader extends React.PureComponent<Props> {
+  get url() {
+    const { bookId } = this.props;
+
+    return bookId.startsWith('l_')
+      ? `https://livelib.ru/book/${this.props.bookId.replace('l_', '')}`
+      : `https://fantlab.ru/work${this.props.bookId}`;
+  }
+
   render() {
     return (
       <View style={s.container}>
@@ -26,7 +34,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
     );
   }
 
-  openWeb = () => Linking.openURL(`https://fantlab.ru/work${this.props.bookId}`);
+  openWeb = () => Linking.openURL(this.url);
   goBack = () => this.props.navigation.goBack();
 }
 

@@ -14,7 +14,8 @@ import loginSchema from './fantlab/login';
 import editionsSchema from './fantlab/editions';
 import reviewVoteSchema from './fantlab/review-vote';
 
-import lbooksSearchSchema from './livelib/books-search';
+import lBooksSearchSchema from './livelib/books-search';
+import lBookSchema from './livelib/book';
 
 export class API {
   // Firebase
@@ -34,5 +35,6 @@ export class API {
   reviewVote = reviewVoteSchema.create(FANTLAB_ROOT_URL);
 
   // LiveLib
-  lBooksSearch = lbooksSearchSchema.create(LIVELIB_URL);
+  lBooksSearch = lBooksSearchSchema.create(LIVELIB_URL);
+  lBook = lBookSchema.create(LIVELIB_URL);
 }

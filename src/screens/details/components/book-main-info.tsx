@@ -13,31 +13,36 @@ import {
   Clipboard,
   Linking,
 } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { ReadButton, Thumbnail } from 'components';
 import { getThumbnailUrl } from 'components/thumbnail';
 import { getAvatarBgColor } from 'components/avatar';
+import { LiveLibBook } from 'services/api/livelib/book';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookDetailsHeader } from './book-details-header';
 
-interface Props extends NavigationScreenProps {
-  book: Book & BookExtended;
+interface Props {
+  book: Book & BookExtended & LiveLibBook;
   scrollY: Animated.Value;
   headerHeight: number;
   onLayout: Function;
-  children: React.ReactNode;
+  scrollHeight: number;
+  children?: React.ReactNode;
+  navigation: NavigationStackProp;
+  status?: BOOK_STATUSES;
 }
 
 const MARGIN = 30;
-const HEADER_HEIGHT = 110;
 
 export const BookMainInfo = React.memo(function({
   book,
   navigation,
   scrollY,
   headerHeight,
+  scrollHeight,
   children,
   onLayout,
 }: Props) {
@@ -45,7 +50,13 @@ export const BookMainInfo = React.memo(function({
   const bookTitle = book.title || book.originalTitle;
 
   return (
-    <Collapsible tabbar={children} headerHeight={headerHeight} scrollY={scrollY} onLayout={onLayout}>
+    <Collapsible
+      tabbar={children}
+      headerHeight={headerHeight}
+      scrollY={scrollY}
+      onLayout={onLayout}
+      scrollHeight={scrollHeight}
+    >
       <Background bookTitle={bookTitle} book={book}>
         <View style={s.darkOverlay}>
           <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} />
@@ -59,7 +70,7 @@ export const BookMainInfo = React.memo(function({
   );
 });
 
-function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout }) {
+function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scrollHeight }) {
   const headerStyle = React.useMemo(
     () =>
       headerHeight
@@ -67,27 +78,27 @@ function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout }) {
             s.header,
             {
               translateY: scrollY.interpolate({
-                inputRange: [0, headerHeight - HEADER_HEIGHT],
-                outputRange: [0, -headerHeight + HEADER_HEIGHT],
+                inputRange: [0, headerHeight - scrollHeight],
+                outputRange: [0, -headerHeight + scrollHeight],
                 extrapolate: 'clamp',
               }),
             },
           ]
         : null,
-    [headerHeight, scrollY],
+    [headerHeight, scrollY, scrollHeight],
   );
   const childrenStyle = React.useMemo(
     () =>
       headerHeight
         ? {
             translateY: scrollY.interpolate({
-              inputRange: [0, headerHeight - HEADER_HEIGHT],
-              outputRange: [0, headerHeight - HEADER_HEIGHT],
+              inputRange: [0, headerHeight - scrollHeight],
+              outputRange: [0, headerHeight - scrollHeight],
               extrapolate: 'clamp',
             }),
           }
         : null,
-    [headerHeight, scrollY],
+    [headerHeight, scrollY, scrollHeight],
   );
 
   return (
@@ -96,7 +107,7 @@ function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout }) {
         <View style={s.collapsible}>
           <Animated.View style={childrenStyle}>{children}</Animated.View>
 
-          <View style={s.tabbar}>{tabbar}</View>
+          {tabbar && <View style={s.tabbar}>{tabbar}</View>}
         </View>
       </Animated.View>
     </View>
@@ -153,7 +164,7 @@ function SecondaryData({ book, navigation }) {
 
   return (
     <View style={s.status}>
-      <ReadButton ratingStyle={s.whiteRating} openChangeStatus={openChangeStatus} book={book} />
+      <ReadButton ratingStyle={s.whiteRating} openChangeStatus={openChangeStatus} book={book} status={book.status} />
     </View>
   );
 }
@@ -164,6 +175,10 @@ function SecondaryWithThumbnailData({ book, navigation }) {
     navigation,
   ]);
   const openChangeThumbnail = React.useCallback(() => {
+    if (book.id.startsWith('l_')) {
+      return ToastAndroid.show('Возможность доступна только для FantLab книг', ToastAndroid.SHORT);
+    }
+
     if (!book.status) {
       return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
     }
