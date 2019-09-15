@@ -14,6 +14,7 @@ function response(r) {
     authors: [{ id: `l_${b.author_id}`, name: b.author_name }],
     thumbnail: b.pic_200,
     search: b.name,
+    type: 'novel',
   }));
 }
 
