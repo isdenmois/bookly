@@ -12,7 +12,6 @@ const OMIT_FIELDS = [
   'children',
   'observe',
   'error',
-  'api',
   'empty',
   'emptyText',
   'useFlatlist',

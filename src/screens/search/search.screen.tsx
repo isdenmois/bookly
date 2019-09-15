@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
 import { API } from 'api';
 import Book from 'store/book';
-import { BookItem, Fetcher, SearchBar } from 'components';
+import { BookItem, Button, Fetcher, SearchBar } from 'components';
 
 interface Props extends NavigationScreenProps {
   query: string;
@@ -15,18 +16,25 @@ interface Props extends NavigationScreenProps {
 interface State {
   q: string;
   query: string;
+  source: string;
 }
+
+const fantlab = 'FantLab';
+const livelib = 'LiveLib';
 
 @withNavigationProps()
 export class SearchScreen extends React.Component<Props, State> {
   state: State = {
     q: this.props.query,
     query: this.props.query,
+    source: fantlab,
   };
 
   api = inject(API);
 
   render() {
+    const api = this.state.source === fantlab ? this.api.searchBooks : this.api.lBooksSearch;
+
     return (
       <View style={s.container}>
         <SearchBar
@@ -38,7 +46,7 @@ export class SearchScreen extends React.Component<Props, State> {
         />
         <Fetcher
           contentContainerStyle={s.scroll}
-          api={this.api.searchBooks}
+          api={api}
           q={this.state.q}
           collection='books'
           emptyText='Книги не найдены'
@@ -46,6 +54,16 @@ export class SearchScreen extends React.Component<Props, State> {
         >
           {this.renderResult}
         </Fetcher>
+
+        <View style={s.buttonContainer}>
+          <Button
+            label={this.state.source}
+            onPress={this.toggleSearchSource}
+            icon={<Icon name='globe' size={18} color={color.PrimaryText} />}
+            style={s.button}
+            textStyle={s.buttonText}
+          />
+        </View>
       </View>
     );
   }
@@ -53,6 +71,8 @@ export class SearchScreen extends React.Component<Props, State> {
   renderResult = (book: Book) => {
     return <BookItem key={book.id} book={book} />;
   };
+
+  toggleSearchSource = () => this.setState({ source: this.state.source === fantlab ? livelib : fantlab });
 
   goBack = () => this.props.navigation.goBack();
   setQuery = query => this.setState({ query });
@@ -71,6 +91,20 @@ const s = StyleSheet.create({
   } as ViewStyle,
   scroll: {
     paddingHorizontal: 10,
-    paddingBottom: 10,
+    paddingBottom: 60,
   } as ViewStyle,
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  } as ViewStyle,
+  button: {
+    backgroundColor: color.Background,
+    elevation: 3,
+  } as ViewStyle,
+  buttonText: {
+    color: color.PrimaryText,
+  } as TextStyle,
 });
