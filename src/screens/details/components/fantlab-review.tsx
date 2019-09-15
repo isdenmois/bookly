@@ -8,6 +8,7 @@ import { parser } from 'utils/bbcode';
 import { color } from 'types/colors';
 import { Session, inject } from 'services';
 import { FantlabAPI } from 'services/api';
+import { confirm } from './book-details-lines';
 
 interface Props {
   review: IFantlabReview;
@@ -61,6 +62,8 @@ export class FantlabReview extends React.PureComponent<Props> {
 
   vote = async () => {
     const oldLikes = this.state.likes;
+
+    await confirm('Вы действительно хотите поставить лайк этому отзыву?');
 
     try {
       this.setState({ isLiked: true, likes: oldLikes + 1 });

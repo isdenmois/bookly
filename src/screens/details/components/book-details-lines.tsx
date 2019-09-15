@@ -70,11 +70,19 @@ export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
   );
 }
 
+export function confirm(title: string, message?: string) {
+  return new Promise((resolve, reject) => {
+    Alert.alert(message ? title : null, message || title, [
+      { text: 'Отменить', style: 'cancel', onPress: reject },
+      { text: 'OK', onPress: resolve, style: 'destructive' },
+    ]);
+  });
+}
+
 export function confirmRemoveModel(model: Model, warning: string) {
-  Alert.alert('Удаление', `Вы действительно хотите ${warning.toLowerCase()}? Это действие нельзя отменить`, [
-    { text: 'Отменить', style: 'cancel' },
-    { text: 'OK', onPress: () => removeModel(model), style: 'destructive' },
-  ]);
+  confirm('Удаление', `Вы действительно хотите ${warning.toLowerCase()}? Это действие нельзя отменить`).then(() =>
+    removeModel(model),
+  );
 }
 
 function removeModel(model: any) {
