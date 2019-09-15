@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, ViewStyle, View, TouchableOpacity } from 'react
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { inject } from 'services';
-import { FantlabAPI } from 'api';
+import { API } from 'api';
 import { FantlabThumnail } from 'services/api/fantlab/thumbnails';
 import { Fetcher, Thumbnail } from 'components';
 
@@ -16,7 +16,7 @@ interface Props {
 const OBSERVE_FIELDS = ['bookId'];
 
 export class ThumbnailList extends React.PureComponent<Props> {
-  api = inject(FantlabAPI);
+  api = inject(API);
 
   render() {
     return (

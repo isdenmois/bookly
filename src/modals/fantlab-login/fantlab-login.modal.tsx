@@ -4,7 +4,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject, Session } from 'services';
-import { FantlabAPI } from 'services/api';
+import { API } from 'services/api';
 import { FantlabLoginRequest } from 'services/api/fantlab/login';
 import { Button, Dialog, ListItem } from 'components';
 
@@ -15,7 +15,7 @@ interface Props extends NavigationScreenProps {
 
 @withNavigationProps()
 export class FantlabLoginModal extends React.Component<Props> {
-  api = inject(FantlabAPI);
+  api = inject(API);
   session = inject(Session);
 
   state = {

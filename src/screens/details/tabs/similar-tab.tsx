@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from '
 import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
 import { color } from 'types/colors';
 import { inject } from 'services';
-import { FantlabAPI } from 'api';
+import { API } from 'api';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'services/api/fantlab/similar';
 import { BookExtended } from 'types/book-extended';
@@ -16,7 +16,7 @@ interface Props {
 
 @withScroll
 export class SimilarTab extends React.Component<Props> {
-  api = inject(FantlabAPI);
+  api = inject(API);
 
   render() {
     return (

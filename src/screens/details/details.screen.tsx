@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
-import { FantlabAPI } from 'api';
+import { API } from 'api';
 import { Fetcher } from 'components';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
@@ -14,7 +14,7 @@ interface Props extends NavigationScreenProps {
 
 @withNavigationProps()
 export class DetailsScreen extends React.Component<Props> {
-  api = inject(FantlabAPI);
+  api = inject(API);
 
   render() {
     return (

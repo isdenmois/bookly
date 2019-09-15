@@ -4,7 +4,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
-import { FantlabAPI } from 'api';
+import { API } from 'api';
 import Book from 'store/book';
 import { BookItem, Fetcher, SearchBar } from 'components';
 
@@ -24,7 +24,7 @@ export class SearchScreen extends React.Component<Props, State> {
     query: this.props.query,
   };
 
-  api = inject(FantlabAPI);
+  api = inject(API);
 
   render() {
     return (

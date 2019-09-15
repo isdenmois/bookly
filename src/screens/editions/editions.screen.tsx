@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 import { EditionCard } from './components/edition-card';
 import { inject } from 'services';
-import { FantlabAPI } from 'api';
+import { API } from 'api';
 import { Fetcher, ScreenHeader } from 'components';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
@@ -17,7 +17,7 @@ interface Props extends NavigationScreenProps {
 
 @withNavigationProps()
 export class EditionsListScreen extends React.Component<Props> {
-  api = inject(FantlabAPI);
+  api = inject(API);
 
   render() {
     return (
