@@ -33,7 +33,7 @@ exports.getFeatures = async function(tag) {
 
     result[feature] = result[feature] || [];
 
-    result[feature].unshift({ hash, type, message });
+    result[feature].push({ hash, type, message });
   });
 
   return result;
