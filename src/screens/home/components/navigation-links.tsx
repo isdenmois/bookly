@@ -44,6 +44,11 @@ export class NavigationLinks extends React.Component<Props> {
           value='Синхронизация'
         />
         <ListItem
+          onPress={this.openBookSelect}
+          icon={<Icon name='random' size={20} color={color.BlueIcon} />}
+          value='Выбрать книгу'
+        />
+        <ListItem
           onPress={this.openProfile}
           icon={<Icon name='user' size={20} color={color.BlueIcon} />}
           value='Профиль'
@@ -56,6 +61,7 @@ export class NavigationLinks extends React.Component<Props> {
 
   openReadBooks = () => this.navigation.push('ReadList');
   openWishBooks = () => this.navigation.push('WishList');
+  openBookSelect = () => this.navigation.push('BookSelect');
   openProfile = () => this.navigation.push('Profile');
 }
 
