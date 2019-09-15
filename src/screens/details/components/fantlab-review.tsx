@@ -6,7 +6,7 @@ import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { parser } from 'utils/bbcode';
 import { color } from 'types/colors';
-import { Session, inject } from 'services';
+import { inject } from 'services';
 import { API } from 'services/api';
 import { confirm } from './book-details-lines';
 
@@ -15,7 +15,6 @@ interface Props {
 }
 
 export class FantlabReview extends React.PureComponent<Props> {
-  session = inject(Session);
   api = inject(API);
 
   state = { likes: this.props.review.likes, isLiked: false };
@@ -23,7 +22,7 @@ export class FantlabReview extends React.PureComponent<Props> {
   render() {
     const review = this.props.review;
     const { isLiked, likes } = this.state;
-    const LikeComponent: any = this.session.withFantlab && !isLiked ? TouchableOpacity : View;
+    const LikeComponent: any = !isLiked ? TouchableOpacity : View;
 
     return (
       <View style={s.container}>
