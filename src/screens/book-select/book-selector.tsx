@@ -8,6 +8,7 @@ import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { color } from 'types/colors';
+import { Navigation, inject } from 'services';
 
 interface Props {
   query: Where[];
@@ -21,6 +22,7 @@ function BookSelectorComponent({ books }: Props) {
   const list = useMemo(() => generate(books), [books]);
   const more = useCallback(() => setIndex(index < list.length - 1 ? index + 1 : 0), [index, list]);
   const openTelegram = useCallback(() => Linking.openURL(`tg://share?text=${list[index].title}`), [list, index]);
+  const openBook = useCallback(() => inject(Navigation).push('Details', { bookId: list[index].id }), [list, index]);
 
   if (!list || !list[index]) {
     return <Text>Ничего не найдено</Text>;
@@ -31,7 +33,7 @@ function BookSelectorComponent({ books }: Props) {
   return (
     <View style={s.container}>
       <View style={s.book}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={openBook}>
           <Thumbnail
             style={s.thumbnail}
             width={230}
@@ -49,6 +51,7 @@ function BookSelectorComponent({ books }: Props) {
           {book.author}
         </Text>
       </View>
+
       <View style={s.buttons}>
         <Button label='Найти в Telegram' onPress={openTelegram} />
         <Button style={s.more} label='Еще' onPress={more} />
