@@ -61,3 +61,4 @@ android/app/key.jks
 
 android/app/src/main/res/drawable-*/node_modules*.png
 e2e/mock-server/mocks
+RELEASE_NOTES.md

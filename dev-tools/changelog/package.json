@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "git-semver-tags": "^3.0.0",
+    "semver": "^6.3.0"
+  }
+}
