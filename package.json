@@ -9,6 +9,7 @@
     "lint:fix": "yarn lint --fix",
     "clean": "android/gradlew.bat -p android clean",
     "build": "node dev-tools/release",
+    "prerelease": "node dev-tools/changelog",
     "release": "node dev-tools/release --clean --upload",
     "e2e": "npm run e2e:build && npm run e2e:run",
     "e2e:run": "detox test -c android.emu.release",
@@ -17,7 +18,8 @@
     "e2e:debug:run": "detox test -c android.emu.debug",
     "e2e:debug:build": "node dev-tools/release --test --type=debug",
     "e2e:metro": "cross-env NODE_ENV=test RN_SRC_EXT=e2e.ts react-native start --reset-cache",
-    "run-android": "react-native run-android"
+    "run-android": "react-native run-android",
+    "changelog": "node dev-tools/changelog --type=debug"
   },
   "dependencies": {
     "@nozbe/watermelondb": "0.14.1",
@@ -40,9 +42,9 @@
     "react-native-splash-screen": "3.2.0",
     "react-native-tab-view": "2.10.0",
     "react-native-vector-icons": "6.6.0",
-    "react-navigation": "4.0.3",
+    "react-navigation": "4.0.5",
     "react-navigation-props-mapper": "1.0.1",
-    "react-navigation-stack": "1.5.5",
+    "react-navigation-stack": "1.7.3",
     "rn-classnames": "1.0.1",
     "rxjs": "6.5.3"
   },
