@@ -11,6 +11,7 @@ export function createFetchParams(schema: Schema, body) {
   const session = inject(Session);
 
   params.headers = _.get(schema, 'headers') || {};
+  params.headers['User-Agent'] = 'LiveLib/4.0.5/15040005 (SM-G965F; Android 8.0.0; API 26)';
 
   if (schema.needAuth || (schema.passiveAuth && session.fantlabAuth)) {
     params.headers.Cookie = `fl_s=${session.fantlabAuth}`;

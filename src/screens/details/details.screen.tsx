@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
@@ -17,6 +18,10 @@ export class DetailsScreen extends React.Component<Props> {
   api = inject(API);
 
   render() {
+    if (this.props.bookId.startsWith('l_')) {
+      return <Text>Еще не реализованно</Text>;
+    }
+
     return (
       <Fetcher api={this.api.book} bookId={this.props.bookId} collection='books'>
         {this.renderResult}

@@ -1,4 +1,4 @@
-import { FANTLAB_URL, FANTLAB_ROOT_URL, FIREBASE_URL } from 'services/config';
+import { FANTLAB_URL, FANTLAB_ROOT_URL, FIREBASE_URL, LIVELIB_URL } from 'services/config';
 
 import fetchChangesSchema from './firebase/fetch-changes';
 import pushChangesSchema from './firebase/push-changes';
@@ -13,6 +13,8 @@ import markWorkSchema from './fantlab/mark-work';
 import loginSchema from './fantlab/login';
 import editionsSchema from './fantlab/editions';
 import reviewVoteSchema from './fantlab/review-vote';
+
+import lbooksSearchSchema from './livelib/books-search';
 
 export class API {
   // Firebase
@@ -30,4 +32,7 @@ export class API {
   login = loginSchema.create(FANTLAB_URL);
   editions = editionsSchema.create(FANTLAB_URL);
   reviewVote = reviewVoteSchema.create(FANTLAB_ROOT_URL);
+
+  // LiveLib
+  lBooksSearch = lbooksSearchSchema.create(LIVELIB_URL);
 }
