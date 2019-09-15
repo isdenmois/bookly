@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking, ToastAndroid } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking, ToastAndroid, Clipboard } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
@@ -53,7 +53,12 @@ export class DetailsTab extends React.PureComponent<Props> {
 
         {!!book.language && <ViewLine title='Язык написания' value={book.language} />}
         {!!book.title && !!book.originalTitle && (
-          <ViewLineTouchable title='Оригинальное название' value={book.originalTitle} onPress={this.openTelegram} />
+          <ViewLineTouchable
+            title='Оригинальное название'
+            value={book.originalTitle}
+            onPress={this.openTelegram}
+            onLongPress={this.copyBookOriginalTitle}
+          />
         )}
 
         {!!book.otherTitles && (
@@ -103,6 +108,11 @@ export class DetailsTab extends React.PureComponent<Props> {
   };
 
   openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
+
+  copyBookOriginalTitle = () => {
+    Clipboard.setString(this.props.book.originalTitle);
+    ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
+  };
 
   openChangeThumbnail = () => {
     if (!this.props.isExist) {
