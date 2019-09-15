@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
@@ -8,6 +7,7 @@ import { Fetcher } from 'components';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BookDetailsTabs } from './components/book-details-tabs';
+import { LivelibInfo } from './components/livelib-info';
 
 interface Props extends NavigationScreenProps {
   bookId: string;
@@ -17,20 +17,24 @@ interface Props extends NavigationScreenProps {
 export class DetailsScreen extends React.Component<Props> {
   api = inject(API);
 
+  get isLiveLib() {
+    return this.props.bookId.startsWith('l_');
+  }
+
   render() {
-    if (this.props.bookId.startsWith('l_')) {
-      return <Text>Еще не реализованно</Text>;
-    }
+    const api = this.isLiveLib ? this.api.lBook : this.api.book;
 
     return (
-      <Fetcher api={this.api.book} bookId={this.props.bookId} collection='books'>
+      <Fetcher api={api} bookId={this.props.bookId} collection='books'>
         {this.renderResult}
       </Fetcher>
     );
   }
 
   renderResult = (book: Book & BookExtended) => {
-    return <BookDetailsTabs book={book} isExist={book && !!book.status} navigation={this.props.navigation} />;
+    const Component: any = this.isLiveLib ? LivelibInfo : BookDetailsTabs;
+
+    return <Component book={book} isExist={book && !!book.status} navigation={this.props.navigation} />;
   };
 
   goBack = () => this.props.navigation.goBack();

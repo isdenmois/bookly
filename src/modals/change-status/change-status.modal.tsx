@@ -50,6 +50,10 @@ export class ChangeStatusModal extends React.Component<Props> {
     dateEditable: false,
   };
 
+  get isFantlab() {
+    return !this.props.book.id.startsWith('l_');
+  }
+
   get isCreation() {
     const book = this.props.book;
 
@@ -200,7 +204,7 @@ export class ChangeStatusModal extends React.Component<Props> {
       this.updateBook();
     }
 
-    if (this.state.status === BOOK_STATUSES.READ && this.session.withFantlab) {
+    if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && this.session.withFantlab) {
       this.api.markWork(this.props.book.id, this.state.rating);
     }
   };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, StyleSheet, ViewStyle, View, TextStyle, TouchableOpacity, Text } from 'react-native';
+import { Animated, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';

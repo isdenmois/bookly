@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { of } from 'rxjs';
 import withObservables from '@nozbe/with-observables';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { Animated, StyleSheet, Dimensions, ViewStyle, TextStyle } from 'react-native';
 import { TabView, TabBar, Route } from 'react-native-tab-view';
 import { Scene } from 'react-native-tab-view/src/types';
@@ -16,9 +16,10 @@ import { DetailsTab } from '../tabs/details-tab';
 import { color } from 'types/colors';
 import { BookMainInfo } from './book-main-info';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   book: Book & BookExtended;
   isExist: boolean;
+  navigation: NavigationStackProp;
 }
 
 interface State {
@@ -103,11 +104,13 @@ export class BookDetailsTabs extends React.Component<Props, State> {
 
   renderTabBar = props => (
     <BookMainInfo
-      book={this.props.book}
+      book={this.props.book as any}
       scrollY={this.scrollY}
       headerHeight={this.state.headerHeight}
+      scrollHeight={HEADER_HEIGHT}
       navigation={this.props.navigation}
       onLayout={this.setHeaderHeight}
+      status={this.props.book.status}
     >
       <TabBar
         {...props}

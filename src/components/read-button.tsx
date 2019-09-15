@@ -13,6 +13,7 @@ interface Props {
   style?: ViewStyle;
   ratingStyle?: TextStyle;
   testID?: string;
+  status?: BOOK_STATUSES;
 }
 
 export function ReadButton(props: Props) {
@@ -52,6 +53,7 @@ export function ReadButton(props: Props) {
     />
   );
 }
+
 const s = StyleSheet.create({
   rating: {
     marginTop: 10,
