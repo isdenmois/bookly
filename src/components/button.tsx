@@ -42,6 +42,7 @@ const s = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     alignItems: 'center',
+    justifyContent: 'center',
   } as ViewStyle,
   icon: {
     marginLeft: 10,
