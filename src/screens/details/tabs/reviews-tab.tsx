@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
 import Book from 'store/book';
-import { Button } from 'components';
+import { Button, Tag } from 'components';
 import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
@@ -88,13 +88,8 @@ function SelectReviewSort(props: SelectReviewSortProps) {
   const { setSort, sort } = props;
   const onPress = React.useCallback(() => setSort(sort), [setSort, sort]);
   const isSelected = sort === props.selected;
-  const Component: any = isSelected ? View : TouchableOpacity;
 
-  return (
-    <Component style={isSelected ? s.sortSelected : s.sortItem} onPress={onPress}>
-      <Text style={s.sortText}>{props.title}</Text>
-    </Component>
-  );
+  return <Tag title={props.title} selected={isSelected} onPress={onPress} outline />;
 }
 
 const s = StyleSheet.create({
@@ -115,21 +110,4 @@ const s = StyleSheet.create({
   sortList: {
     flexDirection: 'row',
   },
-  sortItem: {
-    marginRight: 20,
-    borderWidth: 0.5,
-    borderColor: 'transparent',
-  },
-  sortSelected: {
-    borderRadius: 20,
-    borderColor: color.Review,
-    borderWidth: 0.5,
-    marginRight: 20,
-  } as ViewStyle,
-  sortText: {
-    fontSize: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    color: color.Review,
-  } as TextStyle,
 });

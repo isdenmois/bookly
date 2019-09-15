@@ -10,7 +10,7 @@ export const color = {
   Background: '#FFF',
   OrangeBackground: '#FFE0B2',
   SearchBackground: '#F5F5F5',
-  SpoilerBackground: '#EEE',
+  LightBackground: '#EEE',
 
   Primary: '#009688',
   Secondary: '#F57C00',
