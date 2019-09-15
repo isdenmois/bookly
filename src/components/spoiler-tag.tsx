@@ -11,7 +11,7 @@ export class SpoilerTag extends Tag {
 
 const SpoilerText = props => {
   const [spoiler, toggleSpoiler] = React.useState(true);
-  const backgroundColor = spoiler ? color.Review : color.SpoilerBackground;
+  const backgroundColor = spoiler ? color.Review : color.LightBackground;
 
   return (
     <Text style={{ backgroundColor, color: color.Review }} onPress={() => toggleSpoiler(prev => !prev)}>
