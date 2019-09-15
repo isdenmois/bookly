@@ -4,12 +4,12 @@ import { getLastPulledAt } from '@nozbe/watermelondb/sync/impl';
 import { Database } from '@nozbe/watermelondb';
 import { inject } from './inject/inject';
 import { Session } from './session';
-import { FirebaseAPI } from './api';
+import { API } from './api';
 
 export class SyncService {
   database = inject(Database);
   session = inject(Session);
-  api = inject(FirebaseAPI);
+  api = inject(API);
 
   @observable lastPulledAt: number = 0;
 

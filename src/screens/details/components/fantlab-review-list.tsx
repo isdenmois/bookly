@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject } from 'services';
-import { FantlabAPI } from 'api';
+import { API } from 'api';
 import { FantlabReview as IFantlabReview } from 'services/api/fantlab/review-list';
 import { Fetcher } from 'components';
 import { FantlabReview } from './fantlab-review';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export class FantlabReviewList extends React.Component<Props> {
-  api = inject(FantlabAPI);
+  api = inject(API);
 
   render() {
     return (

@@ -7,16 +7,9 @@ import { database, onChanges } from 'store';
 import { provider, asValue, asRef } from 'services/inject/provider';
 
 import { Navigation, Session, SyncService, inject } from 'services';
-import { FirebaseAPI, FantlabAPI } from 'api';
+import { API } from 'api';
 
-@provider(
-  asValue(Database, database),
-  asRef(Navigation, 'setNavigation'),
-  Session,
-  FirebaseAPI,
-  FantlabAPI,
-  SyncService,
-)
+@provider(asValue(Database, database), asRef(Navigation, 'setNavigation'), Session, API, SyncService)
 class App extends React.Component<any> {
   session = inject(Session);
   syncService = inject(SyncService);

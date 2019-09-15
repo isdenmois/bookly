@@ -7,7 +7,7 @@ import { formatDate } from 'utils/date';
 import { parser } from 'utils/bbcode';
 import { color } from 'types/colors';
 import { Session, inject } from 'services';
-import { FantlabAPI } from 'services/api';
+import { API } from 'services/api';
 import { confirm } from './book-details-lines';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 
 export class FantlabReview extends React.PureComponent<Props> {
   session = inject(Session);
-  api = inject(FantlabAPI);
+  api = inject(API);
 
   state = { likes: this.props.review.likes, isLiked: false };
 

@@ -12,7 +12,7 @@ import { withNavigationProps } from 'utils/with-navigation-props';
 import Book, { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
-import { FantlabAPI } from 'services/api';
+import { API } from 'services/api';
 import { Button, Dialog, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
 
 const statusOptions = [
@@ -39,7 +39,7 @@ let defaultDate: Date;
 @withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
   db = inject(Database);
-  api = inject(FantlabAPI);
+  api = inject(API);
   session = inject(Session);
 
   state = {
