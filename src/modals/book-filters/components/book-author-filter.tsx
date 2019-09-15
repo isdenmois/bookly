@@ -61,7 +61,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
   setName = name => this.setState({ name });
 
   setAuthor = id => {
-    const author = _.find(this.props.authors, { id });
+    const author = _.find(this.props.authors, { id }) || null;
 
     this.filters.setFilter('author', author && _.pick(author, ['id', 'name']));
     this.setState({ name: '' });
