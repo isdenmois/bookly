@@ -8,6 +8,8 @@ import { SearchBar } from './search-bar';
 interface Props {
   title: string;
   query?: string;
+  right?: string;
+  onRight?: () => void;
   onSearch?: (value: string) => void;
 }
 
@@ -51,6 +53,9 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
           <TouchIcon name='search' size={24} color={color.PrimaryText} onPress={this.openSearch} />
         )}
         {!this.props.onSearch && <View style={s.noSearch} />}
+        {this.props.onRight && (
+          <TouchIcon name={this.props.right} size={24} color={color.PrimaryText} onPress={this.props.onRight} />
+        )}
       </View>
     );
   }

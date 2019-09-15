@@ -13,10 +13,11 @@ import { Navigation, inject } from 'services';
 interface Props {
   query: Where[];
   database: Database;
+  openFilters: () => void;
   books?: Book[];
 }
 
-function BookSelectorComponent({ books }: Props) {
+function BookSelectorComponent({ books, openFilters }: Props) {
   const [index, setIndex] = useState(0);
   useEffect(() => setIndex(0), [books]);
   const list = useMemo(() => generate(books), [books]);
@@ -25,7 +26,15 @@ function BookSelectorComponent({ books }: Props) {
   const openBook = useCallback(() => inject(Navigation).push('Details', { bookId: list[index].id }), [list, index]);
 
   if (!list || !list[index]) {
-    return <Text>Ничего не найдено</Text>;
+    return (
+      <View style={s.container}>
+        <View style={s.book}>
+          <Text style={s.empty}>Ничего не найдено</Text>
+        </View>
+
+        <Button label='Изменить фильтры' onPress={openFilters} />
+      </View>
+    );
   }
 
   const book = list[index];
@@ -96,6 +105,10 @@ const s = StyleSheet.create({
   more: {
     width: 167,
   } as ViewStyle,
+  empty: {
+    fontSize: 24,
+    color: color.Empty,
+  } as TextStyle,
 });
 
 export const BookSelector = withObservables(['query'], booksQuery)(React.memo(BookSelectorComponent));
