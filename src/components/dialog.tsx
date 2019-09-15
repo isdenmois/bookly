@@ -28,7 +28,7 @@ export const Dialog = (props: Props) => {
 
       <View style={s.modal}>
         <View style={[s.modalView, props.modalStyle]}>
-          {!!props.title && renderDialogHeader(props.title, props.onApply)}
+          {!!props.title && renderDialogHeader(props.title, back, props.onApply)}
           <View style={[s.content, props.style]}>{props.children}</View>
         </View>
       </View>
@@ -36,10 +36,10 @@ export const Dialog = (props: Props) => {
   );
 };
 
-function renderDialogHeader(title: ReactChild, onApply) {
+function renderDialogHeader(title: ReactChild, back, onApply) {
   return (
     <View style={s.header}>
-      <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={onBack} />
+      <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={back} />
       <Text numberOfLines={1} style={s.title}>
         {title}
       </Text>
