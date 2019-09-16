@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { Session, Navigation, inject } from 'services';
 import { BookData } from 'store/book';
@@ -12,29 +12,26 @@ interface Props {
   review: Review;
 }
 
-export class LocalReview extends React.PureComponent<Props> {
-  session = inject(Session);
+const navigate = (review, book) => inject(Navigation).navigate('/modal/review-write', { review, book });
 
-  render() {
-    const review = this.props.review;
+export function LocalReview({ review, book }: Props) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const openEditReview = useCallback(() => navigate(review, book), [review]);
+  const session = inject(Session);
 
-    return (
-      <View style={s.container}>
-        <View style={s.dataRow}>
-          <View style={s.mainInfo}>
-            <Text style={s.user}>{this.session.userId}</Text>
-            <Text style={s.date}>{formatDate(review.date)}</Text>
-          </View>
-          <TouchIcon style={s.icon} name='pen' size={16} color={color.PrimaryText} onPress={this.openEditReview} />
+  return (
+    <View style={s.container}>
+      <View style={s.dataRow}>
+        <View style={s.mainInfo}>
+          <Text style={s.user}>{session.userId}</Text>
+          <Text style={s.date}>{formatDate(review.date)}</Text>
         </View>
-
-        <ExpandableText>{review.body}</ExpandableText>
+        <TouchIcon style={s.icon} name='pen' size={16} color={color.PrimaryText} onPress={openEditReview} />
       </View>
-    );
-  }
 
-  openEditReview = () =>
-    inject(Navigation).navigate('/modal/review-write', { review: this.props.review, book: this.props.book });
+      <ExpandableText>{review.body}</ExpandableText>
+    </View>
+  );
 }
 
 const s = StyleSheet.create({
