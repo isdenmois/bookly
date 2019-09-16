@@ -33,6 +33,7 @@ export class DetailsTab extends React.PureComponent<Props> {
 
     return (
       <View>
+        {all && <ViewLine title='ID' value={book.id} />}
         {all && <ViewLine title='Тип' value={BOOK_TYPE_NAMES[book.type]} />}
 
         {withGenre && !!book.genre && <ViewLine title='Жанр' value={book.genre} />}
