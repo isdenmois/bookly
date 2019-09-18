@@ -27,7 +27,8 @@ export function BookListFilters({ filters, onChange }: Props) {
   const clears = useMemo(() => createClears(filters, onChange), [filters]);
   const tags = _.map(
     filters,
-    (value: string, key) => filterMap[key] && <Tag key={key} title={filterMap[key](value)} onRemove={clears[key]} />,
+    (value: string, key) =>
+      filterMap[key] && <Tag key={key} title={filterMap[key](value)} onPress={clears[key]} icon='times' />,
   ).filter(i);
 
   if (!tags.length) {
