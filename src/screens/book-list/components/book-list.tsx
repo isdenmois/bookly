@@ -88,7 +88,7 @@ export class BookList extends React.PureComponent<Props> {
       filters.date = _.clone(date);
     }
 
-    if (filters.date.to.getTime() - filters.date.from.getTime() > YEAR) {
+    if (year || filters.date.to.getTime() - filters.date.from.getTime() > YEAR) {
       filters.date.from.setFullYear(filters.date.from.getFullYear() - 1);
     } else {
       filters.date.from.setMonth(filters.date.from.getMonth() - 1);
