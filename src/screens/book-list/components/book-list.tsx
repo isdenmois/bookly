@@ -7,7 +7,7 @@ import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { color } from 'types/colors';
 import Book from 'store/book';
-import { BookItem } from 'components';
+import { BookItem, Button } from 'components';
 import { EmptyResult } from 'components/fetcher';
 import { BookListFilters } from './book-list-filters';
 
@@ -19,6 +19,8 @@ interface Props {
   onChange: (filters: Partial<BookFilters>) => void;
   books?: Book[];
 }
+
+const YEAR = 1000 * 60 * 60 * 24 * 365;
 
 @withObservables(['query', 'sort'], ({ database, query, sort }) => ({
   books: bookListQuery(database, query).observeWithColumns(sort ? [sort.field] : []),
@@ -43,6 +45,7 @@ export class BookList extends React.PureComponent<Props> {
         keyExtractor={this.keyExtractor}
         renderItem={this.renderItem}
         ListHeaderComponent={this.renderHeader()}
+        ListFooterComponent={this.renderFooter()}
       />
     );
   }
@@ -60,6 +63,40 @@ export class BookList extends React.PureComponent<Props> {
     return <BookItem key={item.id} book={item} cacheThumbnail />;
   };
 
+  private renderFooter = () => {
+    const { year, date } = this.props.filters;
+    const sort = this.props.sort;
+
+    if ((!date && !year) || sort.field !== 'date' || !sort.desc) {
+      return null;
+    }
+
+    const label = year || date.to.getTime() - date.from.getTime() > YEAR ? 'Еще год' : 'Еще месяц';
+
+    return <Button style={s.moreButton} label={label} onPress={this.increaseDateFilter} />;
+  };
+
+  private increaseDateFilter = () => {
+    const { year, date } = this.props.filters;
+    let filters = this.props.filters;
+
+    if (year) {
+      filters = _.omit(filters, ['year']);
+      filters.date = { from: new Date(year, 0, 1), to: new Date(year, 11, 31) };
+    } else {
+      filters = _.clone(filters);
+      filters.date = _.clone(date);
+    }
+
+    if (filters.date.to.getTime() - filters.date.from.getTime() > YEAR) {
+      filters.date.from.setFullYear(filters.date.from.getFullYear() - 1);
+    } else {
+      filters.date.from.setMonth(filters.date.from.getMonth() - 1);
+    }
+
+    this.props.onChange(filters);
+  };
+
   private keyExtractor = book => book.id;
 }
 
@@ -73,6 +110,11 @@ const s = StyleSheet.create({
     fontSize: 18,
     color: color.PrimaryText,
   } as TextStyle,
+  moreButton: {
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 10,
+  } as ViewStyle,
 });
 
 function bookListQuery(database: Database, query: Where[]) {
