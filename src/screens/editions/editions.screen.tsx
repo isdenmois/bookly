@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
-import { EditionCard } from './components/edition-card';
 import { inject } from 'services';
 import { API } from 'api';
 import { Fetcher, ScreenHeader } from 'components';
@@ -9,6 +8,8 @@ import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { EditionTranslators } from 'types/book-extended';
 import { Edition } from 'services/api/fantlab/editions';
+import { EditionsSort } from './components/editions-sort';
+import { EditionCard } from './components/edition-card';
 
 interface Props extends NavigationScreenProps {
   editionIds: number[];
@@ -18,23 +19,22 @@ interface Props extends NavigationScreenProps {
 @withNavigationProps()
 export class EditionsListScreen extends React.Component<Props> {
   api = inject(API);
+  state = { sort: '-year' };
+  e = this.props.editionIds.join(',');
 
   render() {
     return (
       <View style={s.container}>
         <ScreenHeader title={'Список изданий'} />
-        <Fetcher
-          contentContainerStyle={s.scroll}
-          api={this.api.editions}
-          e={this.props.editionIds.join(',')}
-          sort='-year'
-          useFlatlist
-        >
+        <EditionsSort sort={this.state.sort} onChange={this.setSort} />
+        <Fetcher contentContainerStyle={s.scroll} api={this.api.editions} e={this.e} sort={this.state.sort} useFlatlist>
           {this.renderEditionsList}
         </Fetcher>
       </View>
     );
   }
+
+  setSort = sort => this.setState({ sort });
 
   renderEditionsList = (edition: Edition) => {
     return <EditionCard key={edition.id} edition={edition} translators={this.props.translators[edition.id]} />;
@@ -48,7 +48,6 @@ const s = StyleSheet.create({
     marginHorizontal: 10,
   } as ViewStyle,
   scroll: {
-    paddingTop: 25,
-    paddingBottom: 20,
+    paddingBottom: 15,
   } as ViewStyle,
 });
