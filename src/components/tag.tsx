@@ -7,17 +7,19 @@ interface Props {
   title: string;
   selected?: boolean;
   outline?: boolean;
+  icon?: string;
   onPress?: () => void;
   onRemove?: () => void;
 }
 
-function TagComponent({ title, selected, outline, onRemove, onPress }: Props) {
+function TagComponent({ title, selected, outline, icon, onRemove, onPress }: Props) {
   const Wrapper: any = onRemove || (onPress && !selected) ? TouchableOpacity : View;
   const wraperStyle = [s.wrapper, outline ? s.outline : null, selected ? s.selected : null];
 
   return (
     <Wrapper style={wraperStyle} onPress={onRemove || onPress}>
       <Text style={s.text}>{title}</Text>
+      {!!icon && <Icon style={s.icon} name={icon} size={14} color={color.Review} />}
       {!!onRemove && <Icon style={s.icon} name='times' size={14} color={color.Review} />}
     </Wrapper>
   );
