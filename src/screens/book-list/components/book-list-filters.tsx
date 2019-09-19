@@ -20,6 +20,7 @@ const filterMap = {
   date: formatPeriod,
   rating: formatRating,
   type: t => BOOK_TYPE_NAMES[t],
+  isLiveLib: () => 'LiveLib',
 };
 
 export function BookListFilters({ filters, onChange }: Props) {
