@@ -15,6 +15,7 @@ import { BookTypeFilter } from './components/book-type-filter';
 import { BookDateFilter } from './components/book-date-filter';
 import { BookRatingFilter } from './components/book-rating-filter';
 import { BookTitleFilter } from './components/book-title-fitler';
+import { BookIsLiveLibFilter } from './components/book-is-livelib-filter';
 import { BookFilters } from './book-filters.service';
 
 const FILTER_COMPONENTS_MAP = {
@@ -24,6 +25,7 @@ const FILTER_COMPONENTS_MAP = {
   type: BookTypeFilter,
   date: BookDateFilter,
   rating: BookRatingFilter,
+  isLiveLib: BookIsLiveLibFilter,
 };
 
 interface Props extends NavigationScreenProps {

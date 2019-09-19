@@ -17,6 +17,7 @@ const WHERE_FILTERS = {
   date: dateFilter,
   rating: ratingFilter,
   title: titleFitler,
+  isLiveLib: isLiveLibFiltler,
 };
 
 export function createQueryState(filters: Partial<BookFilters>, sort: BookSort) {
@@ -59,4 +60,8 @@ function ratingFilter({ from, to }: Interval<number>) {
 
 function titleFitler(title: string) {
   return Q.where('search', Q.like(`%${sanitizeLike(title.toLowerCase())}%`));
+}
+
+function isLiveLibFiltler() {
+  return Q.where('id', Q.like('l_%'));
 }

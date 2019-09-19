@@ -18,4 +18,5 @@ export interface BookFilters {
   type: string;
   date: Interval<Date>;
   rating: Interval<number>;
+  isLiveLib: boolean;
 }
