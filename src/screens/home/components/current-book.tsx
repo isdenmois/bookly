@@ -10,9 +10,11 @@ interface Props {
   currentBooksCount?: number;
 }
 
-@withObservables(null, ({ database }) => ({
+const withCurrentBooksCount: Function = withObservables(null, ({ database }) => ({
   currentBooksCount: currentBooksQuery(database).observeCount(),
-}))
+}));
+
+@withCurrentBooksCount
 export class CurrentBook extends React.Component<Props> {
   render() {
     if (this.props.currentBooksCount > 0) {

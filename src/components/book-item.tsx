@@ -34,11 +34,11 @@ interface Props {
   cacheThumbnail?: boolean;
 }
 
-@withObservables(['book'], ({ book }) => {
-  return {
-    book: book.observe ? book : of(book),
-  };
-})
+export const withBook: Function = withObservables(['book'], ({ book }: Props) => ({
+  book: book.observe ? book : of(book),
+}));
+
+@withBook
 export class BookItem extends React.Component<Props> {
   navigation = inject(Navigation);
 

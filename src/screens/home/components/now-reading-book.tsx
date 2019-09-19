@@ -15,9 +15,11 @@ interface Props extends Partial<NavigationScreenProps> {
   books?: Book[];
 }
 
-@withObservables(null, ({ database }) => ({
+const withBooks: Function = withObservables(null, ({ database }: Props) => ({
   books: currentBooksQuery(database).observeWithColumns(['thumbnail']),
-}))
+}));
+
+@withBooks
 export class NowReadingBook extends React.Component<Props> {
   navigation = inject(Navigation);
 

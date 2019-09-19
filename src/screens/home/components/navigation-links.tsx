@@ -15,10 +15,12 @@ interface Props {
   wishCount?: number;
 }
 
-@withObservables(null, ({ database }) => ({
+const withCounts: Function = withObservables(null, ({ database }: Props) => ({
   readCount: readBooksQuery(database).observeCount(),
   wishCount: wishBooksQuery(database).observeCount(),
-}))
+}));
+
+@withCounts
 export class NavigationLinks extends React.Component<Props> {
   session = inject(Session);
   navigation = inject(Navigation);
