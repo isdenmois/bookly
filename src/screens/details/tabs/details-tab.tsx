@@ -4,7 +4,7 @@ import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book from 'store/book';
-import { BookExtended } from 'types/book-extended';
+import { BookExtended, ParentBook } from 'types/book-extended';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import {
@@ -98,8 +98,8 @@ export class DetailsTab extends React.PureComponent<Props> {
     );
   }
 
-  openBook(book) {
-    this.props.navigation.push('Details', { bookId: book.id });
+  openBook(book: Book | ParentBook) {
+    this.props.navigation.push('Details', { bookId: String(book.id) });
   }
 
   openEditions = () => {

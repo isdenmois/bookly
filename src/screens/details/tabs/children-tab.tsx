@@ -36,6 +36,6 @@ export class ChildrenTab extends React.PureComponent<Props> {
   }
 
   openBook(book) {
-    this.props.navigation.push('Details', { bookId: book.id });
+    this.props.navigation.push('Details', { bookId: String(book.id) });
   }
 }

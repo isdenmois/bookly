@@ -42,7 +42,7 @@ export class SimilarTab extends React.Component<Props> {
   };
 
   openBook(book: BookSimilar) {
-    this.props.navigation.push('Details', { bookId: book.id });
+    this.props.navigation.push('Details', { bookId: String(book.id) });
   }
 }
 
