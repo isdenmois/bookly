@@ -45,7 +45,9 @@ function genre(w) {
 }
 
 function otherTitles(w) {
-  return _.filter(w.work_name_alts, _.identity).join('; ');
+  const titles = [w.work_name].concat(w.work_name_alts);
+
+  return _.filter(titles, _.identity).join('; ');
 }
 
 function search(w) {

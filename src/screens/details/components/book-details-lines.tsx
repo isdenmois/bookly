@@ -33,6 +33,11 @@ interface ViewLineModelRemoveProps {
   model: Model;
 }
 
+interface ViewLineActionProps {
+  title: string;
+  onPress?: () => void;
+}
+
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export const BookDescriptionLine = (props: Props) => (
@@ -65,6 +70,16 @@ export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
     <View style={s.row}>
       <TouchableOpacity onPress={onPress} style={s.value} hitSlop={hitSlop}>
         <Text style={s.dangerousText}>{props.warning}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+export function ViewLineAction({ title, onPress }: ViewLineActionProps) {
+  return (
+    <View style={s.row}>
+      <TouchableOpacity onPress={onPress} style={s.value} hitSlop={hitSlop}>
+        <Text style={s.actionText}>{title}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -114,6 +129,10 @@ const s = StyleSheet.create({
   } as TextStyle,
   dangerousText: {
     color: color.ErrorText,
+    fontSize: 18,
+  } as TextStyle,
+  actionText: {
+    color: color.BlueIcon,
     fontSize: 18,
   } as TextStyle,
 });

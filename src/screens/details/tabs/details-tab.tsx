@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking, ToastAndroid, Clipboard } from 'react-native';
+import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
@@ -12,6 +13,7 @@ import {
   ViewLine,
   ViewLineTouchable,
   ViewLineModelRemove,
+  ViewLineAction,
 } from '../components/book-details-lines';
 import { withScroll } from './tab';
 
@@ -30,6 +32,9 @@ export class DetailsTab extends React.PureComponent<Props> {
     const { book, isExist } = this.props;
     const all = this.props.tab !== 'main';
     const withGenre = all || !book.thumbnail;
+    const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
+      .filter(t => t !== book.title)
+      .join('\n');
 
     return (
       <View>
@@ -62,15 +67,15 @@ export class DetailsTab extends React.PureComponent<Props> {
           />
         )}
 
-        {!!book.otherTitles && (
-          <ViewLine title='Другие названия' value={book.otherTitles.replace(TITLE_SEPARATOR, '\n')} />
-        )}
+        {!!otherTitles && <ViewLine title='Другие названия' value={otherTitles} />}
 
         {all && !!book.description && <BookDescriptionLine description={book.description} />}
 
         {!!book.parent.length && this.renderParentBooks()}
 
         {!!book.films && !!book.films.length && this.renderFilms()}
+
+        {all && isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
 
         {all && isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
       </View>
@@ -139,6 +144,10 @@ export class DetailsTab extends React.PureComponent<Props> {
     }
 
     this.props.navigation.push('/modal/thumbnail-select', { book: this.props.book });
+  };
+
+  openEditModal = () => {
+    this.props.navigation.push('/modal/book-title-edit', { book: this.props.book });
   };
 }
 
