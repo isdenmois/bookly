@@ -4,9 +4,10 @@ import _ from 'lodash';
 import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle, FlatList } from 'react-native';
 import { Database, Q } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
+import { ScrollToTopContext } from 'utils/scroll-to-top';
+import { inject } from 'services';
 import { TextXL } from './text';
 import { Button } from './button';
-import { inject } from 'services';
 
 const OMIT_FIELDS = [
   'children',
@@ -18,6 +19,7 @@ const OMIT_FIELDS = [
   'contentContainerStyle',
   'collection',
   'sort',
+  'setScrollTop',
 ];
 
 type ListItemRender = (item: any, index?: number) => ReactNode;
@@ -43,6 +45,8 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
     empty: EmptyResult,
     emptyText: 'Ничего не найдено',
   };
+
+  static contextType = ScrollToTopContext;
 
   page = 1;
 
@@ -165,6 +169,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ListFooterComponent={footer}
+        ref={this.context.setScroll}
       />
     );
   }

@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
+import { ScrollToTopContext } from 'utils/scroll-to-top';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { color } from 'types/colors';
 import Book from 'store/book';
@@ -28,6 +29,8 @@ const withBooks: Function = withObservables(['query', 'sort'], ({ database, quer
 
 @withBooks
 export class BookList extends React.PureComponent<Props> {
+  static contextType = ScrollToTopContext;
+
   render() {
     if (!this.props.books || !this.props.books.length) {
       return <EmptyResult text='Книги не найдены' />;
@@ -48,6 +51,7 @@ export class BookList extends React.PureComponent<Props> {
         renderItem={this.renderItem}
         ListHeaderComponent={this.renderHeader()}
         ListFooterComponent={this.renderFooter()}
+        ref={this.context.setScroll}
       />
     );
   }

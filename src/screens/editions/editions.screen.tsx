@@ -6,6 +6,7 @@ import { API } from 'api';
 import { Fetcher, ScreenHeader } from 'components';
 import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
+import { withScroll } from 'utils/scroll-to-top';
 import { EditionTranslators } from 'types/book-extended';
 import { Edition } from 'services/api/fantlab/editions';
 import { EditionsSort } from './components/editions-sort';
@@ -17,6 +18,7 @@ interface Props extends NavigationScreenProps {
 }
 
 @withNavigationProps()
+@withScroll
 export class EditionsListScreen extends React.Component<Props> {
   api = inject(API);
   state = { sort: '-year' };
