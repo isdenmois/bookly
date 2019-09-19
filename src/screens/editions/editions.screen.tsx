@@ -23,10 +23,11 @@ export class EditionsListScreen extends React.Component<Props> {
   e = this.props.editionIds.join(',');
 
   render() {
+    const count = this.props.editionIds.length;
     return (
       <View style={s.container}>
         <ScreenHeader title={'Список изданий'} />
-        <EditionsSort sort={this.state.sort} onChange={this.setSort} />
+        {count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}
         <Fetcher contentContainerStyle={s.scroll} api={this.api.editions} e={this.e} sort={this.state.sort} useFlatlist>
           {this.renderEditionsList}
         </Fetcher>
