@@ -8,6 +8,7 @@ import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import { withScroll } from 'utils/scroll-to-top';
 import { inject } from 'services';
 import { Button, ScreenHeader } from 'components';
 import { BookList } from './components/book-list';
@@ -28,7 +29,7 @@ interface State {
   filters: Partial<BookFilters>;
 }
 
-export class ReadListScreen extends React.Component<NavigationScreenProps, State> {
+export class ReadList extends React.Component<NavigationScreenProps, State> {
   state: State = createQueryState(defaultFilters, { field: 'date', desc: true });
 
   database = inject(Database);
@@ -74,6 +75,8 @@ export class ReadListScreen extends React.Component<NavigationScreenProps, State
       sort: this.state.sort,
     });
 }
+
+export const ReadListScreen = withScroll(ReadList);
 
 const s = StyleSheet.create({
   container: {
