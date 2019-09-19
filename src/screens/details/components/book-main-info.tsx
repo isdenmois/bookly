@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
   Animated,
   ImageBackground,
@@ -20,6 +20,7 @@ import { BookExtended } from 'types/book-extended';
 import { ReadButton, Thumbnail } from 'components';
 import { getThumbnailUrl } from 'components/thumbnail';
 import { getAvatarBgColor } from 'components/avatar';
+import { withBook } from 'components/book-item';
 import { LiveLibBook } from 'services/api/livelib/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookDetailsHeader } from './book-details-header';
@@ -37,38 +38,32 @@ interface Props {
 
 const MARGIN = 30;
 
-export const BookMainInfo = React.memo(function({
-  book,
-  navigation,
-  scrollY,
-  headerHeight,
-  scrollHeight,
-  children,
-  onLayout,
-}: Props) {
-  const Background: any = book.thumbnail ? ThumbnailBackground : AvatarBackground;
-  const bookTitle = book.title || book.originalTitle;
+export const BookMainInfo = memo(
+  withBook(function({ book, navigation, scrollY, headerHeight, scrollHeight, children, onLayout }: Props) {
+    const Background: any = book.thumbnail ? ThumbnailBackground : AvatarBackground;
+    const bookTitle = book.title || book.originalTitle;
 
-  return (
-    <Collapsible
-      tabbar={children}
-      headerHeight={headerHeight}
-      scrollY={scrollY}
-      onLayout={onLayout}
-      scrollHeight={scrollHeight}
-    >
-      <Background bookTitle={bookTitle} book={book}>
-        <View style={s.darkOverlay}>
-          <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} />
-          <BookAuthor book={book} navigation={navigation} />
-          {!book.thumbnail && <SecondaryData book={book} navigation={navigation} />}
-        </View>
-      </Background>
+    return (
+      <Collapsible
+        tabbar={children}
+        headerHeight={headerHeight}
+        scrollY={scrollY}
+        onLayout={onLayout}
+        scrollHeight={scrollHeight}
+      >
+        <Background bookTitle={bookTitle} book={book}>
+          <View style={s.darkOverlay}>
+            <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} />
+            <BookAuthor book={book} navigation={navigation} />
+            {!book.thumbnail && <SecondaryData book={book} navigation={navigation} />}
+          </View>
+        </Background>
 
-      {!!book.thumbnail && <SecondaryWithThumbnailData book={book} navigation={navigation} />}
-    </Collapsible>
-  );
-});
+        {!!book.thumbnail && <SecondaryWithThumbnailData book={book} navigation={navigation} />}
+      </Collapsible>
+    );
+  }),
+);
 
 function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scrollHeight }) {
   const headerStyle = React.useMemo(
