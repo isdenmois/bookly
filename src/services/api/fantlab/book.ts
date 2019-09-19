@@ -25,6 +25,7 @@ const response = {
   editionIds,
   translators,
   editionTranslators,
+  films,
 };
 
 export type Params = { bookId: string };
@@ -58,7 +59,7 @@ function search(w) {
 function parent(w) {
   return _.flatMap(w.parents, type =>
     _.map(type, group => ({
-      id: _.get(group, '[0].work_id'),
+      id: String(_.get(group, '[0].work_id')),
       title: _.get(group, '[0].work_name'),
       type: _.capitalize(_.get(group, '[0].work_type', '')) || 'Другое',
     })),
@@ -67,7 +68,7 @@ function parent(w) {
 
 function children(w) {
   return _.filter(w.children, c => +c.deep === 1 && c.work_id).map(c => ({
-    id: c.work_id,
+    id: String(c.work_id),
     title: c.work_name || c.work_name_alt || c.work_name_orig,
     type: _.capitalize(c.work_type) || 'Другое',
     year: c.work_year,
@@ -104,4 +105,17 @@ function translators(w) {
   translations = translations.map(t => _.map(_.get(t, 'translators'), 'short_name').join(', ')).filter(t => t);
 
   return translations.sort();
+}
+
+function films(w) {
+  if (!w.films) return null;
+
+  const films = _.flatten(Object.values(w.films)).map((f: any) => ({
+    id: String(f.film_id),
+    title: f.rusname || f.name,
+    country: f.country,
+    year: f.year,
+  }));
+
+  return _.orderBy(films, 'year').reverse();
 }
