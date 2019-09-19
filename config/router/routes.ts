@@ -13,6 +13,7 @@ import { BookFiltersModal } from 'modals/book-filters/book-filters.modal';
 import { ThumbnailSelectModal } from 'modals/thumbnail-select/thumbnail-select.modal';
 import { ReviewWriteModal } from 'modals/review-write/review-write.modal';
 import { FantlabLoginModal } from 'modals/fantlab-login/fantlab-login.modal';
+import { BookTitleEditModal } from 'modals/book-title-edit/book-title-edit.modal';
 
 export const MainStack = {
   Home: HomeScreen,
@@ -32,4 +33,5 @@ export const ModalStack = {
   ThumbnailSelect: ThumbnailSelectModal,
   ReviewWrite: ReviewWriteModal,
   FantlabLogin: FantlabLoginModal,
+  BookTitleEdit: BookTitleEditModal,
 };
