@@ -12,7 +12,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
   get url() {
     const { bookId } = this.props;
 
-    return bookId.startsWith('l_')
+    return bookId && bookId.startsWith('l_')
       ? `https://livelib.ru/book/${this.props.bookId.replace('l_', '')}`
       : `https://fantlab.ru/work${this.props.bookId}`;
   }
