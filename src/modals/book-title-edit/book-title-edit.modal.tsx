@@ -24,6 +24,7 @@ export const BookTitleEditModal = withNavigationProps()(({ book, navigation }: P
   const titles: string[] = useMemo(() => getTitles(book.otherTitles, book.title), []);
   const enabled = title && title.trim() !== book.title;
   const onPress = enabled ? update : null;
+  const isLiveLib = book.id.startsWith('l_');
 
   return (
     <Dialog style={s.dialog} title='Редактирование' onApply={onPress}>
@@ -36,14 +37,16 @@ export const BookTitleEditModal = withNavigationProps()(({ book, navigation }: P
         onSubmitEditing={onPress}
       />
 
-      <ScrollView>
-        {titles.map(t => (
-          <TouchableOpacity key={t} style={s.line} onPress={() => setTitle(t)}>
-            <Icon name='chevron-right' size={14} color={color.PrimaryText} />
-            <Text style={s.text}>{t}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {!isLiveLib && (
+        <ScrollView>
+          {titles.map(t => (
+            <TouchableOpacity key={t} style={s.line} onPress={() => setTitle(t)}>
+              <Icon name='chevron-right' size={14} color={color.PrimaryText} />
+              <Text style={s.text}>{t}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
 
       <Button style={s.button} label='Сохранить' disabled={!enabled} onPress={onPress} />
     </Dialog>

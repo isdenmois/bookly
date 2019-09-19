@@ -7,7 +7,7 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { LiveLibBook } from 'services/api/livelib/book';
 import { withBook } from 'components/book-item';
 import { BookMainInfo } from './book-main-info';
-import { BookDescriptionLine, ViewLine, ViewLineModelRemove } from './book-details-lines';
+import { BookDescriptionLine, ViewLine, ViewLineModelRemove, ViewLineAction } from './book-details-lines';
 
 interface Props {
   book: Book & LiveLibBook;
@@ -61,6 +61,7 @@ export class LivelibInfo extends Component<Props, State> {
           {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
           {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
           {!!book.description && <BookDescriptionLine description={book.description} />}
+          {isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
           {isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
         </Animated.ScrollView>
       </View>
@@ -73,6 +74,10 @@ export class LivelibInfo extends Component<Props, State> {
     if (headerHeight !== this.state.headerHeight) {
       this.setState({ headerHeight });
     }
+  };
+
+  openEditModal = () => {
+    this.props.navigation.push('/modal/book-title-edit', { book: this.props.book });
   };
 }
 
