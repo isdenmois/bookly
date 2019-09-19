@@ -13,9 +13,11 @@ interface Props {
   wishBooksCount?: number;
 }
 
-@withObservables(null, ({ database }) => ({
+const withWishBooksCount: Function = withObservables(null, ({ database }: Props) => ({
   wishBooksCount: wishBooksQuery(database).observeCount(),
-}))
+}));
+
+@withWishBooksCount
 export class EmptyBook extends React.Component<Props> {
   render() {
     const { wishBooksCount } = this.props;

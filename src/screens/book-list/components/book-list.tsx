@@ -22,9 +22,11 @@ interface Props {
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
 
-@withObservables(['query', 'sort'], ({ database, query, sort }) => ({
+const withBooks: Function = withObservables(['query', 'sort'], ({ database, query, sort }: Props) => ({
   books: bookListQuery(database, query).observeWithColumns(sort ? [sort.field] : []),
-}))
+}));
+
+@withBooks
 export class BookList extends React.PureComponent<Props> {
   render() {
     if (!this.props.books || !this.props.books.length) {

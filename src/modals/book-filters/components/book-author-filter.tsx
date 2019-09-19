@@ -21,12 +21,14 @@ interface State {
   name: string;
 }
 
-@withObservables(null, (props: Props) => {
+const withAuthors: Function = withObservables(null, (props: Props) => {
   const queries = [Q.on('books', 'status', props.status), Q.on('book_authors', '_status', Q.notEq('deleted'))];
   const authors = inject(Database).collections.get('authors');
 
   return { authors: authors.query(...queries) };
-})
+});
+
+@withAuthors
 @observer
 export class BookAuthorFilter extends React.PureComponent<Props, State> {
   state: State = { name: '' };

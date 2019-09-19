@@ -19,9 +19,11 @@ interface Props {
   onSelect: (book: Book) => void;
 }
 
-@withObservables(['search'], ({ database, search }: Props) => ({
+const withBooks: Function = withObservables(['search'], ({ database, search }: Props) => ({
   books: database.collections.get('books').query(...bookListQuery(search)),
-}))
+}));
+
+@withBooks
 export class BookList extends React.Component<Props> {
   sortBooks = sortBy(prop('title'));
 

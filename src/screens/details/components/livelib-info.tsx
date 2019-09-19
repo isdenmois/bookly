@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, Dimensions, ViewStyle, View } from 'react-native';
-import withObservables from '@nozbe/with-observables';
-import { of } from 'rxjs';
 import { NavigationStackProp } from 'react-navigation-stack';
 import Book from 'store/book';
 import { formatDate } from 'utils/date';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { LiveLibBook } from 'services/api/livelib/book';
+import { withBook } from 'components/book-item';
 import { BookMainInfo } from './book-main-info';
 import { BookDescriptionLine, ViewLine, ViewLineModelRemove } from './book-details-lines';
 
@@ -22,9 +21,7 @@ interface State {
 
 const HEADER_HEIGHT = 60;
 
-@withObservables(['book'], ({ book }) => ({
-  book: book.observe ? book : of(book),
-}))
+@withBook
 export class LivelibInfo extends Component<Props, State> {
   state: State = { headerHeight: 0 };
 

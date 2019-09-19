@@ -1,7 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { of } from 'rxjs';
-import withObservables from '@nozbe/with-observables';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { Animated, StyleSheet, Dimensions, ViewStyle, TextStyle } from 'react-native';
 import { TabView, TabBar, Route } from 'react-native-tab-view';
@@ -9,6 +7,7 @@ import { Scene } from 'react-native-tab-view/src/types';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
+import { withBook } from 'components/book-item';
 import { ChildrenTab } from '../tabs/children-tab';
 import { ReviewsTab } from '../tabs/reviews-tab';
 import { SimilarTab } from '../tabs/similar-tab';
@@ -40,9 +39,7 @@ const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortst
 
 const HEADER_HEIGHT = 110;
 
-@withObservables(['book'], ({ book }) => ({
-  book: book.observe ? book : of(book),
-}))
+@withBook
 export class BookDetailsTabs extends React.Component<Props, State> {
   state: State = {
     index: 0,

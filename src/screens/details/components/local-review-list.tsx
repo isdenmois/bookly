@@ -10,13 +10,15 @@ interface Props {
   reviews?: Review[];
 }
 
-@withObservables(['book'], ({ book }: Props) =>
+const withReviews: Function = withObservables(['book'], ({ book }: Props) =>
   book.reviews
     ? {
         reviews: book.reviews.observeWithColumns(['body']),
       }
     : {},
-)
+);
+
+@withReviews
 export class LocalReviewList extends React.Component<Props> {
   render() {
     return _.map(this.props.reviews, review => <LocalReview key={review.id} book={this.props.book} review={review} />);
