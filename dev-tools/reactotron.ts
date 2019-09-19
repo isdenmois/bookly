@@ -1,4 +1,5 @@
 import Reactotron from 'reactotron-react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const hijackConsole = () => {
   const oldConsoleLog = console.log;
@@ -18,5 +19,8 @@ const hijackConsole = () => {
 hijackConsole();
 
 Reactotron.configure()
+  .setAsyncStorageHandler(AsyncStorage)
   .useReactNative()
   .connect();
+
+Reactotron.clear();
