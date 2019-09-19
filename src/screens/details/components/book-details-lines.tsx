@@ -19,7 +19,7 @@ interface Props {
 }
 
 interface ViewListProps {
-  title: string;
+  title: string | number;
   value?: any;
 }
 

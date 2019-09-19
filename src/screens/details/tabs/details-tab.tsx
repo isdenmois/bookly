@@ -4,7 +4,7 @@ import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book from 'store/book';
-import { BookExtended, ParentBook } from 'types/book-extended';
+import { BookExtended, ParentBook, Film } from 'types/book-extended';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import {
@@ -70,6 +70,8 @@ export class DetailsTab extends React.PureComponent<Props> {
 
         {!!book.parent.length && this.renderParentBooks()}
 
+        {!!book.films && !!book.films.length && this.renderFilms()}
+
         {all && isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
       </View>
     );
@@ -96,6 +98,22 @@ export class DetailsTab extends React.PureComponent<Props> {
         ))}
       </View>
     );
+  }
+
+  renderFilms() {
+    return (
+      <View style={s.parentBooks}>
+        <Text style={s.header}>ЭКРАНИЗАЦИИ</Text>
+
+        {this.props.book.films.map(this.renderFilm)}
+      </View>
+    );
+  }
+
+  renderFilm(film: Film) {
+    const value = film.country ? `${film.title} (${film.country})` : film.title;
+
+    return <ViewLine key={film.id} title={film.year} value={value} />;
   }
 
   openBook(book: Book | ParentBook) {
