@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, Linking } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Dialog, ListItem, Button } from 'components';
@@ -21,7 +21,7 @@ export function ScanAddressModal({ navigation }: Props) {
 
     session.setLastAddress(address);
     navigation.goBack();
-    navigation.push('ReaderManager', { address: `http://${address}:8080` });
+    Linking.openURL(`http://${address}:8080`);
   }, [address]); // eslint-disable-line react-hooks/exhaustive-deps
   const onScan = useCallback(({ data }) => {
     if (!data) return;
