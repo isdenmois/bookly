@@ -6,7 +6,6 @@ import { ProfileScreen } from 'screens/profile/profile.screen';
 import { DetailsScreen } from 'screens/details/details.screen';
 import { EditionsListScreen } from 'screens/editions/editions.screen';
 import { BookSelectScreen } from 'screens/book-select/book-select.screen';
-import { ReaderManagerScreen } from 'screens/sync/reader-manager.screen';
 
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
 import { BookSelectModal } from 'modals/book-select/book-select.modal';
@@ -26,7 +25,6 @@ export const MainStack = {
   Details: DetailsScreen,
   Editions: EditionsListScreen,
   BookSelect: BookSelectScreen,
-  ReaderManager: ReaderManagerScreen,
 };
 
 export const ModalStack = {
