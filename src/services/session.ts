@@ -11,6 +11,7 @@ export class Session {
   @observable totalBooks: number = INITIAL_BOOKS_COUNT;
   @observable withFantlab: boolean = true;
   @observable saveDateInChangeStatus: boolean = false;
+  @observable lastAddress: string = '';
   @observable.ref defaultSort = INITIAL_SORT;
   fantlabAuth: string = '';
 
@@ -24,6 +25,7 @@ export class Session {
         this.withFantlab = session.withFantlab;
         this.saveDateInChangeStatus = session.saveDateInChangeStatus;
         this.defaultSort = session.defaultSort || INITIAL_SORT;
+        this.lastAddress = session.lastAddress || '';
       })
       .catch(error => console.warn(error.toString()));
   }
@@ -66,6 +68,14 @@ export class Session {
     }
   }
 
+  @action setLastAddress(address: string) {
+    if (this.lastAddress !== address) {
+      this.lastAddress = address;
+
+      this.serializeSession();
+    }
+  }
+
   @action setSession(userId: string = null) {
     this.userId = userId;
 
@@ -79,6 +89,7 @@ export class Session {
     this.withFantlab = true;
     this.saveDateInChangeStatus = false;
     this.defaultSort = INITIAL_SORT;
+    this.lastAddress = '';
 
     return AsyncStorage.clear();
   }
@@ -91,6 +102,7 @@ export class Session {
       withFantlab: this.withFantlab,
       saveDateInChangeStatus: this.saveDateInChangeStatus,
       defaultSort: this.defaultSort,
+      lastAddress: this.lastAddress,
     });
 
     AsyncStorage.setItem(SESSION_KEY, session);

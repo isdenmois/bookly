@@ -5,7 +5,6 @@ import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { inject, Session, Navigation } from 'services';
-import { notImplemented } from 'utils/not-implemented-yet';
 import { ListItem } from 'components';
 import { readBooksQuery, wishBooksQuery } from '../home.queries';
 
@@ -41,7 +40,7 @@ export class NavigationLinks extends React.Component<Props> {
           counter={this.props.wishCount}
         />
         <ListItem
-          onPress={notImplemented}
+          onPress={this.openScanAddress}
           icon={<Icon name='sync' size={20} color={color.BlueIcon} />}
           value='Синхронизация'
         />
@@ -63,6 +62,7 @@ export class NavigationLinks extends React.Component<Props> {
 
   openReadBooks = () => this.navigation.push('ReadList');
   openWishBooks = () => this.navigation.push('WishList');
+  openScanAddress = () => this.navigation.push('/modal/scan-address');
   openBookSelect = () => this.navigation.push('BookSelect');
   openProfile = () => this.navigation.push('Profile');
 }
