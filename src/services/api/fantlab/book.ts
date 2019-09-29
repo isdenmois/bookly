@@ -26,6 +26,7 @@ const response = {
   translators,
   editionTranslators,
   films,
+  classification,
 };
 
 export type Params = { bookId: string };
@@ -120,4 +121,47 @@ function films(w) {
   }));
 
   return _.orderBy(films, 'year').reverse();
+}
+
+function classification(w) {
+  if (!_.get(w, 'classificatory.total_count')) return null;
+
+  return _.map(w.classificatory.genre_group, g => {
+    const title = +g.genre_group_id === 1 ? 'Жанр' : g.label;
+    let genres;
+
+    if (+g.genre_group_id === 3) {
+      genres = _.flatMap(g.genre, genre => getPlaceGroupValues(genre));
+    } else {
+      genres = _.flatMap(g.genre, genre => getGroupValues(genre));
+    }
+
+    return { id: +g.genre_group_id, title, genres };
+  });
+}
+
+function getGroupValues(g, parentIds = []) {
+  if (!g) return [];
+  const id = +g.genre_id;
+  const ids = parentIds.concat(id);
+
+  const c = _.flatMap(g.genre, genre => getGroupValues(genre, ids));
+  const title = g.percent && g.percent < 1 ? `${g.label} (${g.percent * 100}%)` : g.label;
+
+  return [{ id, ids, title }].concat(c);
+}
+
+function getPlaceGroupValues(g, parentIds = [], parent = null) {
+  if (!g) return [];
+  const id = +g.genre_id;
+  const ids = parentIds.concat(id);
+  let title = parentIds.length > 1 ? [parent, g.label].join(', ') : g.label;
+
+  const c = _.flatMap(g.genre, genre => getPlaceGroupValues(genre, ids, title));
+
+  if (g.percent && g.percent < 1) {
+    title = `${title} (${g.percent * 100}%)`;
+  }
+
+  return [{ id, ids, title }].concat(c);
 }
