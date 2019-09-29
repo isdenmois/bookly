@@ -79,7 +79,7 @@ export class BookList extends React.PureComponent<Props> {
 
     const label = year || date.to.getTime() - date.from.getTime() > YEAR ? 'Еще год' : 'Еще месяц';
 
-    return <Button style={s.moreButton} label={label} onPress={this.increaseDateFilter} />;
+    return <Button style={s.moreButton} textStyle={s.buttonText} label={label} onPress={this.increaseDateFilter} />;
   };
 
   private increaseDateFilter = () => {
@@ -120,7 +120,13 @@ const s = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 10,
+    backgroundColor: color.Background,
+    borderWidth: 0.5,
+    borderColor: color.Border,
   } as ViewStyle,
+  buttonText: {
+    color: color.PrimaryText,
+  } as TextStyle,
 });
 
 function bookListQuery(database: Database, query: Where[]) {
