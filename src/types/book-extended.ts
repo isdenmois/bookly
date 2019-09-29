@@ -15,6 +15,7 @@ export interface BookExtended extends BookData {
   editionTranslators: EditionTranslators;
   translators: string[];
   films: Film[];
+  classification: Detail[];
 }
 
 export interface ParentBook {
@@ -45,4 +46,14 @@ export interface Film {
   title: string;
   country: string;
   year: number;
+}
+
+export interface Detail {
+  id: number;
+  title: string;
+  genres: {
+    id: number;
+    ids: number[];
+    title: string;
+  }[];
 }

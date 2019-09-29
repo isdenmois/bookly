@@ -1,5 +1,15 @@
 import React from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle, Linking, ToastAndroid, Clipboard } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  Linking,
+  ToastAndroid,
+  Clipboard,
+  TouchableOpacity,
+} from 'react-native';
 import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
 import { color } from 'types/colors';
@@ -69,6 +79,8 @@ export class DetailsTab extends React.PureComponent<Props> {
 
         {!!otherTitles && <ViewLine title='Другие названия' value={otherTitles} />}
 
+        {!!book.classification && book.classification.length > 0 && this.renderClassification()}
+
         {all && !!book.description && <BookDescriptionLine description={book.description} />}
 
         {!!book.parent.length && this.renderParentBooks()}
@@ -91,6 +103,20 @@ export class DetailsTab extends React.PureComponent<Props> {
     const title = translators.length > 1 ? 'Переводчики' : 'Переводчик';
 
     return <ViewLine title={title} value={translators.join('\n')} />;
+  }
+
+  renderClassification() {
+    return _.map(this.props.book.classification, detail => (
+      <View key={detail.id} style={s.classification}>
+        <Text style={s.title}>{detail.title}</Text>
+
+        {detail.genres.map(g => (
+          <TouchableOpacity key={g.id} onPress={() => this.openGenre(g.ids)} style={s.value}>
+            <Text style={s.value}>{g.title}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    ));
   }
 
   renderParentBooks() {
@@ -133,6 +159,8 @@ export class DetailsTab extends React.PureComponent<Props> {
 
   openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
 
+  openGenre = (ids: number[]) => Linking.openURL(`https://fantlab.ru/bygenre?${ids.map(i => `wg${i}=on`).join('&')}`);
+
   copyBookOriginalTitle = () => {
     Clipboard.setString(this.props.book.originalTitle);
     ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
@@ -160,4 +188,15 @@ const s = StyleSheet.create({
   parentBooks: {
     marginTop: 10,
   } as ViewStyle,
+  classification: {
+    marginBottom: 20,
+  } as ViewStyle,
+  title: {
+    color: color.SecondaryText,
+    fontSize: 12,
+  } as TextStyle,
+  value: {
+    color: color.PrimaryText,
+    fontSize: 18,
+  } as TextStyle,
 });
