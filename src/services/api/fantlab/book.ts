@@ -70,12 +70,38 @@ function parent(w) {
 }
 
 function children(w) {
-  return _.filter(w.children, c => +c.deep === 1 && c.work_id).map(c => ({
-    id: String(c.work_id),
-    title: c.work_name || c.work_name_alt || c.work_name_orig,
-    type: _.capitalize(c.work_type) || 'Другое',
-    year: c.work_year,
-  }));
+  const result = [];
+  const parents = [];
+  let prev = null;
+  let deep = 1;
+
+  _.forEach(w.children, c => {
+    const item = {
+      id: c.work_id ? String(c.work_id) : null,
+      title: c.work_name || c.work_name_alt || c.work_name_orig,
+      type: _.capitalize(c.work_type) || 'Другое',
+      year: c.work_year,
+    };
+
+    if (!c.deep || c.deep <= 1) {
+      result.push(item);
+    } else if (c.deep > deep) {
+      parents.unshift(prev);
+      prev.children = [item];
+    } else if (c.deep < deep) {
+      parents.shift();
+      parents[0].children.push(item);
+    } else if (parents.length) {
+      parents[0].children.push(item);
+    } else {
+      result.push(item);
+    }
+
+    deep = c.deep || 1;
+    prev = item;
+  });
+
+  return result;
 }
 
 function getEditions(w) {

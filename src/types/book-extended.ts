@@ -29,6 +29,7 @@ export interface ChildBook {
   title: string;
   type: string;
   year?: number;
+  children?: ChildBook[];
 }
 
 export interface EditionTranslators {
