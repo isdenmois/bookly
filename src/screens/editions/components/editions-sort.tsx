@@ -22,7 +22,7 @@ export const EditionsSort = memo(({ sort, onChange }: Props) => {
         <Tag
           key={key}
           title={title}
-          icon={key[0] === '-' ? 'sort-alpha-down' : 'sort-alpha-up'}
+          icon={key[0] === '-' ? 'sort-alpha-up' : 'sort-alpha-down'}
           selected={sort === key}
           onPress={() => onChange(key)}
           outline
