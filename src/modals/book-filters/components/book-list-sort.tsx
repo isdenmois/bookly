@@ -28,7 +28,7 @@ export class BookListSort extends React.PureComponent<Props> {
     return (
       <EditableListItem title={title} fields={fields} value={this.props.value.field} onChange={this.setField}>
         <TouchIcon
-          name={this.props.value.desc ? 'sort-alpha-down' : 'sort-alpha-up'}
+          name={this.props.value.desc ? 'sort-alpha-up' : 'sort-alpha-down'}
           paddingVertical={15}
           paddingLeft={15}
           size={18}
