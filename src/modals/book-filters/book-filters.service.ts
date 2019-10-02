@@ -11,7 +11,7 @@ export class BookFilters {
   @observable.ref date: Interval<Date> = null;
   @observable.ref rating: Interval<number> = null;
   @observable.ref sort: BookSort = null;
-  @observable isLiveLib: boolean = false;
+  @observable isLiveLib: boolean = null;
   @observable changed: boolean = false;
   status: BOOK_STATUSES = null;
 
