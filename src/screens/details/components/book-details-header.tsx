@@ -1,11 +1,12 @@
 import React from 'react';
 import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { color } from 'types/colors';
 import { TouchIcon } from 'components';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   bookId: string;
+  navigation: NavigationScreenProp<any>;
 }
 
 export class BookDetailsHeader extends React.PureComponent<Props> {

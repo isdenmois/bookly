@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Database } from '@nozbe/watermelondb';
@@ -12,7 +12,11 @@ import { SessionParamToggler } from './components/session-param-toggler';
 import { BookListSort } from './components/book-list-sort';
 import { RemoveDeleted } from './components/remove-deleted';
 
-export class ProfileScreen extends React.Component<NavigationScreenProps> {
+interface Props {
+  navigation: NavigationScreenProp<any>;
+}
+
+export class ProfileScreen extends React.Component<Props> {
   session = inject(Session);
   database = inject(Database);
 

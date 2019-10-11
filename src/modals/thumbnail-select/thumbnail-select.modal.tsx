@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, ViewStyle, StyleSheet } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import Book from 'store/book';
 import { Dialog, Thumbnail } from 'components';
 import { ThumbnailList } from './components/thumbnail-list';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   book: Book;
+  navigation: NavigationScreenProp<any>;
 }
 
 interface State {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Animated, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
@@ -10,8 +10,9 @@ import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   book: Book;
+  navigation: NavigationScreenProp<any>;
 }
 
 interface FixedProps extends Props {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpacity } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
 import Book from 'store/book';
@@ -10,7 +9,7 @@ import { Navigation, inject } from 'services';
 import { ReadButton, TextXL, Thumbnail } from 'components';
 import { currentBooksQuery } from '../home.queries';
 
-interface Props extends Partial<NavigationScreenProps> {
+interface Props {
   database: Database;
   books?: Book[];
 }

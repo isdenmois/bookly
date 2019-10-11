@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
@@ -12,12 +12,16 @@ import { Dialog } from 'components';
 import { BookSelectHeader } from './components/header';
 import { BookList } from './components/book-list';
 
+interface Props {
+  navigation: NavigationScreenProp<any>;
+}
+
 interface State {
   search: string;
   selected: Book;
 }
 
-export class BookSelectModal extends React.Component<NavigationScreenProps, State> {
+export class BookSelectModal extends React.Component<Props, State> {
   database = inject(Database);
   state: State = { search: '', selected: null };
 

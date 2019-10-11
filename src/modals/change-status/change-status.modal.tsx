@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Text, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { inject, Session } from 'services';
@@ -29,7 +29,8 @@ const statusMap = {
 
 const PRIMARY_BOOK_FIELDS = ['id', 'title', 'author', 'authors', 'thumbnail', 'type', 'search'];
 
-interface Props extends NavigationScreenProps {
+interface Props {
+  navigation: NavigationScreenProp<any>;
   book: any;
   status: BOOK_STATUSES;
 }

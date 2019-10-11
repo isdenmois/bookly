@@ -1,15 +1,19 @@
 import React from 'react';
 import _ from 'lodash';
 import { ActivityIndicator, View, TextInput, Button } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { observer } from 'mobx-react';
 import { inject, provider } from 'services';
 
 import { LoginStore } from './login.store';
 
+interface Props {
+  navigation: NavigationScreenProp<any>;
+}
+
 @provider(LoginStore)
 @observer
-export class LoginScreen extends React.Component<NavigationScreenProps> {
+export class LoginScreen extends React.Component<Props> {
   loginStore = inject(LoginStore);
 
   render() {
