@@ -8,10 +8,6 @@ import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
 import { withBook } from 'components/book-item';
-import { ChildrenTab } from '../tabs/children-tab';
-import { ReviewsTab } from '../tabs/reviews-tab';
-import { SimilarTab } from '../tabs/similar-tab';
-import { DetailsTab } from '../tabs/details-tab';
 import { color } from 'types/colors';
 import { BookMainInfo } from './book-main-info';
 
@@ -19,6 +15,7 @@ interface Props {
   book: Book & BookExtended;
   isExist: boolean;
   navigation: NavigationStackProp;
+  tabs: any[];
 }
 
 interface State {
@@ -26,14 +23,6 @@ interface State {
   routes: Route[];
   headerHeight: number;
 }
-
-const TABS = {
-  MAIN: { key: 'main', title: 'Кратко', component: DetailsTab },
-  CHILDREN: { key: 'children', title: 'Состав', component: ChildrenTab },
-  REVIEWS: { key: 'reviews', title: 'Отзывы', component: ReviewsTab },
-  SIMILAR: { key: 'similar', title: 'Похожие', component: SimilarTab },
-  DETAILS: { key: 'details', title: 'Детали', component: DetailsTab },
-};
 
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
 
@@ -43,13 +32,7 @@ const HEADER_HEIGHT = 110;
 export class BookDetailsTabs extends React.Component<Props, State> {
   state: State = {
     index: 0,
-    routes: [
-      TABS.MAIN,
-      ...(this.childrenBooksVisible ? [TABS.CHILDREN] : []),
-      TABS.REVIEWS,
-      ...(this.similarBooksVisible ? [TABS.SIMILAR] : []),
-      TABS.DETAILS,
-    ],
+    routes: this.props.tabs,
     headerHeight: 0,
   };
   initialLayout = {

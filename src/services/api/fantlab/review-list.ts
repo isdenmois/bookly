@@ -26,11 +26,11 @@ export default api
   .response(response);
 
 export interface ReviewList {
-  items: FantlabReview[];
+  items: RemoteReview[];
   total: number;
 }
 
-export interface FantlabReview {
+export interface RemoteReview {
   id: string;
   body: string;
   likes: number;

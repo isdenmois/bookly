@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject } from 'services';
 import { API } from 'api';
-import { FantlabReview as IFantlabReview } from 'services/api/fantlab/review-list';
+import { RemoteReview as IRemoteReview } from 'services/api/fantlab/review-list';
 import { Fetcher } from 'components';
-import { FantlabReview } from './fantlab-review';
+import { RemoteReview } from './remote-review';
 
 interface Props {
   bookId: string;
@@ -21,7 +21,7 @@ export class FantlabReviewList extends React.Component<Props> {
     );
   }
 
-  renderReview = (review: IFantlabReview) => {
-    return <FantlabReview key={review.id} review={review} />;
+  renderReview = (review: IRemoteReview) => {
+    return <RemoteReview key={review.id} review={review} />;
   };
 }
