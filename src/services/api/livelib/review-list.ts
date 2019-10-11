@@ -1,14 +1,14 @@
 import { LIVELIB_APIKEY } from 'react-native-dotenv';
 import _ from 'lodash';
 import { api } from '../base/api';
-import { RemoteReview } from '../fantlab/review-list';
+import { ReviewList } from '../fantlab/review-list';
 
-type Params = { bookId: string };
+type Params = { bookId: string; page?: number };
 
 const fields = 'count_pluses,creation_datetime,id,rating,text,user(pic_100,login)';
 
-function response(r): RemoteReview[] {
-  return _.map(r.data, i => ({
+function response(r): ReviewList {
+  const items = _.map(r.data, i => ({
     id: `l_${i.id}`,
     body: i.text,
     likes: i.count_pluses,
@@ -17,15 +17,21 @@ function response(r): RemoteReview[] {
     user: _.get(i, 'user.login'),
     userAvatar: _.get(i, 'user.pic_100'),
   }));
+
+  return { items, total: r.count || 0 };
 }
 
 export default api
   .get<Params>('/books/:bookId/reviews', true)
-  .query(({ bookId }: Params) => ({
-    bookId: bookId.replace('l_', ''),
-    start: 1,
-    count: 24,
-    andyll: LIVELIB_APIKEY,
-    fields,
-  }))
+  .query(({ bookId, page }: Params) => {
+    console.log(bookId, page);
+
+    return {
+      bookId: bookId.replace('l_', ''),
+      start: page,
+      count: 24,
+      andyll: LIVELIB_APIKEY,
+      fields,
+    };
+  })
   .response(response);
