@@ -23,15 +23,11 @@ function response(r): ReviewList {
 
 export default api
   .get<Params>('/books/:bookId/reviews', true)
-  .query(({ bookId, page }: Params) => {
-    console.log(bookId, page);
-
-    return {
-      bookId: bookId.replace('l_', ''),
-      start: page,
-      count: 24,
-      andyll: LIVELIB_APIKEY,
-      fields,
-    };
-  })
+  .query(({ bookId, page }: Params) => ({
+    bookId: bookId.replace('l_', ''),
+    start: page,
+    count: 24,
+    andyll: LIVELIB_APIKEY,
+    fields,
+  }))
   .response(response);
