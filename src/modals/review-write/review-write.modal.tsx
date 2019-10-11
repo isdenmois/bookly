@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, TextInput, StyleSheet, ViewStyle, TextStyle, ToastAndroid } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { color } from 'types/colors';
@@ -10,7 +10,8 @@ import { inject } from 'services';
 import { dbAction } from 'services/db';
 import { Button, Dialog } from 'components';
 
-interface Props extends NavigationScreenProps {
+interface Props {
+  navigation: NavigationScreenProp<any>;
   book: Book;
   review?: Review;
 }

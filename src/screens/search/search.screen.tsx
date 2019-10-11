@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
@@ -9,7 +9,8 @@ import { API } from 'api';
 import Book from 'store/book';
 import { BookItem, Button, Fetcher, SearchBar } from 'components';
 
-interface Props extends NavigationScreenProps {
+interface Props {
+  navigation: NavigationStackProp;
   query: string;
 }
 

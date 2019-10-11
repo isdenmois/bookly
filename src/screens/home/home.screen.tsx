@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { SyncService, inject } from 'services';
@@ -9,11 +9,15 @@ import { CurrentBook } from './components/current-book';
 import { BookChallenge } from './components/book-challenge';
 import { NavigationLinks } from './components/navigation-links';
 
+interface Props {
+  navigation: NavigationScreenProp<any>;
+}
+
 interface State {
   refreshing: boolean;
 }
 
-export class HomeScreen extends React.Component<NavigationScreenProps, State> {
+export class HomeScreen extends React.Component<Props, State> {
   state: State = { refreshing: false };
 
   database = inject(Database);

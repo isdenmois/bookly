@@ -4,7 +4,6 @@ import { color } from 'types/colors';
 import { inject } from 'services';
 import { API } from 'api';
 import { Fetcher, ScreenHeader } from 'components';
-import { NavigationScreenProps } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { withScroll } from 'utils/scroll-to-top';
 import { EditionTranslators } from 'types/book-extended';
@@ -12,7 +11,7 @@ import { Edition } from 'services/api/fantlab/editions';
 import { EditionsSort } from './components/editions-sort';
 import { EditionCard } from './components/edition-card';
 
-interface Props extends NavigationScreenProps {
+interface Props {
   editionIds: number[];
   translators: EditionTranslators;
 }

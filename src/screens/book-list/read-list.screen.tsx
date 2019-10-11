@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
@@ -23,13 +23,17 @@ const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 
 
 const READ_LIST_SORTS = ['date', 'title', 'rating', 'author', 'id'];
 
+interface Props {
+  navigation: NavigationScreenProp<any>;
+}
+
 interface State {
   query: Where[];
   sort: BookSort;
   filters: Partial<BookFilters>;
 }
 
-export class ReadList extends React.Component<NavigationScreenProps, State> {
+export class ReadList extends React.Component<Props, State> {
   state: State = createQueryState(defaultFilters, { field: 'date', desc: true });
 
   database = inject(Database);

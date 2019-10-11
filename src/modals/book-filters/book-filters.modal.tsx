@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { Database } from '@nozbe/watermelondb';
 import { observer } from 'mobx-react';
 import { withNavigationProps } from 'utils/with-navigation-props';
@@ -28,7 +28,8 @@ const FILTER_COMPONENTS_MAP = {
   isLiveLib: BookIsLiveLibFilter,
 };
 
-interface Props extends NavigationScreenProps {
+interface Props {
+  navigation: NavigationScreenProp<any>;
   filterFields: Array<keyof IBookFilters>;
   sortFields: string[];
   filters: Partial<IBookFilters>;
