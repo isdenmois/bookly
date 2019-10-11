@@ -3,7 +3,7 @@ import { api } from '../base/api';
 
 type Params = { bookId: string };
 
-const fields = 'id,name,author_name,author_id,pic_200,year,isbn,description,series_title';
+const fields = 'author_id,author_name,name,pic_200,id,description,isbn,publishing,year,series_title,tags';
 
 export interface LiveLibBook {
   id: string;
@@ -17,6 +17,8 @@ export interface LiveLibBook {
   isbn?: string;
   description?: string;
   series?: string;
+  publishing?: string;
+  tags?: string;
 }
 
 function response(r): LiveLibBook {
@@ -34,7 +36,16 @@ function response(r): LiveLibBook {
     isbn: r.isbn,
     description: r.description,
     series: r.series_title,
+    publishing: r.publishing,
+    tags: (r.tags || '')
+      .split(',')
+      .map(capitalize)
+      .join('\n'),
   };
+}
+
+function capitalize(s) {
+  return s[0].toUpperCase() + s.slice(1);
 }
 
 export default api

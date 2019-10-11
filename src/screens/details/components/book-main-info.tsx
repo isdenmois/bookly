@@ -192,6 +192,7 @@ function SecondaryWithThumbnailData({ book, navigation }) {
           <ReadButton ratingStyle={s.blackRating} openChangeStatus={openChangeStatus} book={book} />
         </View>
 
+        {!!book.publishing && <Text style={s.secondary}>{book.publishing}</Text>}
         {!!book.genre && <Text style={s.secondary}>{book.genre}</Text>}
         {!!book.year && <Text style={s.secondary}>{book.year}</Text>}
       </View>
