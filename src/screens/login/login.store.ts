@@ -15,14 +15,14 @@ export class LoginStore {
   @action async submit() {
     this.submitting = true;
 
-    this.session.setSession(this.login);
+    this.session.set('userId', this.login);
 
     try {
       await this.syncService.sync();
       this.login = '';
     } catch (e) {
       console.error(e);
-      this.session.setSession(null);
+      this.session.set('userId', null);
       throw e;
     } finally {
       this.submitting = false;

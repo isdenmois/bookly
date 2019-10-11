@@ -3,10 +3,11 @@ import { observer } from 'mobx-react';
 import { ViewStyle, StyleSheet, Switch } from 'react-native';
 import { Session, inject } from 'services';
 import { ListItem } from 'components';
+import { Setting } from 'services/session';
 
 interface Props {
   title: string;
-  param: keyof Session;
+  param: Setting;
 }
 
 @observer
@@ -27,7 +28,7 @@ export class SessionParamToggler extends React.Component<Props> {
   toggle = () => {
     const p = this.props.param;
 
-    this.session[`set${p[0].toUpperCase()}${p.slice(1)}`](!this.session[p]);
+    this.session.set(p, !this.session[p]);
   };
 }
 

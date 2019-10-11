@@ -14,10 +14,10 @@ export class BookListSort extends React.Component {
         title='Сортировка по-умолчанию'
         fields={WISH_LIST_SORTS}
         value={this.session.defaultSort}
-        onChange={this.setDefaultSort}
+        onChange={this.setSort}
       />
     );
   }
 
-  setDefaultSort = sort => this.session.setDefaultSort(sort);
+  setSort = sort => this.session.set('defaultSort', sort);
 }
