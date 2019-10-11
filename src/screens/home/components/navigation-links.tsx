@@ -50,6 +50,11 @@ export class NavigationLinks extends React.Component<Props> {
           value='Выбрать книгу'
         />
         <ListItem
+          onPress={this.openStat}
+          icon={<Icon name='random' size={20} color={color.BlueIcon} />}
+          value='Статистика'
+        />
+        <ListItem
           onPress={this.openProfile}
           icon={<Icon name='user' size={20} color={color.BlueIcon} />}
           value='Профиль'
@@ -64,6 +69,7 @@ export class NavigationLinks extends React.Component<Props> {
   openWishBooks = () => this.navigation.push('WishList');
   openScanAddress = () => this.navigation.push('/modal/scan-address');
   openBookSelect = () => this.navigation.push('BookSelect');
+  openStat = () => this.navigation.push('Stat');
   openProfile = () => this.navigation.push('Profile');
 }
 
