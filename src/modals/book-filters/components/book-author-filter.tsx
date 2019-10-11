@@ -55,7 +55,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
         onChange={this.setAuthor}
         clearable
       >
-        <TextInput style={s.input} onChangeText={this.setName} value={this.state.name} />
+        <TextInput style={s.input} onChangeText={this.setName} value={this.state.name} placeholder='поиск' />
       </EditableListItem>
     );
   }

@@ -40,6 +40,7 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
           autoFocus
           style={s.searchHeader}
           value={this.state.query}
+          placeholder='Поиск по названию'
           onChange={this.setQuery}
           onSearch={this.onSearch}
           onBack={goBack}
