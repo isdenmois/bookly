@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -18,6 +18,7 @@ class App extends React.Component<any> {
   RootStack: any = null;
   loadNavigationState: Function = null;
   persistNavigationState: Function = null;
+  style = { flex: 1 };
 
   sync = async () => {
     const lastSync: number = +(await AsyncStorage.getItem('lastSync')) || 0;
@@ -61,11 +62,14 @@ class App extends React.Component<any> {
     const { RootStack, loadNavigationState, persistNavigationState } = this;
 
     return (
-      <RootStack
-        ref={this.props.setNavigation}
-        loadNavigationState={loadNavigationState}
-        persistNavigationState={persistNavigationState}
-      />
+      <View style={this.style}>
+        <StatusBar backgroundColor='#fff' barStyle='dark-content' />
+        <RootStack
+          ref={this.props.setNavigation}
+          loadNavigationState={loadNavigationState}
+          persistNavigationState={persistNavigationState}
+        />
+      </View>
     );
   }
 
