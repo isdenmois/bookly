@@ -60,6 +60,7 @@ export class LivelibInfo extends Component<Props, State> {
           {!!book.series && <ViewLine title='Серия' value={book.series} />}
           {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
           {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
+          {!!book.tags && <ViewLine title='Теги' value={book.tags} />}
           {!!book.description && <BookDescriptionLine description={book.description} />}
           {isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
           {isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
