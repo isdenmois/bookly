@@ -27,7 +27,7 @@ interface SelectReviewSortProps {
 
 const BUTTON_TOP = 60;
 
-class AddButton extends React.PureComponent<FixedProps> {
+export class AddButton extends React.PureComponent<FixedProps> {
   transform = [
     {
       translateY: this.props.scrollY.interpolate({

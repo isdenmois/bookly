@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { FantlabReview as IFantlabReview } from 'services/api/fantlab/review-list';
+import { RemoteReview as IRemoteReview } from 'services/api/fantlab/review-list';
 import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { parser } from 'utils/bbcode';
@@ -11,18 +11,25 @@ import { API } from 'services/api';
 import { confirm } from './book-details-lines';
 
 interface Props {
-  review: IFantlabReview;
+  review: IRemoteReview;
 }
 
-export class FantlabReview extends React.PureComponent<Props> {
+export class RemoteReview extends React.PureComponent<Props> {
   api = inject(API);
 
   state = { likes: this.props.review.likes, isLiked: false };
 
+  isLivelib() {
+    const id = this.props.review.id;
+
+    return typeof id === 'string' && id.startsWith('l_');
+  }
+
   render() {
     const review = this.props.review;
     const { isLiked, likes } = this.state;
-    const LikeComponent: any = !isLiked ? TouchableOpacity : View;
+    const isLivelib = this.isLivelib;
+    const LikeComponent: any = !isLivelib && !isLiked ? TouchableOpacity : View;
 
     return (
       <View style={s.container}>
@@ -37,7 +44,7 @@ export class FantlabReview extends React.PureComponent<Props> {
               auto='none'
             />
             <Text style={s.user}>{review.user}</Text>
-            <Text style={s.date}>{formatDate(review.date)}</Text>
+            <Text style={s.date}>{isLivelib ? review.date : formatDate(review.date)}</Text>
           </View>
           <Icon style={s.icon} name='star' size={16} color={color.PrimaryText} />
           <Text style={s.rating}>{review.rating}</Text>
