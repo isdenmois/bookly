@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject, Session } from 'services';
@@ -8,7 +8,8 @@ import { API } from 'services/api';
 import { FantlabLoginRequest } from 'services/api/fantlab/login';
 import { Button, Dialog, ListItem } from 'components';
 
-interface Props extends NavigationScreenProps {
+interface Props {
+  navigation: NavigationScreenProp<void>;
   onSuccess: () => void;
   onClose: () => void;
 }
@@ -98,7 +99,7 @@ export class FantlabLoginModal extends React.Component<Props> {
       return this.setState({ isLoading: false, error: error || result.error_msg || 'Не удалось залогиниться' });
     }
 
-    this.session.setAuth(result['X-Session']);
+    this.session.set('fantlabAuth', result['X-Session']);
     this.props.navigation.goBack();
     this.props.onSuccess();
   };

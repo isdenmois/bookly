@@ -1,10 +1,28 @@
+import { pick } from 'lodash';
 import { action, observable } from 'mobx';
 import AsyncStorage from '@react-native-community/async-storage';
 
+export type Setting = typeof SETTINGS_FIELDS[number];
+
 const SESSION_KEY = 'SESSION_KEY';
 const INITIAL_BOOKS_COUNT = 80;
-
 const INITIAL_SORT = { field: 'title', desc: false };
+
+const SETTINGS_FIELDS = <const>[
+  'userId',
+  'totalBooks',
+  'withFantlab',
+  'saveDateInChangeStatus',
+  'lastAddress',
+  'defaultSort',
+  'fantlabAuth',
+];
+const INITIAL_SETTINGS: any = {
+  totalBooks: INITIAL_BOOKS_COUNT,
+  fantlabAuth: '',
+  defaultSort: INITIAL_SORT,
+  lastAddress: '',
+};
 
 export class Session {
   @observable userId: string = null;
@@ -19,91 +37,30 @@ export class Session {
     return AsyncStorage.getItem(SESSION_KEY)
       .then(session => JSON.parse(session) || {})
       .then(session => {
-        this.userId = session.userId;
-        this.totalBooks = session.totalBooks || INITIAL_BOOKS_COUNT;
-        this.fantlabAuth = session.fantlabAuth || '';
-        this.withFantlab = session.withFantlab;
-        this.saveDateInChangeStatus = session.saveDateInChangeStatus;
-        this.defaultSort = session.defaultSort || INITIAL_SORT;
-        this.lastAddress = session.lastAddress || '';
+        SETTINGS_FIELDS.forEach(field => {
+          this[field as any] = session[field] || INITIAL_SETTINGS[field];
+        });
       })
       .catch(error => console.warn(error.toString()));
   }
 
-  setAuth(fantlabAuth: string) {
-    if (this.fantlabAuth !== fantlabAuth) {
-      this.fantlabAuth = fantlabAuth;
+  @action set(setting: Setting, value: any) {
+    if (this[setting] !== value) {
+      this[setting as any] = value;
       this.serializeSession();
     }
-  }
-
-  @action setWithFantlab(withFantlab: boolean) {
-    if (this.withFantlab !== withFantlab) {
-      this.withFantlab = withFantlab;
-      this.serializeSession();
-    }
-  }
-
-  @action setTotalBooks(totalBooks: number) {
-    if (this.totalBooks !== totalBooks) {
-      this.totalBooks = totalBooks;
-
-      this.serializeSession();
-    }
-  }
-
-  @action setDefaultSort(sort) {
-    if (this.defaultSort !== sort) {
-      this.defaultSort = sort;
-
-      this.serializeSession();
-    }
-  }
-
-  @action setSaveDateInChangeStatus(saveDateInChangeStatus) {
-    if (this.saveDateInChangeStatus !== saveDateInChangeStatus) {
-      this.saveDateInChangeStatus = saveDateInChangeStatus;
-
-      this.serializeSession();
-    }
-  }
-
-  @action setLastAddress(address: string) {
-    if (this.lastAddress !== address) {
-      this.lastAddress = address;
-
-      this.serializeSession();
-    }
-  }
-
-  @action setSession(userId: string = null) {
-    this.userId = userId;
-
-    this.serializeSession();
   }
 
   @action stopSession() {
-    this.userId = null;
-    this.totalBooks = INITIAL_BOOKS_COUNT;
-    this.fantlabAuth = '';
-    this.withFantlab = true;
-    this.saveDateInChangeStatus = false;
-    this.defaultSort = INITIAL_SORT;
-    this.lastAddress = '';
+    SETTINGS_FIELDS.forEach(field => {
+      this[field as any] = INITIAL_SETTINGS[field] || null;
+    });
 
     return AsyncStorage.clear();
   }
 
   serializeSession() {
-    const session = JSON.stringify({
-      userId: this.userId,
-      totalBooks: this.totalBooks,
-      fantlabAuth: this.fantlabAuth,
-      withFantlab: this.withFantlab,
-      saveDateInChangeStatus: this.saveDateInChangeStatus,
-      defaultSort: this.defaultSort,
-      lastAddress: this.lastAddress,
-    });
+    const session = JSON.stringify(pick(this, SETTINGS_FIELDS));
 
     AsyncStorage.setItem(SESSION_KEY, session);
   }

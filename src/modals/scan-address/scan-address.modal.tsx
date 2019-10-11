@@ -19,7 +19,7 @@ export function ScanAddressModal({ navigation }: Props) {
   const openManager = useCallback(() => {
     if (!address) return;
 
-    session.setLastAddress(address);
+    session.set('lastAddress', address);
     navigation.goBack();
     Linking.openURL(`http://${address}:8080`);
   }, [address]); // eslint-disable-line react-hooks/exhaustive-deps

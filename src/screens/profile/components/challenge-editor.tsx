@@ -24,5 +24,5 @@ export class ChallengeEditor extends React.Component<any, State> {
   }
 
   setBooksCount = totalBooks => this.setState({ totalBooks });
-  save = () => +this.state.totalBooks && this.session.setTotalBooks(+this.state.totalBooks);
+  save = () => +this.state.totalBooks && this.session.set('totalBooks', +this.state.totalBooks);
 }
