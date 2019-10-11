@@ -3,6 +3,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import withObservables from '@nozbe/with-observables';
 import { Database } from '@nozbe/watermelondb';
+import { observer } from 'mobx-react';
 import { color } from 'types/colors';
 import { inject, Session, Navigation } from 'services';
 import { ListItem } from 'components';
@@ -20,11 +21,14 @@ const withCounts: Function = withObservables(null, ({ database }: Props) => ({
 }));
 
 @withCounts
+@observer
 export class NavigationLinks extends React.Component<Props> {
   session = inject(Session);
   navigation = inject(Navigation);
 
   render() {
+    const stat = __DEV__ || this.session.stat;
+
     return (
       <View style={s.container}>
         <ListItem
@@ -49,11 +53,13 @@ export class NavigationLinks extends React.Component<Props> {
           icon={<Icon name='random' size={20} color={color.BlueIcon} />}
           value='Выбрать книгу'
         />
-        <ListItem
-          onPress={this.openStat}
-          icon={<Icon name='random' size={20} color={color.BlueIcon} />}
-          value='Статистика'
-        />
+        {stat && (
+          <ListItem
+            onPress={this.openStat}
+            icon={<Icon name='random' size={20} color={color.BlueIcon} />}
+            value='Статистика'
+          />
+        )}
         <ListItem
           onPress={this.openProfile}
           icon={<Icon name='user' size={20} color={color.BlueIcon} />}
