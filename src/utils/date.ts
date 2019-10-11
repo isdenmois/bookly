@@ -1,8 +1,6 @@
-// import format from 'date-fns/format';
-
 const DATE_FORMAT = 'DD.MM.YYYY';
 
-const TOKEN = /MM|DD|YYYY/g;
+const TOKEN = /YYYY|YY|MM|DD|HH|mm/g;
 
 const flags = {
   YYYY: (d: Date) => d.getFullYear(),
