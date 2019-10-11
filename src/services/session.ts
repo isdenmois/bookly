@@ -16,6 +16,7 @@ const SETTINGS_FIELDS = <const>[
   'lastAddress',
   'defaultSort',
   'fantlabAuth',
+  'stat',
 ];
 const INITIAL_SETTINGS: any = {
   totalBooks: INITIAL_BOOKS_COUNT,
@@ -30,6 +31,7 @@ export class Session {
   @observable withFantlab: boolean = true;
   @observable saveDateInChangeStatus: boolean = false;
   @observable lastAddress: string = '';
+  @observable stat: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
   fantlabAuth: string = '';
 

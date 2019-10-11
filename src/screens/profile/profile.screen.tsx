@@ -31,6 +31,7 @@ export class ProfileScreen extends React.Component<Props> {
           <SessionParamToggler title='Сохранять дату в диалоге смене статуса' param='saveDateInChangeStatus' />
           <BookListSort />
           <RemoveDeleted />
+          <SessionParamToggler title='Статистика (DEV)' param='stat' />
 
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
         </View>
