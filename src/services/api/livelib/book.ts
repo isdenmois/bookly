@@ -39,6 +39,7 @@ function response(r): LiveLibBook {
     publishing: r.publishing,
     tags: (r.tags || '')
       .split(',')
+      .filter(t => t)
       .map(capitalize)
       .join('\n'),
   };
