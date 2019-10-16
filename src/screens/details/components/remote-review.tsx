@@ -19,7 +19,7 @@ export class RemoteReview extends React.PureComponent<Props> {
 
   state = { likes: this.props.review.likes, isLiked: false };
 
-  isLivelib() {
+  get isLivelib() {
     const id = this.props.review.id;
 
     return typeof id === 'string' && id.startsWith('l_');
