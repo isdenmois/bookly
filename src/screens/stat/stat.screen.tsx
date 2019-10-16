@@ -187,7 +187,7 @@ function ByRatingFactory({ books, year }) {
   let totalCount = 0;
 
   books.forEach(book => {
-    result[10 - book.rating + 1].count++;
+    result[10 - book.rating].count++;
     totalCount++;
   });
 
