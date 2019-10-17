@@ -15,7 +15,6 @@ interface Props {
 const navigate = (review, book) => inject(Navigation).navigate('/modal/review-write', { review, book });
 
 export function LocalReview({ review, book }: Props) {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const openEditReview = useCallback(() => navigate(review, book), [review]);
   const session = inject(Session);
 

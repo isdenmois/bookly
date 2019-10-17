@@ -18,9 +18,7 @@ const TITLE_SEPARATOR = /\s*;\s*/g;
 
 export const BookTitleEditModal = withNavigationProps()(({ book, navigation }: Props) => {
   const [title, setTitle] = useState(book.title);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const update = useCallback(() => updateTitle(navigation, book, title), [title]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const titles: string[] = useMemo(() => getTitles(book.otherTitles, book.title), []);
   const enabled = title && title.trim() !== book.title;
   const onPress = enabled ? update : null;

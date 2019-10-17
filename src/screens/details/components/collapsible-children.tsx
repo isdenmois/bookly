@@ -13,7 +13,6 @@ interface Props {
 
 export function CollapsibleChildren({ book, navigation }: Props) {
   const [collapsed, setCollapsed] = useState(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const openBook = useCallback(() => navigation.push('Details', { bookId: String(book.id) }), []);
   const toggleCollapse = useCallback(() => setCollapsed(!collapsed), [collapsed, setCollapsed]);
   const Touch: any = book.id ? TouchableOpacity : View;
