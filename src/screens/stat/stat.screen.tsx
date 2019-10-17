@@ -4,7 +4,7 @@ import { Text, View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-nati
 import { HeaderRow } from './components/header-row';
 import { ScreenHeader } from 'components';
 import { Row } from './components/row';
-import { inject } from 'services';
+import { inject, Session } from 'services';
 import { Database, Q } from '@nozbe/watermelondb';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { StatGroups } from './components/stat-groups';
@@ -51,7 +51,8 @@ export class StatScreen extends React.Component {
 
   async componentDidMount() {
     const db = inject(Database);
-    const min = new Date(2012, 0, 1, 0, 0, 0).getTime();
+    const session = inject(Session);
+    const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
     const books = await db.collections
       .get('books')
       .query(Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(min)))

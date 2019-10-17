@@ -7,7 +7,7 @@ import { color } from 'types/colors';
 import { Session, inject } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { Button, ScreenHeader, ListItem } from 'components';
-import { ChallengeEditor } from './components/challenge-editor';
+import { SessionEditor } from './components/session-param-editor';
 import { SessionParamToggler } from './components/session-param-toggler';
 import { BookListSort } from './components/book-list-sort';
 import { RemoveDeleted } from './components/remove-deleted';
@@ -26,7 +26,8 @@ export class ProfileScreen extends React.Component<Props> {
         <ScreenHeader title={this.session.userId} />
 
         <View style={s.content}>
-          <ChallengeEditor />
+          <SessionEditor title='Хочу читать книг в год' prop='totalBooks' />
+          <SessionEditor title='Вести статистику с' prop='minYear' />
           <SessionParamToggler title='Синхронизировать с Fantlab' param='withFantlab' />
           <SessionParamToggler title='Сохранять дату в диалоге смене статуса' param='saveDateInChangeStatus' />
           <BookListSort />
