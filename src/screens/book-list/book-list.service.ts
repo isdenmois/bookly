@@ -41,6 +41,10 @@ function whereFilter(field) {
 }
 
 function yearFilter(year: number) {
+  if (year < 100) {
+    year += 2000;
+  }
+
   const dateFilter = Q.between(new Date(year, 0, 1, 0).getTime(), new Date(year, 11, 31, 23, 59, 59).getTime());
 
   return Q.where('date', dateFilter);
