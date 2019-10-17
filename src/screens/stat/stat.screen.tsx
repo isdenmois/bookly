@@ -51,9 +51,10 @@ export class StatScreen extends React.Component {
 
   async componentDidMount() {
     const db = inject(Database);
+    const min = new Date(2012, 0, 1, 0, 0, 0).getTime();
     const books = await db.collections
       .get('books')
-      .query(Q.where('status', BOOK_STATUSES.READ))
+      .query(Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(min)))
       .fetch();
 
     let minYear = new Date().getFullYear();
@@ -144,9 +145,11 @@ const MONTHS = [
 
 function ByMonthFactory({ books, year }) {
   const result = MONTHS.map(m => ({ ...m, count: 0, days: 0, rating: 0 }));
+  const years = new Set();
 
   if (year) {
     books = books.filter(byYear(year));
+    years.add(year);
   }
 
   let totalCount = 0;
@@ -159,20 +162,33 @@ function ByMonthFactory({ books, year }) {
     totalRating += book.rating;
     result[month].count++;
     result[month].rating += book.rating;
+    years.add(book.date.getFullYear());
   });
+
+  let total = years.size * 365;
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+  const hasCurrentYear = years.has(currentYear);
+
+  if (hasCurrentYear) {
+    total = total - 365 + dayOfYear();
+  }
 
   result.push({
     id: 'total',
     name: 'Итого',
-    count: totalCount,
+    count: totalCount * years.size,
     days: 0,
-    rating: totalRating,
-    d: year && year === new Date().getFullYear() ? dayOfYear() : 365,
+    rating: totalRating * years.size,
+    d: total,
   });
 
-  result.forEach(m => {
-    m.days = m.count ? round(m.d / m.count) : 0;
+  result.forEach((m, i) => {
+    const size = hasCurrentYear && i > currentMonth && i < 12 ? years.size - 1 : years.size;
+
+    m.days = m.count ? round((m.d / m.count) * size) : 0;
     m.rating = m.count ? round(m.rating / m.count) : 0;
+    m.count = m.count ? round(m.count / size) : 0;
   });
 
   return result;
@@ -184,6 +200,7 @@ function ByRatingFactory({ books, year }) {
   if (year) {
     books = books.filter(byYear(year));
   }
+
   let totalCount = 0;
 
   books.forEach(book => {
@@ -205,7 +222,7 @@ function ByYearFactory({ books }) {
   const result = [{ id: current, count: 0, rating: 0, days: 0, d: dayOfYear() }];
   let totalCount = 0;
   let totalRating = 0;
-  let totalD = 0;
+  let totalD = result[0].d;
 
   books.forEach(book => {
     const year = book.date.getFullYear();
