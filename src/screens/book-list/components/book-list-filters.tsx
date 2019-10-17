@@ -6,6 +6,7 @@ import { BookFilters } from 'types/book-filters';
 import { formatRating } from 'components/rating';
 import { formatPeriod } from 'modals/book-filters/components/book-date-filter';
 import { Tag } from 'components';
+import { inject, Session } from 'services';
 
 interface Props {
   filters: Partial<BookFilters>;
@@ -21,6 +22,11 @@ const filterMap = {
   rating: formatRating,
   type: t => BOOK_TYPE_NAMES[t],
   isLiveLib: () => 'LiveLib',
+  minYear() {
+    const session = inject(Session);
+
+    return `С ${session.minYear}`;
+  },
 };
 
 export function BookListFilters({ filters, onChange }: Props) {

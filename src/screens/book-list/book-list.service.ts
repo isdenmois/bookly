@@ -3,6 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { BookFilters, BookSort, Interval } from 'types/book-filters';
 import { sanitizeLike } from 'utils/sanitize';
+import { inject, Session } from 'services';
 
 const HALF_DAY = 12 * 60 * 60 * 1000;
 
@@ -18,6 +19,7 @@ const WHERE_FILTERS = {
   rating: ratingFilter,
   title: titleFitler,
   isLiveLib: isLiveLibFiltler,
+  minYear: minYearFilter,
 };
 
 export function createQueryState(filters: Partial<BookFilters>, sort: BookSort) {
@@ -64,4 +66,11 @@ function titleFitler(title: string) {
 
 function isLiveLibFiltler() {
   return Q.where('id', Q.like('l_%'));
+}
+
+function minYearFilter() {
+  const session = inject(Session);
+  const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
+
+  return Q.where('date', Q.gte(min));
 }
