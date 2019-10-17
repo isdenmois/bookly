@@ -7,6 +7,7 @@ export type Setting = typeof SETTINGS_FIELDS[number];
 const SESSION_KEY = 'SESSION_KEY';
 const INITIAL_BOOKS_COUNT = 80;
 const INITIAL_SORT = { field: 'title', desc: false };
+const INITIAL_YEAR = 2012;
 
 const SETTINGS_FIELDS = <const>[
   'userId',
@@ -17,12 +18,14 @@ const SETTINGS_FIELDS = <const>[
   'defaultSort',
   'fantlabAuth',
   'stat',
+  'minYear',
 ];
 const INITIAL_SETTINGS: any = {
   totalBooks: INITIAL_BOOKS_COUNT,
   fantlabAuth: '',
   defaultSort: INITIAL_SORT,
   lastAddress: '',
+  minYear: INITIAL_YEAR,
 };
 
 export class Session {
@@ -34,6 +37,7 @@ export class Session {
   @observable stat: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
   fantlabAuth: string = '';
+  minYear: number = INITIAL_YEAR;
 
   @action loadSession() {
     return AsyncStorage.getItem(SESSION_KEY)
