@@ -26,6 +26,7 @@ import {
   ViewLineAction,
 } from '../components/book-details-lines';
 import { withScroll } from './tab';
+import { livelib } from 'screens/search/search.screen';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -42,6 +43,7 @@ export class DetailsTab extends React.PureComponent<Props> {
     const { book, isExist } = this.props;
     const all = this.props.tab !== 'main';
     const withGenre = all || !book.thumbnail;
+    const isLivelib = typeof book.id === 'string' && book.id.startsWith('l_');
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
       .join('\n');
@@ -86,6 +88,8 @@ export class DetailsTab extends React.PureComponent<Props> {
         {!!book.parent.length && this.renderParentBooks()}
 
         {!!book.films && !!book.films.length && this.renderFilms()}
+
+        {all && !isLivelib && <ViewLineAction title='Найти в LiveLib' onPress={this.searchInLivelib} />}
 
         {all && isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
 
@@ -177,6 +181,8 @@ export class DetailsTab extends React.PureComponent<Props> {
   openEditModal = () => {
     this.props.navigation.push('/modal/book-title-edit', { book: this.props.book });
   };
+
+  searchInLivelib = () => this.props.navigation.push('Search', { query: this.props.book.title, source: livelib });
 }
 
 const s = StyleSheet.create({
