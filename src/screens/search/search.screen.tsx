@@ -12,6 +12,7 @@ import { BookItem, Button, Fetcher, SearchBar } from 'components';
 interface Props {
   navigation: NavigationStackProp;
   query: string;
+  source?: string;
 }
 
 interface State {
@@ -20,15 +21,15 @@ interface State {
   source: string;
 }
 
-const fantlab = 'FantLab';
-const livelib = 'LiveLib';
+export const fantlab = 'FantLab';
+export const livelib = 'LiveLib';
 
 @withNavigationProps()
 export class SearchScreen extends React.Component<Props, State> {
   state: State = {
     q: this.props.query,
     query: this.props.query,
-    source: fantlab,
+    source: this.props.source || fantlab,
   };
 
   api = inject(API);
