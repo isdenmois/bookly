@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
 import { HeaderRow } from './components/header-row';
 import { ScreenHeader } from 'components';
 import { Row } from './components/row';
@@ -82,8 +82,8 @@ export class StatScreen extends React.Component {
         {!isLoading && (
           <>
             <StatGroups type={type} onChange={this.setGroup} />
-            <View style={{ paddingHorizontal: 15, marginTop: 30 }}>
-              <YearSelection year={year} minYear={minYear} onChange={this.setYear} />
+            <View style={s.body}>
+              {type !== 'YEAR' && <YearSelection year={year} minYear={minYear} onChange={this.setYear} />}
               <HeaderRow columns={group.header} flexes={group.flexes} />
 
               {isCalculating && this.renderSpinner()}
@@ -96,7 +96,7 @@ export class StatScreen extends React.Component {
   }
 
   renderSpinner() {
-    return <ActivityIndicator style={{ marginTop: 40 }} size='large' />;
+    return <ActivityIndicator style={s.spinner} size='large' />;
   }
 
   renderRows() {
@@ -258,3 +258,12 @@ function dayOfYear() {
 
   return Math.floor(diff / oneDay);
 }
+
+const s = StyleSheet.create({
+  spinner: {
+    marginTop: 40,
+  } as ViewStyle,
+  body: {
+    paddingHorizontal: 15,
+  } as ViewStyle,
+});
