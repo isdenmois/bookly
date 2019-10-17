@@ -105,9 +105,12 @@ export class StatScreen extends React.Component {
     if (!this.state.rows || !this.state.rows.length) {
       return <Text>Ничего не найдено</Text>;
     }
-    const group = STAT_GROUPS[this.state.type];
+    const { type, year } = this.state;
+    const group = STAT_GROUPS[type];
 
-    return this.state.rows.map(row => <Row key={row.id} row={row} columns={group.columns} flexes={group.flexes} />);
+    return this.state.rows.map(row => (
+      <Row key={row.id} row={row} columns={group.columns} flexes={group.flexes} type={type} year={year} />
+    ));
   }
 
   getRows() {
@@ -130,18 +133,18 @@ export class StatScreen extends React.Component {
 }
 
 const MONTHS = [
-  { id: 'jan', name: 'Январь', d: 31 },
-  { id: 'feb', name: 'Февраль', d: 28 },
-  { id: 'mar', name: 'Март', d: 31 },
-  { id: 'apr', name: 'Апрель', d: 30 },
-  { id: 'may', name: 'Май', d: 31 },
-  { id: 'jun', name: 'Июнь', d: 30 },
-  { id: 'jul', name: 'Июль', d: 31 },
-  { id: 'aug', name: 'Август', d: 31 },
-  { id: 'sep', name: 'Сентябрь', d: 30 },
-  { id: 'oct', name: 'Октябрь', d: 31 },
-  { id: 'nov', name: 'Ноябрь', d: 30 },
-  { id: 'dec', name: 'Декабрь', d: 31 },
+  { id: 0, name: 'Январь', d: 31 },
+  { id: 1, name: 'Февраль', d: 28 },
+  { id: 2, name: 'Март', d: 31 },
+  { id: 3, name: 'Апрель', d: 30 },
+  { id: 4, name: 'Май', d: 31 },
+  { id: 5, name: 'Июнь', d: 30 },
+  { id: 6, name: 'Июль', d: 31 },
+  { id: 7, name: 'Август', d: 31 },
+  { id: 8, name: 'Сентябрь', d: 30 },
+  { id: 9, name: 'Октябрь', d: 31 },
+  { id: 10, name: 'Ноябрь', d: 30 },
+  { id: 11, name: 'Декабрь', d: 31 },
 ];
 
 function ByMonthFactory({ books, year }) {
@@ -196,7 +199,7 @@ function ByMonthFactory({ books, year }) {
 }
 
 function ByRatingFactory({ books, year }) {
-  const result = _.times(10, i => ({ id: i, rating: 10 - i, count: 0 }));
+  const result = _.times(10, i => ({ id: 10 - i, rating: 10 - i, count: 0 }));
 
   if (year) {
     books = books.filter(byYear(year));
@@ -210,7 +213,7 @@ function ByRatingFactory({ books, year }) {
   });
 
   result.push({
-    id: 100,
+    id: 'total',
     rating: 'Итого',
     count: totalCount,
   });

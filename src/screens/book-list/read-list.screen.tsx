@@ -15,7 +15,6 @@ import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
 
 const defaultFilters = {
-  status: BOOK_STATUSES.READ,
   year: 2019,
 };
 
@@ -34,7 +33,13 @@ interface State {
 }
 
 export class ReadList extends React.Component<Props, State> {
-  state: State = createQueryState(defaultFilters, { field: 'date', desc: true });
+  state: State = createQueryState(
+    {
+      status: BOOK_STATUSES.READ,
+      ...this.props.navigation.getParam('filters', defaultFilters),
+    },
+    { field: 'date', desc: true },
+  );
 
   database = inject(Database);
 
