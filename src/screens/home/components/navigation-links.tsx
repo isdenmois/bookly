@@ -27,8 +27,6 @@ export class NavigationLinks extends React.Component<Props> {
   navigation = inject(Navigation);
 
   render() {
-    const stat = __DEV__ || this.session.stat;
-
     return (
       <View style={s.container}>
         <ListItem
@@ -53,13 +51,11 @@ export class NavigationLinks extends React.Component<Props> {
           icon={<Icon name='random' size={20} color={color.BlueIcon} />}
           value='Выбрать книгу'
         />
-        {stat && (
-          <ListItem
-            onPress={this.openStat}
-            icon={<Icon name='random' size={20} color={color.BlueIcon} />}
-            value='Статистика'
-          />
-        )}
+        <ListItem
+          onPress={this.openStat}
+          icon={<Icon name='chart-bar' size={20} color={color.BlueIcon} />}
+          value='Статистика'
+        />
         <ListItem
           onPress={this.openProfile}
           icon={<Icon name='user' size={20} color={color.BlueIcon} />}
