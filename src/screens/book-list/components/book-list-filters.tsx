@@ -15,7 +15,7 @@ interface Props {
 
 const i = _.identity;
 const filterMap = {
-  year: i,
+  year: y => (y > 100 ? y : 2000 + y),
   title: i,
   author: a => a.name,
   date: formatPeriod,
