@@ -17,7 +17,6 @@ const SETTINGS_FIELDS = <const>[
   'lastAddress',
   'defaultSort',
   'fantlabAuth',
-  'stat',
   'minYear',
 ];
 const INITIAL_SETTINGS: any = {
@@ -34,7 +33,6 @@ export class Session {
   @observable withFantlab: boolean = true;
   @observable saveDateInChangeStatus: boolean = false;
   @observable lastAddress: string = '';
-  @observable stat: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;
