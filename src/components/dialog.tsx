@@ -18,7 +18,7 @@ export const Dialog = (props: Props) => {
   const back = useCallback(() => {
     onBack();
     props.onClose && props.onClose();
-  }, [props.onClose]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.onClose]);
 
   return (
     <View testID={props.testID} style={s.container}>

@@ -24,7 +24,6 @@ const filterMap = {
 };
 
 export function BookListFilters({ filters, onChange }: Props) {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const clears = useMemo(() => createClears(filters, onChange), [filters]);
   const tags = _.map(
     filters,
