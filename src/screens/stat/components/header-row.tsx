@@ -11,7 +11,7 @@ export const HeaderRow = memo(({ columns, flexes }: Props) => {
   const style = { color: color.PrimaryText, fontFamily: 'sans-serif-medium', fontSize: 16 };
 
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={{ flexDirection: 'row', marginTop: 20 }}>
       {columns.map((c, i) => (
         <Text key={c} style={flexes ? [style, { flex: flexes[i] }] : style}>
           {c}
