@@ -42,7 +42,6 @@ export class DetailsTab extends React.PureComponent<Props> {
   render() {
     const { book, isExist } = this.props;
     const all = this.props.tab !== 'main';
-    const withGenre = all || !book.thumbnail;
     const isLivelib = typeof book.id === 'string' && book.id.startsWith('l_');
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
@@ -53,8 +52,8 @@ export class DetailsTab extends React.PureComponent<Props> {
         {all && <ViewLine title='ID' value={book.id} />}
         {all && <ViewLine title='Тип' value={BOOK_TYPE_NAMES[book.type]} />}
 
-        {withGenre && !!book.genre && <ViewLine title='Жанр' value={book.genre} />}
-        {withGenre && !!book.year && <ViewLine title='Год' value={book.year} />}
+        {!all && !book.thumbnail && !!book.genre && <ViewLine title='Жанр' value={book.genre} />}
+        {(all || !book.thumbnail) && !!book.year && <ViewLine title='Год' value={book.year} />}
 
         {this.renderTranslators()}
 
@@ -81,7 +80,7 @@ export class DetailsTab extends React.PureComponent<Props> {
 
         {!!otherTitles && <ViewLine title='Другие названия' value={otherTitles} />}
 
-        {!!book.classification && book.classification.length > 0 && this.renderClassification()}
+        {all && !!book.classification && book.classification.length > 0 && this.renderClassification()}
 
         {all && !!book.description && <BookDescriptionLine description={book.description} />}
 
