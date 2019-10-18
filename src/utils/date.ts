@@ -26,3 +26,7 @@ export function formatDate(date) {
 function p(s: number) {
   return String(s).padStart(2, '0');
 }
+
+export function getCurrentYear() {
+  return new Date().getFullYear();
+}
