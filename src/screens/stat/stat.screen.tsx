@@ -39,10 +39,12 @@ const STAT_GROUPS = {
   },
 };
 
+const CURRENT_YEAR = getCurrentYear();
+
 export class StatScreen extends React.Component {
   state = {
     type: TYPES.MONTH,
-    year: getCurrentYear(),
+    year: CURRENT_YEAR,
     isLoading: true,
     isCalculating: true,
     books: [],
@@ -59,7 +61,7 @@ export class StatScreen extends React.Component {
       .query(Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(min)))
       .fetch();
 
-    let minYear = new Date().getFullYear();
+    let minYear = CURRENT_YEAR;
 
     books.forEach(b => {
       const year = b.date.getFullYear();
@@ -171,9 +173,8 @@ function ByMonthFactory({ books, year }) {
   });
 
   let total = years.size * 365;
-  const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
-  const hasCurrentYear = years.has(currentYear);
+  const hasCurrentYear = years.has(CURRENT_YEAR);
 
   if (hasCurrentYear) {
     total = total - 365 + dayOfYear();
@@ -223,15 +224,14 @@ function ByRatingFactory({ books, year }) {
 }
 
 function ByYearFactory({ books }) {
-  const current = new Date().getFullYear();
-  const result = [{ id: current, count: 0, rating: 0, days: 0, d: dayOfYear() }];
+  const result = [{ id: CURRENT_YEAR, count: 0, rating: 0, days: 0, d: dayOfYear() }];
   let totalCount = 0;
   let totalRating = 0;
   let totalD = result[0].d;
 
   books.forEach(book => {
     const year = book.date.getFullYear();
-    const i = current - year;
+    const i = CURRENT_YEAR - year;
 
     if (!result[i]) {
       result[i] = { id: year, count: 0, rating: 0, days: 0, d: 365 };
@@ -273,9 +273,8 @@ function round(n: number) {
 }
 
 function dayOfYear() {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0).getTime();
-  const diff = now.getTime() - start;
+  const start = new Date(CURRENT_YEAR, 0, 0).getTime();
+  const diff = new Date().getTime() - start;
   const oneDay = 1000 * 60 * 60 * 24;
 
   return Math.floor(diff / oneDay);
