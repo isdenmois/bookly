@@ -9,6 +9,7 @@ import { Database, Q } from '@nozbe/watermelondb';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { StatGroups } from './components/stat-groups';
 import { YearSelection } from './components/year-selection';
+import { getCurrentYear } from 'utils/date';
 
 const TYPES = {
   MONTH: 'MONTH',
@@ -41,7 +42,7 @@ const STAT_GROUPS = {
 export class StatScreen extends React.Component {
   state = {
     type: TYPES.MONTH,
-    year: 0,
+    year: getCurrentYear(),
     isLoading: true,
     isCalculating: true,
     books: [],
