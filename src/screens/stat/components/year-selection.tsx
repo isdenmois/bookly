@@ -2,6 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { Text, TouchableOpacity, ScrollView, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import classnames from 'rn-classnames';
 import { color } from 'types/colors';
+import { getCurrentYear } from 'utils/date';
 
 interface Props {
   minYear: number;
@@ -31,7 +32,7 @@ export const YearSelection = memo(({ minYear, year, onChange }: Props) => {
 
 function createYears(min) {
   const result = [0];
-  for (let year = new Date().getFullYear(); year >= min; year--) {
+  for (let year = getCurrentYear(); year >= min; year--) {
     result.push(year);
   }
 
