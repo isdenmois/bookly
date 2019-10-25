@@ -1,5 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
+import { map } from 'rxjs/operators';
+import withObservables from '@nozbe/with-observables';
 import { Text, View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
 import { HeaderRow } from './components/header-row';
 import { ScreenHeader } from 'components';
@@ -41,39 +43,52 @@ const STAT_GROUPS = {
 
 const CURRENT_YEAR = getCurrentYear();
 
+export const withBooks: Function = withObservables([], () => {
+  const db = inject(Database);
+  const session = inject(Session);
+  const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
+  const books = db.collections
+    .get('books')
+    .query(Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(min)))
+    .observeWithColumns(['date', 'rating'])
+    .pipe(
+      map(items => {
+        let minYear = CURRENT_YEAR;
+
+        items &&
+          items.forEach(b => {
+            const year = b.date.getFullYear();
+
+            if (year < minYear) {
+              minYear = year;
+            }
+          });
+
+        return { items, minYear };
+      }),
+    );
+
+  return { books };
+});
+
+@withBooks
 export class StatScreen extends React.Component {
   state = {
     type: TYPES.MONTH,
     year: CURRENT_YEAR,
-    isLoading: true,
-    isCalculating: true,
-    books: [],
-    rows: [],
-    minYear: 0,
+    isLoading: !this.props.books,
+    isCalculating: !this.props.books,
+    books: (this.props.books && this.props.books.items) || [],
+    rows: this.props.books ? this.getRows(this.props.books.items || [], CURRENT_YEAR) : [],
+    minYear: (this.props.books && this.props.books.minYear) || 0,
   };
 
-  async componentDidMount() {
-    const db = inject(Database);
-    const session = inject(Session);
-    const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
-    const books = await db.collections
-      .get('books')
-      .query(Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(min)))
-      .fetch();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.books && prevProps.books !== this.props.books) {
+      const { minYear, items } = this.props.books;
 
-    let minYear = CURRENT_YEAR;
-
-    books.forEach(b => {
-      const year = b.date.getFullYear();
-
-      if (year < minYear) {
-        minYear = year;
-      }
-    });
-
-    this.setState({ isLoading: false, books, minYear }, () => {
-      this.setState({ rows: this.getRows(), isCalculating: false });
-    });
+      this.setState({ isLoading: false, isCalculating: false, books: items, minYear, rows: this.getRows(items) });
+    }
   }
 
   render() {
@@ -116,10 +131,10 @@ export class StatScreen extends React.Component {
     ));
   }
 
-  getRows() {
-    const { books, year } = this.state;
+  getRows(books = this.state.books, year = this.state.year) {
+    const type = (this.state && this.state.type) || TYPES.MONTH;
 
-    return STAT_GROUPS[this.state.type].factory({ books, year });
+    return STAT_GROUPS[type].factory({ books, year });
   }
 
   setGroup = type => {
