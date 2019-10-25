@@ -34,7 +34,7 @@ type Props<P = {}> = {
   emptyText?: string;
   useFlatlist?: boolean;
   contentContainerStyle?: any;
-  onLoad?: () => void;
+  onLoad?: (data: any, append: boolean) => boolean;
   selected?: any;
   collection?: 'books' | 'authors' | 'reviews';
   sort?: string;
@@ -130,6 +130,17 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
 
     this.props
       .api({ ...this.props, page: this.page } as any)
+      .then(data => {
+        if (this.props.onLoad) {
+          const isBreak = this.props.onLoad(data, append);
+
+          if (isBreak) {
+            return Promise.reject(false);
+          }
+        }
+
+        return data;
+      })
       .then(
         data =>
           new Promise(resolve =>
@@ -137,8 +148,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
           ),
       )
       .then(() => this.mapDatabase())
-      .catch(error => this.setState({ isLoading: false, error }))
-      .then(() => this.props.onLoad && setTimeout(this.props.onLoad));
+      .catch(error => error !== false && this.setState({ isLoading: false, error }));
   }
 
   renderEmpty() {
