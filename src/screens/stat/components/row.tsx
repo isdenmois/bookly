@@ -17,7 +17,7 @@ const transitions = {
       return year && notTotal(row);
     },
     go(row, year) {
-      const date = { from: new Date(year, row.id, 1), to: new Date(year, row.id + 1, 0) };
+      const date = { from: new Date(year, row.id, 1, 11, 1, 1), to: new Date(year, row.id + 1, 0, 13, 0, 0) };
 
       openRead({ date });
     },
