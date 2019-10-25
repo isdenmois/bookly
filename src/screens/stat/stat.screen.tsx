@@ -269,7 +269,7 @@ function byYear(year) {
 }
 
 function round(n: number) {
-  return Math.round(n * 100) / 100;
+  return Math.round(n * 10) / 10;
 }
 
 function dayOfYear() {
