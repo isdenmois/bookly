@@ -181,7 +181,8 @@ export class DetailsTab extends React.PureComponent<Props> {
     this.props.navigation.push('/modal/book-title-edit', { book: this.props.book });
   };
 
-  searchInLivelib = () => this.props.navigation.push('Search', { query: this.props.book.title, source: livelib });
+  searchInLivelib = () =>
+    this.props.navigation.push('Search', { query: this.props.book.title, source: livelib, forceOpen: true });
 }
 
 const s = StyleSheet.create({

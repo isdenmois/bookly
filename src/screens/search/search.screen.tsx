@@ -13,6 +13,7 @@ interface Props {
   navigation: NavigationStackProp;
   query: string;
   source?: string;
+  forceOpen?: boolean;
 }
 
 interface State {
@@ -53,6 +54,7 @@ export class SearchScreen extends React.Component<Props, State> {
           collection='books'
           emptyText='Книги не найдены'
           useFlatlist
+          onLoad={this.checkLoad}
         >
           {this.renderResult}
         </Fetcher>
@@ -76,9 +78,40 @@ export class SearchScreen extends React.Component<Props, State> {
 
   toggleSearchSource = () => this.setState({ source: this.state.source === fantlab ? livelib : fantlab });
 
+  checkLoad = (data, append) => {
+    // Ничего не найдено -- выходим
+    if (append || !data || !data.items || !data.items.length) return;
+    // Найдено больше 1 -- выходим
+    if (!this.props.forceOpen && data.items.length > 1) return;
+    // Изменяли параметры поиска -- выходим
+    if (this.props.query !== this.state.q) return;
+
+    const foundOne = data.items.length === 1;
+    const item = data.items.find(i => isEqual(i.title, this.state.q, foundOne));
+
+    if (item) {
+      this.props.navigation.replace('Details', { bookId: item.id });
+      return true;
+    }
+  };
   goBack = () => this.props.navigation.goBack();
   setQuery = query => this.setState({ query });
   search = () => this.setState({ q: this.state.query });
+}
+
+const e = /ё/gi;
+
+function isEqual(a: string, b: string, withStartsWith: boolean) {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  a = a.replace(e, 'е').toLowerCase();
+  b = b.replace(e, 'е').toLowerCase();
+
+  if (withStartsWith) {
+    return a.startsWith(b);
+  }
+
+  return a === b;
 }
 
 const s = StyleSheet.create({
