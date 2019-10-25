@@ -19,6 +19,7 @@ interface Props {
   filters: Partial<BookFilters>;
   onChange: (filters: Partial<BookFilters>) => void;
   books?: Book[];
+  readonly?: boolean;
 }
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -70,6 +71,7 @@ export class BookList extends React.PureComponent<Props> {
   };
 
   private renderFooter = () => {
+    if (this.props.readonly) return null;
     const { year, date } = this.props.filters;
     const sort = this.props.sort;
 

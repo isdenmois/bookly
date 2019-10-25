@@ -35,10 +35,12 @@ export class ReadList extends React.Component<Props, State> {
       status: BOOK_STATUSES.READ,
       ...this.props.navigation.getParam('filters', { year: getCurrentYear() }),
     },
-    { field: 'date', desc: true },
+    this.props.navigation.getParam('sort', { field: 'date', desc: true }),
   );
 
   database = inject(Database);
+
+  readonly = this.props.navigation.getParam('readonly');
 
   filters = READ_LIST_FILTERS;
   sorts = READ_LIST_SORTS;
@@ -46,11 +48,19 @@ export class ReadList extends React.Component<Props, State> {
 
   render() {
     const { query, sort, filters } = this.state;
+    const readonly = this.readonly;
 
     return (
       <View style={s.container}>
-        <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={this.setSearch} />
-        <BookList database={this.database} query={query} sort={sort} filters={filters} onChange={this.setFilters} />
+        <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
+        <BookList
+          database={this.database}
+          query={query}
+          sort={sort}
+          filters={filters}
+          onChange={this.setFilters}
+          readonly={readonly}
+        />
         <View style={s.buttonContainer}>
           <Button
             label='ФИЛЬТРЫ'
