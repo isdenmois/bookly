@@ -9,14 +9,11 @@ import { color } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { withScroll } from 'utils/scroll-to-top';
+import { getCurrentYear } from 'utils/date';
 import { inject } from 'services';
 import { Button, ScreenHeader } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
-
-const defaultFilters = {
-  year: 2019,
-};
 
 const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'isLiveLib'];
 
@@ -36,7 +33,7 @@ export class ReadList extends React.Component<Props, State> {
   state: State = createQueryState(
     {
       status: BOOK_STATUSES.READ,
-      ...this.props.navigation.getParam('filters', defaultFilters),
+      ...this.props.navigation.getParam('filters', { year: getCurrentYear() }),
     },
     { field: 'date', desc: true },
   );
