@@ -10,6 +10,7 @@ const flags = {
   HH: (d: Date) => p(d.getHours()),
   mm: (d: Date) => p(d.getMinutes()),
 };
+export const ONE_DAY = 1000 * 60 * 60 * 24;
 
 export function format(date: any, mask: string) {
   if (!(date instanceof Date)) {
@@ -29,4 +30,16 @@ function p(s: number) {
 
 export function getCurrentYear() {
   return new Date().getFullYear();
+}
+
+export function getStartOfYear(date = new Date()) {
+  return new Date(date.getFullYear(), 0, 1, 0);
+}
+
+export function dayOfYear(): number {
+  const now = new Date();
+  const start = getStartOfYear(now);
+  const diff = now.getTime() - start.getTime() + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+
+  return Math.floor(diff / ONE_DAY);
 }

@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import React, { useMemo, useCallback } from 'react';
+import { StyleSheet, TouchableOpacity, ViewStyle, ToastAndroid } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { observer } from 'mobx-react';
 import { Database } from '@nozbe/watermelondb';
 import { Counter } from 'components';
-import { readBooksThisYearQuery, booksReadForecast } from '../home.queries';
+import { dayOfYear } from 'utils/date';
 import { inject, Session } from 'services';
+import { readBooksThisYearQuery, booksReadForecast } from '../home.queries';
+const pluralize = require('pluralize-ru');
 
 interface Props {
   database: Database;
@@ -16,14 +18,37 @@ function BookChallengeComponent({ readCount }: Props) {
   const session = inject(Session);
   const totalBooks = session.totalBooks;
   const forecast = useMemo(() => booksReadForecast(readCount, totalBooks), [readCount, totalBooks]);
+  const showProgress = useCallback(
+    () => ToastAndroid.show(getProgressMessage(readCount, totalBooks), ToastAndroid.SHORT),
+    [readCount, totalBooks],
+  );
 
   return (
-    <View style={s.row}>
+    <TouchableOpacity style={s.row} onPress={showProgress}>
       <Counter label='Прочитано' value={readCount} />
       <Counter label='Запланировано' value={totalBooks} />
       <Counter label='Опережение' value={forecast} />
-    </View>
+    </TouchableOpacity>
   );
+}
+
+function getProgressMessage(readCount, totalBooks): string {
+  if (readCount >= totalBooks) {
+    return 'Вы завершили книжный вызов!';
+  }
+
+  const days = 365 - dayOfYear();
+  const toRead = totalBooks - readCount;
+  const dayCount = Math.floor(days / toRead);
+  const bookCount = (toRead / days) * 7;
+
+  if (bookCount >= 2) {
+    const books = pluralize(Math.round(bookCount * 10) / 10, '', '%d книге', '%d книги', '%d книг');
+    return `Читайте по ${books} в неделю, чтобы успеть выполнить вызов`;
+  }
+
+  const count = pluralize(dayCount, '', 'каждый %d день', 'каждые %d дня', 'каждые %d дней');
+  return `Читайте по книге ${count}, чтобы успеть выполнить вызов`;
 }
 
 export const BookChallenge = withObservables(null, ({ database }: Props) => ({
