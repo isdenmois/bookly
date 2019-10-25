@@ -70,5 +70,5 @@ function notTotal(row) {
 function openRead(filters: any) {
   const navigation = inject(Navigation);
 
-  navigation.push('ReadList', { filters });
+  navigation.push('ReadList', { filters, sort: { field: 'date', desc: false }, readonly: true });
 }
