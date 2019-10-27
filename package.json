@@ -1,6 +1,6 @@
 {
   "name": "bookly",
-  "version": "3.24.0",
+  "version": "3.24.1",
   "private": true,
   "scripts": {
     "start": "react-native start",
