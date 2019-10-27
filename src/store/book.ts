@@ -6,9 +6,9 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
 
-const FIELDS = ['title', 'author', 'thumbnail', 'type', 'search', 'status', 'rating', 'date'];
+const FIELDS = <const>['title', 'author', 'thumbnail', 'type', 'search', 'status', 'rating', 'date', 'lid', 'paper'];
 
-type BookFields = 'id' | 'title' | 'author' | 'thumbnail' | 'type' | 'search' | 'status' | 'rating' | 'date';
+type BookFields = typeof FIELDS[number];
 
 export type BookData = Pick<Book, BookFields>;
 

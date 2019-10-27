@@ -16,6 +16,7 @@ interface Props {
   isExist: boolean;
   navigation: NavigationStackProp;
   tabs: any[];
+  fantlabId?: string;
 }
 
 interface State {
@@ -119,6 +120,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         headerHeight={this.state.headerHeight}
         onScrollEnd={this.onScrollEnd}
         isExist={this.props.isExist}
+        fantlabId={this.props.fantlabId}
         withThumbnail={this.props.book.thumbnail}
         ref={ctrl => (this.tabCtrls[route.key] = ctrl)}
       />

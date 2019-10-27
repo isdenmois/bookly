@@ -32,6 +32,7 @@ interface Props {
   book: Book;
   nextStatus?: BOOK_STATUSES;
   cacheThumbnail?: boolean;
+  fantlabId?: string;
 }
 
 export const withBook: Function = withObservables(['book'], ({ book }: Props) => ({
@@ -92,7 +93,7 @@ export class BookItem extends React.Component<Props> {
   }
 
   openBook = () => {
-    this.navigation.push('Details', { bookId: this.props.book.id });
+    this.navigation.push('Details', { bookId: this.props.book.id, fantlabId: this.props.fantlabId });
   };
 
   openChangeStatusModal = () => {

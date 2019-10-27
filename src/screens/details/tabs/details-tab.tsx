@@ -18,6 +18,7 @@ import Book from 'store/book';
 import { BookExtended, ParentBook, Film } from 'types/book-extended';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import { livelib } from 'screens/search/search.screen';
 import {
   BookDescriptionLine,
   ViewLine,
@@ -26,7 +27,6 @@ import {
   ViewLineAction,
 } from '../components/book-details-lines';
 import { withScroll } from './tab';
-import { livelib } from 'screens/search/search.screen';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -181,8 +181,11 @@ export class DetailsTab extends React.PureComponent<Props> {
     this.props.navigation.push('/modal/book-title-edit', { book: this.props.book });
   };
 
-  searchInLivelib = () =>
-    this.props.navigation.push('Search', { query: this.props.book.title, source: livelib, forceOpen: true });
+  searchInLivelib = () => {
+    const book = this.props.book;
+
+    this.props.navigation.push('Search', { query: book.title, source: livelib, forceOpen: true, fantlabId: book.id });
+  };
 }
 
 const s = StyleSheet.create({
