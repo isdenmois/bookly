@@ -19,6 +19,7 @@ export default class Book extends Model {
     reviews: { type: 'has_many', foreignKey: 'book_id' },
   };
 
+  @field('lid') lid: string;
   @field('title') title: string;
   @field('author') author: string;
   @field('status') status: BOOK_STATUSES;
@@ -27,6 +28,7 @@ export default class Book extends Model {
   @date('date') date: Date;
   @field('type') type;
   @field('search') search: string;
+  @field('paper') paper: boolean;
   @readonly @date('created_at') createdAt: Date;
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
