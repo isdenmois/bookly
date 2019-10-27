@@ -81,5 +81,5 @@ function minYearFilter() {
 }
 
 function paperFilter(value) {
-  return Q.where('paper', value === 'paper');
+  return Q.where('paper', value === 'paper' ? true : Q.notEq(true));
 }
