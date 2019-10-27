@@ -123,6 +123,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         fantlabId={this.props.fantlabId}
         withThumbnail={this.props.book.thumbnail}
         lid={this.props.book.lid}
+        paper={this.props.book.paper}
         ref={ctrl => (this.tabCtrls[route.key] = ctrl)}
       />
     );

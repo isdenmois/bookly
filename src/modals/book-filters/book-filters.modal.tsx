@@ -16,6 +16,7 @@ import { BookDateFilter } from './components/book-date-filter';
 import { BookRatingFilter } from './components/book-rating-filter';
 import { BookTitleFilter } from './components/book-title-fitler';
 import { BookIsLiveLibFilter } from './components/book-is-livelib-filter';
+import { BookPaperFilter } from './components/book-paper-filter';
 import { BookFilters } from './book-filters.service';
 
 const FILTER_COMPONENTS_MAP = {
@@ -25,6 +26,7 @@ const FILTER_COMPONENTS_MAP = {
   type: BookTypeFilter,
   date: BookDateFilter,
   rating: BookRatingFilter,
+  paper: BookPaperFilter,
   isLiveLib: BookIsLiveLibFilter,
 };
 

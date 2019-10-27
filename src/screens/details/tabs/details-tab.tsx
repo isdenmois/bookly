@@ -43,6 +43,7 @@ export class DetailsTab extends React.PureComponent<Props> {
     const { book, isExist } = this.props;
     const all = this.props.tab !== 'main';
     const isLivelib = typeof book.id === 'string' && book.id.startsWith('l_');
+    const hasPaper = book.paper;
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
       .join('\n');
@@ -91,6 +92,10 @@ export class DetailsTab extends React.PureComponent<Props> {
         {all && !isLivelib && <ViewLineAction title='Найти в LiveLib' onPress={this.searchInLivelib} />}
 
         {all && isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
+
+        {all && isExist && (
+          <ViewLineAction title={hasPaper ? 'Есть в бумаге' : 'Нет в бумаге'} onPress={this.togglePaper} />
+        )}
 
         {all && isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
       </View>
@@ -185,6 +190,12 @@ export class DetailsTab extends React.PureComponent<Props> {
     const book = this.props.book;
 
     this.props.navigation.push('Search', { query: book.title, source: livelib, forceOpen: true, fantlabId: book.id });
+  };
+
+  togglePaper = () => {
+    const book = this.props.book;
+
+    book.setData({ paper: !book.paper });
   };
 }
 

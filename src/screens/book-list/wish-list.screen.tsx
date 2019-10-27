@@ -6,9 +6,10 @@ import { createQueryState } from './book-list.service';
 
 const defaultFilters = {
   status: BOOK_STATUSES.WISH,
+  paper: 'e',
 };
 
-const WISH_LIST_FILTERS = ['title', 'author', 'type', 'isLiveLib'];
+const WISH_LIST_FILTERS = ['title', 'author', 'type', 'paper', 'isLiveLib'];
 
 export const WISH_LIST_SORTS = ['title', 'author', 'id', 'createdAt'];
 

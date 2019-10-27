@@ -22,6 +22,7 @@ export class LivelibTab extends PureComponent<Props> {
   render() {
     const { book, isExist } = this.props;
     const fantlabId = !!this.props.fantlabId;
+    const hasPaper = book.paper;
 
     return (
       <View>
@@ -32,6 +33,7 @@ export class LivelibTab extends PureComponent<Props> {
         {!!book.description && <BookDescriptionLine description={book.description} />}
         {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} />}
         {isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
+        {isExist && <ViewLineAction title={hasPaper ? 'Есть в бумаге' : 'Нет в бумаге'} onPress={this.togglePaper} />}
         {isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
       </View>
     );
@@ -51,5 +53,11 @@ export class LivelibTab extends PureComponent<Props> {
     ToastAndroid.show('Ассоциировано', ToastAndroid.SHORT);
 
     this.props.navigation.goBack();
+  };
+
+  togglePaper = () => {
+    const book = this.props.book;
+
+    book.setData({ paper: !book.paper });
   };
 }
