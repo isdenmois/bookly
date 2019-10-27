@@ -14,6 +14,7 @@ interface Props {
   query: string;
   source?: string;
   forceOpen?: boolean;
+  fantlabId?: string;
 }
 
 interface State {
@@ -73,7 +74,7 @@ export class SearchScreen extends React.Component<Props, State> {
   }
 
   renderResult = (book: Book) => {
-    return <BookItem key={book.id} book={book} />;
+    return <BookItem key={book.id} book={book} fantlabId={this.props.fantlabId} />;
   };
 
   toggleSearchSource = () => this.setState({ source: this.state.source === fantlab ? livelib : fantlab });
@@ -90,7 +91,7 @@ export class SearchScreen extends React.Component<Props, State> {
     const item = data.items.find(i => isEqual(i.title, this.state.q, foundOne));
 
     if (item) {
-      this.props.navigation.replace('Details', { bookId: item.id });
+      this.props.navigation.replace('Details', { bookId: item.id, fantlabId: this.props.fantlabId });
       return true;
     }
   };

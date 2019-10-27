@@ -18,6 +18,7 @@ import { LivelibReviewsTab } from './tabs/livelib-reviews-tab';
 
 interface Props {
   bookId: string;
+  fantlabId: string;
   navigation: NavigationStackProp;
 }
 
@@ -74,6 +75,7 @@ export class DetailsScreen extends React.Component<Props> {
       <BookDetailsTabs
         book={book}
         isExist={book && !!book.status}
+        fantlabId={this.props.fantlabId}
         navigation={this.props.navigation}
         tabs={this.tabs}
       />
