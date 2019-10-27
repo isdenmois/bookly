@@ -34,6 +34,7 @@ function bookSerialize(book) {
   return _.omitBy(
     {
       ...book,
+      paper: book.paper || null,
       thumbnail: +book.thumbnail || book.thumbnail,
       search:
         book.search &&
