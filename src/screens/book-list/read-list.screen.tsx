@@ -15,7 +15,7 @@ import { Button, ScreenHeader } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
 
-const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'isLiveLib'];
+const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'paper', 'isLiveLib'];
 
 const READ_LIST_SORTS = ['date', 'title', 'rating', 'author', 'id'];
 

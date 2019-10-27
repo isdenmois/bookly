@@ -20,6 +20,7 @@ const WHERE_FILTERS = {
   title: titleFitler,
   isLiveLib: isLiveLibFiltler,
   minYear: minYearFilter,
+  paper: paperFilter,
 };
 
 export function createQueryState(filters: Partial<BookFilters>, sort: BookSort) {
@@ -77,4 +78,8 @@ function minYearFilter() {
   const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
 
   return Q.where('date', Q.gte(min));
+}
+
+function paperFilter(value) {
+  return Q.where('paper', value === 'paper');
 }

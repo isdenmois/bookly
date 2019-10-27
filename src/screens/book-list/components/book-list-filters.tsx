@@ -27,6 +27,7 @@ const filterMap = {
 
     return `С ${session.minYear}`;
   },
+  paper: p => (p === 'paper' ? 'В бумаге' : 'В электронке'),
 };
 
 export function BookListFilters({ filters, onChange }: Props) {
