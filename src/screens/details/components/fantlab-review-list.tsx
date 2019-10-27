@@ -8,14 +8,17 @@ import { RemoteReview } from './remote-review';
 interface Props {
   bookId: string;
   sort: string;
+  type: string;
 }
 
 export class FantlabReviewList extends React.Component<Props> {
   api = inject(API);
 
   render() {
+    const api = this.props.type === 'Fantlab' ? this.api.reviewList : this.api.lReviews;
+
     return (
-      <Fetcher api={this.api.reviewList} bookId={this.props.bookId} sortBy={this.props.sort}>
+      <Fetcher api={api} bookId={this.props.bookId} sortBy={this.props.sort}>
         {this.renderReview}
       </Fetcher>
     );
