@@ -45,6 +45,10 @@ export class AddButton extends React.PureComponent<FixedProps> {
   ];
 
   style = [s.buttonContainer, { transform: this.transform }];
+  constructor(props) {
+    super(props);
+    source.set('Fantlab');
+  }
 
   render() {
     const book = this.props.book;
