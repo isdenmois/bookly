@@ -52,20 +52,23 @@ export class AddButton extends React.PureComponent<FixedProps> {
 
   render() {
     const book = this.props.book;
+    const hasRead = book.status === BOOK_STATUSES.READ;
 
-    if (book.status !== BOOK_STATUSES.READ) {
+    if (!hasRead && !book.lid) {
       return null;
     }
 
     return (
       <Animated.View style={this.style}>
-        <Button
-          label='Добавить'
-          onPress={this.openReviewWriteModal}
-          icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
-          style={s.button}
-          textStyle={s.buttonText}
-        />
+        {hasRead && (
+          <Button
+            label='Добавить'
+            onPress={this.openReviewWriteModal}
+            icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
+            style={s.button}
+            textStyle={s.buttonText}
+          />
+        )}
         {!!book.lid && (
           <Button
             label={source.get()}
