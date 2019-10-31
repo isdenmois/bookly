@@ -36,6 +36,7 @@ interface ViewLineModelRemoveProps {
 interface ViewLineActionProps {
   title: string;
   onPress?: () => void;
+  onLongPress?: () => void;
 }
 
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
@@ -75,10 +76,10 @@ export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
   );
 }
 
-export function ViewLineAction({ title, onPress }: ViewLineActionProps) {
+export function ViewLineAction({ title, onPress, onLongPress }: ViewLineActionProps) {
   return (
     <View style={s.row}>
-      <TouchableOpacity onPress={onPress} style={s.value} hitSlop={hitSlop}>
+      <TouchableOpacity onPress={onPress} onLongPress={onLongPress} style={s.value} hitSlop={hitSlop}>
         <Text style={s.actionText}>{title}</Text>
       </TouchableOpacity>
     </View>

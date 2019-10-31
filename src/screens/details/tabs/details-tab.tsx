@@ -89,7 +89,13 @@ export class DetailsTab extends React.PureComponent<Props> {
 
         {!!book.films && !!book.films.length && this.renderFilms()}
 
-        {all && !isLivelib && <ViewLineAction title='Найти в LiveLib' onPress={this.searchInLivelib} />}
+        {all && !isLivelib && (
+          <ViewLineAction
+            title='Найти в LiveLib'
+            onPress={this.forceSearchInLivelib}
+            onLongPress={this.searchInLivelib}
+          />
+        )}
 
         {all && isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
 
@@ -186,11 +192,14 @@ export class DetailsTab extends React.PureComponent<Props> {
     this.props.navigation.push('/modal/book-title-edit', { book: this.props.book });
   };
 
-  searchInLivelib = () => {
+  searchInLivelib = () => this.searchInLivelibAction(false);
+  forceSearchInLivelib = () => this.searchInLivelibAction(true);
+
+  searchInLivelibAction(forceOpen?: boolean) {
     const book = this.props.book;
 
-    this.props.navigation.push('Search', { query: book.title, source: livelib, forceOpen: true, fantlabId: book.id });
-  };
+    this.props.navigation.push('Search', { query: book.title, source: livelib, forceOpen, fantlabId: book.id });
+  }
 
   togglePaper = () => {
     const book = this.props.book;
