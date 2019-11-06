@@ -1,9 +1,10 @@
 import { LIVELIB_APIKEY } from 'react-native-dotenv';
+import { ParentBook } from 'types/book-extended';
 import { api } from '../base/api';
 
 type Params = { bookId: string };
 
-const fields = 'author_id,author_name,name,pic_200,id,description,isbn,publishing,year,series_title,tags';
+const fields = 'author_id,author_name,name,pic_200,id,description,isbn,publishing,year,cycles,series_title,tags';
 
 export interface LiveLibBook {
   id: string;
@@ -17,6 +18,7 @@ export interface LiveLibBook {
   isbn?: string;
   description?: string;
   series?: string;
+  cycles?: ParentBook[];
   publishing?: string;
   tags?: string;
 }
@@ -37,6 +39,11 @@ function response(r): LiveLibBook {
     description: r.description,
     series: r.series_title,
     publishing: r.publishing,
+    cycles: (r.cycles || []).map(c => ({
+      id: `l_${c.id}`,
+      title: c.title,
+      type: c.category_name,
+    })),
     tags: (r.tags || '')
       .split(',')
       .filter(t => t)
