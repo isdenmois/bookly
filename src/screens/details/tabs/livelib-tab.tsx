@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-import { View, ToastAndroid } from 'react-native';
+import { Text, View, ToastAndroid, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import Book from 'store/book';
 import { formatDate } from 'utils/date';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import { color } from 'types/colors';
 import { LiveLibBook } from 'services/api/livelib/book';
 import { inject } from 'services';
 import { Database } from '@nozbe/watermelondb';
@@ -30,6 +31,7 @@ export class LivelibTab extends PureComponent<Props> {
         {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
         {!!book.tags && <ViewLine title='Теги' value={book.tags} />}
+        {!!book.cycles.length && this.renderCycles()}
         {!!book.description && <BookDescriptionLine description={book.description} />}
         {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} />}
         {isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
@@ -60,4 +62,38 @@ export class LivelibTab extends PureComponent<Props> {
 
     book.setData({ paper: !book.paper });
   };
+
+  renderCycles() {
+    return (
+      <View style={s.parentBooks}>
+        <Text style={s.header}>ВХОДИТ В</Text>
+
+        {this.props.book.cycles.map(book => (
+          <ViewLine key={book.id} title={book.type} value={book.title} />
+        ))}
+      </View>
+    );
+  }
 }
+
+const s = StyleSheet.create({
+  header: {
+    color: color.SecondaryText,
+    fontSize: 14,
+    marginBottom: 10,
+  } as TextStyle,
+  parentBooks: {
+    marginTop: 10,
+  } as ViewStyle,
+  classification: {
+    marginBottom: 20,
+  } as ViewStyle,
+  title: {
+    color: color.SecondaryText,
+    fontSize: 12,
+  } as TextStyle,
+  value: {
+    color: color.PrimaryText,
+    fontSize: 18,
+  } as TextStyle,
+});
