@@ -13,6 +13,9 @@ import markWorkSchema from './fantlab/mark-work';
 import loginSchema from './fantlab/login';
 import editionsSchema from './fantlab/editions';
 import reviewVoteSchema from './fantlab/review-vote';
+import searchEditionsSchema from './fantlab/search-editions';
+import editionSchema from './fantlab/edition';
+import worksSchema from './fantlab/works';
 
 import lBooksSearchSchema from './livelib/books-search';
 import lBookSchema from './livelib/book';
@@ -32,7 +35,11 @@ export class API {
   reviewList = reviewListSchema.create(FANTLAB_URL);
   markWork = markWorkSchema.create(FANTLAB_ROOT_URL);
   login = loginSchema.create(FANTLAB_URL);
+  edition = editionSchema.create(FANTLAB_URL);
   editions = editionsSchema.create(FANTLAB_URL);
+  searchEditions = searchEditionsSchema.create(FANTLAB_URL);
+  works = worksSchema.create(FANTLAB_URL);
+
   reviewVote = reviewVoteSchema.create(FANTLAB_ROOT_URL);
 
   // LiveLib

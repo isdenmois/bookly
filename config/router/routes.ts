@@ -7,6 +7,7 @@ import { DetailsScreen } from 'screens/details/details.screen';
 import { EditionsListScreen } from 'screens/editions/editions.screen';
 import { BookSelectScreen } from 'screens/book-select/book-select.screen';
 import { StatScreen } from 'screens/stat/stat.screen';
+import { WorkListScreen } from 'screens/work-list/work-list.screen';
 
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
 import { BookSelectModal } from 'modals/book-select/book-select.modal';
@@ -27,6 +28,7 @@ export const MainStack = {
   Editions: EditionsListScreen,
   BookSelect: BookSelectScreen,
   Stat: StatScreen,
+  WorkList: WorkListScreen,
 };
 
 export const ModalStack = {

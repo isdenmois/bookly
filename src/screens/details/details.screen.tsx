@@ -19,6 +19,7 @@ import { LivelibReviewsTab } from './tabs/livelib-reviews-tab';
 interface Props {
   bookId: string;
   fantlabId: string;
+  thumbnail: string;
   navigation: NavigationStackProp;
 }
 
@@ -63,6 +64,12 @@ export class DetailsScreen extends React.Component<Props> {
   }
 
   renderResult = (book: Book & BookExtended) => {
+    const isExist = book && !!book.status;
+
+    if (this.props.thumbnail && !isExist) {
+      book.thumbnail = this.props.thumbnail;
+    }
+
     this.tabs = this.tabs || [
       ...(this.isLiveLib ? [TABS.LIVELIB] : [TABS.MAIN]),
       ...(this.showChildren(book) ? [TABS.CHILDREN] : []),
@@ -74,7 +81,7 @@ export class DetailsScreen extends React.Component<Props> {
     return (
       <BookDetailsTabs
         book={book}
-        isExist={book && !!book.status}
+        isExist={isExist}
         fantlabId={this.props.fantlabId}
         navigation={this.props.navigation}
         tabs={this.tabs}
