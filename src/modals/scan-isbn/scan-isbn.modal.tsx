@@ -10,10 +10,12 @@ interface Props {
 
 export function ScanIsbnModal({ navigation }: Props) {
   const onScan = useCallback(({ data }) => {
-    if (!data) return;
+    const emit = navigation.getParam('onScan');
+    if (!data || emit.e) return;
 
+    emit.e = true;
+    emit(data.replace(/-/g, ''));
     navigation.goBack();
-    navigation.getParam('onScan')?.(data.replace(/-/g, ''));
   }, []);
 
   return (

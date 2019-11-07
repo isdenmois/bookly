@@ -35,9 +35,9 @@ export class WorkListScreen extends Component<Props> {
     );
   }
 
-  renderResult = (book: Book) => {
+  renderResult(book: Book) {
     return <BookItem key={book.id} book={book} thumbnail={book.thumbnail} />;
-  };
+  }
 
   works = () => {
     const w = this.props.works.map(work => work.bookId).join(',');
