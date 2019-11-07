@@ -33,7 +33,7 @@ export class BookList extends React.PureComponent<Props> {
   static contextType = ScrollToTopContext;
 
   render() {
-    if (!this.props.books || !this.props.books.length) {
+    if (!this.props.books?.length) {
       return <EmptyResult text='Книги не найдены' />;
     }
 

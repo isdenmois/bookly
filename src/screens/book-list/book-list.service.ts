@@ -8,19 +8,46 @@ import { inject, Session } from 'services';
 const HALF_DAY = 12 * 60 * 60 * 1000;
 
 const ON_FITLERS = {
-  author: authorFilter,
+  author(author) {
+    return Q.on('book_authors', 'author_id', author.id);
+  },
 };
 
 const WHERE_FILTERS = {
-  status: whereFilter('status'),
-  year: yearFilter,
   type: whereFilter('type'),
-  date: dateFilter,
-  rating: ratingFilter,
-  title: titleFitler,
-  isLiveLib: isLiveLibFiltler,
-  minYear: minYearFilter,
-  paper: paperFilter,
+  status: whereFilter('status'),
+  year(year: number) {
+    if (year < 100) {
+      year += 2000;
+    }
+
+    const dateFilter = Q.between(new Date(year, 0, 1, 0).getTime(), new Date(year, 11, 31, 23, 59, 59).getTime());
+
+    return Q.where('date', dateFilter);
+  },
+  date({ from, to }: Interval<Date>) {
+    const dateFilter = Q.between(from.getTime() - HALF_DAY, to.getTime() + HALF_DAY);
+
+    return Q.where('date', dateFilter);
+  },
+  rating({ from, to }: Interval<number>) {
+    return Q.where('rating', Q.between(from, to));
+  },
+  title(title: string) {
+    return Q.where('search', Q.like(`%${sanitizeLike(title.toLowerCase())}%`));
+  },
+  isLiveLib() {
+    return Q.where('id', Q.like('l_%'));
+  },
+  minYear() {
+    const session = inject(Session);
+    const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
+
+    return Q.where('date', Q.gte(min));
+  },
+  paper(value) {
+    return Q.where('paper', value === 'paper' ? true : Q.notEq(true));
+  },
 };
 
 export function createQueryState(filters: Partial<BookFilters>, sort: BookSort) {
@@ -39,47 +66,4 @@ function buildQueries(filters, values: Partial<BookFilters>): Where[] {
 
 function whereFilter(field) {
   return value => Q.where(field, value);
-}
-
-function yearFilter(year: number) {
-  if (year < 100) {
-    year += 2000;
-  }
-
-  const dateFilter = Q.between(new Date(year, 0, 1, 0).getTime(), new Date(year, 11, 31, 23, 59, 59).getTime());
-
-  return Q.where('date', dateFilter);
-}
-
-function authorFilter(author) {
-  return Q.on('book_authors', 'author_id', author.id);
-}
-
-function dateFilter({ from, to }: Interval<Date>) {
-  const dateFilter = Q.between(from.getTime() - HALF_DAY, to.getTime() + HALF_DAY);
-
-  return Q.where('date', dateFilter);
-}
-
-function ratingFilter({ from, to }: Interval<number>) {
-  return Q.where('rating', Q.between(from, to));
-}
-
-function titleFitler(title: string) {
-  return Q.where('search', Q.like(`%${sanitizeLike(title.toLowerCase())}%`));
-}
-
-function isLiveLibFiltler() {
-  return Q.where('id', Q.like('l_%'));
-}
-
-function minYearFilter() {
-  const session = inject(Session);
-  const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
-
-  return Q.where('date', Q.gte(min));
-}
-
-function paperFilter(value) {
-  return Q.where('paper', value === 'paper' ? true : Q.notEq(true));
 }
