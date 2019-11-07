@@ -15,7 +15,14 @@ interface Props {
 @withNavigationProps()
 export class WorkListScreen extends Component<Props> {
   api = inject(API);
+  map = new Map();
+  constructor(props) {
+    super(props);
 
+    this.props.works.forEach(work => {
+      this.map.set(work.bookId, work.extra);
+    });
+  }
   render() {
     const title = this.props.title;
     return (
@@ -35,20 +42,16 @@ export class WorkListScreen extends Component<Props> {
     );
   }
 
-  renderResult(book: Book) {
-    return <BookItem key={book.id} book={book} thumbnail={book.thumbnail} />;
-  }
+  renderResult = (book: Book) => {
+    return <BookItem key={book.id} book={book} extra={this.map.get(book.id)} />;
+  };
 
   works = () => {
     const w = this.props.works.map(work => work.bookId).join(',');
-    const map = new Map();
-    this.props.works.forEach(work => {
-      map.set(work.bookId, work.thumbnail);
-    });
 
     return this.api.works({ w }).then(works => {
       works.forEach(work => {
-        work.thumbnail = map.get(work.id) || work.thumbnail;
+        Object.assign(work, this.map.get(work.id));
       });
 
       return works;

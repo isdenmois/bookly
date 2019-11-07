@@ -15,6 +15,7 @@ interface Props {
   source?: string;
   forceOpen?: boolean;
   fantlabId?: string;
+  paper?: boolean;
 }
 
 interface State {
@@ -74,7 +75,13 @@ export class SearchScreen extends React.Component<Props, State> {
   }
 
   renderResult = (book: Book) => {
-    return <BookItem key={book.id} book={book} fantlabId={this.props.fantlabId} />;
+    let extra;
+    if (this.props.paper && !book.status) {
+      book.paper = true;
+      extra = { paper: true };
+    }
+
+    return <BookItem key={book.id} book={book} fantlabId={this.props.fantlabId} extra={extra} />;
   };
 
   toggleSearchSource = () => this.setState({ source: this.state.source === fantlab ? livelib : fantlab });

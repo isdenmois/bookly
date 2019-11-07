@@ -66,7 +66,7 @@ export class HomeHeader extends React.Component<any, State> {
       console.warn(e.toString());
     }
 
-    return ['Search', { query, source: livelib }];
+    return ['Search', { query, source: livelib, paper: true }];
   }
 
   scan = () => {
@@ -83,17 +83,27 @@ async function searchWorkIds(q): Promise<any[]> {
 
   try {
     const editions = await api.searchEditions(q);
+    let bookId: string;
 
     for (let i = 0; i < editions.length; i++) {
+      const editionId = String(editions[i].edition_id);
+      const extra = { thumbnail: editionId, paper: true, title: editions[i].name?.replace(/\[(.+?)\]/g, '') };
+
+      if ((bookId = editions[i].name?.match(/\[work=(\d+)\]/)?.[1])) {
+        works.push({ bookId, extra });
+        continue;
+      }
+
       await sleep(1000);
-      const editionId = editions[i].edition_id;
+      delete extra.title;
+
       const edition = await api.edition(editionId);
 
       _.map(edition.content, s => {
-        const matches = s.match(/\/work(\d+)/);
+        bookId = s.match(/\/work(\d+)/)?.[1];
 
-        if (matches) {
-          works.push({ bookId: matches[1], thumbnail: editionId });
+        if (bookId) {
+          works.push({ bookId, extra });
         }
       });
     }
