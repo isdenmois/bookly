@@ -51,7 +51,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
         title='Автор'
         fields={this.sortAuthors(authors)}
         labelKey='name'
-        value={author && author.id}
+        value={author?.id}
         onChange={this.setAuthor}
         clearable
       >

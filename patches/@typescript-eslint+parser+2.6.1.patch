@@ -1,0 +1,17 @@
+diff --git a/node_modules/@typescript-eslint/parser/dist/analyze-scope.js b/node_modules/@typescript-eslint/parser/dist/analyze-scope.js
+index 7d28c77..0ba84e6 100644
+--- a/node_modules/@typescript-eslint/parser/dist/analyze-scope.js
++++ b/node_modules/@typescript-eslint/parser/dist/analyze-scope.js
+@@ -243,6 +243,12 @@ class Referencer extends experimental_utils_1.TSESLintScope.Referencer {
+         this.visit(node.callee);
+         node.arguments.forEach(this.visit, this);
+     }
++    OptionalMemberExpression(node) {
++      this.visit(node.object);
++      if (node.computed) {
++        this.visit(node.property);
++      }
++    }
+     /**
+      * Define the variable of this function declaration only once.
+      * Because to avoid confusion of `no-redeclare` rule by overloading.

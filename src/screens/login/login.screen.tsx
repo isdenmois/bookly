@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { ActivityIndicator, View, TextInput, Button } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { observer } from 'mobx-react';
@@ -9,6 +8,7 @@ import { LoginStore } from './login.store';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
+  location: any;
 }
 
 @provider(LoginStore)
@@ -41,7 +41,7 @@ export class LoginScreen extends React.Component<Props> {
   }
 
   submit = () => {
-    const navigateTo = _.get(this.props, 'location.state.from.pathname') || 'Home';
+    const navigateTo = this.props.location?.state.from?.pathname || 'Home';
 
     this.loginStore.submit().then(() => this.props.navigation.navigate(navigateTo));
   };

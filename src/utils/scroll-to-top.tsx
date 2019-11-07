@@ -13,7 +13,7 @@ export const ScrollToTopContext = React.createContext<ScrollToTop>({ scroll: _.n
 export function withScroll(Component) {
   class Provider extends React.Component {
     setScroll = (list: FlatList<any>) =>
-      this.setState({ scroll: () => list && list.scrollToOffset({ animated: true, offset: 0 }) });
+      this.setState({ scroll: () => list?.scrollToOffset({ animated: true, offset: 0 }) });
 
     state = { scroll: _.noop, setScroll: this.setScroll };
 

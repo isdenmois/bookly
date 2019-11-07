@@ -26,7 +26,7 @@ export class EditableListItem extends React.Component<Props> {
     }
     const obj = _.find(fields, { id } as any);
 
-    return obj && obj[labelKey];
+    return obj?.[labelKey];
   }
 
   render() {

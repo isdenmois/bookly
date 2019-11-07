@@ -9,7 +9,7 @@ const response = {
   author: w => _.map(w.authors, a => a.name).join(', '),
   authors: w => _.map(w.authors, a => ({ id: a.id.toString(), name: a.name })),
   // TODO: попробовать вытянуть без regexp
-  thumbnail: w => (w.image ? _.get(w.image.match(THUMBNAIL_ID), '0', null) : null),
+  thumbnail: w => w.image?.match(THUMBNAIL_ID)?.[0] || null,
   year: w => w.work_year_of_write || w.work_year,
   description: 'work_description',
   language: w => _.capitalize(w.lang),
@@ -34,13 +34,13 @@ export type Params = { bookId: string };
 export default api.get<Params>('/work/:bookId/extended').response(response);
 
 function editionCount(book) {
-  const ru = _.find(_.get(book, 'editions_info.langs'), { lang_code: 'ru' });
+  const ru = _.find(book.editions_info?.langs, { lang_code: 'ru' });
 
   return ru ? ru.count : 0;
 }
 
 function genre(w) {
-  const g = _.find(_.get(w, 'classificatory.genre_group'), g => +g.genre_group_id === 1);
+  const g = _.find(w.classificatory?.genre_group, g => +g.genre_group_id === 1);
 
   return g ? _.map(g.genre, t => t.label).join(', ') : null;
 }
@@ -62,9 +62,9 @@ function search(w) {
 function parent(w) {
   return _.flatMap(w.parents, type =>
     _.map(type, group => ({
-      id: String(_.get(group, '[0].work_id')),
-      title: _.get(group, '[0].work_name'),
-      type: _.capitalize(_.get(group, '[0].work_type', '')) || 'Другое',
+      id: String(group?.[0]?.work_id),
+      title: group?.[0]?.work_name,
+      type: _.capitalize(group?.[0]?.work_type || '') || 'Другое',
     })),
   ).filter(p => p.id);
 }
@@ -106,7 +106,7 @@ function children(w) {
 
 function getEditions(w) {
   const RUSSIAN_EDITION = 10;
-  return _.get(w, `editions_blocks.${RUSSIAN_EDITION}.list`, []);
+  return w.editions_blocks?.[RUSSIAN_EDITION]?.list || [];
 }
 
 function editionIds(w) {
@@ -114,7 +114,7 @@ function editionIds(w) {
 }
 
 function editionTranslators(w) {
-  const translators = _.get(w, 'editions_info.translators', []);
+  const translators = w.editions_info?.translators || [];
   const translatorNames = {};
 
   getEditions(w)
@@ -122,7 +122,7 @@ function editionTranslators(w) {
     .forEach(el => {
       translatorNames[el.edition_id] = el.translators
         .split(',')
-        .map(id => _.get(translators.find(t => t.id === id), 'name', ''));
+        .map(id => translators.find(t => t.id === id)?.name || '');
     });
 
   return translatorNames;
@@ -130,8 +130,8 @@ function editionTranslators(w) {
 
 function translators(w) {
   let translations = _.find(w.translations, { lang_id: 1 });
-  translations = _.get(translations, 'translations') || [];
-  translations = translations.map(t => _.map(_.get(t, 'translators'), 'short_name').join(', ')).filter(t => t);
+  translations = translations?.translations || [];
+  translations = translations.map(t => _.map(t?.translators, 'short_name').join(', ')).filter(t => t);
 
   return translations.sort();
 }
@@ -150,7 +150,7 @@ function films(w) {
 }
 
 function classification(w) {
-  if (!_.get(w, 'classificatory.total_count')) return null;
+  if (!w.classificatory?.total_count) return null;
 
   return _.map(w.classificatory.genre_group, g => {
     const title = +g.genre_group_id === 1 ? 'Жанр' : g.label;

@@ -14,8 +14,8 @@ function response(r): ReviewList {
     likes: i.count_pluses,
     date: i.creation_datetime,
     rating: i.rating,
-    user: _.get(i, 'user.login'),
-    userAvatar: _.get(i, 'user.pic_100'),
+    user: i.user?.login,
+    userAvatar: i.user?.pic_100,
   }));
 
   return { items, total: r.count || 0 };
