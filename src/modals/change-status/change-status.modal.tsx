@@ -27,7 +27,7 @@ const statusMap = {
   [BOOK_STATUSES.READ]: 'Прочитано',
 };
 
-const PRIMARY_BOOK_FIELDS = ['id', 'title', 'author', 'authors', 'thumbnail', 'type', 'search'];
+const PRIMARY_BOOK_FIELDS = ['id', 'title', 'author', 'authors', 'thumbnail', 'type', 'search', 'paper'];
 
 interface Props {
   navigation: NavigationScreenProp<any>;

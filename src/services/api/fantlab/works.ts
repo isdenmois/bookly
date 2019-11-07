@@ -8,7 +8,6 @@ export default api
   .response(obj => works(obj.works));
 
 function works(ws) {
-  console.log('ws.length', ws.length);
   return _.map(ws, w => ({
     id: w.id.toString(),
     title: w.name || w.name_orig,

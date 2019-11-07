@@ -5,7 +5,7 @@ import { withNavigationProps } from 'utils/with-navigation-props';
 import { inject } from 'services';
 import { API } from 'api';
 import { Fetcher } from 'components';
-import Book from 'store/book';
+import Book, { BookData } from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
 import { BookDetailsTabs } from './components/book-details-tabs';
@@ -19,7 +19,7 @@ import { LivelibReviewsTab } from './tabs/livelib-reviews-tab';
 interface Props {
   bookId: string;
   fantlabId: string;
-  thumbnail: string;
+  extra: Partial<BookData>;
   navigation: NavigationStackProp;
 }
 
@@ -66,8 +66,8 @@ export class DetailsScreen extends React.Component<Props> {
   renderResult = (book: Book & BookExtended) => {
     const isExist = book && !!book.status;
 
-    if (this.props.thumbnail && !isExist) {
-      book.thumbnail = this.props.thumbnail;
+    if (this.props.extra && !isExist) {
+      Object.assign(book, this.props.extra);
     }
 
     this.tabs = this.tabs || [

@@ -7,7 +7,7 @@ import { color } from 'types/colors';
 import { Navigation, inject } from 'services';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import Book from 'store/book';
+import Book, { BookData } from 'store/book';
 import { formatDate } from 'utils/date';
 
 const NEXT_STATUSES = {
@@ -33,7 +33,7 @@ interface Props {
   nextStatus?: BOOK_STATUSES;
   cacheThumbnail?: boolean;
   fantlabId?: string;
-  thumbnail?: string;
+  extra?: Partial<BookData>;
 }
 
 export const withBook: Function = withObservables(['book'], ({ book }: Props) => ({
@@ -94,9 +94,9 @@ export class BookItem extends React.Component<Props> {
   }
 
   openBook = () => {
-    const { book, fantlabId, thumbnail } = this.props;
+    const { book, fantlabId, extra } = this.props;
 
-    this.navigation.push('Details', { bookId: book.id, fantlabId, thumbnail });
+    this.navigation.push('Details', { bookId: book.id, fantlabId, extra });
   };
 
   openChangeStatusModal = () => {
