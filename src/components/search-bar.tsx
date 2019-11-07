@@ -6,6 +6,7 @@ import { TouchIcon } from 'components/touch-icon';
 
 interface Props {
   value: string;
+  actionIcon?: string;
   onChange: (value: string) => void;
   onSearch: (value?: string) => void;
   autoFocus?: boolean;
@@ -13,13 +14,14 @@ interface Props {
   placeholder?: string;
   onBack?: () => void;
   onClose?: () => void;
+  onAction?: () => void;
 }
 
 export class SearchBar extends React.Component<Props> {
   input: TextInput;
 
   render() {
-    const { style, value, onChange, onBack } = this.props;
+    const { style, value, actionIcon, onChange, onBack, onAction } = this.props;
 
     return (
       <View style={[s.container, style]}>
@@ -53,6 +55,16 @@ export class SearchBar extends React.Component<Props> {
             style={[s.touchIcon, s.rightIcon]}
             onPress={this.clear}
             name='times'
+            size={20}
+            color={color.PrimaryText}
+          />
+        )}
+        {!value && actionIcon && (
+          <TouchIcon
+            padding={5}
+            style={[s.touchIcon, s.rightIcon]}
+            onPress={onAction}
+            name={actionIcon}
             size={20}
             color={color.PrimaryText}
           />
