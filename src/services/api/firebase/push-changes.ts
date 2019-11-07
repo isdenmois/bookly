@@ -36,12 +36,10 @@ function bookSerialize(book) {
       ...book,
       paper: book.paper || null,
       thumbnail: +book.thumbnail || book.thumbnail,
-      search:
-        book.search &&
-        book.search
-          .split(';')
-          .filter(s => s !== book.title)
-          .join(';'),
+      search: book.search
+        ?.split(';')
+        .filter(s => s !== book.title)
+        .join(';'),
     },
     isEmpty,
   );

@@ -12,14 +12,14 @@ interface Params {
 const response = {
   id: 'id',
   title: 'name',
-  author: r => _.map(_.get(r, 'creators.authors'), a => a.name).join(', '),
-  thumbnail: r => (r.image ? _.get(r.image.match(THUMBNAIL_ID), '0', null) : null),
+  author: r => _.map(r.creators?.authors, a => a.name).join(', '),
+  thumbnail: r => r.image?.match(THUMBNAIL_ID)?.['0'] || null,
   type: 'name_type',
 };
 
 export default api
   .get<Params>('/work/:bookId/similars', true)
-  .filterBefore(row => row && row.type === 'work' && types.includes(row.name_type_icon))
+  .filterBefore(row => row?.type === 'work' && types.includes(row.name_type_icon))
   .response(response);
 
 export interface BookSimilar {

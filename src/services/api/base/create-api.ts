@@ -42,7 +42,7 @@ export function removeFromCache(url: string) {
 export function createApi<T extends Function>(baseUrl: string, schema: Schema): T {
   return function(...args) {
     const query = createQuery(schema.url, schema.query, args);
-    const body = schema.body ? schema.body.apply(null, args) : _.get(args, [0, 'body']);
+    const body = schema.body ? schema.body.apply(null, args) : args[0]?.body;
     const url = `${schema.baseUrl || baseUrl}${createUrl(schema.url, query || {})}`;
 
     return sendReq(schema, body, url);

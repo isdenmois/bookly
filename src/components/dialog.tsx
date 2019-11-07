@@ -17,7 +17,7 @@ interface Props {
 export const Dialog = (props: Props) => {
   const back = useCallback(() => {
     onBack();
-    props.onClose && props.onClose();
+    props.onClose?.();
   }, [props.onClose]);
 
   return (

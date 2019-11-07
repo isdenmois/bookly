@@ -41,7 +41,7 @@ function bookAuthorParse(bookAuthor) {
 
 function bookParse(book) {
   book.search = book.search ? `${book.title};${book.search}` : book.title;
-  book.thumbnail = book.thumbnail && book.thumbnail.toString();
+  book.thumbnail = book.thumbnail?.toString();
   return book;
 }
 

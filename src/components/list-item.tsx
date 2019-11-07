@@ -87,10 +87,7 @@ export class ListItem extends React.Component<Props> {
 
   onPress = () => {
     this.focus();
-
-    if (this.props.onPress) {
-      this.props.onPress();
-    }
+    this.props.onPress?.();
   };
 
   clear = () => {
