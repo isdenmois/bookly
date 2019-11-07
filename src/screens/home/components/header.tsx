@@ -12,7 +12,7 @@ interface State {
 }
 
 export class HomeHeader extends React.Component<any, State> {
-  state: State = { query: '5952400434', fetching: false };
+  state: State = { query: '', fetching: false };
 
   render() {
     const { fetching, query } = this.state;
@@ -21,7 +21,14 @@ export class HomeHeader extends React.Component<any, State> {
       return <ActivityIndicator />;
     }
     return (
-      <SearchBar placeholder='Поиск по FantLab' value={query} onChange={this.queryChange} onSearch={this.onSearch} />
+      <SearchBar
+        placeholder='Поиск по FantLab'
+        value={query}
+        actionIcon='barcode'
+        onChange={this.queryChange}
+        onSearch={this.onSearch}
+        onAction={this.scan}
+      />
     );
   }
 
@@ -61,6 +68,13 @@ export class HomeHeader extends React.Component<any, State> {
 
     return ['Search', { query, source: livelib }];
   }
+
+  scan = () => {
+    const navigation = inject(Navigation);
+    const onScan = (query: string) => this.setState({ query }, this.onSearch);
+
+    navigation.push('/modal/scan-isbn', { onScan });
+  };
 }
 
 async function searchWorkIds(q): Promise<any[]> {
