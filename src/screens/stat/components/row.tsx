@@ -2,9 +2,10 @@ import React, { memo, useCallback } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { color } from 'types/colors';
 import { Navigation, inject } from 'services';
+import { IRow } from '../tabs/shared';
 
 interface Props {
-  row: any;
+  row: IRow;
   columns: string[];
   flexes: number[];
   type: string;
