@@ -7,16 +7,22 @@ import { API } from 'api';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'services/api/fantlab/similar';
 import { BookExtended } from 'types/book-extended';
+import Book from 'store/book';
+import { hasUpdates } from 'utils/has-updates';
 import { withScroll } from './tab';
 
 interface Props {
-  book: BookExtended;
+  book: Book & BookExtended;
   navigation: NavigationStackProp;
 }
 
 @withScroll
 export class SimilarTab extends React.Component<Props> {
   api = inject(API);
+
+  shouldComponentUpdate(props, state) {
+    return hasUpdates(this, props, state, ['book']);
+  }
 
   render() {
     return (

@@ -33,7 +33,7 @@ const BUTTON_TOP = 60;
 const source = observable.box('Fantlab');
 
 @observer
-export class AddButton extends React.PureComponent<FixedProps> {
+export class AddButton extends React.Component<FixedProps> {
   transform = [
     {
       translateY: this.props.scrollY.interpolate({

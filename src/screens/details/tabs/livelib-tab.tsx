@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Text, View, ToastAndroid, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import Book from 'store/book';
@@ -8,6 +8,7 @@ import { color } from 'types/colors';
 import { LiveLibBook } from 'services/api/livelib/book';
 import { inject } from 'services';
 import { Database } from '@nozbe/watermelondb';
+import { hasUpdates } from 'utils/has-updates';
 import { BookDescriptionLine, ViewLine, ViewLineModelRemove, ViewLineAction } from '../components/book-details-lines';
 import { withScroll } from './tab';
 
@@ -18,8 +19,14 @@ interface Props {
   fantlabId: string;
 }
 
+const paths = ['book', 'book.status', 'book.paper'];
+
 @withScroll
-export class LivelibTab extends PureComponent<Props> {
+export class LivelibTab extends Component<Props> {
+  shouldComponentUpdate(props, state) {
+    return hasUpdates(this, props, state, paths);
+  }
+
   render() {
     const { book, isExist } = this.props;
     const fantlabId = !!this.props.fantlabId;

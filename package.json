@@ -85,7 +85,7 @@
     "metro-react-native-babel-preset": "0.57.0",
     "patch-package": "6.2.0",
     "postinstall-postinstall": "2.0.0",
-    "prettier": "1.19.1",
+    "prettier": "prettier/prettier",
     "pretty-quick": "2.0.1",
     "proxy-polyfill": "0.3.0",
     "react-native-dotenv": "0.2.0",
