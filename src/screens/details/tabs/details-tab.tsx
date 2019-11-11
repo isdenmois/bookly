@@ -15,6 +15,7 @@ import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book from 'store/book';
+import { hasUpdates } from 'utils/has-updates';
 import { BookExtended, ParentBook, Film } from 'types/book-extended';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
@@ -36,9 +37,14 @@ interface Props {
 }
 
 const TITLE_SEPARATOR = /\s*;\s*/g;
+const paths = ['book', 'book.paper', 'book.status', 'book.thumbnail'];
 
 @withScroll
-export class DetailsTab extends React.PureComponent<Props> {
+export class DetailsTab extends React.Component<Props> {
+  shouldComponentUpdate(props, state) {
+    return hasUpdates(this, props, state, paths);
+  }
+
   render() {
     const { book, isExist } = this.props;
     const all = this.props.tab !== 'main';
