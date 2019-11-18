@@ -7,7 +7,7 @@ import { BookFilters } from '../book-filters.service';
 
 interface Props {}
 
-export const BookIsLiveLibFilter = observer(({  }: Props) => {
+export const BookIsLiveLibFilter = observer(({}: Props) => {
   const filters = useMemo(() => inject(BookFilters), []);
   const toggle = useCallback(() => filters.setFilter('isLiveLib', filters.isLiveLib ? null : true), [filters]);
 

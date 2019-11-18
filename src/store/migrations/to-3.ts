@@ -5,7 +5,10 @@ export const to3 = {
   steps: [
     addColumns({
       table: 'books',
-      columns: [{ name: 'lid', type: 'string' }, { name: 'paper', type: 'boolean' }],
+      columns: [
+        { name: 'lid', type: 'string' },
+        { name: 'paper', type: 'boolean' },
+      ],
     }),
   ],
 };

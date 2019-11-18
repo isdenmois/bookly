@@ -4,7 +4,11 @@ import { inject } from 'services';
 import { EditableListItem } from './editable-list-item';
 import { BookFilters } from '../book-filters.service';
 
-const fields = [{ id: null, name: 'Все' }, { id: 'paper', name: 'В бумаге' }, { id: 'e', name: 'В электронке' }];
+const fields = [
+  { id: null, name: 'Все' },
+  { id: 'paper', name: 'В бумаге' },
+  { id: 'e', name: 'В электронке' },
+];
 
 export const BookPaperFilter = observer(() => {
   const filters = React.useMemo(() => inject(BookFilters), []);

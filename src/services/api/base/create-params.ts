@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { inject } from 'services/inject/inject';
 import { Session } from 'services/session';
 import { queryParams } from './create-url';
