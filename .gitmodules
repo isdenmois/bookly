@@ -1,3 +1,4 @@
 [submodule "e2e"]
 	path = e2e
 	url = https://github.com/isdenmois/bookly-e2e.git
+	branch = master
