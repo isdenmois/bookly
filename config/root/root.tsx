@@ -31,7 +31,7 @@ class App extends React.Component<any> {
     }
   };
 
-  subscription = onChanges.subscribe(this.sync);
+  subscription = onChanges.subscribe(() => this.syncService.sync());
 
   constructor(props, context) {
     super(props, context);

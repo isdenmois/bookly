@@ -69,6 +69,7 @@
     "babel-plugin-module-resolver": "3.2.0",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-preset-mobx": "2.0.0",
+    "detox": "14.8.0",
     "eslint": "6.6.0",
     "eslint-config-prettier": "6.6.0",
     "eslint-config-react": "1.1.7",
@@ -76,7 +77,7 @@
     "hermes-engine": "0.2.1",
     "hoist-non-react-statics": "3.3.1",
     "husky": "3.1.0",
-    "jest": "24.9.0",
+    "jest": "24.8.0",
     "jetifier": "1.6.4",
     "metro-minify-terser": "0.56.3",
     "metro-react-native-babel-preset": "0.57.0",
@@ -101,12 +102,18 @@
       "android.emu.debug": {
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
         "build": "node dev-tools/release --test --type=debug",
-        "type": "android.attached"
+        "type": "android.attached",
+        "device": {
+          "adbName": "emulator-5554"
+        }
       },
       "android.emu.release": {
         "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
         "build": "node dev-tools/release --clean --test",
-        "type": "android.attached"
+        "type": "android.attached",
+        "device": {
+          "adbName": "emulator-5554"
+        }
       }
     },
     "test-runner": "jest"

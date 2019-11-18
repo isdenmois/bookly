@@ -1,5 +1,6 @@
 import { action, observable } from 'mobx';
 import { Session, SyncService, inject } from 'services';
+import { ToastAndroid } from 'react-native';
 
 export class LoginStore {
   session = inject(Session);
@@ -19,12 +20,12 @@ export class LoginStore {
 
     try {
       await this.syncService.sync();
-      this.login = '';
     } catch (e) {
-      console.error(e);
+      ToastAndroid.show(e?.message || 'Не удалось войти', ToastAndroid.SHORT);
       this.session.set('userId', null);
       throw e;
     } finally {
+      this.login = '';
       this.submitting = false;
     }
   }
