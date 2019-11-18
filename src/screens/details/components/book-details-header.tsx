@@ -1,12 +1,12 @@
 import React from 'react';
 import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { color } from 'types/colors';
 import { TouchIcon } from 'components';
 
 interface Props {
   bookId: string;
-  navigation: NavigationScreenProp<any>;
+  navigation: NavigationStackProp<any>;
 }
 
 export class BookDetailsHeader extends React.PureComponent<Props> {
@@ -28,6 +28,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
           size={24}
           color='white'
           onPress={this.goBack}
+          onLongPress={this.goToHome}
         />
         {this.props.children}
         <TouchIcon style={s.icon} paddingHorizontal={15} name='globe' size={24} color='white' onPress={this.openWeb} />
@@ -37,6 +38,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
 
   openWeb = () => Linking.openURL(this.url);
   goBack = () => this.props.navigation.goBack();
+  goToHome = () => this.props.navigation.popToTop();
 }
 
 const s = StyleSheet.create({

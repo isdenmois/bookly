@@ -51,7 +51,7 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
 
     return (
       <View style={s.header}>
-        <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={goBack} />
+        <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={goBack} onLongPress={goToHome} />
         <Text style={s.title} onPress={this.context.scroll}>
           {this.props.title}
         </Text>
@@ -77,6 +77,12 @@ function goBack() {
   const navigation = inject(Navigation);
 
   navigation.pop();
+}
+
+function goToHome() {
+  const navigation = inject(Navigation);
+
+  navigation.popToTop();
 }
 
 const s = StyleSheet.create({
