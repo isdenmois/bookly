@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { api } from '../base/api';
 
 // TODO: тайпинги
