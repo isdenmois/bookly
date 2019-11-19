@@ -52,7 +52,7 @@ export const BookMainInfo = memo(
         scrollHeight={scrollHeight}
       >
         <Background bookTitle={bookTitle} book={book}>
-          <View style={s.darkOverlay}>
+          <View style={s.darkOverlay} testID={`Details${book.id}`}>
             <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} />
             <BookAuthor book={book} navigation={navigation} />
             {!book.thumbnail && <SecondaryData book={book} navigation={navigation} />}

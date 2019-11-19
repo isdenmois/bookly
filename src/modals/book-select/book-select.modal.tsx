@@ -28,7 +28,7 @@ export class BookSelectModal extends React.Component<Props, State> {
   render() {
     const { search, selected } = this.state;
     return (
-      <Dialog testID='bookSelectModal' modalStyle={s.borderRadius}>
+      <Dialog testID='BookSelectModal' modalStyle={s.borderRadius}>
         <BookSelectHeader search={this.state.search} onChange={this.setSearch} />
         <BookList
           database={this.database}
@@ -37,7 +37,7 @@ export class BookSelectModal extends React.Component<Props, State> {
           onSelect={this.selectBook}
         />
         {selected && (
-          <TouchableOpacity style={[s.button, s.borderRadius]} onPress={this.setBookSelected}>
+          <TouchableOpacity style={[s.button, s.borderRadius]} onPress={this.setBookSelected} testID='DoSelectBook'>
             <Text style={s.text}>Выбрать</Text>
           </TouchableOpacity>
         )}

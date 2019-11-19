@@ -29,6 +29,7 @@ interface Props {
   disabled?: boolean;
   style?: ViewStyle;
   rowStyle?: ViewStyle;
+  testID?: string;
   onPress?: () => void;
   onChange?: (text: string) => void;
   onSubmit?: () => void;
@@ -48,7 +49,7 @@ export class ListItem extends React.Component<Props> {
     const Container: any = (this.props.onPress || isEditable) && !disabled ? TouchableOpacity : View;
 
     return (
-      <Container style={[s.container, style]} onPress={this.onPress}>
+      <Container style={[s.container, style]} onPress={this.onPress} testID={counter ? null : this.props.testID}>
         {!!icon && <View style={s.icon}>{icon}</View>}
         <View style={[...cn({ border, borderFirst: first, disabled }), this.props.rowStyle]}>
           {!!label && <TextM style={s.label}>{label}</TextM>}
@@ -67,7 +68,11 @@ export class ListItem extends React.Component<Props> {
             />
           )}
           {children}
-          {counter !== undefined && <Text style={s.counter}>{counter}</Text>}
+          {counter !== undefined && (
+            <Text style={s.counter} testID={this.props.testID}>
+              {counter}
+            </Text>
+          )}
           {selected}
           {!!this.props.clearable && !!this.props.value && (
             <TouchIcon paddingLeft={10} name='times' size={20} color={color.PrimaryText} onPress={this.clear} />

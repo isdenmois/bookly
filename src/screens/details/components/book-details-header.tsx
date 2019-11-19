@@ -29,6 +29,7 @@ export class BookDetailsHeader extends React.PureComponent<Props> {
           color='white'
           onPress={this.goBack}
           onLongPress={this.goToHome}
+          testID='GoBackButton'
         />
         {this.props.children}
         <TouchIcon style={s.icon} paddingHorizontal={15} name='globe' size={24} color='white' onPress={this.openWeb} />
