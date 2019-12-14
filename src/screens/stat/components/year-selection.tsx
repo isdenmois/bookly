@@ -42,6 +42,7 @@ function createYears(min) {
 const s = StyleSheet.create({
   container: {
     marginTop: 15,
+    marginHorizontal: 15,
   } as ViewStyle,
   scroll: {
     flexDirection: 'row',

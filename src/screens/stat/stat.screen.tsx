@@ -1,7 +1,9 @@
 import React from 'react';
 import { map } from 'rxjs/operators';
 import withObservables from '@nozbe/with-observables';
-import { Text, View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, ViewStyle, ScrollView } from 'react-native';
+import { action, computed, observable } from 'mobx';
+import { observer } from 'mobx-react';
 import { HeaderRow } from './components/header-row';
 import { ScreenHeader } from 'components';
 import { Row } from './components/row';
@@ -14,6 +16,7 @@ import { getCurrentYear } from 'utils/date';
 import { ByMonthFactory } from './tabs/by-month.factory';
 import { ByRatingFactory } from './tabs/by-rating.factory';
 import { ByYearFactory } from './tabs/by-year.factory';
+import { ByAuthorFactory } from './tabs/by-author.factory';
 import { mapBooks, BookItems, StatBook, IRow } from './tabs/shared';
 
 const TYPES = {
@@ -29,6 +32,12 @@ const STAT_GROUPS = {
     columns: ['name', 'count', 'days', 'rating'],
     flexes: [2, 1, 1, 1],
     factory: ByMonthFactory,
+  },
+  [TYPES.AUTHOR]: {
+    header: ['Автор', 'Книг', 'Оценка'],
+    columns: ['id', 'count', 'rating'],
+    flexes: [2, 1, 1],
+    factory: ByAuthorFactory,
   },
   [TYPES.RATING]: {
     header: ['Оценка', 'Книг'],
@@ -74,43 +83,48 @@ interface State {
 }
 
 @withBooks
-export class StatScreen extends React.Component<Props, State> {
-  state: State = {
-    type: TYPES.MONTH,
-    year: CURRENT_YEAR,
-    isLoading: !this.props.books,
-    isCalculating: !this.props.books,
-    books: (this.props.books && this.props.books.items) || [],
-    rows: this.props.books ? this.getRows(this.props.books.items || [], CURRENT_YEAR) : [],
-    minYear: (this.props.books && this.props.books.minYear) || 0,
-  };
+@observer
+export class StatScreen extends React.Component<Props> {
+  @observable type: string = TYPES.MONTH;
+  @observable year: number = CURRENT_YEAR;
+  @observable isLoading: boolean = !this.props.books;
+  @observable minYear: number = (this.props.books && this.props.books.minYear) || 0;
+  @observable.ref books: StatBook[] = (this.props.books && this.props.books.items) || [];
+
+  @computed get rows(): IRow[] {
+    const type = this.type || TYPES.MONTH;
+    const { books, year } = this;
+
+    return STAT_GROUPS[type].factory({ books, year });
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.books && prevProps.books !== this.props.books) {
       const { minYear, items } = this.props.books;
 
-      this.setState({ isLoading: false, isCalculating: false, books: items, minYear, rows: this.getRows(items) });
+      this.setBooks(items, minYear);
     }
   }
 
   render() {
-    const { isLoading, isCalculating, type, year, minYear } = this.state;
+    const { isLoading, type, year, minYear } = this;
     const group = STAT_GROUPS[type];
 
     return (
-      <View>
+      <View style={s.container}>
         <ScreenHeader title='Статистика' />
         {isLoading && this.renderSpinner()}
         {!isLoading && (
           <>
-            <StatGroups type={type} onChange={this.setGroup} />
-            <View style={s.body}>
+            <View>
+              <StatGroups type={type} onChange={this.setGroup} />
               {type !== 'YEAR' && <YearSelection year={year} minYear={minYear} onChange={this.setYear} />}
               <HeaderRow columns={group.header} flexes={group.flexes} />
-
-              {isCalculating && this.renderSpinner()}
-              {!isCalculating && this.renderRows()}
             </View>
+
+            <ScrollView style={s.body} contentContainerStyle={s.bodyContainer}>
+              {this.renderRows()}
+            </ScrollView>
           </>
         )}
       </View>
@@ -122,41 +136,44 @@ export class StatScreen extends React.Component<Props, State> {
   }
 
   renderRows() {
-    if (!this.state.rows || !this.state.rows.length) {
+    if (!this.rows?.length) {
       return <Text>Ничего не найдено</Text>;
     }
-    const { type, year } = this.state;
+
+    const { type, year } = this;
     const group = STAT_GROUPS[type];
 
-    return this.state.rows.map(row => (
+    return this.rows.map(row => (
       <Row key={row.id} row={row} columns={group.columns} flexes={group.flexes} type={type} year={year} />
     ));
   }
 
-  getRows(books = this.state.books, year = this.state.year) {
-    const type = (this.state && this.state.type) || TYPES.MONTH;
-
-    return STAT_GROUPS[type].factory({ books, year });
+  @action setBooks(books: StatBook[], minYear: number) {
+    this.isLoading = false;
+    this.books = books;
+    this.minYear = minYear;
   }
 
-  setGroup = type => {
-    this.setState({ type, rows: [], isCalculating: true }, () => {
-      this.setState({ rows: this.getRows(), isCalculating: false });
-    });
+  @action setGroup = type => {
+    this.type = type;
   };
 
-  setYear = year => {
-    this.setState({ year, rows: [], isCalculating: true }, () => {
-      this.setState({ rows: this.getRows(), isCalculating: false });
-    });
+  @action setYear = year => {
+    this.year = year;
   };
 }
 
 const s = StyleSheet.create({
+  container: {
+    flex: 1,
+  } as ViewStyle,
   spinner: {
     marginTop: 40,
   } as ViewStyle,
   body: {
+    marginTop: 15,
+  } as ViewStyle,
+  bodyContainer: {
     paddingHorizontal: 15,
   } as ViewStyle,
 });

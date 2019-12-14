@@ -5,6 +5,7 @@ export interface StatBook {
   month: number;
   date: Date;
   rating: number;
+  authors: string[];
 }
 
 export interface BookItems {
@@ -48,12 +49,13 @@ export function mapBooks(items: any[]) {
   items = items.map(b => {
     const year = b.date.getFullYear();
     const month = b.date.getMonth();
+    const authors = b.author ? b.author.split(', ') : [];
 
     if (year < minYear) {
       minYear = year;
     }
 
-    return { year, month, rating: b.rating, date: b.date };
+    return { year, month, rating: b.rating, date: b.date, authors };
   });
 
   return { items, minYear };
