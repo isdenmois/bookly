@@ -10,7 +10,7 @@ interface Props {
 
 const groups = [
   { id: 'MONTH', title: 'По месяцам' },
-  // { id: 'AUTHOR', title: 'По автору' },
+  { id: 'AUTHOR', title: 'По автору' },
   { id: 'RATING', title: 'По оценке' },
   { id: 'YEAR', title: 'По годам' },
 ];
