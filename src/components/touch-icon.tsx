@@ -12,7 +12,15 @@ type Props = FontAwesome5IconProps & {
 
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
-export function TouchIcon({ padding, paddingHorizontal, paddingVertical, paddingLeft, onPress, ...props }: Props) {
+export function TouchIcon({
+  padding,
+  paddingHorizontal,
+  paddingVertical,
+  paddingLeft,
+  onPress,
+  onLongPress,
+  ...props
+}: Props) {
   const style: ViewStyle = {};
 
   if (padding) {
@@ -32,7 +40,7 @@ export function TouchIcon({ padding, paddingHorizontal, paddingVertical, padding
   }
 
   return (
-    <TouchableOpacity style={style} onPress={onPress} hitSlop={hitSlop}>
+    <TouchableOpacity style={style} onPress={onPress} onLongPress={onLongPress} hitSlop={hitSlop}>
       <Icon {...props} />
     </TouchableOpacity>
   );
