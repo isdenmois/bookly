@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator, StackViewTransitionConfigs } from 'react-navigation-stack';
-import { Easing, Animated } from 'react-native';
+import { createStackNavigator, TransitionPresets } from 'react-navigation-stack';
+import { Easing } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useScreens } from 'react-native-screens';
 
@@ -20,10 +20,11 @@ const createNavigator = initialRouteName =>
           MainStack: createStackNavigator(MainStack, {
             initialRouteName: 'Home',
             headerMode: 'none',
-            gesturesEnabled: true,
-            transitionConfig: () => StackViewTransitionConfigs.SlideFromRightIOS,
+            gestureEnabled: true,
             defaultNavigationOptions: {
-              gesturesEnabled: true,
+              ...TransitionPresets.SlideFromRightIOS,
+              gestureEnabled: true,
+              cardStyle: { backgroundColor: 'white' },
             },
           } as any),
           ...createModalStack(ModalStack),
@@ -32,8 +33,20 @@ const createNavigator = initialRouteName =>
           initialRouteName: 'MainStack',
           mode: 'modal',
           headerMode: 'none',
-          transparentCard: true,
-          transitionConfig,
+          defaultNavigationOptions: {
+            cardStyleInterpolator({ current, closing }) {
+              return {
+                cardStyle: {
+                  opacity: current.progress,
+                },
+              };
+            },
+            transitionSpec: {
+              open: modalConfig,
+              close: modalConfig,
+            },
+            cardStyle: { backgroundColor: 'transparent' },
+          },
         } as any,
       ),
     },
@@ -60,14 +73,16 @@ export const create = route => {
   return createAppContainer(createNavigator(route));
 };
 
+const modalConfig = {
+  animation: 'timing',
+  config: {
+    duration: 100,
+    easing: Easing.out(Easing.poly(4)),
+  },
+};
+
 function isRouteModal(scene) {
   return scene && scene.routeName.startsWith('/modal');
-}
-
-function transitionConfig(next, prev, isModal) {
-  isModal = isModal || (prev && isRouteModal(prev.scene));
-
-  return isModal ? modalTransition : {};
 }
 
 function hasModals(nav) {
@@ -75,29 +90,6 @@ function hasModals(nav) {
 
   return _.some(nav.routes[1].routes, isRouteModal);
 }
-
-const modalTransition = {
-  transitionSpec: {
-    duration: 200,
-    easing: Easing.out(Easing.poly(4)),
-    timing: Animated.timing,
-    useNativeDriver: true,
-  },
-  containerStyle: {
-    backgroundColor: 'black',
-  },
-  screenInterpolator: sceneProps => {
-    const { position, scene } = sceneProps;
-    const thisSceneIndex = scene.index;
-
-    const opacity = position.interpolate({
-      inputRange: [thisSceneIndex - 1, thisSceneIndex, thisSceneIndex + 1],
-      outputRange: [0, 1, 1],
-    });
-
-    return { opacity };
-  },
-};
 
 function createModalStack(stack) {
   const result = {};
