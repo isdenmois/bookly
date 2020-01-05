@@ -26,10 +26,12 @@ export function ByAuthorFactory({ books, year }: FactoryProps): AuthorRow[] {
   });
 
   const result = Array.from(authors.values());
+  const last = 'Я'.charCodeAt(0);
+  const byId: any = (row: IRow) => last - (row.id as string).charCodeAt(0);
 
   result.forEach(row => {
     row.rating = round(row.rating / row.count);
   });
 
-  return _.sortBy(result, 'count').reverse();
+  return _.sortBy(result, ['count', byId]).reverse();
 }
