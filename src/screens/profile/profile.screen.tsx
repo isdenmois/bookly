@@ -34,6 +34,8 @@ export class ProfileScreen extends React.Component<Props> {
           <RemoveDeleted />
 
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
+          <ListItem label={`V8 version is ${global._v8runtime ? global._v8runtime().version : 'unavailable'}`} />
+          <ListItem label={`Hermes is ${global.HermesInternal ? 'enabled' : 'disabled'}`} />
         </View>
 
         <View style={s.buttonContainer}>
