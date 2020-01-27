@@ -78,7 +78,7 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.js",
-    enableHermes: true
+    enableHermes: false
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -129,6 +129,8 @@ android {
         pickFirst '**/x86_64/libc++_shared.so'
         pickFirst '**/x86/libjsc.so'
         pickFirst '**/armeabi-v7a/libjsc.so'
+        // Make sure libjsc.so does not packed in APK
+        exclude "**/libjsc.so"
     }
 
     compileOptions {
@@ -190,6 +192,8 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    // Add v8-android - prebuilt libv8android.so into APK 
+    implementation 'org.chromium:v8-android:+'
     implementation project(':watermelondb')
 
     if (enableHermes) {

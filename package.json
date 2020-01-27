@@ -92,13 +92,14 @@
     "proxy-polyfill": "0.3.0",
     "react-native-dotenv": "0.2.0",
     "react-native-typescript-transformer": "1.2.13",
+    "react-native-v8": "^0.61.5-patch.0",
     "reactotron-react-native": "4.0.2",
     "typescript": "3.7.4",
+    "v8-android-nointl": "^7.8.2",
     "why-did-you-update": "1.0.6"
   },
   "resolutions": {
     "**/hoist-non-react-statics": "3.3.1",
-    "**/rxjs": "6.5.4",
     "**/fbjs": "1.0.0"
   },
   "detox": {
