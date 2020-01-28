@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
+import { Animated, Platform, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { observer } from 'mobx-react';
@@ -131,7 +131,14 @@ const s = StyleSheet.create({
   } as ViewStyle,
   button: {
     backgroundColor: color.Background,
-    elevation: 3,
+    ...Platform.select({
+      android: {
+        elevation: 3,
+      },
+      web: {
+        boxShadow: '0 1px 4px #0003',
+      },
+    }),
   } as ViewStyle,
   buttonText: {
     color: color.PrimaryText,

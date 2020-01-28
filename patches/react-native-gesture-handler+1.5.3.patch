@@ -1,0 +1,27 @@
+diff --git a/node_modules/react-native-gesture-handler/GestureComponents.web.js b/node_modules/react-native-gesture-handler/GestureComponents.web.js
+index 9d2a339..96edc48 100644
+--- a/node_modules/react-native-gesture-handler/GestureComponents.web.js
++++ b/node_modules/react-native-gesture-handler/GestureComponents.web.js
+@@ -1,10 +1,8 @@
+ import React from 'react';
+ import {
+-  DrawerLayoutAndroid as RNDrawerLayoutAndroid,
+   FlatList as RNFlatList,
+   Switch as RNSwitch,
+   TextInput as RNTextInput,
+-  ToolbarAndroid as RNToolbarAndroid,
+   ScrollView as RNScrollView,
+ } from 'react-native';
+ 
+@@ -20,11 +18,6 @@ export const Switch = createNativeWrapper(RNSwitch, {
+   disallowInterruption: true,
+ });
+ export const TextInput = createNativeWrapper(RNTextInput);
+-export const ToolbarAndroid = createNativeWrapper(RNToolbarAndroid);
+-export const DrawerLayoutAndroid = createNativeWrapper(RNDrawerLayoutAndroid, {
+-  disallowInterruption: true,
+-});
+-DrawerLayoutAndroid.positions = RNDrawerLayoutAndroid.positions;
+ 
+ export const FlatList = React.forwardRef((props, ref) => (
+   <RNFlatList

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { BookExtended } from 'types/book-extended';
 import { withScroll } from './tab';
 import { CollapsibleChildren } from '../components/collapsible-children';

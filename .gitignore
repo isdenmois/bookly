@@ -61,3 +61,5 @@ android/app/key.jks
 
 android/app/src/main/res/drawable-*/node_modules*.png
 RELEASE_NOTES.md
+dist/*
+!dist/now.json

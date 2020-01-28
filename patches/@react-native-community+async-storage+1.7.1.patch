@@ -1,0 +1,25 @@
+diff --git a/node_modules/@react-native-community/async-storage/lib/AsyncStorage.web.js b/node_modules/@react-native-community/async-storage/lib/AsyncStorage.web.js
+new file mode 100644
+index 0000000..968f827
+--- /dev/null
++++ b/node_modules/@react-native-community/async-storage/lib/AsyncStorage.web.js
+@@ -0,0 +1,19 @@
++class Storage {
++  getItem(key) {
++    return Promise.resolve(localStorage.getItem(key));
++  }
++
++  setItem(key, value) {
++    return Promise.resolve(localStorage.setItem(key, value));
++  }
++
++  removeItem(key) {
++    return Promise.resolve(localStorage.removeItem(key));
++  }
++
++  clear() {
++    return Promise.resolve(localStorage.clear());
++  }
++}
++
++export default new Storage();

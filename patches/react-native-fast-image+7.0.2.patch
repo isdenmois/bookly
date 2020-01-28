@@ -11,3 +11,36 @@ index 5b6b4c5..8fb2ef3 100644
      annotationProcessor "com.github.bumptech.glide:compiler:${_glideVersion}"
      implementation("com.github.bumptech.glide:okhttp3-integration:${_glideVersion}")
  }
+diff --git a/node_modules/react-native-fast-image/src/index.js b/node_modules/react-native-fast-image/src/index.js
+index bd005fc..d0a65b1 100644
+--- a/node_modules/react-native-fast-image/src/index.js
++++ b/node_modules/react-native-fast-image/src/index.js
+@@ -23,9 +23,9 @@ function FastImageBase({
+     forwardedRef,
+     ...props
+ }) {
+-    const resolvedSource = Image.resolveAssetSource(source)
++    const resolvedSource = FastImageViewNativeModule ? Image.resolveAssetSource(source) : source
+ 
+-    if (fallback) {
++    if (fallback || !FastImageViewNativeModule) {
+         return (
+             <View style={[styles.imageContainer, style]} ref={forwardedRef}>
+                 <Image
+@@ -102,14 +102,14 @@ FastImage.cacheControl = {
+ }
+ 
+ FastImage.preload = sources => {
+-    FastImageViewNativeModule.preload(sources)
++    FastImageViewNativeModule && FastImageViewNativeModule.preload(sources)
+ }
+ 
+ FastImage.defaultProps = {
+     resizeMode: FastImage.resizeMode.cover,
+ }
+ 
+-const FastImageView = requireNativeComponent('FastImageView', FastImage, {
++const FastImageView = FastImageViewNativeModule && requireNativeComponent('FastImageView', FastImage, {
+     nativeOnly: {
+         onFastImageLoadStart: true,
+         onFastImageProgress: true,

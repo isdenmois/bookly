@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { color } from 'types/colors';
 import { inject } from 'services';
 import { API } from 'api';
