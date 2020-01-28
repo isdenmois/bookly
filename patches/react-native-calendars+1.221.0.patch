@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-native-calendars/src/agenda/index.js b/node_modules/react-native-calendars/src/agenda/index.js
+index 403e445..17d7e90 100644
+--- a/node_modules/react-native-calendars/src/agenda/index.js
++++ b/node_modules/react-native-calendars/src/agenda/index.js
+@@ -14,7 +14,7 @@ import {VelocityTracker} from '../input';
+ const HEADER_HEIGHT = 104;
+ const KNOB_HEIGHT = 24;
+ //Fallback when RN version is < 0.44
+-const viewPropTypes = ViewPropTypes || View.propTypes;
++const viewPropTypes = ViewPropTypes || View.propTypes || {};
+ 
+ /**
+  * @description: Agenda component
+diff --git a/node_modules/react-native-calendars/src/calendar/index.js b/node_modules/react-native-calendars/src/calendar/index.js
+index fd3a39c..e554ddb 100644
+--- a/node_modules/react-native-calendars/src/calendar/index.js
++++ b/node_modules/react-native-calendars/src/calendar/index.js
+@@ -17,7 +17,7 @@ import {SELECT_DATE_SLOT} from '../testIDs';
+ 
+ 
+ //Fallback when RN version is < 0.44
+-const viewPropTypes = ViewPropTypes || View.propTypes;
++const viewPropTypes = ViewPropTypes || View.propTypes || {};
+ const EmptyArray = [];
+ 
+ /**

@@ -72,11 +72,15 @@ function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scroll
         ? [
             s.header,
             {
-              translateY: scrollY.interpolate({
-                inputRange: [0, headerHeight - scrollHeight],
-                outputRange: [0, -headerHeight + scrollHeight],
-                extrapolate: 'clamp',
-              }),
+              transform: [
+                {
+                  translateY: scrollY.interpolate({
+                    inputRange: [0, headerHeight - scrollHeight],
+                    outputRange: [0, -headerHeight + scrollHeight],
+                    extrapolate: 'clamp',
+                  }),
+                },
+              ],
             },
           ]
         : null,
@@ -86,11 +90,15 @@ function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scroll
     () =>
       headerHeight
         ? {
-            translateY: scrollY.interpolate({
-              inputRange: [0, headerHeight - scrollHeight],
-              outputRange: [0, headerHeight - scrollHeight],
-              extrapolate: 'clamp',
-            }),
+            transform: [
+              {
+                translateY: scrollY.interpolate({
+                  inputRange: [0, headerHeight - scrollHeight],
+                  outputRange: [0, headerHeight - scrollHeight],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ],
           }
         : null,
     [headerHeight, scrollY, scrollHeight],
@@ -214,6 +222,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   collapsibleContainer: {
     position: 'relative',
+    zIndex: 1,
   } as ViewStyle,
   collapsible: {
     backgroundColor: 'white',

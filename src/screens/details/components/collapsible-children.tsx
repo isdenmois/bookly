@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { ChildBook } from 'types/book-extended';
 import { color } from 'types/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';

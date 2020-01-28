@@ -1,11 +1,12 @@
 import _ from 'lodash';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator, TransitionPresets } from 'react-navigation-stack';
 import { Easing } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useScreens } from 'react-native-screens';
 
 import { LoginScreen } from 'screens/login/login.screen';
+import { createApp } from './create-app';
 import { MainStack, ModalStack } from './routes';
 
 const createNavigator = initialRouteName =>
@@ -70,7 +71,7 @@ export const loadNavigationState = async () => {
 
 export const create = route => {
   useScreens(true); // eslint-disable-line react-hooks/rules-of-hooks
-  return createAppContainer(createNavigator(route));
+  return createApp(createNavigator(route));
 };
 
 const modalConfig = {

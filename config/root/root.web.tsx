@@ -8,6 +8,7 @@ import { provider, asValue, asRef } from 'services/inject/provider';
 
 import { Navigation, Session, SyncService, inject } from 'services';
 import { API } from 'api';
+import { create } from '../router';
 
 @provider(asValue(Database, database), asRef(Navigation, 'setNavigation'), Session, API, SyncService)
 class App extends React.Component<any> {
@@ -48,16 +49,7 @@ class App extends React.Component<any> {
     }
 
     if (!this.RootStack) {
-      const routes = require('../router');
-
-      debugger;
-      this.RootStack = routes.create(this.session.userId ? 'App' : 'Login');
-      SplashScreen.hide();
-
-      if (__DEV__) {
-        this.loadNavigationState = routes.loadNavigationState;
-        this.persistNavigationState = routes.persistNavigationState;
-      }
+      this.RootStack = create(this.session.userId ? 'App' : 'Login');
     }
 
     const { RootStack, loadNavigationState, persistNavigationState } = this;

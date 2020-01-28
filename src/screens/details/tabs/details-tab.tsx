@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
-import { NavigationStackProp } from 'react-navigation-stack/lib/typescript/types';
+import { NavigationStackProp } from 'react-navigation-stack';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book from 'store/book';

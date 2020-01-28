@@ -5,7 +5,7 @@ const config = {
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     'transform-class-properties',
     [
-      'babel-plugin-module-resolver',
+      'module-resolver',
       {
         root: ['./src'],
         alias: {

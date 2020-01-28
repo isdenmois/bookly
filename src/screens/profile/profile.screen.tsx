@@ -21,6 +21,9 @@ export class ProfileScreen extends React.Component<Props> {
   database = inject(Database);
 
   render() {
+    const v8runtime = (global as any)._v8runtime;
+    const isHermes = (global as any).HermesInternal;
+
     return (
       <View style={s.container}>
         <ScreenHeader title={this.session.userId} />
@@ -34,8 +37,8 @@ export class ProfileScreen extends React.Component<Props> {
           <RemoveDeleted />
 
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
-          <ListItem label={`V8 version is ${global._v8runtime ? global._v8runtime().version : 'unavailable'}`} />
-          <ListItem label={`Hermes is ${global.HermesInternal ? 'enabled' : 'disabled'}`} />
+          <ListItem label={`V8 version is ${v8runtime ? v8runtime().version : 'unavailable'}`} />
+          <ListItem label={`Hermes is ${isHermes ? 'enabled' : 'disabled'}`} />
         </View>
 
         <View style={s.buttonContainer}>

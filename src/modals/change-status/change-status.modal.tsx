@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
-import { Text, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { Text, StyleSheet, View, ViewStyle, TextStyle, Platform } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import DateTimePicker from 'react-native-modal-datetime-picker';
 import { inject, Session } from 'services';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
@@ -13,7 +12,7 @@ import Book, { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { API } from 'services/api';
-import { Button, Dialog, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
+import { Button, Dialog, DateTimePicker, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
 
 const statusOptions = [
   { key: BOOK_STATUSES.WISH, title: 'Хочу прочитать' },
@@ -96,6 +95,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   render() {
     const { book } = this.props;
     const { status, statusEditable } = this.state;
+    const isWeb = Platform.OS === 'web';
 
     return (
       <Dialog testID='changeStatusModal' style={s.dialog}>
@@ -119,7 +119,22 @@ export class ChangeStatusModal extends React.Component<Props> {
             )}
           </ListItem>
 
-          {status === BOOK_STATUSES.READ && (
+          {status === BOOK_STATUSES.READ && isWeb && (
+            <ListItem
+              rowStyle={s.row}
+              onPress={this.showDatePicker}
+              icon={<Icon name='calendar-alt' style={s.icon} size={20} color={color.PrimaryText} />}
+              value={formatDate(this.state.date)}
+            >
+              <DateTimePicker
+                isVisible={this.state.dateEditable}
+                date={this.state.date}
+                onConfirm={this.setDate}
+                onCancel={this.closeDatePicker}
+              />
+            </ListItem>
+          )}
+          {status === BOOK_STATUSES.READ && !isWeb && (
             <ListItem
               rowStyle={s.row}
               onPress={this.showDatePicker}
@@ -135,7 +150,7 @@ export class ChangeStatusModal extends React.Component<Props> {
           )}
         </View>
 
-        {status === BOOK_STATUSES.READ && (
+        {status === BOOK_STATUSES.READ && !isWeb && (
           <DateTimePicker
             isVisible={this.state.dateEditable}
             date={this.state.date}
