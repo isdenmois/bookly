@@ -34,7 +34,10 @@ function parseReviews(changes) {
 }
 
 function bookAuthorParse(bookAuthor) {
-  const [book_id, author_id] = bookAuthor.id.split('_');
+  const [book_id, author_id] = bookAuthor.id
+    .replace(/l_/gi, 'l-')
+    .split('_')
+    .map(i => i.replace('l-', 'l_'));
 
   return { ...bookAuthor, author_id, book_id };
 }
