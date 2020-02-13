@@ -24,6 +24,8 @@ interface Props {
   icon?: ReactNode;
   selected?: ReactNode;
   keyboardType?: KeyboardTypeOptions;
+  autoCapitalize?: any;
+  autoFocus?: any;
   placeholder?: string;
   clearable?: boolean;
   disabled?: boolean;
@@ -64,6 +66,7 @@ export class ListItem extends React.Component<Props> {
               onChangeText={this.props.onChange}
               onBlur={this.props.onBlur}
               onSubmitEditing={this.props.onSubmit}
+              autoCapitalize={this.props.autoCapitalize}
               ref={this.setRef}
             />
           )}
