@@ -116,8 +116,7 @@ module.exports = {
     filename: 'app-[hash].bundle.js',
     globalObject: 'this',
   },
-  devtool: false,
-  // devtool: 'eval-source-map',
+  devtool: webpackEnv === 'development' ? 'eval-source-map' : false,
   module: {
     rules: [
       flowConfig,
