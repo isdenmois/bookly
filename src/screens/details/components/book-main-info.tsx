@@ -105,15 +105,13 @@ function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scroll
   );
 
   return (
-    <View style={s.collapsibleContainer}>
-      <Animated.View style={headerStyle} onLayout={onLayout}>
-        <View style={s.collapsible}>
-          <Animated.View style={childrenStyle}>{children}</Animated.View>
+    <Animated.View style={headerStyle} onLayout={onLayout}>
+      <View style={s.collapsible}>
+        <Animated.View style={childrenStyle}>{children}</Animated.View>
 
-          {tabbar && <View style={s.tabbar}>{tabbar}</View>}
-        </View>
-      </Animated.View>
-    </View>
+        {tabbar && <View style={s.tabbar}>{tabbar}</View>}
+      </View>
+    </Animated.View>
   );
 }
 
@@ -220,17 +218,13 @@ const s = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
   } as ViewStyle,
-  collapsibleContainer: {
-    position: 'relative',
-    zIndex: 1,
-  } as ViewStyle,
   collapsible: {
     backgroundColor: 'white',
     overflow: 'hidden',
   } as ViewStyle,
   tabbar: {
     overflow: 'hidden',
-    paddingBottom: 4,
+    paddingBottom: 2,
     zIndex: 5,
     backgroundColor: 'white',
   } as ViewStyle,

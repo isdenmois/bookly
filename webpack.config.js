@@ -147,7 +147,7 @@ module.exports = {
       template: './web/index.html',
     }),
     new webpack.DefinePlugin({
-      __DEV__: true,
+      __DEV__: webpackEnv === 'development',
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
