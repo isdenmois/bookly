@@ -1,4 +1,4 @@
-import { round, byYear, IRow, FactoryProps, StatTab, TabTransition, openRead } from './shared';
+import { round, IRow, StatTab, TabTransition, openRead, StatBook } from './shared';
 import _ from 'lodash';
 import { inject } from 'services';
 import { Database, Q } from '@nozbe/watermelondb';
@@ -9,12 +9,8 @@ export interface AuthorRow extends IRow {
   rating: number;
 }
 
-function ByAuthorFactory({ books, year }: FactoryProps): AuthorRow[] {
+function ByAuthorFactory(books: StatBook[]): AuthorRow[] {
   const authors = new Map<string, AuthorRow>();
-
-  if (year) {
-    books = books.filter(byYear(year));
-  }
 
   books.forEach(book => {
     book.authors.forEach(author => {

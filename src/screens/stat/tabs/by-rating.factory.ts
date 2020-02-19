@@ -1,16 +1,12 @@
 import _ from 'lodash';
-import { byYear, IRow, FactoryProps, StatTab, TabTransition, notTotal, openRead } from './shared';
+import { IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 
 export interface RatingRow extends IRow {
   rating: number | string;
 }
 
-function ByRatingFactory({ books, year }: FactoryProps): RatingRow[] {
+function ByRatingFactory(books: StatBook[]): RatingRow[] {
   const result: RatingRow[] = _.times(10, i => ({ id: 10 - i, rating: 10 - i, count: 0 }));
-
-  if (year) {
-    books = books.filter(byYear(year));
-  }
 
   let totalCount = 0;
 

@@ -18,7 +18,7 @@ import { ByRating } from './tabs/by-rating.factory';
 import { ByYear } from './tabs/by-year.factory';
 import { ByAuthor } from './tabs/by-author.factory';
 import { ByType } from './tabs/by-type.factory';
-import { mapBooks, BookItems, StatBook, IRow, StatTab, TABS } from './tabs/shared';
+import { mapBooks, BookItems, StatBook, IRow, StatTab, TABS, byYear } from './tabs/shared';
 
 const STAT_GROUPS: Record<string, StatTab> = {
   MONTH: ByMonth,
@@ -68,9 +68,14 @@ export class StatScreen extends React.Component<Props> {
 
   @computed get rows(): IRow[] {
     const type = this.type || TABS.MONTH;
-    const { books, year } = this;
+    const group = STAT_GROUPS[type];
+    let { books, year } = this;
 
-    return STAT_GROUPS[type].factory({ books, year });
+    if (!group.allYears && year) {
+      books = books.filter(byYear(year));
+    }
+
+    return group.factory(books, year);
   }
 
   componentDidUpdate(prevProps) {
@@ -93,7 +98,7 @@ export class StatScreen extends React.Component<Props> {
           <>
             <View>
               <StatGroups type={type} onChange={this.setGroup} />
-              {type !== 'YEAR' && <YearSelection year={year} minYear={minYear} onChange={this.setYear} />}
+              {!group.allYears && <YearSelection year={year} minYear={minYear} onChange={this.setYear} />}
               <HeaderRow columns={group.header} flexes={group.flexes} />
             </View>
 
