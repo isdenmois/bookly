@@ -13,6 +13,7 @@ const groups = [
   { id: 'AUTHOR', title: 'По автору' },
   { id: 'RATING', title: 'По оценке' },
   { id: 'YEAR', title: 'По годам' },
+  { id: 'TYPE', title: 'По типу' },
 ];
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 

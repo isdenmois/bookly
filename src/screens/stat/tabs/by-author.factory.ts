@@ -5,6 +5,7 @@ import { Database, Q } from '@nozbe/watermelondb';
 import { ToastAndroid } from 'react-native';
 
 export interface AuthorRow extends IRow {
+  count: number;
   rating: number;
 }
 
@@ -50,15 +51,9 @@ export const transition: TabTransition = {
       return ToastAndroid.show('Не удалось открыть автора', ToastAndroid.SHORT);
     }
 
-    if (year) {
-      filters.year = year;
-    } else {
-      filters.minYear = true;
-    }
-
     filters.author = _.pick(authors[0], ['id', 'name']);
 
-    openRead(filters);
+    openRead(filters, year);
   },
 };
 

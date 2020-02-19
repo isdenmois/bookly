@@ -33,15 +33,9 @@ export const transition: TabTransition = {
   go(row, year) {
     const filters: any = {};
 
-    if (year) {
-      filters.year = year;
-    } else {
-      filters.minYear = true;
-    }
-
     filters.rating = { from: row.id, to: row.id };
 
-    openRead(filters);
+    openRead(filters, year);
   },
 };
 
