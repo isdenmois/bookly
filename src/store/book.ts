@@ -19,6 +19,7 @@ const FIELDS = <const>[
   'paper',
   'withoutTranslation',
   'audio',
+  'leave',
 ];
 
 type BookFields = typeof FIELDS[number];
@@ -44,6 +45,7 @@ export default class Book extends Model {
   @field('paper') paper: boolean;
   @field('without_translation') withoutTranslation: boolean;
   @field('audio') audio: boolean;
+  @field('leave') leave: boolean;
   @readonly @date('created_at') createdAt: Date;
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));

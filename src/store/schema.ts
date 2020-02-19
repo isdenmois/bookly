@@ -19,6 +19,7 @@ export const schema = appSchema({
         { name: 'paper', type: 'boolean', isOptional: true },
         { name: 'without_translation', type: 'boolean', isOptional: true },
         { name: 'audio', type: 'boolean', isOptional: true },
+        { name: 'leave', type: 'boolean', isOptional: true },
       ],
     }),
     tableSchema({

@@ -30,6 +30,7 @@ const filterMap = {
   paper: p => (p === 'y' ? 'В бумаге' : 'В электронке'),
   audio: p => (p === 'y' ? 'Аудиокнига' : 'Не аудио'),
   withoutTranslation: p => (p === 'y' ? 'В оригинале' : 'На русском'),
+  leave: p => (p === 'y' ? 'Отдала' : 'Оставила'),
 };
 
 export function BookListFilters({ filters, onChange }: Props) {
