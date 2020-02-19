@@ -6,7 +6,20 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
 
-const FIELDS = <const>['title', 'author', 'thumbnail', 'type', 'search', 'status', 'rating', 'date', 'lid', 'paper'];
+const FIELDS = <const>[
+  'title',
+  'author',
+  'thumbnail',
+  'type',
+  'search',
+  'status',
+  'rating',
+  'date',
+  'lid',
+  'paper',
+  'withoutTranslation',
+  'audio',
+];
 
 type BookFields = typeof FIELDS[number];
 
@@ -29,6 +42,8 @@ export default class Book extends Model {
   @field('type') type;
   @field('search') search: string;
   @field('paper') paper: boolean;
+  @field('without_translation') withoutTranslation: boolean;
+  @field('audio') audio: boolean;
   @readonly @date('created_at') createdAt: Date;
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
