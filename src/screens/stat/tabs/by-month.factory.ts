@@ -1,9 +1,8 @@
 import { dayOfYear } from 'utils/date';
-import { CURRENT_YEAR, round, byYear, IRow, FactoryProps } from './shared';
+import { CURRENT_YEAR, round, byYear, IRow, FactoryProps, StatTab, TabTransition, notTotal, openRead } from './shared';
 
 export interface MonthRow extends IRow {
   name: string;
-  count: number;
   days: number;
   rating: number;
 }
@@ -23,7 +22,7 @@ const MONTHS = [
   { id: 11, name: 'Декабрь', d: 31 },
 ];
 
-export function ByMonthFactory({ books, year }: FactoryProps): MonthRow[] {
+function ByMonthFactory({ books, year }: FactoryProps): MonthRow[] {
   const result: MonthRow[] = MONTHS.map(m => ({ ...m, count: 0, days: 0, rating: 0 }));
   const years = new Set();
 
@@ -72,3 +71,24 @@ export function ByMonthFactory({ books, year }: FactoryProps): MonthRow[] {
 
   return result;
 }
+
+export const transition: TabTransition = {
+  enabled(row, year) {
+    return year && notTotal(row);
+  },
+  go(row: MonthRow, year: number) {
+    const date = {
+      from: new Date(year, <number>row.id, 1, 11, 1, 1),
+      to: new Date(year, <number>row.id + 1, 0, 13, 0, 0),
+    };
+
+    openRead({ date });
+  },
+};
+
+export const ByMonth: StatTab = {
+  header: ['Месяц', 'Книг', 'Дней', 'Оценка'],
+  columns: ['name', 'count', 'days', 'rating'],
+  flexes: [2, 1, 1, 1],
+  factory: ByMonthFactory,
+};
