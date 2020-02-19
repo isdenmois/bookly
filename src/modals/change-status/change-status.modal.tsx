@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Text, StyleSheet, View, ViewStyle, TextStyle, Platform } from 'react-native';
+import { Text, StyleSheet, View, ViewStyle, TextStyle, Platform, Switch } from 'react-native';
 import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -44,8 +44,10 @@ export class ChangeStatusModal extends React.Component<Props> {
 
   state = {
     date: this.defaultDate,
-    rating: this.defaultRating,
+    rating: this.props.book.rating || 0,
     status: this.defaultStatus,
+    audio: this.props.book.audio,
+    withoutTranslation: this.props.book.withoutTranslation,
     statusEditable: true,
     dateEditable: false,
   };
@@ -72,12 +74,6 @@ export class ChangeStatusModal extends React.Component<Props> {
     }
 
     return new Date();
-  }
-
-  get defaultRating() {
-    const book = this.props.book;
-
-    return book.rating || 0;
   }
 
   get defaultStatus() {
@@ -144,9 +140,29 @@ export class ChangeStatusModal extends React.Component<Props> {
           )}
 
           {status === BOOK_STATUSES.READ && (
-            <ListItem rowStyle={s.row} icon={<Icon name='star' style={s.icon} size={20} color={color.PrimaryText} />}>
-              <RatingSelect value={this.state.rating} onChange={this.setRating} />
-            </ListItem>
+            <>
+              <ListItem rowStyle={s.row} icon={<Icon name='star' style={s.icon} size={20} color={color.PrimaryText} />}>
+                <RatingSelect value={this.state.rating} onChange={this.setRating} />
+              </ListItem>
+
+              <ListItem
+                rowStyle={s.row}
+                label='Аудиокнига'
+                icon={<Icon name='headphones' style={s.icon} size={20} color={color.PrimaryText} />}
+                onPress={this.toggleAudio}
+              >
+                <Switch value={this.state.audio} onValueChange={this.toggleAudio} />
+              </ListItem>
+
+              <ListItem
+                rowStyle={s.row}
+                label='На языке оригинала'
+                icon={<Icon name='language' style={s.icon} size={20} color={color.PrimaryText} />}
+                onPress={this.toggleWithoutTranslation}
+              >
+                <Switch value={this.state.withoutTranslation} onValueChange={this.toggleWithoutTranslation} />
+              </ListItem>
+            </>
           )}
         </View>
 
@@ -181,31 +197,32 @@ export class ChangeStatusModal extends React.Component<Props> {
   setRating = rating => this.setState({ rating });
   setDate = date => this.setState({ date, dateEditable: false });
   setStatus = status => this.setState({ status, statusEditable: false });
+  toggleAudio = () => this.setState({ audio: !this.state.audio });
+  toggleWithoutTranslation = () => this.setState({ withoutTranslation: !this.state.withoutTranslation });
+
+  fillData(data: Partial<BookData> = {}) {
+    const { status, rating, date, withoutTranslation, audio } = this.state;
+
+    data.status = status;
+    data.rating = rating;
+    data.audio = audio;
+    data.withoutTranslation = withoutTranslation;
+    data.date = date;
+    data.date.setHours(12, 0, 0, 0);
+
+    return data;
+  }
 
   updateBook() {
-    const { book } = this.props;
-    const { status, rating, date } = this.state;
-    const data: Partial<BookData> = { status };
+    const data: Partial<BookData> = this.fillData();
 
-    if (status === BOOK_STATUSES.READ) {
-      data.rating = rating;
-      data.date = date;
-      data.date.setHours(12, 0, 0, 0);
-    }
-
-    return book.setData(data);
+    return this.props.book.setData(data);
   }
 
   @dbAction createBook() {
     const book: Partial<BookData> = _.pick(this.props.book, PRIMARY_BOOK_FIELDS);
 
-    book.status = this.state.status;
-
-    if (this.state.status === BOOK_STATUSES.READ) {
-      book.rating = this.state.rating;
-      book.date = this.state.date;
-      book.date.setHours(12, 0, 0, 0);
-    }
+    this.fillData(book);
 
     return createBook(this.db, book);
   }
@@ -254,6 +271,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   row: {
     paddingLeft: 5,
+    justifyContent: 'space-between',
   },
   icon: {
     minWidth: 25,

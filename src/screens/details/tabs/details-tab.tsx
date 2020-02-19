@@ -45,6 +45,13 @@ export class DetailsTab extends React.Component<Props> {
     return hasUpdates(this, props, state, paths);
   }
 
+  get readDate() {
+    const book = this.props.book;
+    const parts = [formatDate(book.date), book.audio && 'аудиокнига', book.withoutTranslation && 'в оригинале'];
+
+    return parts.filter(p => p).join(', ');
+  }
+
   render() {
     const { book, isExist } = this.props;
     const all = this.props.tab !== 'main';
@@ -64,7 +71,7 @@ export class DetailsTab extends React.Component<Props> {
 
         {this.renderTranslators()}
 
-        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
+        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={this.readDate} />}
 
         {!!book.editionCount && (
           <ViewLineTouchable

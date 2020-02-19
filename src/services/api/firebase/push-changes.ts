@@ -35,6 +35,8 @@ function bookSerialize(book) {
     {
       ...book,
       paper: book.paper || null,
+      audio: book.audio || null,
+      withoutTranslation: book.withoutTranslation || null,
       thumbnail: +book.thumbnail || book.thumbnail,
       search: book.search
         ?.split(';')
