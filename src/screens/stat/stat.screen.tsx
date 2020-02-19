@@ -37,7 +37,7 @@ const withBooks: Function = withObservables(null, () => {
   const books = db.collections
     .get('books')
     .query(Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(min)))
-    .observeWithColumns(['date', 'rating'])
+    .observeWithColumns(['date', 'rating', 'paper', 'audio', 'withoutTranslation', 'leave'])
     .pipe(map(mapBooks) as any);
 
   return { books };
