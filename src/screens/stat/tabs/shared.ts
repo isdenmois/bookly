@@ -13,7 +13,8 @@ export interface StatTab {
   header: string[];
   columns: string[];
   flexes: number[];
-  factory(props: FactoryProps): IRow[];
+  factory(books: StatBook[], year?: number): IRow[];
+  allYears?: boolean;
 }
 
 export interface TabTransition {
@@ -41,11 +42,6 @@ export interface IRow {
   id: number | string;
   count: number;
   d?: number;
-}
-
-export interface FactoryProps {
-  books: StatBook[];
-  year: number;
 }
 
 export const CURRENT_YEAR = getCurrentYear();

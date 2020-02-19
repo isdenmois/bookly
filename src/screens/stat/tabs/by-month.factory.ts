@@ -1,5 +1,5 @@
 import { dayOfYear } from 'utils/date';
-import { CURRENT_YEAR, round, byYear, IRow, FactoryProps, StatTab, TabTransition, notTotal, openRead } from './shared';
+import { CURRENT_YEAR, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 
 export interface MonthRow extends IRow {
   name: string;
@@ -22,12 +22,11 @@ const MONTHS = [
   { id: 11, name: 'Декабрь', d: 31 },
 ];
 
-function ByMonthFactory({ books, year }: FactoryProps): MonthRow[] {
+function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
   const result: MonthRow[] = MONTHS.map(m => ({ ...m, count: 0, days: 0, rating: 0 }));
   const years = new Set();
 
   if (year) {
-    books = books.filter(byYear(year));
     years.add(year);
   }
 

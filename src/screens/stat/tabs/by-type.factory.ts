@@ -1,15 +1,11 @@
-import { StatTab, TabTransition, IRow, FactoryProps, byYear, round, openRead } from './shared';
+import { StatTab, TabTransition, IRow, round, openRead, StatBook } from './shared';
 
 export interface TypeRow extends IRow {
   rating: number;
   f: any;
 }
 
-function ByTypeFactory({ books, year }: FactoryProps): TypeRow[] {
-  if (year) {
-    books = books.filter(byYear(year));
-  }
-
+function ByTypeFactory(books: StatBook[]): TypeRow[] {
   let paper = 0;
   let paperR = 0;
 

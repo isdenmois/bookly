@@ -1,22 +1,12 @@
 import _ from 'lodash';
-import {
-  CURRENT_YEAR,
-  dayOfYear,
-  round,
-  IRow,
-  FactoryProps,
-  StatTab,
-  TabTransition,
-  notTotal,
-  openRead,
-} from './shared';
+import { CURRENT_YEAR, dayOfYear, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 
 interface YearRow extends IRow {
   rating: number;
   days: number;
 }
 
-function ByYearFactory({ books }: FactoryProps): YearRow[] {
+function ByYearFactory(books: StatBook[]): YearRow[] {
   const result: YearRow[] = [{ id: CURRENT_YEAR, count: 0, rating: 0, days: 0, d: dayOfYear() }];
   let totalCount = 0;
   let totalRating = 0;
@@ -67,4 +57,5 @@ export const ByYear: StatTab = {
   columns: ['id', 'count', 'days', 'rating'],
   flexes: [2, 1, 1, 1],
   factory: ByYearFactory,
+  allYears: true,
 };
