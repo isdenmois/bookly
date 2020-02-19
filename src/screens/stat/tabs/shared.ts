@@ -1,4 +1,24 @@
 import { getCurrentYear } from 'utils/date';
+import { inject, Navigation } from 'services';
+
+export const TABS = {
+  MONTH: 'MONTH',
+  AUTHOR: 'AUTHOR',
+  RATING: 'RATING',
+  YEAR: 'YEAR',
+};
+
+export interface StatTab {
+  header: string[];
+  columns: string[];
+  flexes: number[];
+  factory(props: FactoryProps): IRow[];
+}
+
+export interface TabTransition {
+  enabled(row: IRow, year: number): boolean;
+  go(row: IRow, year: number);
+}
 
 export interface StatBook {
   year: number;
@@ -15,6 +35,7 @@ export interface BookItems {
 
 export interface IRow {
   id: number | string;
+  count: number;
   d?: number;
 }
 
@@ -59,4 +80,14 @@ export function mapBooks(items: any[]) {
   });
 
   return { items, minYear };
+}
+
+export function notTotal(row) {
+  return row.id !== 'total' && row.id !== 'Итого';
+}
+
+export function openRead(filters: any) {
+  const navigation = inject(Navigation);
+
+  navigation.push('ReadList', { filters, sort: { field: 'date', desc: false }, readonly: true });
 }

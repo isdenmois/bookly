@@ -13,44 +13,17 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { StatGroups } from './components/stat-groups';
 import { YearSelection } from './components/year-selection';
 import { getCurrentYear } from 'utils/date';
-import { ByMonthFactory } from './tabs/by-month.factory';
-import { ByRatingFactory } from './tabs/by-rating.factory';
-import { ByYearFactory } from './tabs/by-year.factory';
-import { ByAuthorFactory } from './tabs/by-author.factory';
-import { mapBooks, BookItems, StatBook, IRow } from './tabs/shared';
+import { ByMonth } from './tabs/by-month.factory';
+import { ByRating } from './tabs/by-rating.factory';
+import { ByYear } from './tabs/by-year.factory';
+import { ByAuthor } from './tabs/by-author.factory';
+import { mapBooks, BookItems, StatBook, IRow, StatTab, TABS } from './tabs/shared';
 
-const TYPES = {
-  MONTH: 'MONTH',
-  AUTHOR: 'AUTHOR',
-  RATING: 'RATING',
-  YEAR: 'YEAR',
-};
-
-const STAT_GROUPS = {
-  [TYPES.MONTH]: {
-    header: ['Месяц', 'Книг', 'Дней', 'Оценка'],
-    columns: ['name', 'count', 'days', 'rating'],
-    flexes: [2, 1, 1, 1],
-    factory: ByMonthFactory,
-  },
-  [TYPES.AUTHOR]: {
-    header: ['Автор', 'Книг', 'Оценка'],
-    columns: ['id', 'count', 'rating'],
-    flexes: [2, 1, 1],
-    factory: ByAuthorFactory,
-  },
-  [TYPES.RATING]: {
-    header: ['Оценка', 'Книг'],
-    columns: ['rating', 'count'],
-    factory: ByRatingFactory,
-    flexes: [1, 2],
-  },
-  [TYPES.YEAR]: {
-    header: ['Год', 'Книг', 'Дней', 'Оценка'],
-    columns: ['id', 'count', 'days', 'rating'],
-    flexes: [2, 1, 1, 1],
-    factory: ByYearFactory,
-  },
+const STAT_GROUPS: Record<string, StatTab> = {
+  MONTH: ByMonth,
+  AUTHOR: ByAuthor,
+  RATING: ByRating,
+  YEAR: ByYear,
 };
 
 const CURRENT_YEAR = getCurrentYear();
@@ -85,14 +58,14 @@ interface State {
 @withBooks
 @observer
 export class StatScreen extends React.Component<Props> {
-  @observable type: string = TYPES.MONTH;
+  @observable type: string = TABS.MONTH;
   @observable year: number = CURRENT_YEAR;
   @observable isLoading: boolean = !this.props.books;
   @observable minYear: number = (this.props.books && this.props.books.minYear) || 0;
   @observable.ref books: StatBook[] = (this.props.books && this.props.books.items) || [];
 
   @computed get rows(): IRow[] {
-    const type = this.type || TYPES.MONTH;
+    const type = this.type || TABS.MONTH;
     const { books, year } = this;
 
     return STAT_GROUPS[type].factory({ books, year });
