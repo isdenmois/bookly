@@ -6,8 +6,8 @@ import { BookFilters } from '../book-filters.service';
 
 const fields = [
   { id: null, name: 'Все' },
-  { id: 'paper', name: 'В бумаге' },
-  { id: 'e', name: 'В электронке' },
+  { id: 'y', name: 'В бумаге' },
+  { id: 'n', name: 'В электронке' },
 ];
 
 export const BookPaperFilter = observer(() => {

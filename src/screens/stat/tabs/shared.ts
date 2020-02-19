@@ -6,6 +6,7 @@ export const TABS = {
   AUTHOR: 'AUTHOR',
   RATING: 'RATING',
   YEAR: 'YEAR',
+  TYPE: 'TYPE',
 };
 
 export interface StatTab {
@@ -25,6 +26,9 @@ export interface StatBook {
   month: number;
   date: Date;
   rating: number;
+  paper: boolean;
+  audio: boolean;
+  withoutTranslation: boolean;
   authors: string[];
 }
 
@@ -76,7 +80,16 @@ export function mapBooks(items: any[]) {
       minYear = year;
     }
 
-    return { year, month, rating: b.rating, date: b.date, authors };
+    return {
+      year,
+      month,
+      authors,
+      rating: b.rating,
+      date: b.date,
+      paper: b.paper,
+      audio: b.audio,
+      withoutTranslation: b.withoutTranslation,
+    };
   });
 
   return { items, minYear };
@@ -86,8 +99,14 @@ export function notTotal(row) {
   return row.id !== 'total' && row.id !== 'Итого';
 }
 
-export function openRead(filters: any) {
+export function openRead(filters: any, year: number | false) {
   const navigation = inject(Navigation);
+
+  if (year) {
+    filters.year = year;
+  } else if (year !== false) {
+    filters.minYear = true;
+  }
 
   navigation.push('ReadList', { filters, sort: { field: 'date', desc: false }, readonly: true });
 }

@@ -6,6 +6,7 @@ import { transition as ByMonthTransition } from '../tabs/by-month.factory';
 import { transition as ByAuthorTransition } from '../tabs/by-author.factory';
 import { transition as ByRatingTransition } from '../tabs/by-rating.factory';
 import { transition as ByYearTransition } from '../tabs/by-year.factory';
+import { transition as ByTypeTransition } from '../tabs/by-type.factory';
 
 interface Props {
   row: IRow;
@@ -20,6 +21,7 @@ const transitions: Record<string, TabTransition> = {
   AUTHOR: ByAuthorTransition,
   RATING: ByRatingTransition,
   YEAR: ByYearTransition,
+  TYPE: ByTypeTransition,
 };
 
 export const Row = memo(({ row, columns, flexes, type, year }: Props) => {

@@ -17,6 +17,7 @@ import { ByMonth } from './tabs/by-month.factory';
 import { ByRating } from './tabs/by-rating.factory';
 import { ByYear } from './tabs/by-year.factory';
 import { ByAuthor } from './tabs/by-author.factory';
+import { ByType } from './tabs/by-type.factory';
 import { mapBooks, BookItems, StatBook, IRow, StatTab, TABS } from './tabs/shared';
 
 const STAT_GROUPS: Record<string, StatTab> = {
@@ -24,6 +25,7 @@ const STAT_GROUPS: Record<string, StatTab> = {
   AUTHOR: ByAuthor,
   RATING: ByRating,
   YEAR: ByYear,
+  TYPE: ByType,
 };
 
 const CURRENT_YEAR = getCurrentYear();

@@ -46,7 +46,13 @@ const WHERE_FILTERS = {
     return Q.where('date', Q.gte(min));
   },
   paper(value) {
-    return Q.where('paper', value === 'paper' ? true : Q.notEq(true));
+    return Q.where('paper', value === 'y' ? true : Q.notEq(true));
+  },
+  audio(value) {
+    return Q.where('audio', value === 'y' ? true : Q.notEq(true));
+  },
+  withoutTranslation(value) {
+    return Q.where('without_translation', value === 'y' ? true : Q.notEq(true));
   },
 };
 

@@ -58,7 +58,7 @@ function ByYearFactory({ books }: FactoryProps): YearRow[] {
 export const transition: TabTransition = {
   enabled: notTotal,
   go(row) {
-    openRead({ year: row.id });
+    openRead({ year: row.id }, false);
   },
 };
 

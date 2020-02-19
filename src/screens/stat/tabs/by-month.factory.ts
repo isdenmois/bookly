@@ -82,7 +82,7 @@ export const transition: TabTransition = {
       to: new Date(year, <number>row.id + 1, 0, 13, 0, 0),
     };
 
-    openRead({ date });
+    openRead({ date }, false);
   },
 };
 
