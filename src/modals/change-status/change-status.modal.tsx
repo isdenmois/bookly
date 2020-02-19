@@ -48,6 +48,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     status: this.defaultStatus,
     audio: this.props.book.audio,
     withoutTranslation: this.props.book.withoutTranslation,
+    leave: this.props.book.leave,
     statusEditable: true,
     dateEditable: false,
   };
@@ -162,6 +163,17 @@ export class ChangeStatusModal extends React.Component<Props> {
               >
                 <Switch value={this.state.withoutTranslation} onValueChange={this.toggleWithoutTranslation} />
               </ListItem>
+
+              {book.paper && (
+                <ListItem
+                  rowStyle={s.row}
+                  label='Отдам'
+                  icon={<Icon name='ban' style={s.icon} size={20} color={color.PrimaryText} />}
+                  onPress={this.toggleLeave}
+                >
+                  <Switch value={this.state.leave} onValueChange={this.toggleLeave} />
+                </ListItem>
+              )}
             </>
           )}
         </View>
@@ -199,14 +211,16 @@ export class ChangeStatusModal extends React.Component<Props> {
   setStatus = status => this.setState({ status, statusEditable: false });
   toggleAudio = () => this.setState({ audio: !this.state.audio });
   toggleWithoutTranslation = () => this.setState({ withoutTranslation: !this.state.withoutTranslation });
+  toggleLeave = () => this.setState({ leave: !this.state.leave });
 
   fillData(data: Partial<BookData> = {}) {
-    const { status, rating, date, withoutTranslation, audio } = this.state;
+    const { status, rating, date, withoutTranslation, audio, leave } = this.state;
 
     data.status = status;
     data.rating = rating;
     data.audio = audio;
     data.withoutTranslation = withoutTranslation;
+    data.leave = leave;
     data.date = date;
     data.date.setHours(12, 0, 0, 0);
 

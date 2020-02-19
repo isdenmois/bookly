@@ -6,46 +6,55 @@ export interface TypeRow extends IRow {
 }
 
 function ByTypeFactory(books: StatBook[]): TypeRow[] {
-  let paper = 0;
-  let paperR = 0;
-
-  let ebook = 0;
-  let ebookR = 0;
-
-  let audio = 0;
-  let audioR = 0;
-
-  let withoutTranslation = 0;
-  let withoutTranslationR = 0;
+  const paper = { r: 0, c: 0 };
+  const ebook = { r: 0, c: 0 };
+  const audio = { r: 0, c: 0 };
+  const withoutTranslation = { r: 0, c: 0 };
+  const keep = { r: 0, c: 0 };
+  const leave = { r: 0, c: 0 };
 
   books.forEach(b => {
     if (b.audio) {
-      ++audio;
-      audioR += b.rating;
+      ++audio.c;
+      audio.r += b.rating;
     } else if (b.paper) {
-      ++paper;
-      paperR += b.rating;
+      ++paper.c;
+      paper.r += b.rating;
     } else {
-      ++ebook;
-      ebookR += b.rating;
+      ++ebook.c;
+      ebook.r += b.rating;
     }
 
     if (b.withoutTranslation) {
-      ++withoutTranslation;
-      withoutTranslationR += b.rating;
+      ++withoutTranslation.c;
+      withoutTranslation.r += b.rating;
+    }
+
+    if (b.paper) {
+      if (b.leave) {
+        ++leave.c;
+        leave.r += b.rating;
+      } else {
+        ++keep.c;
+        keep.r += b.rating;
+      }
     }
   });
 
-  paperR = round(paperR / paper);
-  ebookR = round(ebookR / ebook);
-  audioR = round(audioR / audio);
-  withoutTranslationR = round(withoutTranslationR / withoutTranslation);
+  paper.r = round(paper.r / paper.c);
+  ebook.r = round(ebook.r / ebook.c);
+  audio.r = round(audio.r / audio.c);
+  withoutTranslation.r = round(withoutTranslation.r / withoutTranslation.c);
+  leave.r = round(leave.r / leave.c);
+  keep.r = round(keep.r / keep.c);
 
   return [
-    { id: 'Бумажных', count: paper, rating: paperR, f: { paper: 'y', audio: 'n' } },
-    { id: 'Электронных', count: ebook, rating: ebookR, f: { paper: 'n', audio: 'n' } },
-    { id: 'Аудио', count: audio, rating: audioR, f: { audio: 'y' } },
-    { id: 'В оригинале', count: withoutTranslation, rating: withoutTranslationR, f: { withoutTranslation: 'y' } },
+    { id: 'Бумажных', count: paper.c, rating: paper.r, f: { paper: 'y', audio: 'n' } },
+    { id: 'Электронных', count: ebook.c, rating: ebook.r, f: { paper: 'n', audio: 'n' } },
+    { id: 'Аудио', count: audio.c, rating: audio.r, f: { audio: 'y' } },
+    { id: 'В оригинале', count: withoutTranslation.c, rating: withoutTranslation.r, f: { withoutTranslation: 'y' } },
+    { id: 'Оставила', count: leave.c && keep.c, rating: keep.r, f: { leave: 'n', paper: 'y' } },
+    { id: 'Отдала', count: leave.c, rating: leave.r, f: { leave: 'y', paper: 'y' } },
   ].filter(r => r.count > 0);
 }
 

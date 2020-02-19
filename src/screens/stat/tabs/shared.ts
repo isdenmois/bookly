@@ -30,6 +30,7 @@ export interface StatBook {
   paper: boolean;
   audio: boolean;
   withoutTranslation: boolean;
+  leave: boolean;
   authors: string[];
 }
 
@@ -85,6 +86,7 @@ export function mapBooks(items: any[]) {
       paper: b.paper,
       audio: b.audio,
       withoutTranslation: b.withoutTranslation,
+      leave: b.leave,
     };
   });
 

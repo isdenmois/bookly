@@ -6,8 +6,9 @@ export const to4 = {
     addColumns({
       table: 'books',
       columns: [
-        { name: 'without_translation', type: 'boolean' },
-        { name: 'audio', type: 'boolean' },
+        { name: 'without_translation', type: 'boolean', isOptional: true },
+        { name: 'audio', type: 'boolean', isOptional: true },
+        { name: 'leave', type: 'boolean', isOptional: true },
       ],
     }),
   ],

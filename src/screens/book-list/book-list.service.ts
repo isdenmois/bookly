@@ -54,6 +54,9 @@ const WHERE_FILTERS = {
   withoutTranslation(value) {
     return Q.where('without_translation', value === 'y' ? true : Q.notEq(true));
   },
+  leave(value) {
+    return Q.where('leave', value === 'y' ? true : Q.notEq(true));
+  },
 };
 
 export function createQueryState(filters: Partial<BookFilters>, sort: BookSort) {
