@@ -37,11 +37,8 @@ export class BookList extends React.PureComponent<Props> {
       return <EmptyResult text='Книги не найдены' />;
     }
 
-    const books = _.sortBy(this.props.books, this.props.sort.field);
-
-    if (this.props.sort.desc) {
-      books.reverse();
-    }
+    const order = this.props.sort.desc ? 'desc' : 'asc';
+    const books = _.orderBy(this.props.books, this.props.sort.field, order);
 
     return (
       <FlatList

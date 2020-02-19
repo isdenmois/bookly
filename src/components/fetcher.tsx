@@ -304,7 +304,7 @@ function getSortedData(data: any, sort: string) {
 
 function order(array, sort) {
   if (sort.startsWith('-')) {
-    return _.orderBy(array, sort.slice(1)).reverse();
+    return _.orderBy(array, sort.slice(1), 'desc');
   }
 
   return _.orderBy(array, sort);
