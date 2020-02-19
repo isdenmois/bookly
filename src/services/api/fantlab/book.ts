@@ -146,7 +146,7 @@ function films(w) {
     year: f.year,
   }));
 
-  return _.orderBy(films, 'year').reverse();
+  return _.orderBy(films, 'year', 'desc');
 }
 
 function classification(w) {
