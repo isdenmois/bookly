@@ -37,7 +37,15 @@ interface Props {
 }
 
 const TITLE_SEPARATOR = /\s*;\s*/g;
-const paths = ['book', 'book.paper', 'book.status', 'book.thumbnail'];
+const paths = [
+  'book',
+  'book.paper',
+  'book.status',
+  'book.thumbnail',
+  'book.leave',
+  'book.audio',
+  'book.withoutTranslation',
+];
 
 @withScroll
 export class DetailsTab extends React.Component<Props> {
@@ -57,6 +65,7 @@ export class DetailsTab extends React.Component<Props> {
     const all = this.props.tab !== 'main';
     const isLivelib = typeof book.id === 'string' && book.id.startsWith('l_');
     const hasPaper = book.paper;
+    const isRead = book.status === BOOK_STATUSES.READ;
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
       .join('\n');
@@ -71,7 +80,7 @@ export class DetailsTab extends React.Component<Props> {
 
         {this.renderTranslators()}
 
-        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={this.readDate} />}
+        {isRead && <ViewLine title='Дата прочтения' value={this.readDate} />}
 
         {!!book.editionCount && (
           <ViewLineTouchable
@@ -114,6 +123,10 @@ export class DetailsTab extends React.Component<Props> {
 
         {all && isExist && (
           <ViewLineAction title={hasPaper ? 'Есть в бумаге' : 'Нет в бумаге'} onPress={this.togglePaper} />
+        )}
+
+        {all && isExist && isRead && hasPaper && (
+          <ViewLineAction title={book.leave ? 'Отдам' : 'Оставлю'} onPress={this.toggleLeave} />
         )}
 
         {all && isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
@@ -218,6 +231,12 @@ export class DetailsTab extends React.Component<Props> {
     const book = this.props.book;
 
     book.setData({ paper: !book.paper });
+  };
+
+  toggleLeave = () => {
+    const book = this.props.book;
+
+    book.setData({ leave: !book.leave });
   };
 }
 
