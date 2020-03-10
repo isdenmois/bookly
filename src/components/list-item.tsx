@@ -46,12 +46,12 @@ export class ListItem extends React.Component<Props> {
   input: TextInput;
 
   render() {
-    const { style, icon, counter, first, border, selected, label, disabled, children } = this.props;
+    const { style, icon, counter, first, border, selected, label, disabled, children, testID } = this.props;
     const isEditable = Boolean(this.props.onChange);
     const Container: any = (this.props.onPress || isEditable) && !disabled ? TouchableOpacity : View;
 
     return (
-      <Container style={[s.container, style]} onPress={this.onPress} testID={counter ? null : this.props.testID}>
+      <Container style={[s.container, style]} onPress={this.onPress} testID={counter || isEditable ? null : testID}>
         {!!icon && <View style={s.icon}>{icon}</View>}
         <View style={[...cn({ border, borderFirst: first, disabled }), this.props.rowStyle]}>
           {!!label && <TextM style={s.label}>{label}</TextM>}
@@ -68,11 +68,12 @@ export class ListItem extends React.Component<Props> {
               onSubmitEditing={this.props.onSubmit}
               autoCapitalize={this.props.autoCapitalize}
               ref={this.setRef}
+              testID={testID}
             />
           )}
           {children}
           {counter !== undefined && (
-            <Text style={s.counter} testID={this.props.testID}>
+            <Text style={s.counter} testID={testID}>
               {counter}
             </Text>
           )}

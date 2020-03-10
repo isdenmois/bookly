@@ -15,6 +15,14 @@ module.exports = {
     sourceExts: process.env.RN_SRC_EXT
       ? process.env.RN_SRC_EXT.split(',').concat(defaultSourceExts)
       : defaultSourceExts,
-    blacklistRE: blacklist([/node_modules\/bbcode-to-react\/(dist|lib\/tags)\/.*/]),
+    blacklistRE: blacklist([
+      // Ignore BBCode
+      /node_modules\/bbcode-to-react\/(dist|lib\/tags)\/.*/,
+
+      // Ignore git directories
+      /.*\.git\/.*/,
+      // Ignore android directories
+      /.*\/app\/build\/.*/,
+    ]),
   },
 };

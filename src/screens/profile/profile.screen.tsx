@@ -23,6 +23,7 @@ export class ProfileScreen extends React.Component<Props> {
   render() {
     const v8runtime = (global as any)._v8runtime;
     const isHermes = (global as any).HermesInternal;
+    const engine = v8runtime ? `V8 ${v8runtime().version}` : isHermes ? 'Hermes' : false;
 
     return (
       <View style={s.container}>
@@ -37,8 +38,7 @@ export class ProfileScreen extends React.Component<Props> {
           <RemoveDeleted />
 
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
-          <ListItem label={`V8 version is ${v8runtime ? v8runtime().version : 'unavailable'}`} />
-          <ListItem label={`Hermes is ${isHermes ? 'enabled' : 'disabled'}`} />
+          {engine && <ListItem label='Engine' value={engine} />}
         </View>
 
         <View style={s.buttonContainer}>
