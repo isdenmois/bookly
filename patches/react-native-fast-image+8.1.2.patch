@@ -1,0 +1,95 @@
+diff --git a/node_modules/react-native-fast-image/android/build.gradle b/node_modules/react-native-fast-image/android/build.gradle
+index 3663573..e3cbd17 100644
+--- a/node_modules/react-native-fast-image/android/build.gradle
++++ b/node_modules/react-native-fast-image/android/build.gradle
+@@ -64,7 +64,7 @@ dependencies {
+     implementation "androidx.annotation:annotation:1.0.0"
+     implementation("com.github.bumptech.glide:glide:${_glideVersion}")
+     implementation("com.github.bumptech.glide:annotations:${_glideVersion}")
+-    annotationProcessor 'com.android.support:support-annotations:28.0.0-alpha3'
++    annotationProcessor 'androidx.annotation:annotation:1.0.0'
+     annotationProcessor "com.github.bumptech.glide:compiler:${_glideVersion}"
+     implementation("com.github.bumptech.glide:okhttp3-integration:${_glideVersion}")
+ }
+diff --git a/node_modules/react-native-fast-image/dist/index.js b/node_modules/react-native-fast-image/dist/index.js
+index 0127b1b..f16bbc7 100644
+--- a/node_modules/react-native-fast-image/dist/index.js
++++ b/node_modules/react-native-fast-image/dist/index.js
+@@ -1,8 +1,3 @@
+-
+ 'use strict'
+ 
+-if (process.env.NODE_ENV === 'production') {
+-  module.exports = require('./react-native-fast-image.cjs.production.min.js')
+-} else {
+-  module.exports = require('./react-native-fast-image.cjs.development.js')
+-}
++module.exports = require('./react-native-fast-image.cjs.development.js')
+diff --git a/node_modules/react-native-fast-image/dist/react-native-fast-image.cjs.development.js b/node_modules/react-native-fast-image/dist/react-native-fast-image.cjs.development.js
+index 6af0920..4b1279e 100644
+--- a/node_modules/react-native-fast-image/dist/react-native-fast-image.cjs.development.js
++++ b/node_modules/react-native-fast-image/dist/react-native-fast-image.cjs.development.js
+@@ -60,9 +60,9 @@ function FastImageBase(_ref) {
+       forwardedRef = _ref.forwardedRef,
+       props = _objectWithoutPropertiesLoose(_ref, ["source", "tintColor", "onLoadStart", "onProgress", "onLoad", "onError", "onLoadEnd", "style", "fallback", "children", "resizeMode", "forwardedRef"]);
+ 
+-  var resolvedSource = reactNative.Image.resolveAssetSource(source);
++  var resolvedSource = FastImageViewNativeModule ? reactNative.Image.resolveAssetSource(source) : source
+ 
+-  if (fallback) {
++  if (fallback || !FastImageViewNativeModule) {
+     return React__default.createElement(reactNative.View, {
+       style: [styles.imageContainer, style],
+       ref: forwardedRef
+@@ -107,7 +107,7 @@ FastImage.cacheControl = cacheControl;
+ FastImage.priority = priority;
+ 
+ FastImage.preload = function (sources) {
+-  return FastImageViewNativeModule.preload(sources);
++  return FastImageViewNativeModule && FastImageViewNativeModule.preload(sources);
+ };
+ 
+ var styles = /*#__PURE__*/reactNative.StyleSheet.create({
+@@ -116,7 +116,7 @@ var styles = /*#__PURE__*/reactNative.StyleSheet.create({
+   }
+ }); // Types of requireNativeComponent are not correct.
+ 
+-var FastImageView = /*#__PURE__*/reactNative.requireNativeComponent('FastImageView', FastImage, {
++var FastImageView = FastImageViewNativeModule && /*#__PURE__*/reactNative.requireNativeComponent('FastImageView', FastImage, {
+   nativeOnly: {
+     onFastImageLoadStart: true,
+     onFastImageProgress: true,
+diff --git a/node_modules/react-native-fast-image/dist/react-native-fast-image.esm.js b/node_modules/react-native-fast-image/dist/react-native-fast-image.esm.js
+index 77bd06e..6214842 100644
+--- a/node_modules/react-native-fast-image/dist/react-native-fast-image.esm.js
++++ b/node_modules/react-native-fast-image/dist/react-native-fast-image.esm.js
+@@ -53,9 +53,9 @@ function FastImageBase(_ref) {
+       forwardedRef = _ref.forwardedRef,
+       props = _objectWithoutPropertiesLoose(_ref, ["source", "tintColor", "onLoadStart", "onProgress", "onLoad", "onError", "onLoadEnd", "style", "fallback", "children", "resizeMode", "forwardedRef"]);
+ 
+-  var resolvedSource = Image.resolveAssetSource(source);
++  var resolvedSource = FastImageViewNativeModule ? Image.resolveAssetSource(source) : source;
+ 
+-  if (fallback) {
++  if (fallback || !FastImageViewNativeModule) {
+     return React.createElement(View, {
+       style: [styles.imageContainer, style],
+       ref: forwardedRef
+@@ -100,7 +100,7 @@ FastImage.cacheControl = cacheControl;
+ FastImage.priority = priority;
+ 
+ FastImage.preload = function (sources) {
+-  return FastImageViewNativeModule.preload(sources);
++  return FastImageViewNativeModule && FastImageViewNativeModule.preload(sources);
+ };
+ 
+ var styles = /*#__PURE__*/StyleSheet.create({
+@@ -109,7 +109,7 @@ var styles = /*#__PURE__*/StyleSheet.create({
+   }
+ }); // Types of requireNativeComponent are not correct.
+ 
+-var FastImageView = /*#__PURE__*/requireNativeComponent('FastImageView', FastImage, {
++var FastImageView = FastImageViewNativeModule && /*#__PURE__*/requireNativeComponent('FastImageView', FastImage, {
+   nativeOnly: {
+     onFastImageLoadStart: true,
+     onFastImageProgress: true,

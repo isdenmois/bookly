@@ -33,19 +33,16 @@ export class LoginScreen extends React.Component<Props> {
           </View>
 
           <View style={s.card}>
-            <View style={s.form}>
-              <ListItem
-                testID='loginField'
-                autoCapitalize='none'
-                autoFocus
-                keyboardType='decimal-pad'
-                placeholder='Имя пользователя'
-                value={login}
-                onChange={this.onLoginChange}
-                onSubmit={this.submit}
-                icon={<Icon name='user' size={18} color={color.PrimaryText} />}
-              />
-            </View>
+            <ListItem
+              testID='loginField'
+              autoCapitalize='none'
+              autoFocus
+              placeholder='Имя пользователя'
+              value={login}
+              onChange={this.onLoginChange}
+              onSubmit={this.submit}
+              icon={<Icon name='user' size={18} color={color.PrimaryText} />}
+            />
 
             {submitting && <ActivityIndicator size='large' />}
 
@@ -85,6 +82,7 @@ const s = {
     paddingHorizontal: 20,
     paddingBottom: 20,
     borderRadius: 5,
+    width: 300,
   } as ViewStyle,
   header: {
     marginBottom: 20,
