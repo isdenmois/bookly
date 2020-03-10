@@ -1,32 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpacity } from 'react-native';
-import withObservables from '@nozbe/with-observables';
-import { Database } from '@nozbe/watermelondb';
 import Book from 'store/book';
 import { color } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Navigation, inject } from 'services';
 import { ReadButton, TextXL, Thumbnail } from 'components';
-import { currentBooksQuery } from '../home.queries';
 
 interface Props {
-  database: Database;
-  books?: Book[];
+  book: Book;
 }
 
-const withBooks: Function = withObservables(null, ({ database }: Props) => ({
-  books: currentBooksQuery(database).observeWithColumns(['thumbnail']),
-}));
-
-@withBooks
 export class NowReadingBook extends React.Component<Props> {
   navigation = inject(Navigation);
 
   render() {
-    const books = this.props.books;
-    const book = books && books[0];
-
-    if (!book) return null;
+    const book = this.props.book;
 
     return (
       <View style={s.container}>
@@ -50,9 +38,9 @@ export class NowReadingBook extends React.Component<Props> {
   }
 
   openChangeStatus = () =>
-    this.navigation.navigate('/modal/change-status', { book: this.props.books[0], status: BOOK_STATUSES.READ });
+    this.navigation.navigate('/modal/change-status', { book: this.props.book, status: BOOK_STATUSES.READ });
 
-  openBook = () => this.navigation.push('Details', { bookId: this.props.books[0].id });
+  openBook = () => this.navigation.push('Details', { bookId: this.props.book.id });
 }
 
 const s = StyleSheet.create({
