@@ -29,7 +29,14 @@ export class EditionsListScreen extends React.Component<Props> {
       <View style={s.container}>
         <ScreenHeader title={'Список изданий'} />
         {count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}
-        <Fetcher contentContainerStyle={s.scroll} api={this.api.editions} e={this.e} sort={this.state.sort} useFlatlist>
+        <Fetcher
+          contentContainerStyle={s.scroll}
+          api={this.api.editions}
+          e={this.e}
+          sort={this.state.sort}
+          groupBy={groupBy}
+          useFlatlist
+        >
           {this.renderEditionsList}
         </Fetcher>
       </View>
@@ -42,6 +49,12 @@ export class EditionsListScreen extends React.Component<Props> {
     return <EditionCard key={edition.id} edition={edition} translators={this.props.translators[edition.id]} />;
   };
 }
+
+const groupBy = {
+  field: 'lang_code',
+  title: 'lang',
+  sort: [e => (e.id === 'ru' ? 0 : 1), 'title'],
+};
 
 const s = StyleSheet.create({
   container: {

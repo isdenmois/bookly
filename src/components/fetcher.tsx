@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Subscription } from 'rxjs';
 import _ from 'lodash';
-import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle, FlatList } from 'react-native';
+import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle, FlatList, SectionList } from 'react-native';
 import { Database, Q } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
@@ -24,6 +24,11 @@ const OMIT_FIELDS = [
 
 type ListItemRender = (item: any, index?: number) => ReactNode;
 type DataRender = (item: any) => ReactNode;
+interface GroupBy {
+  field: string;
+  title: string;
+  sort: any;
+}
 
 type Props<P = {}> = {
   api: (props: P) => Promise<any>;
@@ -38,6 +43,7 @@ type Props<P = {}> = {
   selected?: any;
   collection?: 'books' | 'authors' | 'reviews';
   sort?: string;
+  groupBy?: GroupBy;
 } & Omit<P, 'page'>;
 
 export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
@@ -172,6 +178,23 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
 
     const renderItem = (this.renderItem = this.renderItem || (row => this.props.children(row.item, row.index)));
 
+    if (this.props.groupBy) {
+      const { field, sort, title } = this.props.groupBy;
+      list = _.map(_.groupBy(list, field), (data, id) => ({ id, data, title: data[0][title] }));
+      list = _.orderBy(list, sort);
+
+      return (
+        <SectionList
+          contentContainerStyle={this.props.contentContainerStyle}
+          sections={list}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          renderSectionHeader={renderSectionHeader}
+          ref={this.context.setScroll}
+        />
+      );
+    }
+
     return (
       <FlatList
         contentContainerStyle={this.props.contentContainerStyle}
@@ -256,6 +279,10 @@ function getIds(data) {
   return [data.id];
 }
 
+function renderSectionHeader({ section: { title } }: any): React.ReactElement {
+  return <Text style={s.section}>{capitalize(title)}</Text>;
+}
+
 function mapData(data, it) {
   if (_.isArray(data)) {
     return data.map(it);
@@ -266,6 +293,10 @@ function mapData(data, it) {
   }
 
   return it(data);
+}
+
+function capitalize(s) {
+  return s && s[0].toUpperCase() + s.slice(1);
 }
 
 function findModel(item, models) {
@@ -336,4 +367,9 @@ const s = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 15,
   },
+  section: {
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    fontSize: 18,
+  } as TextStyle,
 });
