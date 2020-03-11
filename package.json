@@ -22,7 +22,7 @@
     "run-android": "react-native run-android",
     "changelog": "node dev-tools/changelog --type=debug",
     "web": "webpack-dev-server --host 0.0.0.0",
-    "web:build": "webpack -p --optimize-minimize"
+    "web:build": "cross-env NODE_ENV=production webpack -p --optimize-minimize"
   },
   "dependencies": {
     "@nozbe/watermelondb": "0.16.0",
