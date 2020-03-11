@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { FlatList } from 'react-native';
+import { FlatList, SectionList } from 'react-native';
 
 type ScrollToTop = {
   scroll(): void;
@@ -12,8 +12,7 @@ export const ScrollToTopContext = React.createContext<ScrollToTop>({ scroll: _.n
 
 export function withScroll(Component) {
   class Provider extends React.Component {
-    setScroll = (list: FlatList<any>) =>
-      this.setState({ scroll: () => list?.scrollToOffset({ animated: true, offset: 0 }) });
+    setScroll = (list: FlatList<any> | SectionList<any>) => this.setState({ scroll: () => scrollToTop(list) });
 
     state = { scroll: _.noop, setScroll: this.setScroll };
 
@@ -27,4 +26,18 @@ export function withScroll(Component) {
   }
 
   return hoistNonReactStatics(Provider, Component);
+}
+
+function scrollToTop(list: FlatList<any> | SectionList<any>) {
+  if (!list) {
+    return;
+  }
+
+  if ('scrollToOffset' in list) {
+    return list.scrollToOffset({ animated: true, offset: 0 });
+  }
+
+  if ('scrollToLocation' in list) {
+    return list.scrollToLocation({ animated: true, sectionIndex: 0, itemIndex: 0 });
+  }
 }

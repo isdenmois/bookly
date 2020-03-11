@@ -104,13 +104,15 @@ function children(w) {
   return result;
 }
 
-function getEditions(w) {
-  const RUSSIAN_EDITION = 10;
-  return w.editions_blocks?.[RUSSIAN_EDITION]?.list || [];
+const RUSSIAN_EDITIONS = 10;
+const OTHER_EDITIONS = 80;
+
+function getEditions(w, langId = RUSSIAN_EDITIONS) {
+  return w.editions_blocks?.[langId]?.list || [];
 }
 
 function editionIds(w) {
-  return getEditions(w).map(el => el.edition_id);
+  return [...getEditions(w, RUSSIAN_EDITIONS), ...getEditions(w, OTHER_EDITIONS)].map(el => el.edition_id);
 }
 
 function editionTranslators(w) {
