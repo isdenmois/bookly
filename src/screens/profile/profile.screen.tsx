@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle, TextStyle, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { session } from 'services';
@@ -75,7 +75,14 @@ const s = StyleSheet.create({
   } as ViewStyle,
   button: {
     backgroundColor: color.Background,
-    elevation: 3,
+    ...Platform.select({
+      android: {
+        elevation: 3,
+      },
+      web: {
+        boxShadow: '0 1px 4px #0003',
+      },
+    }),
   } as ViewStyle,
   buttonText: {
     color: color.PrimaryText,
