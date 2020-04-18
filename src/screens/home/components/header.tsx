@@ -81,7 +81,7 @@ async function searchWorkIds(q): Promise<any[]> {
     const editions = await api.searchEditions(q);
     let bookId: string;
 
-    for (let i = 0; i < editions.length; i++) {
+    for (let i = 0; i < editions?.length; i++) {
       const editionId = String(editions[i].edition_id);
       const extra = { thumbnail: editionId, paper: true, title: editions[i].name?.replace(/\[(.+?)\]/g, '') };
 

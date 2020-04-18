@@ -135,11 +135,12 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   renderTranslators() {
-    if (!this.props.book.translators?.length) {
+    const translators = this.props.book.translators;
+
+    if (!translators?.length) {
       return null;
     }
 
-    const translators = this.props.book.translators;
     const title = translators.length > 1 ? 'Переводчики' : 'Переводчик';
 
     return <ViewLine title={title} value={translators.join('\n')} />;
