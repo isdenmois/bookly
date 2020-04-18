@@ -1,4 +1,4 @@
 {
   "name": "bookly",
-  "routes": [{ "src": "/App/(.*)", "dest": "/" }]
+  "routes": [{ "src": "/api/livelib/(.*)", "dest": "/api/livelib.js" }]
 }
