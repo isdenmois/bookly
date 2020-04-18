@@ -9,6 +9,7 @@ import {
   Alert,
   ToastAndroid,
   Insets,
+  Platform,
 } from 'react-native';
 import { Model } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
@@ -88,6 +89,12 @@ export function ViewLineAction({ title, onPress, onLongPress }: ViewLineActionPr
 
 export function confirm(title: string, message?: string) {
   return new Promise((resolve, reject) => {
+    if (Platform.OS === 'web') {
+      const fn = window.confirm(message || title) ? resolve : reject;
+
+      return fn();
+    }
+
     Alert.alert(message ? title : null, message || title, [
       { text: 'Отменить', style: 'cancel', onPress: reject },
       { text: 'OK', onPress: resolve, style: 'destructive' },
