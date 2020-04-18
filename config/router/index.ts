@@ -3,13 +3,13 @@ import { createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator, TransitionPresets } from 'react-navigation-stack';
 import { Easing } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useScreens } from 'react-native-screens';
+import { enableScreens } from 'react-native-screens';
 
 import { LoginScreen } from 'screens/login/login.screen';
 import { createApp } from './create-app';
 import { MainStack, ModalStack } from './routes';
 
-const createNavigator = initialRouteName =>
+const createNavigator = (initialRouteName) =>
   createSwitchNavigator(
     {
       Login: {
@@ -58,7 +58,7 @@ const createNavigator = initialRouteName =>
 
 const PERSISTENCE_KEY = 'REACT_DEV_NAVIGATION';
 
-export const persistNavigationState = async nav => {
+export const persistNavigationState = async (nav) => {
   if (!hasModals(nav)) {
     await AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(nav));
   }
@@ -69,8 +69,8 @@ export const loadNavigationState = async () => {
   return JSON.parse(jsonString);
 };
 
-export const create = route => {
-  useScreens(true); // eslint-disable-line react-hooks/rules-of-hooks
+export const create = (route) => {
+  enableScreens(true);
   return createApp(createNavigator(route));
 };
 
