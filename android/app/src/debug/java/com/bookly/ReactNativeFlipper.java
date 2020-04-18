@@ -11,6 +11,8 @@ import com.facebook.flipper.android.utils.FlipperUtils;
 import com.facebook.flipper.core.FlipperClient;
 import com.facebook.flipper.plugins.crashreporter.CrashReporterPlugin;
 import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin;
+import com.facebook.flipper.plugins.databases.impl.SqliteDatabaseDriver;
+import com.facebook.flipper.plugins.databases.impl.SqliteDatabaseProvider;
 import com.facebook.flipper.plugins.fresco.FrescoFlipperPlugin;
 import com.facebook.flipper.plugins.inspector.DescriptorMapping;
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin;
@@ -22,13 +24,29 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.network.NetworkingModule;
 import okhttp3.OkHttpClient;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
+
 public class ReactNativeFlipper {
   public static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
     if (FlipperUtils.shouldEnableFlipper(context)) {
       final FlipperClient client = AndroidFlipperClient.getInstance(context);
       client.addPlugin(new InspectorFlipperPlugin(context, DescriptorMapping.withDefaults()));
       client.addPlugin(new ReactFlipperPlugin());
-      client.addPlugin(new DatabasesFlipperPlugin(context));
+      client.addPlugin(new DatabasesFlipperPlugin(new SqliteDatabaseDriver(context, new SqliteDatabaseProvider() {
+        @Override
+        public List<File> getDatabaseFiles() {
+          List<File> databaseFiles = new ArrayList<>();
+          // for (String databaseName : context.databaseList()) {
+          //     databaseFiles.add(context.getDatabasePath(databaseName));
+          // }
+
+          // Watermelondb
+          databaseFiles.add(new File(context.getDatabasePath("books.db").getPath().replace("/databases", "")));
+          return databaseFiles;
+        }
+      })));
       client.addPlugin(new SharedPreferencesFlipperPlugin(context));
       client.addPlugin(CrashReporterPlugin.getInstance());
       NetworkFlipperPlugin networkFlipperPlugin = new NetworkFlipperPlugin();
