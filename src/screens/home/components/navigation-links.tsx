@@ -2,30 +2,25 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import withObservables from '@nozbe/with-observables';
-import { Database } from '@nozbe/watermelondb';
 import { observer } from 'mobx-react';
 import { color } from 'types/colors';
-import { inject, Session, Navigation } from 'services';
+import { session, navigation } from 'services';
 import { ListItem } from 'components';
 import { readBooksQuery, wishBooksQuery } from '../home.queries';
 
 interface Props {
-  database: Database;
   readCount?: number;
   wishCount?: number;
 }
 
-const withCounts: Function = withObservables(null, ({ database }: Props) => ({
-  readCount: readBooksQuery(database).observeCount(),
-  wishCount: wishBooksQuery(database).observeCount(),
+const withCounts: Function = withObservables(null, () => ({
+  readCount: readBooksQuery().observeCount(),
+  wishCount: wishBooksQuery().observeCount(),
 }));
 
 @withCounts
 @observer
 export class NavigationLinks extends React.Component<Props> {
-  session = inject(Session);
-  navigation = inject(Navigation);
-
   render() {
     return (
       <View style={s.container}>
@@ -62,7 +57,7 @@ export class NavigationLinks extends React.Component<Props> {
           onPress={this.openProfile}
           icon={<Icon name='user' size={20} color={color.BlueIcon} />}
           value='Профиль'
-          counter={this.session.userId}
+          counter={session.userId}
           testID='ProfileName'
           last
         />
@@ -70,12 +65,12 @@ export class NavigationLinks extends React.Component<Props> {
     );
   }
 
-  openReadBooks = () => this.navigation.push('ReadList');
-  openWishBooks = () => this.navigation.push('WishList');
-  openScanAddress = () => this.navigation.push('/modal/scan-address');
-  openBookSelect = () => this.navigation.push('BookSelect');
-  openStat = () => this.navigation.push('Stat');
-  openProfile = () => this.navigation.push('Profile');
+  openReadBooks = () => navigation.push('ReadList');
+  openWishBooks = () => navigation.push('WishList');
+  openScanAddress = () => navigation.push('/modal/scan-address');
+  openBookSelect = () => navigation.push('BookSelect');
+  openStat = () => navigation.push('Stat');
+  openProfile = () => navigation.push('Profile');
 }
 
 const s = StyleSheet.create({

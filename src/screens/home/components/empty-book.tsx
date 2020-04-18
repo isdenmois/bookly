@@ -1,20 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
-import { Database } from '@nozbe/watermelondb';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
-import { Navigation, inject } from 'services';
+import { navigation } from 'services';
 import { Button, TextM } from 'components';
 import { wishBooksQuery } from '../home.queries';
 
 interface Props {
-  database: Database;
   wishBooksCount?: number;
 }
 
-const withWishBooksCount: Function = withObservables(null, ({ database }: Props) => ({
-  wishBooksCount: wishBooksQuery(database).observeCount(),
+const withWishBooksCount: Function = withObservables(null, () => ({
+  wishBooksCount: wishBooksQuery().observeCount(),
 }));
 
 @withWishBooksCount
@@ -33,7 +31,7 @@ export class EmptyBook extends React.Component<Props> {
     );
   }
 
-  openBookSelect = () => inject(Navigation).navigate('/modal/book-select');
+  openBookSelect = () => navigation.navigate('/modal/book-select');
 }
 
 const s = StyleSheet.create({

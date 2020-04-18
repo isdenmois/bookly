@@ -19,3 +19,5 @@ export class Navigation {
     return this.navigator.dispatch(StackActions.push({ routeName, params }));
   }
 }
+
+export const navigation: Navigation = new Navigation();

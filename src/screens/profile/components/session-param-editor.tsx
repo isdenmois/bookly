@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { Session, inject } from 'services';
+import { session } from 'services';
 import { ListItem } from 'components';
 import { Setting } from 'services/session';
 
@@ -9,7 +9,6 @@ interface Props {
 }
 
 export function SessionEditor({ title, prop }: Props) {
-  const session = useMemo(() => inject(Session), []);
   const [value, setValue] = useState(session[prop].toString());
   const save = useCallback(() => +value && session.set(prop, +value), [value]);
 

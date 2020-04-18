@@ -1,67 +1,50 @@
 import React from 'react';
 import { ActivityIndicator, View, Button, KeyboardAvoidingView, ViewStyle, TextStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { observer } from 'mobx-react';
-import { inject, provider } from 'services';
 import { TextL, ListItem } from 'components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 
 import { LoginTriangles } from './login-triangles';
-import { LoginStore } from './login.store';
+import { useLoginStore } from './login.store';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
   location: any;
 }
 
-@provider(LoginStore)
-@observer
-export class LoginScreen extends React.Component<Props> {
-  loginStore = inject(LoginStore);
+export function LoginScreen({ navigation, location }: Props) {
+  const navigateTo = location?.state.from?.pathname || 'Home';
+  const { login, setLogin, submit, submitting } = useLoginStore(navigation, navigateTo);
 
-  render() {
-    const { login, submitting } = this.loginStore;
+  return (
+    <View style={s.container}>
+      <LoginTriangles />
 
-    return (
-      <View style={s.container}>
-        <LoginTriangles />
+      <KeyboardAvoidingView style={s.cardContainer} behavior='padding' enabled>
+        <View>
+          <TextL style={s.headerTitle}>Вход в аккаунт</TextL>
+        </View>
 
-        <KeyboardAvoidingView style={s.cardContainer} behavior='padding' enabled>
-          <View>
-            <TextL style={s.headerTitle}>Вход в аккаунт</TextL>
-          </View>
+        <View style={s.card}>
+          <ListItem
+            testID='loginField'
+            autoCapitalize='none'
+            autoFocus
+            placeholder='Имя пользователя'
+            value={login}
+            onChange={setLogin}
+            onSubmit={submit}
+            icon={<Icon name='user' size={18} color={color.PrimaryText} />}
+          />
 
-          <View style={s.card}>
-            <ListItem
-              testID='loginField'
-              autoCapitalize='none'
-              autoFocus
-              placeholder='Имя пользователя'
-              value={login}
-              onChange={this.onLoginChange}
-              onSubmit={this.submit}
-              icon={<Icon name='user' size={18} color={color.PrimaryText} />}
-            />
+          {submitting && <ActivityIndicator size='large' />}
 
-            {submitting && <ActivityIndicator size='large' />}
-
-            {!submitting && <Button testID='submitButton' title='Войти' disabled={!login} onPress={this.submit} />}
-          </View>
-        </KeyboardAvoidingView>
-      </View>
-    );
-  }
-
-  submit = () => {
-    const navigateTo = this.props.location?.state.from?.pathname || 'Home';
-
-    this.loginStore.submit().then(() => this.props.navigation.navigate(navigateTo));
-  };
-
-  onLoginChange = value => {
-    this.loginStore.setLogin(value);
-  };
+          {!submitting && <Button testID='submitButton' title='Войти' disabled={!login} onPress={submit} />}
+        </View>
+      </KeyboardAvoidingView>
+    </View>
+  );
 }
 
 const s = {

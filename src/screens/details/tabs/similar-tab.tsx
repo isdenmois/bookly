@@ -2,8 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { color } from 'types/colors';
-import { inject } from 'services';
-import { API } from 'api';
+import { api } from 'services';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'services/api/fantlab/similar';
 import { BookExtended } from 'types/book-extended';
@@ -18,15 +17,13 @@ interface Props {
 
 @withScroll
 export class SimilarTab extends React.Component<Props> {
-  api = inject(API);
-
   shouldComponentUpdate(props, state) {
     return hasUpdates(this, props, state, ['book']);
   }
 
   render() {
     return (
-      <Fetcher bookId={this.props.book.id} api={this.api.similar} emptyText='Похожие книги не найдены'>
+      <Fetcher bookId={this.props.book.id} api={api.similar} emptyText='Похожие книги не найдены'>
         {this.renderBook}
       </Fetcher>
     );

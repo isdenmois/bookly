@@ -1,5 +1,5 @@
 import { getCurrentYear } from 'utils/date';
-import { inject, Navigation } from 'services';
+import { navigation } from 'services';
 
 export const TABS = {
   MONTH: 'MONTH',
@@ -98,8 +98,6 @@ export function notTotal(row) {
 }
 
 export function openRead(filters: any, year: number | false) {
-  const navigation = inject(Navigation);
-
   if (year) {
     filters.year = year;
   } else if (year !== false) {

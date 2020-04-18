@@ -2,17 +2,16 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import _ from 'lodash';
 import { Text, View, ViewStyle, StyleSheet, ImageStyle, TextStyle, Linking } from 'react-native';
 import Book from 'store/book';
-import { Database } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { color } from 'types/colors';
-import { Navigation, inject } from 'services';
+import { navigation } from 'services';
+import { database } from 'store';
 
 interface Props {
   query: Where[];
-  database: Database;
   openFilters: () => void;
   books?: Book[];
 }
@@ -23,7 +22,7 @@ function BookSelectorComponent({ books, openFilters }: Props) {
   const list = useMemo(() => generate(books), [books]);
   const more = useCallback(() => setIndex(index < list.length - 1 ? index + 1 : 0), [index, list]);
   const openTelegram = useCallback(() => Linking.openURL(`tg://share?text=${list[index].title}`), [list, index]);
-  const openBook = useCallback(() => inject(Navigation).push('Details', { bookId: list[index].id }), [list, index]);
+  const openBook = useCallback(() => navigation.push('Details', { bookId: list[index].id }), [list, index]);
 
   if (!list || !list[index]) {
     return (
@@ -113,7 +112,7 @@ const s = StyleSheet.create({
 
 export const BookSelector = withObservables(['query'], booksQuery)(React.memo(BookSelectorComponent));
 
-function booksQuery({ database, query }: Props) {
+function booksQuery({ query }: Props) {
   return {
     books: database.collections.get('books').query(...query),
   };

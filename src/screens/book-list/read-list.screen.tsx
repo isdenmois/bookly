@@ -4,13 +4,11 @@ import { Platform, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProp } from 'react-navigation';
-import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { withScroll } from 'utils/scroll-to-top';
 import { getCurrentYear } from 'utils/date';
-import { inject } from 'services';
 import { Button, ScreenHeader } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
@@ -38,8 +36,6 @@ export class ReadList extends React.Component<Props, State> {
     this.props.navigation.getParam('sort', { field: 'date', desc: true }),
   );
 
-  database = inject(Database);
-
   readonly = this.props.navigation.getParam('readonly');
 
   filters = READ_LIST_FILTERS;
@@ -53,14 +49,7 @@ export class ReadList extends React.Component<Props, State> {
     return (
       <View style={s.container}>
         <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
-        <BookList
-          database={this.database}
-          query={query}
-          sort={sort}
-          filters={filters}
-          onChange={this.setFilters}
-          readonly={readonly}
-        />
+        <BookList query={query} sort={sort} filters={filters} onChange={this.setFilters} readonly={readonly} />
         <View style={s.buttonContainer}>
           <Button
             label='ФИЛЬТРЫ'

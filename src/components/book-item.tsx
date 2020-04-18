@@ -4,7 +4,7 @@ import withObservables from '@nozbe/with-observables';
 import { of } from 'rxjs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
-import { Navigation, inject } from 'services';
+import { navigation } from 'services';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book, { BookData } from 'store/book';
@@ -42,8 +42,6 @@ export const withBook: Function = withObservables(['book'], ({ book }: Props) =>
 
 @withBook
 export class BookItem extends React.Component<Props> {
-  navigation = inject(Navigation);
-
   get nextStatus() {
     if (this.props.nextStatus) {
       return this.props.nextStatus;
@@ -96,14 +94,14 @@ export class BookItem extends React.Component<Props> {
   openBook = () => {
     const { book, fantlabId, extra } = this.props;
 
-    this.navigation.push('Details', { bookId: book.id, fantlabId, extra });
+    navigation.push('Details', { bookId: book.id, fantlabId, extra });
   };
 
   openChangeStatusModal = () => {
     const book = this.props.book;
     const status = this.nextStatus;
 
-    this.navigation.navigate('/modal/change-status', { book, status });
+    navigation.navigate('/modal/change-status', { book, status });
   };
 }
 const s = StyleSheet.create({

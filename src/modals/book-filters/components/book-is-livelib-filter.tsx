@@ -1,14 +1,14 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Switch, StyleSheet, ViewStyle } from 'react-native';
 import { observer } from 'mobx-react';
-import { inject } from 'services';
 import { ListItem } from 'components';
 import { BookFilters } from '../book-filters.service';
 
-interface Props {}
+interface Props {
+  filters: BookFilters;
+}
 
-export const BookIsLiveLibFilter = observer(({}: Props) => {
-  const filters = useMemo(() => inject(BookFilters), []);
+export const BookIsLiveLibFilter = observer(({ filters }: Props) => {
   const toggle = useCallback(() => filters.setFilter('isLiveLib', filters.isLiveLib ? null : true), [filters]);
 
   return (

@@ -1,8 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { inject } from 'services';
 import { EditableListItem } from './editable-list-item';
-import { BookFilters } from '../book-filters.service';
 
 const fields = [
   { id: null, name: 'Все' },
@@ -10,8 +8,7 @@ const fields = [
   { id: 'n', name: 'В электронке' },
 ];
 
-export const BookPaperFilter = observer(() => {
-  const filters = React.useMemo(() => inject(BookFilters), []);
+export const BookPaperFilter = observer(({ filters }) => {
   const setType = React.useCallback(value => filters.setFilter('paper', value), [filters]);
 
   return (

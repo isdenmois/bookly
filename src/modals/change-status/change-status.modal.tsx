@@ -1,17 +1,16 @@
 import _ from 'lodash';
 import React from 'react';
 import { Text, StyleSheet, View, ViewStyle, TextStyle, Platform, Switch } from 'react-native';
-import { Database } from '@nozbe/watermelondb';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { inject, Session } from 'services';
+import { api, session } from 'services';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import Book, { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
-import { API } from 'services/api';
+import { database } from 'store';
 import { Button, Dialog, DateTimePicker, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
 
 const statusOptions = [
@@ -38,10 +37,6 @@ let defaultDate: Date;
 
 @withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
-  db = inject(Database);
-  api = inject(API);
-  session = inject(Session);
-
   state = {
     date: this.defaultDate,
     rating: this.props.book.rating || 0,
@@ -70,7 +65,7 @@ export class ChangeStatusModal extends React.Component<Props> {
       return book.date;
     }
 
-    if (this.session.saveDateInChangeStatus) {
+    if (session.saveDateInChangeStatus) {
       return defaultDate || new Date();
     }
 
@@ -238,7 +233,7 @@ export class ChangeStatusModal extends React.Component<Props> {
 
     this.fillData(book);
 
-    return createBook(this.db, book);
+    return createBook(database, book);
   }
 
   save = () => {
@@ -252,7 +247,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     }
 
     if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && this.session.withFantlab) {
-      this.api.markWork(this.props.book.id, this.state.rating);
+      api.markWork(this.props.book.id, this.state.rating);
     }
   };
 }

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { Session, Navigation, inject } from 'services';
+import { navigation, session } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
@@ -12,11 +12,10 @@ interface Props {
   review: Review;
 }
 
-const navigate = (review, book) => inject(Navigation).navigate('/modal/review-write', { review, book });
+const navigate = (review, book) => navigation.navigate('/modal/review-write', { review, book });
 
 export function LocalReview({ review, book }: Props) {
   const openEditReview = useCallback(() => navigate(review, book), [review]);
-  const session = inject(Session);
 
   return (
     <View style={s.container}>

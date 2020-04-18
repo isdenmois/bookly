@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { SyncService, inject } from 'services';
+import { syncService } from 'services';
 import { HomeHeader } from './components/header';
 import { CurrentBook } from './components/current-book';
 import { BookChallenge } from './components/book-challenge';
@@ -20,19 +19,16 @@ interface State {
 export class HomeScreen extends React.Component<Props, State> {
   state: State = { refreshing: false };
 
-  database = inject(Database);
-  syncService = inject(SyncService);
-
   render() {
     return (
       <ScrollView testID='homeScreen' contentContainerStyle={s.container} refreshControl={this.renderRefresh()}>
         <HomeHeader />
 
-        <CurrentBook database={this.database} />
+        <CurrentBook />
 
-        <BookChallenge database={this.database} />
+        <BookChallenge />
 
-        <NavigationLinks database={this.database} />
+        <NavigationLinks />
       </ScrollView>
     );
   }
@@ -44,7 +40,7 @@ export class HomeScreen extends React.Component<Props, State> {
   refresh = async () => {
     this.setState({ refreshing: true });
 
-    await this.syncService.sync();
+    await syncService.sync();
 
     this.setState({ refreshing: false });
   };

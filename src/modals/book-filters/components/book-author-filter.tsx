@@ -2,19 +2,20 @@ import React from 'react';
 import _ from 'lodash';
 import { TextInput, StyleSheet, TextStyle } from 'react-native';
 import { sortBy, prop } from 'rambdax';
-import { Q, Database } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
 import { observer } from 'mobx-react';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
 import Author from 'store/author';
-import { inject } from 'services';
+import { database } from 'store';
 import { EditableListItem } from './editable-list-item';
 import { BookFilters } from '../book-filters.service';
 
 interface Props {
   authors?: Author[];
   status: BOOK_STATUSES;
+  filters: BookFilters;
 }
 
 interface State {
@@ -23,7 +24,7 @@ interface State {
 
 const withAuthors: Function = withObservables(null, (props: Props) => {
   const queries = [Q.on('books', 'status', props.status), Q.on('book_authors', '_status', Q.notEq('deleted'))];
-  const authors = inject(Database).collections.get('authors');
+  const authors = database.collections.get('authors');
 
   return { authors: authors.query(...queries) };
 });
@@ -32,7 +33,6 @@ const withAuthors: Function = withObservables(null, (props: Props) => {
 @observer
 export class BookAuthorFilter extends React.PureComponent<Props, State> {
   state: State = { name: '' };
-  filters = inject(BookFilters);
 
   sortAuthors = sortBy(prop('name'));
 
@@ -40,7 +40,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
     if (!this.props.authors) return null;
     let authors = this.props.authors;
     const name = this.state.name.toLowerCase();
-    const author = this.filters.author;
+    const author = this.props.filters.author;
 
     if (this.state.name) {
       authors = authors.filter(a => a.name.toLowerCase().indexOf(name) >= 0);
@@ -65,7 +65,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
   setAuthor = id => {
     const author = _.find(this.props.authors, { id }) || null;
 
-    this.filters.setFilter('author', author && _.pick(author, ['id', 'name']));
+    this.props.filters.setFilter('author', author && _.pick(author, ['id', 'name']));
     this.setState({ name: '' });
   };
 }

@@ -2,8 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { inject } from 'services';
-import { API } from 'api';
+import { api } from 'services';
 import { Fetcher } from 'components';
 import Book, { BookData } from 'store/book';
 import { BookExtended } from 'types/book-extended';
@@ -37,8 +36,6 @@ const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortst
 
 @withNavigationProps()
 export class DetailsScreen extends React.Component<Props> {
-  api = inject(API);
-
   get isLiveLib() {
     return this.props.bookId.startsWith('l_');
   }
@@ -54,10 +51,8 @@ export class DetailsScreen extends React.Component<Props> {
   tabs = null;
 
   render() {
-    const api = this.isLiveLib ? this.api.lBook : this.api.book;
-
     return (
-      <Fetcher api={api} bookId={this.props.bookId} collection='books'>
+      <Fetcher api={this.isLiveLib ? api.lBook : api.book} bookId={this.props.bookId} collection='books'>
         {this.renderResult}
       </Fetcher>
     );

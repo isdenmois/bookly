@@ -2,8 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, ViewStyle, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
-import { inject } from 'services';
-import { API } from 'api';
+import { api } from 'services';
 import { FantlabThumnail } from 'services/api/fantlab/thumbnails';
 import { Fetcher, Thumbnail } from 'components';
 
@@ -16,14 +15,12 @@ interface Props {
 const OBSERVE_FIELDS = ['bookId'];
 
 export class ThumbnailList extends React.PureComponent<Props> {
-  api = inject(API);
-
   render() {
     return (
       <ScrollView style={s.container} contentContainerStyle={s.content} horizontal>
         <Fetcher
           observe={OBSERVE_FIELDS}
-          api={this.api.thumbnails}
+          api={api.thumbnails}
           bookId={this.props.bookId}
           selected={this.props.selected}
         >

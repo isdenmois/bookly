@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { ListItem } from 'components';
-import { inject } from 'services';
-import { API } from 'services/api';
+import { api } from 'services';
 import { ToastAndroid } from 'react-native';
 
 export function RemoveDeleted() {
@@ -14,7 +13,7 @@ export function RemoveDeleted() {
 async function removeDeleted(setRemoving: Function) {
   setRemoving(true);
 
-  const { deleted } = await inject(API).removeDeleted();
+  const { deleted } = await api.removeDeleted();
 
   const message = deleted > 0 ? `Были удалено ${deleted} записей` : 'Удаленных записей не обнаружено';
 

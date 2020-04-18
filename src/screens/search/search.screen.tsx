@@ -4,8 +4,7 @@ import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { inject } from 'services';
-import { API } from 'api';
+import { api } from 'services';
 import Book from 'store/book';
 import { BookItem, Button, Fetcher, SearchBar } from 'components';
 
@@ -35,10 +34,8 @@ export class SearchScreen extends React.Component<Props, State> {
     source: this.props.source || fantlab,
   };
 
-  api = inject(API);
-
   render() {
-    const api = this.state.source === fantlab ? this.api.searchBooks : this.api.lBooksSearch;
+    const apiProp = this.state.source === fantlab ? api.searchBooks : api.lBooksSearch;
 
     return (
       <View style={s.container}>
@@ -51,7 +48,7 @@ export class SearchScreen extends React.Component<Props, State> {
         />
         <Fetcher
           contentContainerStyle={s.scroll}
-          api={api}
+          api={apiProp}
           q={this.state.q}
           collection='books'
           emptyText='Книги не найдены'

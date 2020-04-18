@@ -2,10 +2,10 @@ import React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Database } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { Session, inject } from 'services';
+import { session } from 'services';
 import { clearCache } from 'services/api/base/create-api';
+import { database } from 'store';
 import { Button, ScreenHeader, ListItem } from 'components';
 import { SessionEditor } from './components/session-param-editor';
 import { SessionParamToggler } from './components/session-param-toggler';
@@ -17,9 +17,6 @@ interface Props {
 }
 
 export class ProfileScreen extends React.Component<Props> {
-  session = inject(Session);
-  database = inject(Database);
-
   render() {
     const v8runtime = (global as any)._v8runtime;
     const isHermes = (global as any).HermesInternal;
@@ -27,7 +24,7 @@ export class ProfileScreen extends React.Component<Props> {
 
     return (
       <View style={s.container}>
-        <ScreenHeader title={this.session.userId} />
+        <ScreenHeader title={session.userId} />
 
         <View style={s.content}>
           <SessionEditor title='Хочу читать книг в год' prop='totalBooks' />
@@ -55,9 +52,9 @@ export class ProfileScreen extends React.Component<Props> {
   }
 
   logout = () => {
-    this.session.stopSession();
+    session.stopSession();
     this.props.navigation.navigate('Login');
-    this.database.action(() => this.database.unsafeResetDatabase());
+    database.action(() => database.unsafeResetDatabase());
   };
 }
 

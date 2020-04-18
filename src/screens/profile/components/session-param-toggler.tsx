@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { ViewStyle, StyleSheet, Switch } from 'react-native';
-import { Session, inject } from 'services';
+import { session } from 'services';
 import { ListItem } from 'components';
 import { Setting } from 'services/session';
 
@@ -12,11 +12,9 @@ interface Props {
 
 @observer
 export class SessionParamToggler extends React.Component<Props> {
-  session = inject(Session);
-
   render() {
     const param = this.props.param;
-    const value = !!this.session[param];
+    const value = !!session[param];
 
     return (
       <ListItem style={s.container} rowStyle={s.row} label={this.props.title} onPress={this.toggle}>
@@ -28,7 +26,7 @@ export class SessionParamToggler extends React.Component<Props> {
   toggle = () => {
     const p = this.props.param;
 
-    this.session.set(p, !this.session[p]);
+    session.set(p, !session[p]);
   };
 }
 

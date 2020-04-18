@@ -2,20 +2,17 @@ import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle, ToastAndroid } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { observer } from 'mobx-react';
-import { Database } from '@nozbe/watermelondb';
+import { session } from 'services';
 import { Counter } from 'components';
 import { dayOfYear } from 'utils/date';
-import { inject, Session } from 'services';
 import { readBooksThisYearQuery, booksReadForecast } from '../home.queries';
 const pluralize = require('pluralize-ru');
 
 interface Props {
-  database: Database;
   readCount?: number;
 }
 
 function BookChallengeComponent({ readCount }: Props) {
-  const session = inject(Session);
   const totalBooks = session.totalBooks;
   const forecast = useMemo(() => booksReadForecast(readCount, totalBooks), [readCount, totalBooks]);
   const showProgress = useCallback(
@@ -51,8 +48,8 @@ function getProgressMessage(readCount, totalBooks): string {
   return `Читайте по книге ${count}, чтобы успеть выполнить вызов`;
 }
 
-export const BookChallenge = withObservables(null, ({ database }: Props) => ({
-  readCount: readBooksThisYearQuery(database).observeCount(),
+export const BookChallenge = withObservables(null, () => ({
+  readCount: readBooksThisYearQuery().observeCount(),
 }))(observer(BookChallengeComponent));
 
 const s = StyleSheet.create({

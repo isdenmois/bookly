@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { API } from 'api';
-import { inject } from 'services';
+import { api } from 'services';
 import { ScreenHeader, BookItem, Fetcher } from 'components';
 import { color } from 'types/colors';
 import Book from 'store/book';
@@ -14,7 +13,6 @@ interface Props {
 
 @withNavigationProps()
 export class WorkListScreen extends Component<Props> {
-  api = inject(API);
   map = new Map();
   constructor(props) {
     super(props);
@@ -49,7 +47,7 @@ export class WorkListScreen extends Component<Props> {
   works = () => {
     const w = this.props.works.map(work => work.bookId).join(',');
 
-    return this.api.works({ w }).then(works => {
+    return api.works({ w }).then(works => {
       works.forEach(work => {
         Object.assign(work, this.map.get(work.id));
       });

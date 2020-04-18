@@ -1,15 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { inject } from 'services';
 import { ListItem } from 'components';
 import { BookFilters } from '../book-filters.service';
 
 interface Props {
+  filters: BookFilters;
   onApply: () => void;
 }
 
-export const BookTitleFilter = observer((props: Props) => {
-  const filters = React.useMemo(() => inject(BookFilters), []);
+export const BookTitleFilter = observer(({ filters, onApply }: Props) => {
   const setTitle = React.useCallback(value => filters.setFilter('title', value), [filters]);
 
   return (
@@ -18,7 +17,7 @@ export const BookTitleFilter = observer((props: Props) => {
       keyboardType='default'
       value={filters.title}
       onChange={setTitle}
-      onSubmit={props.onApply}
+      onSubmit={onApply}
       clearable
     />
   );

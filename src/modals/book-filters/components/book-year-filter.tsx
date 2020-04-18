@@ -1,15 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { inject } from 'services';
 import { ListItem } from 'components';
 import { BookFilters } from '../book-filters.service';
 
 interface Props {
+  filters: BookFilters;
   onApply: () => void;
 }
 
-export const BookYearFilter = observer((props: Props) => {
-  const filters = React.useMemo(() => inject(BookFilters), []);
+export const BookYearFilter = observer(({ filters, onApply }: Props) => {
   const onChange = React.useCallback(value => setYear(filters, value), [filters]);
 
   return (
@@ -18,7 +17,7 @@ export const BookYearFilter = observer((props: Props) => {
       keyboardType='numeric'
       value={filters.year && filters.year.toString()}
       onChange={onChange}
-      onSubmit={props.onApply}
+      onSubmit={onApply}
       clearable
     />
   );

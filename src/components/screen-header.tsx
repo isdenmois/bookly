@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { color } from 'types/colors';
-import { Navigation, inject } from 'services';
+import { navigation } from 'services';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
 import { TouchIcon } from './touch-icon';
 import { SearchBar } from './search-bar';
@@ -74,14 +74,10 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
 }
 
 function goBack() {
-  const navigation = inject(Navigation);
-
   navigation.pop();
 }
 
 function goToHome() {
-  const navigation = inject(Navigation);
-
   navigation.popToTop();
 }
 

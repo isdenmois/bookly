@@ -1,6 +1,5 @@
 import React from 'react';
 import withObservables from '@nozbe/with-observables';
-import { Database } from '@nozbe/watermelondb';
 import Book from 'store/book';
 import { Carousel } from 'components';
 import { currentBooksQuery } from '../home.queries';
@@ -8,12 +7,11 @@ import { NowReadingBook } from './now-reading-book';
 import { EmptyBook } from './empty-book';
 
 interface Props {
-  database: Database;
   books?: Book[];
 }
 
-const withCurrentBooksCount: Function = withObservables(null, ({ database }) => ({
-  books: currentBooksQuery(database).observeWithColumns(['thumbnail']),
+const withCurrentBooksCount: Function = withObservables(null, () => ({
+  books: currentBooksQuery().observeWithColumns(['thumbnail']),
 }));
 
 @withCurrentBooksCount
@@ -32,6 +30,6 @@ export class CurrentBook extends React.Component<Props> {
       );
     }
 
-    return <EmptyBook database={this.props.database} />;
+    return <EmptyBook />;
   }
 }

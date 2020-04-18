@@ -3,8 +3,7 @@ import { View, Text, TextInput, StyleSheet, TextStyle, ViewStyle } from 'react-n
 import { NavigationScreenProp } from 'react-navigation';
 import { color } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { inject, Session } from 'services';
-import { API } from 'services/api';
+import { api, session } from 'services';
 import { FantlabLoginRequest } from 'services/api/fantlab/login';
 import { Button, Dialog, ListItem } from 'components';
 
@@ -16,12 +15,9 @@ interface Props {
 
 @withNavigationProps()
 export class FantlabLoginModal extends React.Component<Props> {
-  api = inject(API);
-  session = inject(Session);
-
   state = {
     isLoading: false,
-    login: this.session.userId,
+    login: session.userId,
     password: '',
     error: null,
   };
@@ -90,7 +86,7 @@ export class FantlabLoginModal extends React.Component<Props> {
     let error = null;
 
     try {
-      result = await this.api.login(this.state.login, this.state.password);
+      result = await api.login(this.state.login, this.state.password);
     } catch (e) {
       error = e;
     }
@@ -99,7 +95,7 @@ export class FantlabLoginModal extends React.Component<Props> {
       return this.setState({ isLoading: false, error: error || result.error_msg || 'Не удалось залогиниться' });
     }
 
-    this.session.set('fantlabAuth', result['X-Session']);
+    session.set('fantlabAuth', result['X-Session']);
     this.props.navigation.goBack();
     this.props.onSuccess();
   };

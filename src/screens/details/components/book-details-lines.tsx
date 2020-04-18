@@ -10,9 +10,9 @@ import {
   ToastAndroid,
   Insets,
 } from 'react-native';
-import { Model, Database } from '@nozbe/watermelondb';
+import { Model } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
-import { inject } from 'services';
+import { database } from 'store';
 
 interface Props {
   description: string;
@@ -102,7 +102,7 @@ export function confirmRemoveModel(model: Model, warning: string) {
 }
 
 function removeModel(model: any) {
-  inject(Database)
+  database
     .action(() => model.experimentalMarkAsDeleted())
     .then(() => ToastAndroid.show('Удалено из коллекции', ToastAndroid.LONG));
 }

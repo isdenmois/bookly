@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
-import { inject } from 'services/inject/inject';
-import { Session } from 'services/session';
+import { session } from 'services/session';
 import { queryParams } from './create-url';
 import { Schema } from './api';
 
@@ -8,7 +7,6 @@ export function createFetchParams(schema: Schema, body) {
   const params: any = {
     method: schema.method,
   };
-  const session = inject(Session);
 
   params.headers = schema.headers || {};
   if (Platform.OS !== 'web') {
