@@ -1,9 +1,9 @@
 import React from 'react';
 import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
-import { map, sortBy, prop, isFalsy } from 'rambdax';
+import { sortBy, prop, isFalsy } from 'rambdax';
 
-import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { FlatList, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { database } from 'store';
@@ -34,10 +34,11 @@ export class BookList extends React.Component<Props> {
 
     const books = this.sortBooks(this.props.books);
 
-    return <ScrollView style={s.scroll}>{map(this.renderBookItem, books)}</ScrollView>;
+    return <FlatList style={s.scroll} data={books} keyExtractor={b => b.id} renderItem={this.renderBookItem} />;
+    // return <ScrollView style={s.scroll}>{books.map(this.renderBookItem)}</ScrollView>;
   }
 
-  renderBookItem = (book, index) => {
+  renderBookItem = ({ item: book, index }) => {
     const selected = this.props.selected;
     const lastIndex = this.props.books.length;
 
