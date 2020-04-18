@@ -27,6 +27,13 @@ export class LivelibTab extends Component<Props> {
     return hasUpdates(this, props, state, paths);
   }
 
+  get readDate() {
+    const book = this.props.book;
+    const parts = [formatDate(book.date), book.audio && 'аудиокнига', book.withoutTranslation && 'в оригинале'];
+
+    return parts.filter(p => p).join(', ');
+  }
+
   render() {
     const { book, isExist } = this.props;
     const fantlabId = !!this.props.fantlabId;
@@ -36,7 +43,7 @@ export class LivelibTab extends Component<Props> {
       <View>
         {!!book.series && <ViewLine title='Серия' value={book.series} />}
         {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
-        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={formatDate(book.date)} />}
+        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={this.readDate} />}
         {!!book.tags && <ViewLine title='Теги' value={book.tags} />}
         {!!book.cycles.length && this.renderCycles()}
         {!!book.description && <BookDescriptionLine description={book.description} />}
@@ -53,9 +60,7 @@ export class LivelibTab extends Component<Props> {
   };
 
   associate = async () => {
-    const book: Book = (await inject(Database)
-      .collections.get('books')
-      .find(this.props.fantlabId)) as any;
+    const book: Book = (await inject(Database).collections.get('books').find(this.props.fantlabId)) as any;
 
     await book.setData({ lid: this.props.book.id.replace('l_', '') });
 
