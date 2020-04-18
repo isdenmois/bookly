@@ -18,7 +18,7 @@ export default class Author extends Model {
 }
 
 export async function prepareMissedAuthors(database, authors) {
-  if (!authors || !authors.length) {
+  if (!authors?.length) {
     return [];
   }
 

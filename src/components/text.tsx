@@ -6,7 +6,7 @@ interface Props extends TextProps {
 }
 
 function withStyle(textStyle): any {
-  return function({ style, children, ...props }: Props) {
+  return function ({ style, children, ...props }: Props) {
     return (
       <Text style={[textStyle, style]} {...props}>
         {children}

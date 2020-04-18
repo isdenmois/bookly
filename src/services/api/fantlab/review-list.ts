@@ -20,10 +20,7 @@ interface Params {
   sortBy: string;
 }
 
-export default api
-  .get<Params>('/work/:bookId/responses', true)
-  .query('sort', 'sortBy')
-  .response(response);
+export default api.get<Params>('/work/:bookId/responses', true).query('sort', 'sortBy').response(response);
 
 export interface ReviewList {
   items: RemoteReview[];

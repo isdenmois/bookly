@@ -85,7 +85,7 @@ export class SearchScreen extends React.Component<Props, State> {
 
   checkLoad = (data, append) => {
     // Ничего не найдено -- выходим
-    if (append || !data || !data.items || !data.items.length) return;
+    if (append || !data?.items?.length) return;
     // Найдено больше 1 -- выходим
     if (!this.props.forceOpen && data.items.length > 1) return;
     // Изменяли параметры поиска -- выходим
