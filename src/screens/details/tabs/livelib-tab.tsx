@@ -44,7 +44,7 @@ export class LivelibTab extends Component<Props> {
         {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={this.readDate} />}
         {!!book.tags && <ViewLine title='Теги' value={book.tags} />}
-        {!!book.cycles.length && this.renderCycles()}
+        {!!book.cycles?.length && this.renderCycles()}
         {!!book.description && <BookDescriptionLine description={book.description} />}
         {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} />}
         {isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
