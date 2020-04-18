@@ -1,15 +1,13 @@
 import { observable } from 'mobx';
 import { synchronize } from '@nozbe/watermelondb/sync';
 import { getLastPulledAt } from '@nozbe/watermelondb/sync/impl';
-import { Database } from '@nozbe/watermelondb';
-import { inject } from './inject/inject';
+import { database } from 'store';
 import { Session } from './session';
 import { API } from './api';
+import { Database } from '@nozbe/watermelondb';
 
 export class SyncService {
-  database = inject(Database);
-  session = inject(Session);
-  api = inject(API);
+  constructor(private database: Database, private session: Session, private api: API) {}
 
   @observable lastPulledAt: number = 0;
 
@@ -20,7 +18,7 @@ export class SyncService {
 
     await synchronize(this as any);
 
-    this.lastPulledAt = await getLastPulledAt(this.database);
+    this.lastPulledAt = await getLastPulledAt(database);
   }
 
   pullChanges = async ({ lastPulledAt }) => {

@@ -1,11 +1,9 @@
-import { Database } from '@nozbe/watermelondb';
-import { inject } from 'services/inject/inject';
+import { database } from 'store';
 
 export function dbAction(target, name, descriptor) {
   const method = descriptor.value;
 
-  descriptor.value = function() {
-    const database = this.database || this.db || inject(Database);
+  descriptor.value = function () {
     const ctx = this;
     const args = arguments;
 

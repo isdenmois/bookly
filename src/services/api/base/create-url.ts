@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import { inject } from 'services/inject/inject';
-import { Session } from 'services/session';
+import { session } from 'services/session';
 
 const PARAMS_REGEX = /:[{]?([\w]+)[}]?/g;
 const DELIMITERS = /[:{}]+/g;
@@ -10,8 +9,6 @@ const DELIMITERS = /[:{}]+/g;
  */
 export function createUrl(url: string, params) {
   if (url.includes(':userId')) {
-    const session = inject(Session);
-
     url = url.replace(':userId', session.userId);
   }
 

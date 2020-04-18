@@ -1,8 +1,8 @@
 import { round, IRow, StatTab, TabTransition, openRead, StatBook } from './shared';
 import _ from 'lodash';
-import { inject } from 'services';
-import { Database, Q } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 import { ToastAndroid } from 'react-native';
+import { database } from 'store';
 
 export interface AuthorRow extends IRow {
   count: number;
@@ -37,7 +37,6 @@ export const transition: TabTransition = {
   enabled: () => true,
   async go(row, year) {
     const filters: any = {};
-    const database = inject(Database);
     const authors: any[] = await database.collections
       .get('authors')
       .query(Q.where('name', Q.eq(row.id)))

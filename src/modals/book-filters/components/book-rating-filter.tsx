@@ -1,14 +1,11 @@
 import React from 'react';
 import { StyleSheet, ViewStyle, View } from 'react-native';
 import { observer } from 'mobx-react';
-import { inject } from 'services';
 import { formatRating } from 'components/rating';
 import { SwipeRating } from 'components';
 import { OpenableListItem } from './openable-list-item';
-import { BookFilters } from '../book-filters.service';
 
-export const BookRatingFilter = observer(() => {
-  const filters = React.useMemo(() => inject(BookFilters), []);
+export const BookRatingFilter = observer(({ filters }) => {
   const setRating = React.useCallback(value => filters.setFilter('rating', value), [filters]);
   const clear = React.useCallback(() => filters.setFilter('rating', null), [filters]);
 

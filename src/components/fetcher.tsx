@@ -2,10 +2,10 @@ import React, { ReactNode } from 'react';
 import { Subscription } from 'rxjs';
 import _ from 'lodash';
 import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle, FlatList, SectionList } from 'react-native';
-import { Database, Q } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
-import { inject } from 'services';
+import { database } from 'store';
 import { TextXL } from './text';
 import { Button } from './button';
 
@@ -258,8 +258,8 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   }
 
   subscribe() {
-    const query = inject(Database)
-      .collections.get(this.props.collection)
+    const query = database.collections
+      .get(this.props.collection)
       .query(Q.where('id', Q.oneOf(getIds(this.state.data))))
       .observe();
 

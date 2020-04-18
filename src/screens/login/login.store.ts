@@ -1,32 +1,28 @@
-import { action, observable } from 'mobx';
-import { Session, SyncService, inject } from 'services';
+import { session, syncService } from 'services';
 import { ToastAndroid } from 'react-native';
+import { useState, useCallback } from 'react';
 
-export class LoginStore {
-  session = inject(Session);
-  syncService = inject(SyncService);
+export function useLoginStore(navigation, navigateTo: string) {
+  const [login, setLogin] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const submit = useCallback(async () => {
+    setSubmitting(true);
 
-  @observable login: string = '';
-  @observable submitting: boolean = false;
-
-  @action setLogin(login: string) {
-    this.login = login.trim();
-  }
-
-  @action async submit() {
-    this.submitting = true;
-
-    this.session.set('userId', this.login);
+    session.set('userId', login);
 
     try {
-      await this.syncService.sync();
+      await syncService.sync();
     } catch (e) {
       ToastAndroid.show(e?.message || 'Не удалось войти', ToastAndroid.SHORT);
-      this.session.set('userId', null);
+      session.set('userId', null);
       throw e;
     } finally {
-      this.login = '';
-      this.submitting = false;
+      setLogin('');
+      setSubmitting(false);
     }
-  }
+
+    navigation.navigate(navigateTo);
+  }, [login]);
+
+  return { login, setLogin, submit, submitting };
 }

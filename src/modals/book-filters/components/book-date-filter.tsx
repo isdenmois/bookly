@@ -5,12 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { observer } from 'mobx-react';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
-import { inject } from 'services';
 import { TouchIcon } from 'components';
 import { OpenableListItem } from './openable-list-item';
 import { BookFilters } from '../book-filters.service';
 
 interface Props {
+  filters: BookFilters;
   onApply: () => void;
 }
 
@@ -34,13 +34,11 @@ export function formatPeriod(period) {
 export class BookDateFilter extends React.PureComponent<Props, State> {
   state: State = { opened: false, from: null, markedDates: null };
 
-  filters = inject(BookFilters);
-
   today = new Date();
   calendar: any;
 
   render() {
-    const date = formatPeriod(this.filters.date);
+    const date = formatPeriod(this.props.filters.date);
 
     return (
       <OpenableListItem title='Дата' viewValue={date} onClear={this.clear} onClose={this.resetState}>
@@ -100,11 +98,11 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
   setDate = (to: Date) => {
     const from = this.state.from;
 
-    this.filters.setFilter('date', { from, to });
-    this.filters.setFilter('year', null);
+    this.props.filters.setFilter('date', { from, to });
+    this.props.filters.setFilter('year', null);
   };
 
-  clear = () => this.filters.setFilter('date', null);
+  clear = () => this.props.filters.setFilter('date', null);
   resetState = () => this.setState({ from: null, markedDates: null });
 }
 

@@ -69,3 +69,5 @@ export class Session {
     AsyncStorage.setItem(SESSION_KEY, session);
   }
 }
+
+export const session: Session = new Session();

@@ -6,8 +6,7 @@ import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { parser } from 'utils/bbcode';
 import { color } from 'types/colors';
-import { inject } from 'services';
-import { API } from 'services/api';
+import { api } from 'services';
 import { confirm } from './book-details-lines';
 
 interface Props {
@@ -15,8 +14,6 @@ interface Props {
 }
 
 export class RemoteReview extends React.PureComponent<Props> {
-  api = inject(API);
-
   state = { likes: this.props.review.likes, isLiked: false };
 
   get isLivelib() {
@@ -74,7 +71,7 @@ export class RemoteReview extends React.PureComponent<Props> {
     try {
       this.setState({ isLiked: true, likes: oldLikes + 1 });
 
-      await this.api.reviewVote(this.props.review.id.replace(/^f_/, ''));
+      await api.reviewVote(this.props.review.id.replace(/^f_/, ''));
 
       ToastAndroid.show('Лайк поставлен', ToastAndroid.SHORT);
     } catch (e) {

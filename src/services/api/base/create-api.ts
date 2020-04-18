@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import { ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { inject } from 'services/inject/inject';
-import { Navigation } from 'services/navigation';
-import { Session } from 'services/session';
+import { session } from 'services/session';
+import { navigation } from 'services/navigation';
 import { createUrl, getUrlParams } from './create-url';
 import { createFetchParams } from './create-params';
 import { parseResult } from './parse-result';
@@ -40,7 +39,7 @@ export function removeFromCache(url: string) {
 }
 
 export function createApi<T extends Function>(baseUrl: string, schema: Schema): T {
-  return function(...args) {
+  return function (...args) {
     const query = createQuery(schema.url, schema.query, args);
     const body = schema.body ? schema.body.apply(null, args) : args[0]?.body;
     const url = `${schema.baseUrl || baseUrl}${createUrl(schema.url, query || {})}`;
@@ -98,7 +97,7 @@ function sendReq(schema: Schema, body, url) {
 }
 
 function fetchData(url, schema: Schema, body) {
-  if (schema.needAuth && !inject(Session).fantlabAuth) {
+  if (schema.needAuth && !session.fantlabAuth) {
     return auth(url, schema, body);
   }
 
@@ -126,6 +125,6 @@ function auth(url, schema: Schema, body) {
   return new Promise((resolve, onClose) => {
     const onSuccess = () => fetchData(url, schema, body).then(resolve);
 
-    inject(Navigation).navigate('/modal/fantlab-login', { onSuccess, onClose });
+    navigation.navigate('/modal/fantlab-login', { onSuccess, onClose });
   });
 }

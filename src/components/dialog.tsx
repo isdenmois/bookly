@@ -1,7 +1,7 @@
 import React, { ReactChild, ReactNode, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
-import { Navigation, inject } from 'services';
+import { navigation } from 'services';
 import { TouchIcon } from 'components/touch-icon';
 
 interface Props {
@@ -50,8 +50,6 @@ function renderDialogHeader(title: ReactChild, back, onApply) {
 }
 
 function onBack() {
-  const navigation = inject(Navigation);
-
   return navigation.pop();
 }
 

@@ -1,19 +1,12 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
-import { Database } from '@nozbe/watermelondb';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
-import { database, onChanges } from 'store';
-import { provider, asValue, asRef } from 'services/inject/provider';
+import { onChanges } from 'store';
 
-import { Navigation, Session, SyncService, inject } from 'services';
-import { API } from 'api';
+import { session, syncService, navigation } from 'services';
 
-@provider(asValue(Database, database), asRef(Navigation, 'setNavigation'), Session, API, SyncService)
 class App extends React.Component<any> {
-  session = inject(Session);
-  syncService = inject(SyncService);
-
   state = { isLoaded: false };
   RootStack: any = null;
   loadNavigationState: Function = null;
@@ -26,17 +19,17 @@ class App extends React.Component<any> {
     const now = Date.now();
 
     if (now - lastSync > hour) {
-      await this.syncService.sync();
+      await syncService.sync();
       AsyncStorage.setItem('lastSync', now.toString());
     }
   };
 
-  subscription = onChanges.subscribe(() => this.syncService.sync());
+  subscription = onChanges.subscribe(() => syncService.sync());
 
   constructor(props, context) {
     super(props, context);
 
-    this.session
+    session
       .loadSession()
       .then(() => this.setState({ isLoaded: true }))
       .then(this.sync);
@@ -50,8 +43,7 @@ class App extends React.Component<any> {
     if (!this.RootStack) {
       const routes = require('../router');
 
-      debugger;
-      this.RootStack = routes.create(this.session.userId ? 'App' : 'Login');
+      this.RootStack = routes.create(session.userId ? 'App' : 'Login');
       SplashScreen.hide();
 
       if (__DEV__) {
@@ -66,7 +58,7 @@ class App extends React.Component<any> {
       <View style={this.style}>
         <StatusBar backgroundColor='#fff' barStyle='dark-content' />
         <RootStack
-          ref={this.props.setNavigation}
+          ref={navigation.setRef}
           loadNavigationState={loadNavigationState}
           persistNavigationState={persistNavigationState}
         />

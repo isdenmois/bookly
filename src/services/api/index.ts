@@ -47,3 +47,5 @@ export class API {
   lBook = lBookSchema.create(LIVELIB_URL);
   lReviews = lReviewsSchema.create(LIVELIB_URL);
 }
+
+export const api: API = new API();

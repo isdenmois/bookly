@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
-import { Navigation, inject } from 'services';
+import { navigation, api } from 'services';
 import { SearchBar } from 'components';
-import { API } from 'api';
 import { ActivityIndicator } from 'react-native';
 import { livelib } from 'screens/search/search.screen';
 
@@ -35,7 +34,6 @@ export class HomeHeader extends React.Component<any, State> {
   queryChange = query => this.setState({ query });
 
   onSearch = async () => {
-    const navigation = inject(Navigation);
     let screen = 'Search';
     let params = { query: this.state.query.trim() };
 
@@ -70,7 +68,6 @@ export class HomeHeader extends React.Component<any, State> {
   }
 
   scan = () => {
-    const navigation = inject(Navigation);
     const onScan = (query: string) => this.setState({ query }, this.onSearch);
 
     navigation.push('/modal/scan-isbn', { onScan });
@@ -78,7 +75,6 @@ export class HomeHeader extends React.Component<any, State> {
 }
 
 async function searchWorkIds(q): Promise<any[]> {
-  const api = inject(API);
   const works = [];
 
   try {

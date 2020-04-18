@@ -1,25 +1,25 @@
 import React from 'react';
-import { Q, Database } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
 import { map, sortBy, prop, isFalsy } from 'rambdax';
 
 import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import { database } from 'store';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ListItem, Thumbnail } from 'components';
 
 interface Props {
-  database: Database;
   search: string;
   selected: string;
   books?: Book[];
   onSelect: (book: Book) => void;
 }
 
-const withBooks: Function = withObservables(['search'], ({ database, search }: Props) => ({
+const withBooks: Function = withObservables(['search'], ({ search }: Props) => ({
   books: database.collections.get('books').query(...bookListQuery(search)),
 }));
 

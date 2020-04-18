@@ -2,11 +2,11 @@ import React from 'react';
 import _ from 'lodash';
 import { FlatList, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
-import { Database } from '@nozbe/watermelondb';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { color } from 'types/colors';
+import { database } from 'store';
 import Book from 'store/book';
 import { BookItem, Button } from 'components';
 import { EmptyResult } from 'components/fetcher';
@@ -15,7 +15,6 @@ import { BookListFilters } from './book-list-filters';
 interface Props {
   query: Where[];
   sort: BookSort;
-  database: Database;
   filters: Partial<BookFilters>;
   onChange: (filters: Partial<BookFilters>) => void;
   books?: Book[];
@@ -24,8 +23,8 @@ interface Props {
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
 
-const withBooks: Function = withObservables(['query', 'sort'], ({ database, query, sort }: Props) => ({
-  books: bookListQuery(database, query).observeWithColumns(sort ? [sort.field] : []),
+const withBooks: Function = withObservables(['query', 'sort'], ({ query, sort }: Props) => ({
+  books: bookListQuery(query).observeWithColumns(sort ? [sort.field] : []),
 }));
 
 @withBooks
@@ -128,6 +127,6 @@ const s = StyleSheet.create({
   } as TextStyle,
 });
 
-function bookListQuery(database: Database, query: Where[]) {
+function bookListQuery(query: Where[]) {
   return database.collections.get('books').query(...query);
 }

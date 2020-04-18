@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpac
 import Book from 'store/book';
 import { color } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { Navigation, inject } from 'services';
+import { navigation } from 'services';
 import { ReadButton, TextXL, Thumbnail } from 'components';
 
 interface Props {
@@ -11,8 +11,6 @@ interface Props {
 }
 
 export class NowReadingBook extends React.Component<Props> {
-  navigation = inject(Navigation);
-
   render() {
     const book = this.props.book;
 
@@ -38,9 +36,9 @@ export class NowReadingBook extends React.Component<Props> {
   }
 
   openChangeStatus = () =>
-    this.navigation.navigate('/modal/change-status', { book: this.props.book, status: BOOK_STATUSES.READ });
+    navigation.navigate('/modal/change-status', { book: this.props.book, status: BOOK_STATUSES.READ });
 
-  openBook = () => this.navigation.push('Details', { bookId: this.props.book.id });
+  openBook = () => navigation.push('Details', { bookId: this.props.book.id });
 }
 
 const s = StyleSheet.create({

@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
-import { inject } from 'services';
-import { API } from 'api';
+import { api } from 'services';
 import { Fetcher, ScreenHeader } from 'components';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { withScroll } from 'utils/scroll-to-top';
@@ -19,7 +18,6 @@ interface Props {
 @withNavigationProps()
 @withScroll
 export class EditionsListScreen extends React.Component<Props> {
-  api = inject(API);
   state = { sort: '-year' };
   e = this.props.editionIds.join(',');
 
@@ -31,7 +29,7 @@ export class EditionsListScreen extends React.Component<Props> {
         {count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}
         <Fetcher
           contentContainerStyle={s.scroll}
-          api={this.api.editions}
+          api={api.editions}
           e={this.e}
           sort={this.state.sort}
           groupBy={groupBy}

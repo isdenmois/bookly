@@ -1,13 +1,12 @@
 import React from 'react';
 import { ScrollView, TextInput, StyleSheet, ViewStyle, TextStyle, ToastAndroid } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { Database } from '@nozbe/watermelondb';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { color } from 'types/colors';
 import Book from 'store/book';
 import Review, { createReview } from 'store/review';
-import { inject } from 'services';
 import { dbAction } from 'services/db';
+import { database } from 'store';
 import { Button, Dialog } from 'components';
 
 interface Props {
@@ -26,8 +25,6 @@ const NUMBER_OF_LINES = 10;
 @withNavigationProps()
 export class ReviewWriteModal extends React.Component<Props, State> {
   state = { changed: false, body: this.props.review ? this.props.review.body : '' };
-
-  database = inject(Database);
 
   buttonTitle = this.props.review ? 'Обновить' : 'Добавить';
 
@@ -77,7 +74,7 @@ export class ReviewWriteModal extends React.Component<Props, State> {
   }
 
   @dbAction async createReview() {
-    const record = await createReview(this.database, this.props.book, this.state.body);
+    const record = await createReview(database, this.props.book, this.state.body);
 
     ToastAndroid.show('Отзыв добавлен', ToastAndroid.SHORT);
 

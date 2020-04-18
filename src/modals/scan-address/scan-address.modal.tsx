@@ -1,18 +1,17 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, ViewStyle, Linking } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Dialog, ListItem, Button } from 'components';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { color } from 'types/colors';
-import { inject, Session } from 'services';
+import { session } from 'services';
 
 interface Props {
   navigation: NavigationStackProp;
 }
 
 export function ScanAddressModal({ navigation }: Props) {
-  const session = useMemo(() => inject(Session), []);
   const [address, setAddress] = useState(session.lastAddress);
   const [scan, setScan] = useState(false);
   const openScan = useCallback(() => setScan(true), []);

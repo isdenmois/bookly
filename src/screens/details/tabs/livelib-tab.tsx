@@ -5,9 +5,8 @@ import Book from 'store/book';
 import { formatDate } from 'utils/date';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
+import { database } from 'store';
 import { LiveLibBook } from 'services/api/livelib/book';
-import { inject } from 'services';
-import { Database } from '@nozbe/watermelondb';
 import { hasUpdates } from 'utils/has-updates';
 import { BookDescriptionLine, ViewLine, ViewLineModelRemove, ViewLineAction } from '../components/book-details-lines';
 import { withScroll } from './tab';
@@ -60,7 +59,7 @@ export class LivelibTab extends Component<Props> {
   };
 
   associate = async () => {
-    const book: Book = (await inject(Database).collections.get('books').find(this.props.fantlabId)) as any;
+    const book: Book = (await database.collections.get('books').find(this.props.fantlabId)) as any;
 
     await book.setData({ lid: this.props.book.id.replace('l_', '') });
 

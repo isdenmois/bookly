@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { ScreenHeader } from 'components';
 import { color } from 'types/colors';
-import { inject } from 'services';
-import { Database } from '@nozbe/watermelondb';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { BookSort, BookFilters } from 'types/book-filters';
@@ -30,7 +28,6 @@ const FILTERS_FIELDS = ['type', 'author', 'paper'];
 
 export class BookSelectScreen extends Component<Props> {
   state: State = createQueryState(defaultFilters, { field: 'date', desc: true });
-  database = inject(Database);
 
   render() {
     return (
@@ -41,7 +38,7 @@ export class BookSelectScreen extends Component<Props> {
           <BookListFilters filters={this.state.filters} onChange={this.setFilters} />
         </View>
 
-        <BookSelector database={this.database} query={this.state.query} openFilters={this.openFilters} />
+        <BookSelector query={this.state.query} openFilters={this.openFilters} />
       </View>
     );
   }

@@ -7,8 +7,9 @@ import { observer } from 'mobx-react';
 import { HeaderRow } from './components/header-row';
 import { ScreenHeader } from 'components';
 import { Row } from './components/row';
-import { inject, Session } from 'services';
-import { Database, Q } from '@nozbe/watermelondb';
+import { session } from 'services';
+import { Q } from '@nozbe/watermelondb';
+import { database } from 'store';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { StatGroups } from './components/stat-groups';
 import { YearSelection } from './components/year-selection';
@@ -31,10 +32,8 @@ const STAT_GROUPS: Record<string, StatTab> = {
 const CURRENT_YEAR = getCurrentYear();
 
 const withBooks: Function = withObservables(null, () => {
-  const db = inject(Database);
-  const session = inject(Session);
   const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
-  const books = db.collections
+  const books = database.collections
     .get('books')
     .query(Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(min)))
     .observeWithColumns(['date', 'rating', 'paper', 'audio', 'withoutTranslation', 'leave'])

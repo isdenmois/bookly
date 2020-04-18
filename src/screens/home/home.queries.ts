@@ -1,6 +1,7 @@
-import { Database, Q } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dayOfYear, getStartOfYear } from 'utils/date';
+import { database } from 'store';
 
 export function booksReadForecast(read: number, total: number): number {
   const yearProgress = dayOfYear() / 365;
@@ -9,19 +10,19 @@ export function booksReadForecast(read: number, total: number): number {
   return read - needToRead;
 }
 
-export function currentBooksQuery(database: Database) {
+export function currentBooksQuery() {
   return database.collections.get('books').query(Q.where('status', BOOK_STATUSES.NOW));
 }
 
-export function wishBooksQuery(database: Database) {
+export function wishBooksQuery() {
   return database.collections.get('books').query(Q.where('status', BOOK_STATUSES.WISH));
 }
 
-export function readBooksThisYearQuery(database: Database) {
+export function readBooksThisYearQuery() {
   const queries = [Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(getStartOfYear().getTime()))];
   return database.collections.get('books').query(Q.and(...queries));
 }
 
-export function readBooksQuery(database: Database) {
+export function readBooksQuery() {
   return database.collections.get('books').query(Q.where('status', BOOK_STATUSES.READ));
 }
