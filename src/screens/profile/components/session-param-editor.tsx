@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { session } from 'services';
 import { ListItem } from 'components';
 import { Setting } from 'services/session';

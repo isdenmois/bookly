@@ -1,4 +1,3 @@
-import { database } from 'store';
 import { session } from './session';
 import { api } from './api';
 import { SyncService } from './sync';

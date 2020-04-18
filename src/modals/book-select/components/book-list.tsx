@@ -35,7 +35,6 @@ export class BookList extends React.Component<Props> {
     const books = this.sortBooks(this.props.books);
 
     return <FlatList style={s.scroll} data={books} keyExtractor={b => b.id} renderItem={this.renderBookItem} />;
-    // return <ScrollView style={s.scroll}>{books.map(this.renderBookItem)}</ScrollView>;
   }
 
   renderBookItem = ({ item: book, index }) => {

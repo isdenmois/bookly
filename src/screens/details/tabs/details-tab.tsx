@@ -103,13 +103,13 @@ export class DetailsTab extends React.Component<Props> {
 
         {!!otherTitles && <ViewLine title='Другие названия' value={otherTitles} />}
 
-        {all && !!book.classification && book.classification.length > 0 && this.renderClassification()}
+        {all && book.classification?.length > 0 && this.renderClassification()}
 
         {all && !!book.description && <BookDescriptionLine description={book.description} />}
 
-        {!!book.parent.length && this.renderParentBooks()}
+        {!!book.parent?.length && this.renderParentBooks()}
 
-        {!!book.films && !!book.films.length && this.renderFilms()}
+        {!!book.films?.length && this.renderFilms()}
 
         {all && !isLivelib && (
           <ViewLineAction
@@ -135,7 +135,7 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   renderTranslators() {
-    if (!this.props.book.translators.length) {
+    if (!this.props.book.translators?.length) {
       return null;
     }
 

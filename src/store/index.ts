@@ -18,7 +18,7 @@ const changes = new Subject();
 
 const isSyncStatusUpdated = model => model.syncStatus && model.syncStatus !== 'synced';
 
-patchMethod(database, 'batch', function() {
+patchMethod(database, 'batch', function () {
   if (arguments.length && _.some(arguments, isSyncStatusUpdated)) {
     changes.next();
   }

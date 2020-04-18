@@ -246,7 +246,7 @@ export class ChangeStatusModal extends React.Component<Props> {
       this.updateBook();
     }
 
-    if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && this.session.withFantlab) {
+    if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && session.withFantlab) {
       api.markWork(this.props.book.id, this.state.rating);
     }
   };

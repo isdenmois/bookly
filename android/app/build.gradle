@@ -77,7 +77,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false
+    enableHermes: true
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -194,8 +194,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    // Add v8-android - prebuilt libv8android.so into APK 
-    implementation 'org.chromium:v8-android:+'
     implementation project(':watermelondb')
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
@@ -214,7 +212,8 @@ dependencies {
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
-      implementation jscFlavor
+        // Add v8-android - prebuilt libv8android.so into APK 
+        implementation 'org.chromium:v8-android:+'
     }
     androidTestImplementation(project(path: ":detox"))
     androidTestImplementation 'junit:junit:4.12'

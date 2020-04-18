@@ -8,6 +8,12 @@
       "request": "launch",
       "platform": "android",
       "sourceMaps": true
+    },
+    {
+      "name": "Attach to Hermes",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnativedirect",
+      "request": "attach"
     }
   ]
 }

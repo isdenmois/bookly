@@ -39,7 +39,7 @@ interface Props {
 const MARGIN = 30;
 
 export const BookMainInfo = memo(
-  withBook(function({ book, navigation, scrollY, headerHeight, scrollHeight, children, onLayout }: Props) {
+  withBook(function ({ book, navigation, scrollY, headerHeight, scrollHeight, children, onLayout }: Props) {
     const Background: any = book.thumbnail ? ThumbnailBackground : AvatarBackground;
     const bookTitle = book.title || book.originalTitle;
 
