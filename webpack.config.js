@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+require('dotenv').config();
 
 const babelConfig = {
   presets: ['@babel/preset-env', '@babel/preset-react'],
@@ -159,5 +160,18 @@ module.exports = {
   devServer: {
     port: 3000,
     historyApiFallback: true,
+    inline: true,
+    hot: true,
+    proxy: {
+      '/api/livelib': {
+        target: process.env.LIVELIB_URL,
+        changeOrigin: true,
+        pathRewrite: { '^/api/livelib': '' },
+        secure: false,
+        onProxyReq: proxyReq => {
+          proxyReq.setHeader('user-agent', 'LiveLib/4.0.5/15040005 (SM-G965F; Android 8.0.0; API 26)');
+        },
+      },
+    },
   },
 };
