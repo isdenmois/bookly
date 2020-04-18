@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator, TransitionPresets } from 'react-navigation-stack';
-import { Easing } from 'react-native';
+import { Easing, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { enableScreens } from 'react-native-screens';
 
@@ -9,7 +9,7 @@ import { LoginScreen } from 'screens/login/login.screen';
 import { createApp } from './create-app';
 import { MainStack, ModalStack } from './routes';
 
-const createNavigator = (initialRouteName) =>
+const createNavigator = initialRouteName =>
   createSwitchNavigator(
     {
       Login: {
@@ -21,10 +21,10 @@ const createNavigator = (initialRouteName) =>
           MainStack: createStackNavigator(MainStack, {
             initialRouteName: 'Home',
             headerMode: 'none',
-            gestureEnabled: true,
+            gestureEnabled: Platform.OS !== 'web',
             defaultNavigationOptions: {
               ...TransitionPresets.SlideFromRightIOS,
-              gestureEnabled: true,
+              gestureEnabled: Platform.OS !== 'web',
               cardStyle: { backgroundColor: 'white' },
             },
           } as any),
@@ -34,8 +34,10 @@ const createNavigator = (initialRouteName) =>
           initialRouteName: 'MainStack',
           mode: 'modal',
           headerMode: 'none',
+          gestureEnabled: false,
           defaultNavigationOptions: {
-            cardStyleInterpolator({ current, closing }) {
+            gestureEnabled: false,
+            cardStyleInterpolator({ current }) {
               return {
                 cardStyle: {
                   opacity: current.progress,
@@ -58,7 +60,7 @@ const createNavigator = (initialRouteName) =>
 
 const PERSISTENCE_KEY = 'REACT_DEV_NAVIGATION';
 
-export const persistNavigationState = async (nav) => {
+export const persistNavigationState = async nav => {
   if (!hasModals(nav)) {
     await AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(nav));
   }
@@ -69,7 +71,7 @@ export const loadNavigationState = async () => {
   return JSON.parse(jsonString);
 };
 
-export const create = (route) => {
+export const create = route => {
   enableScreens(true);
   return createApp(createNavigator(route));
 };
