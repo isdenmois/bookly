@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { Animated, Platform, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -32,59 +32,62 @@ const BUTTON_TOP = 60;
 
 const source = observable.box('Fantlab');
 
-@observer
-export class AddButton extends React.Component<FixedProps> {
-  transform = [
-    {
-      translateY: this.props.scrollY.interpolate({
-        inputRange: [0, 2 * BUTTON_TOP],
-        outputRange: [0, BUTTON_TOP],
-        extrapolate: 'clamp',
-      }),
-    },
-  ];
-
-  style = [s.buttonContainer, { transform: this.transform }];
-  constructor(props) {
-    super(props);
-    source.set('Fantlab');
-  }
-
-  render() {
-    const book = this.props.book;
-    const hasRead = book.status === BOOK_STATUSES.READ;
-
-    if (!hasRead && !book.lid) {
-      return null;
-    }
-
-    return (
-      <Animated.View style={this.style}>
-        {hasRead && (
-          <Button
-            label='Добавить'
-            onPress={this.openReviewWriteModal}
-            icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
-            style={s.button}
-            textStyle={s.buttonText}
-          />
-        )}
-        {!!book.lid && (
-          <Button
-            label={source.get()}
-            onPress={this.toggleSearchSource}
-            icon={<Icon name='globe' size={18} color={color.PrimaryText} />}
-            style={s.button}
-            textStyle={s.buttonText}
-          />
-        )}
-      </Animated.View>
-    );
-  }
-
-  openReviewWriteModal = () => this.props.navigation.navigate('/modal/review-write', { book: this.props.book });
-  toggleSearchSource = () => source.set(source.get() === 'Fantlab' ? 'Livelib' : 'Fantlab');
+function useTransformStyle(scrollY) {
+  return useMemo(
+    () => [
+      s.buttonContainer,
+      {
+        transform: [
+          {
+            translateY: scrollY.interpolate({
+              inputRange: [0, 2 * BUTTON_TOP],
+              outputRange: [0, BUTTON_TOP],
+              extrapolate: 'clamp',
+            }),
+          },
+        ],
+      },
+    ],
+    [scrollY],
+  );
 }
+
+export const AddButton = observer(({ book, navigation, scrollY }: FixedProps) => {
+  const hasRead = book.status === BOOK_STATUSES.READ;
+  const style = useTransformStyle(scrollY);
+
+  const openReviewWriteModal = useCallback(() => navigation.navigate('/modal/review-write', { book }), [book]);
+  const toggleSearchSource = useCallback(() => source.set(source.get() === 'Fantlab' ? 'Livelib' : 'Fantlab'), []);
+
+  useEffect(() => () => source.set('Fantlab'), []);
+
+  if (!hasRead && !book.lid) {
+    return null;
+  }
+
+  return (
+    <Animated.View style={style}>
+      {hasRead && (
+        <Button
+          label='Добавить'
+          onPress={openReviewWriteModal}
+          icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
+          style={s.button}
+          textStyle={s.buttonText}
+        />
+      )}
+      {!!book.lid && (
+        <Button
+          label={source.get()}
+          onPress={toggleSearchSource}
+          icon={<Icon name='globe' size={18} color={color.PrimaryText} />}
+          style={s.button}
+          textStyle={s.buttonText}
+        />
+      )}
+    </Animated.View>
+  );
+});
 
 const ReviewsTabComponent = observer((props: Props) => {
   const [sort, setSort] = React.useState('rating');
