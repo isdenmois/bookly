@@ -4,10 +4,16 @@ import { getLastPulledAt } from '@nozbe/watermelondb/sync/impl';
 import { database } from 'store';
 import { Session } from './session';
 import { API } from './api';
-import { Database } from '@nozbe/watermelondb';
 
 export class SyncService {
-  constructor(private database: Database, private session: Session, private api: API) {}
+  database = database;
+  session: Session;
+  api: API;
+
+  constructor(session: Session, api: API) {
+    this.session = session;
+    this.api = api;
+  }
 
   @observable lastPulledAt: number = 0;
 
