@@ -8,4 +8,4 @@ export { session } from './session';
 export { navigation } from './navigation';
 export { api } from './api';
 
-export const syncService = new SyncService(database, session, api);
+export const syncService = new SyncService(session, api);
