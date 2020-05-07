@@ -68,11 +68,13 @@ export class AutoSizeImage extends React.PureComponent<Props, ImageSize> {
   }
 
   setSize = event => {
+    const { width, height } = event.nativeEvent;
+
     if (!CACHE.has(this.props.url)) {
-      CACHE.set(this.props.url, { width: event.nativeEvent.width, height: event.nativeEvent.height });
+      CACHE.set(this.props.url, { width, height });
     }
 
-    const size = this.getImageSize(CACHE.get(this.props.url));
+    const size = this.getImageSize({ width, height });
 
     if (size.height !== this.state.height || size.width !== this.state.width) {
       this.setState(size);
