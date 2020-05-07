@@ -40,6 +40,7 @@ export class LivelibTab extends Component<Props> {
 
     return (
       <View>
+        {!book.thumbnail && !!book.avgRating && <ViewLine title='Средняя оценка' value={book.avgRating} />}
         {!!book.series && <ViewLine title='Серия' value={book.series} />}
         {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
         {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={this.readDate} />}

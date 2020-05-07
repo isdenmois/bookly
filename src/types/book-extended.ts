@@ -16,6 +16,7 @@ export interface BookExtended extends BookData {
   translators: string[];
   films: Film[];
   classification: Detail[];
+  avgRating: string;
 }
 
 export interface ParentBook {
