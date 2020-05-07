@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { api } from '../base/api';
+import { thumbnailCodes } from './thumbnails';
 
 const THUMBNAIL_ID = /(\d+)($|\?)/;
 
@@ -34,10 +35,11 @@ export type Params = { bookId: string };
 
 export default api.get<Params>('/work/:bookId/extended').response(response);
 
-function editionCount(book) {
-  const ru = _.find(book.editions_info?.langs, { lang_code: 'ru' });
+function editionCount(work) {
+  const paperBlocks = _.filter(work.editions_blocks, { block: 'paper' });
+  const list = _.flatMap(paperBlocks, block => block?.list);
 
-  return ru ? ru.count : 0;
+  return list.filter(i => thumbnailCodes.includes(i.lang_code)).length;
 }
 
 function genre(w) {

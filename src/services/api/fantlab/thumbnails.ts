@@ -12,14 +12,23 @@ export interface FantlabThumnail {
   url: string;
 }
 
-function response(work) {
-  const paper = _.find(work.editions_blocks, { block: 'paper' }) || _.head(Object.values(work.editions_blocks));
+export const thumbnailCodes = ['ru', 'en'];
 
-  if (!paper) {
+function response(work) {
+  const paperBlocks = _.filter(work.editions_blocks, { block: 'paper' });
+  let list = _.flatMap(paperBlocks, block => block?.list);
+
+  if (!list.length) {
+    list = _.head<any>(Object.values(work.editions_blocks))?.list;
+  }
+
+  list = list.filter(i => thumbnailCodes.includes(i.lang_code));
+
+  if (!list.length) {
     return [];
   }
 
-  return _.map(paper.list, edition => ({
+  return _.map(list, edition => ({
     id: edition.edition_id,
     url: edition.edition_id.toString(),
   }));
