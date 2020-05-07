@@ -110,7 +110,7 @@ const ReviewsTabComponent = observer((props: Props) => {
   );
 });
 
-export const ReviewsTab = withScroll(ReviewsTabComponent);
+export const ReviewsTab = withScroll(ReviewsTabComponent, true);
 
 (ReviewsTabComponent as any).Fixed = AddButton;
 

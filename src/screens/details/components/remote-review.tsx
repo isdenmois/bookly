@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid } from 'react-native';
+import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { TabScrollContext, HEADER_HEIGHT } from 'screens/details/tabs/tab';
 import { RemoteReview as IRemoteReview } from 'services/api/fantlab/review-list';
 import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
@@ -14,7 +16,12 @@ interface Props {
 }
 
 export class RemoteReview extends React.PureComponent<Props> {
+  static contextType = TabScrollContext;
+  declare context: React.ContextType<typeof TabScrollContext>;
+
   state = { likes: this.props.review.likes, isLiked: false };
+
+  rootRef = createRef<View>();
 
   get isLivelib() {
     const id = this.props.review.id;
@@ -29,7 +36,7 @@ export class RemoteReview extends React.PureComponent<Props> {
     const LikeComponent: any = !isLivelib && !isLiked ? TouchableOpacity : View;
 
     return (
-      <View style={s.container}>
+      <View style={s.container} onLayout={_.noop} ref={this.rootRef}>
         <View style={s.dataRow}>
           <View style={s.mainInfo}>
             <Thumbnail
@@ -58,10 +65,20 @@ export class RemoteReview extends React.PureComponent<Props> {
           </LikeComponent>
         </View>
 
-        <ExpandableText>{parser.toReact(review.body)}</ExpandableText>
+        <ExpandableText onShrink={this.scrollToElement}>{parser.toReact(review.body)}</ExpandableText>
       </View>
     );
   }
+
+  scrollToElement = () => {
+    this.rootRef.current.measureLayout(
+      this.context.rootId,
+      (left, top) => {
+        this.context.scrollTo(Math.floor(top) - HEADER_HEIGHT - 15, true);
+      },
+      _.noop,
+    );
+  };
 
   vote = async () => {
     const oldLikes = this.state.likes;

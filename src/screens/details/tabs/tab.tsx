@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import _ from 'lodash';
-import { Dimensions, Animated, View, ScrollView, StyleSheet, ViewStyle } from 'react-native';
+import { Dimensions, Animated, View, ScrollView, StyleSheet, ViewStyle, findNodeHandle } from 'react-native';
 
 interface Props {
   scrollY: Animated.Value;
@@ -9,13 +9,21 @@ interface Props {
   y?: number;
   onScrollEnd: (y: number) => void;
 }
-const HEADER_HEIGHT = 110;
+export const HEADER_HEIGHT = 110;
 
-export function withScroll(WrappedComponent): any {
+type TabScroll = {
+  rootId: number;
+  scrollTo(y: number, animated?: boolean);
+};
+
+export const TabScrollContext = createContext<TabScroll>(null);
+
+export function withScroll(WrappedComponent, withContext?: boolean): any {
   return class Tab extends React.Component<Props> {
     screenHeight = Dimensions.get('window').height;
     y = 0;
     scroll: ScrollView;
+    tabScroll: TabScroll = withContext ? ({} as any) : null;
 
     onScrollEnd = event => {
       const y = Math.round(event.nativeEvent.contentOffset.y);
@@ -25,11 +33,11 @@ export function withScroll(WrappedComponent): any {
       this.props.onScrollEnd(y);
     };
 
-    scrollTo(y: number) {
+    scrollTo(y: number, animated = false) {
       this.y = y;
 
       if (this.scroll) {
-        this.scroll.scrollTo({ y, animated: false });
+        this.scroll.scrollTo({ y, animated });
       }
     }
 
@@ -56,7 +64,13 @@ export function withScroll(WrappedComponent): any {
             ]}
             ref={this.setRef}
           >
-            <WrappedComponent {...wrappedProps} />
+            {withContext && (
+              <TabScrollContext.Provider value={this.tabScroll}>
+                <WrappedComponent {...wrappedProps} />
+              </TabScrollContext.Provider>
+            )}
+
+            {!withContext && <WrappedComponent {...wrappedProps} />}
           </Animated.ScrollView>
           {WrappedComponent.Fixed && <WrappedComponent.Fixed {...wrappedProps} scrollY={scrollY} />}
         </View>
@@ -66,7 +80,12 @@ export function withScroll(WrappedComponent): any {
     onSubviewLoad = () => this.scrollTo(this.props.y);
 
     setRef = view => {
-      this.scroll = view && view._component;
+      this.scroll = view?.getNode();
+
+      if (withContext) {
+        this.tabScroll.rootId = findNodeHandle(view);
+        this.tabScroll.scrollTo = this.scrollTo.bind(this);
+      }
 
       requestAnimationFrame(() => this.scrollTo(this.props.y));
     };

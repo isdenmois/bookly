@@ -25,6 +25,6 @@ function LivelibReviewsTabComponent(props: Props) {
   );
 }
 
-export const LivelibReviewsTab = withScroll(LivelibReviewsTabComponent);
+export const LivelibReviewsTab = withScroll(LivelibReviewsTabComponent, true);
 
 LivelibReviewsTabComponent.Fixed = AddButton;
