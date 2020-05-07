@@ -6,6 +6,7 @@ import { color } from 'types/colors';
 import { session } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { database } from 'store';
+import { saveSettings } from 'services/settings-sync';
 import { Button, ScreenHeader, ListItem } from 'components';
 import { SessionEditor } from './components/session-param-editor';
 import { SessionParamToggler } from './components/session-param-toggler';
@@ -52,6 +53,10 @@ export class ProfileScreen extends React.Component<Props> {
         </View>
       </View>
     );
+  }
+
+  componentWillUnmount() {
+    saveSettings();
   }
 
   logout = () => {

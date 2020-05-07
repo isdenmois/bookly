@@ -1,8 +1,10 @@
-import { FANTLAB_URL, FANTLAB_ROOT_URL, FIREBASE_URL, LIVELIB_URL } from 'services/config';
+import { FANTLAB_URL, FANTLAB_ROOT_URL, FIREBASE_URL, LIVELIB_URL, FIREBASE_DATABASE_URL } from 'services/config';
 
 import fetchChangesSchema from './firebase/fetch-changes';
 import pushChangesSchema from './firebase/push-changes';
 import removeDeletedSchema from './firebase/remove-deleted';
+import getSettingsSchema from './firebase/get-settings';
+import saveSettingsSchema from './firebase/save-settings';
 
 import searchBooksSchema from './fantlab/search-books';
 import bookSchema from './fantlab/book';
@@ -26,6 +28,8 @@ export class API {
   fetchChanges = fetchChangesSchema.create(FIREBASE_URL);
   pushChanges = pushChangesSchema.create(FIREBASE_URL);
   removeDeleted = removeDeletedSchema.create(FIREBASE_URL);
+  getSettings = getSettingsSchema.create(FIREBASE_DATABASE_URL);
+  saveSettings = saveSettingsSchema.create(FIREBASE_DATABASE_URL);
 
   // Fantlab
   searchBooks = searchBooksSchema.create(FANTLAB_URL);
