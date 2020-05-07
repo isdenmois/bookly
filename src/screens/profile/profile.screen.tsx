@@ -31,6 +31,9 @@ export class ProfileScreen extends React.Component<Props> {
           <SessionEditor title='Вести статистику с' prop='minYear' />
           <SessionParamToggler title='Синхронизировать с Fantlab' param='withFantlab' />
           <SessionParamToggler title='Сохранять дату в диалоге смене статуса' param='saveDateInChangeStatus' />
+          <SessionParamToggler title='Типы книг: аудио' param='audio' />
+          <SessionParamToggler title='Типы книг: оригинал' param='withoutTranslation' />
+          <SessionParamToggler title='Типы книг: бумага' param='paper' />
           <BookListSort />
           <RemoveDeleted />
 
