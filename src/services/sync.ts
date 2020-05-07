@@ -4,6 +4,7 @@ import { getLastPulledAt } from '@nozbe/watermelondb/sync/impl';
 import { database } from 'store';
 import { Session } from './session';
 import { API } from './api';
+import { loadSettings } from './settings-sync';
 
 export class SyncService {
   database = database;
@@ -22,7 +23,7 @@ export class SyncService {
       return null;
     }
 
-    await synchronize(this as any);
+    await Promise.all([synchronize(this as any), loadSettings()]);
 
     this.lastPulledAt = await getLastPulledAt(database);
   }

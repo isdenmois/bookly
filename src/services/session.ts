@@ -1,4 +1,4 @@
-import { pick } from 'lodash';
+import _ from 'lodash';
 import { action, observable } from 'mobx';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -33,7 +33,7 @@ const INITIAL_SETTINGS: any = {
 export class Session {
   @observable userId: string = null;
   @observable totalBooks: number = INITIAL_BOOKS_COUNT;
-  @observable withFantlab: boolean = true;
+  @observable withFantlab: boolean = false;
   @observable saveDateInChangeStatus: boolean = false;
   @observable lastAddress: string = '';
   @observable audio: boolean = false;
@@ -43,21 +43,20 @@ export class Session {
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;
 
-  @action loadSession() {
+  saving = false;
+  needsToSave = false;
+
+  loadSession() {
     return AsyncStorage.getItem(SESSION_KEY)
       .then(session => JSON.parse(session) || {})
-      .then(session => {
-        SETTINGS_FIELDS.forEach(field => {
-          this[field as any] = session[field] || INITIAL_SETTINGS[field];
-        });
-      })
+      .then(session => this.setDefaults(session))
       .catch(error => console.warn(error.toString()));
   }
 
   @action set(setting: Setting, value: any) {
     if (this[setting] !== value) {
       this[setting as any] = value;
-      this.serializeSession();
+      this.saveSession(true);
     }
   }
 
@@ -69,10 +68,27 @@ export class Session {
     return AsyncStorage.clear();
   }
 
-  serializeSession() {
-    const session = JSON.stringify(pick(this, SETTINGS_FIELDS));
+  @action setDefaults(data) {
+    SETTINGS_FIELDS.forEach(field => {
+      this[field as any] = data[field] ?? INITIAL_SETTINGS[field];
+    });
+  }
 
-    AsyncStorage.setItem(SESSION_KEY, session);
+  serialize() {
+    return _.pickBy(this, (value: any, key: any) => {
+      if (!SETTINGS_FIELDS.includes(key)) return false;
+      if (key in INITIAL_SETTINGS) return !_.isEqual(value, INITIAL_SETTINGS[key]);
+
+      return Boolean(value);
+    });
+  }
+
+  saveSession(needsToSave: boolean) {
+    const session = this.serialize();
+
+    AsyncStorage.setItem(SESSION_KEY, JSON.stringify(session));
+
+    this.needsToSave = needsToSave;
   }
 }
 
