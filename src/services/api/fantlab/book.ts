@@ -27,6 +27,7 @@ const response = {
   editionTranslators,
   films,
   classification,
+  avgRating,
 };
 
 export type Params = { bookId: string };
@@ -192,4 +193,14 @@ function getPlaceGroupValues(g, parentIds = [], parent = null) {
   }
 
   return [{ id, ids, title }].concat(c);
+}
+
+function avgRating(work) {
+  let rating = work.val_midmark_by_weight || work.val_midmark;
+
+  if (!rating) return null;
+
+  rating = Math.round(rating * 10) / 10;
+
+  return `${rating} / 10`;
 }

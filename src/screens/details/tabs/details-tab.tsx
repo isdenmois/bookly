@@ -76,6 +76,9 @@ export class DetailsTab extends React.Component<Props> {
         {all && <ViewLine title='Тип' value={BOOK_TYPE_NAMES[book.type]} />}
 
         {!all && !book.thumbnail && !!book.genre && <ViewLine title='Жанр' value={book.genre} />}
+
+        {(all || !book.thumbnail) && !!book.avgRating && <ViewLine title='Средняя оценка' value={book.avgRating} />}
+
         {(all || !book.thumbnail) && !!book.year && <ViewLine title='Год' value={book.year} />}
 
         {this.renderTranslators()}

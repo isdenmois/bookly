@@ -200,7 +200,13 @@ function SecondaryWithThumbnailData({ book, navigation }) {
 
         {!!book.publishing && <Text style={s.secondary}>{book.publishing}</Text>}
         {!!book.genre && <Text style={s.secondary}>{book.genre}</Text>}
-        {!!book.year && <Text style={s.secondary}>{book.year}</Text>}
+        {!!book.year && (
+          <Text style={s.secondary}>
+            {book.avgRating ? book.avgRating + ', ' : ''}
+            {book.year}
+          </Text>
+        )}
+        {!book.year && !!book.avgRating && <Text style={s.secondary}>{book.avgRating}</Text>}
       </View>
 
       <TouchableOpacity onPress={openChangeThumbnail} style={s.thumbnailContainer}>

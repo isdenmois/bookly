@@ -4,7 +4,8 @@ import { api } from '../base/api';
 
 type Params = { bookId: string };
 
-const fields = 'author_id,author_name,name,pic_200,id,description,isbn,publishing,year,cycles,series_title,tags';
+const fields =
+  'author_id,author_name,name,avg_mark,pic_200,id,description,isbn,publishing,year,cycles,series_title,tags';
 
 export interface LiveLibBook {
   id: string;
@@ -21,6 +22,7 @@ export interface LiveLibBook {
   cycles?: ParentBook[];
   publishing?: string;
   tags?: string;
+  avgRating?: string;
 }
 
 function response(r): LiveLibBook {
@@ -49,11 +51,20 @@ function response(r): LiveLibBook {
       .filter(t => t)
       .map(capitalize)
       .join('\n'),
+    avgRating: avgRating(r.avg_mark),
   };
 }
 
 function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
+}
+
+function avgRating(rating) {
+  if (!rating) return null;
+
+  rating = Math.round(rating * 10) / 10;
+
+  return `${rating} / 10`;
 }
 
 export default api
