@@ -44,6 +44,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     audio: this.props.book.audio,
     withoutTranslation: this.props.book.withoutTranslation,
     leave: this.props.book.leave,
+    paper: this.props.book.paper,
     statusEditable: true,
     dateEditable: false,
   };
@@ -141,25 +142,40 @@ export class ChangeStatusModal extends React.Component<Props> {
                 <RatingSelect value={this.state.rating} onChange={this.setRating} />
               </ListItem>
 
-              <ListItem
-                rowStyle={s.row}
-                label='Аудиокнига'
-                icon={<Icon name='headphones' style={s.icon} size={20} color={color.PrimaryText} />}
-                onPress={this.toggleAudio}
-              >
-                <Switch value={this.state.audio} onValueChange={this.toggleAudio} />
-              </ListItem>
+              {session.audio && (
+                <ListItem
+                  rowStyle={s.row}
+                  label='Аудиокнига'
+                  icon={<Icon name='headphones' style={s.icon} size={20} color={color.PrimaryText} />}
+                  onPress={this.toggleAudio}
+                >
+                  <Switch value={this.state.audio} onValueChange={this.toggleAudio} />
+                </ListItem>
+              )}
 
-              <ListItem
-                rowStyle={s.row}
-                label='На языке оригинала'
-                icon={<Icon name='language' style={s.icon} size={20} color={color.PrimaryText} />}
-                onPress={this.toggleWithoutTranslation}
-              >
-                <Switch value={this.state.withoutTranslation} onValueChange={this.toggleWithoutTranslation} />
-              </ListItem>
+              {session.withoutTranslation && (
+                <ListItem
+                  rowStyle={s.row}
+                  label='На языке оригинала'
+                  icon={<Icon name='language' style={s.icon} size={20} color={color.PrimaryText} />}
+                  onPress={this.toggleWithoutTranslation}
+                >
+                  <Switch value={this.state.withoutTranslation} onValueChange={this.toggleWithoutTranslation} />
+                </ListItem>
+              )}
 
-              {book.paper && (
+              {session.paper && !book.paper && (
+                <ListItem
+                  rowStyle={s.row}
+                  label='Есть в бумаге'
+                  icon={<Icon name='book' style={s.icon} size={20} color={color.PrimaryText} />}
+                  onPress={this.togglePaper}
+                >
+                  <Switch value={this.state.paper} onValueChange={this.togglePaper} />
+                </ListItem>
+              )}
+
+              {session.paper && (book.paper || this.state.paper) && (
                 <ListItem
                   rowStyle={s.row}
                   label='Отдам'
@@ -207,14 +223,16 @@ export class ChangeStatusModal extends React.Component<Props> {
   toggleAudio = () => this.setState({ audio: !this.state.audio });
   toggleWithoutTranslation = () => this.setState({ withoutTranslation: !this.state.withoutTranslation });
   toggleLeave = () => this.setState({ leave: !this.state.leave });
+  togglePaper = () => this.setState({ paper: !this.state.paper });
 
   fillData(data: Partial<BookData> = {}) {
-    const { status, rating, date, withoutTranslation, audio, leave } = this.state;
+    const { status, rating, date, withoutTranslation, audio, leave, paper } = this.state;
 
     data.status = status;
     data.rating = rating;
     data.audio = audio;
     data.withoutTranslation = withoutTranslation;
+    data.paper = paper;
     data.leave = leave;
     data.date = date;
     data.date.setHours(12, 0, 0, 0);
