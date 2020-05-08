@@ -21,6 +21,7 @@ const SETTINGS_FIELDS = <const>[
   'audio',
   'withoutTranslation',
   'paper',
+  'persistState',
 ];
 const INITIAL_SETTINGS: any = {
   totalBooks: INITIAL_BOOKS_COUNT,
@@ -39,6 +40,7 @@ export class Session {
   @observable audio: boolean = false;
   @observable withoutTranslation: boolean = false;
   @observable paper: boolean = false;
+  @observable persistState: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;

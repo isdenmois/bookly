@@ -21,6 +21,7 @@ export class ProfileScreen extends React.Component<Props> {
   render() {
     const v8runtime = (global as any)._v8runtime;
     const isHermes = (global as any).HermesInternal;
+    const isWeb = Platform.OS === 'web';
     const engine = v8runtime ? `V8 ${v8runtime().version}` : isHermes ? 'Hermes' : false;
 
     return (
@@ -35,6 +36,7 @@ export class ProfileScreen extends React.Component<Props> {
           <SessionParamToggler title='Типы книг: аудио' param='audio' />
           <SessionParamToggler title='Типы книг: оригинал' param='withoutTranslation' />
           <SessionParamToggler title='Типы книг: бумага' param='paper' />
+          {isWeb && <SessionParamToggler title='Сохранять состояние приложения' param='persistState' />}
           <BookListSort />
           <RemoveDeleted />
 
