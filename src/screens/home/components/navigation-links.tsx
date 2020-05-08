@@ -39,11 +39,6 @@ export class NavigationLinks extends React.Component<Props> {
           testID='WishCount'
         />
         <ListItem
-          onPress={this.openScanAddress}
-          icon={<Icon name='sync' size={20} color={color.BlueIcon} />}
-          value='Синхронизация'
-        />
-        <ListItem
           onPress={this.openBookSelect}
           icon={<Icon name='random' size={20} color={color.BlueIcon} />}
           value='Выбрать книгу'
@@ -67,7 +62,6 @@ export class NavigationLinks extends React.Component<Props> {
 
   openReadBooks = () => navigation.push('ReadList');
   openWishBooks = () => navigation.push('WishList');
-  openScanAddress = () => navigation.push('/modal/scan-address');
   openBookSelect = () => navigation.push('BookSelect');
   openStat = () => navigation.push('Stat');
   openProfile = () => navigation.push('Profile');
