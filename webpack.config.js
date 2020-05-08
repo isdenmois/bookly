@@ -2,22 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 require('dotenv').config();
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const babelConfig = {
   presets: ['@babel/preset-env', '@babel/preset-react'],
-  // presets: ['module:metro-react-native-babel-preset', 'module:react-native-dotenv'],
   plugins: [
-    // [
-    //   require('@babel/plugin-transform-typescript'),
-    //   {
-    //     isTSX: true,
-    //   },
-    // ],
-    // '@babel/plugin-syntax-flow',
-    // '@babel/plugin-transform-flow-strip-types',
     '@babel/plugin-proposal-optional-chaining',
-    // '@babel/proposal-object-rest-spread',
-    // '@babel/plugin-transform-runtime',
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     [
@@ -27,45 +17,14 @@ const babelConfig = {
         regenerator: true,
       },
     ],
-    // 'transform-class-properties',
     [
       'module-resolver',
       {
         root: ['./src'],
-        alias: Object.assign(
-          {
-            api: './src/services/api',
-            'react-native': 'react-native-web',
-            // // 'react-native-vector-icons': 'expo-web',
-            // 'native-base': 'native-base-web',
-            // 'react-native-vector-icons/Ionicons': 'native-base-web/lib/Components/Widgets/Icon',
-            // 'react/lib/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-            // 'react-native-auto-height-image': 'react-native-web/dist/cjs/exports/Image',
-          },
-          // [
-          //   'ActivityIndicator',
-          //   'Alert',
-          //   'AsyncStorage',
-          //   'Button',
-          //   'DeviceInfo',
-          //   'Modal',
-          //   'NativeModules',
-          //   'Platform',
-          //   'SafeAreaView',
-          //   'SectionList',
-          //   'StyleSheet',
-          //   'Switch',
-          //   'Text',
-          //   'TextInput',
-          //   'TouchableHighlight',
-          //   'TouchableWithoutFeedback',
-          //   'View',
-          //   'ViewPropTypes',
-          // ].reduce((acc, curr) => {
-          //   acc[curr] = `react-native-web/dist/cjs/exports/${curr}`;
-          //   return acc;
-          // }),
-        ),
+        alias: Object.assign({
+          api: './src/services/api',
+          'react-native': 'react-native-web',
+        }),
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.web.js', '.web.tsx'],
       },
     ],
@@ -123,18 +82,11 @@ module.exports = {
       flowConfig,
       typescriptConfig,
       {
-        test: /\.(gif|jpe?g|png|svg)$/,
+        test: /\.(gif|jpe?g|png|svg|ttf)$/,
         use: {
           loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-          },
+          options: { name: 'assets/[name].[ext]' },
         },
-      },
-      {
-        test: /\.ttf$/,
-        loader: 'url-loader',
-        include: path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
       },
       {
         test: /\.worker\.js$/,
@@ -143,6 +95,13 @@ module.exports = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [
+        path.resolve(rootDir, 'dist/assets'),
+        path.resolve(rootDir, 'dist/app-*.bundle.js'),
+        path.resolve(rootDir, 'dist/*.worker.js'),
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: './web/index.html',
     }),
