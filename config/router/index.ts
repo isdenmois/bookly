@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { enableScreens } from 'react-native-screens';
 
 import { LoginScreen } from 'screens/login/login.screen';
-import { createApp } from './create-app';
+import { createApp, createStackPersistNavigator } from './create-app';
 import { MainStack, ModalStack } from './routes';
 
 const createNavigator = initialRouteName =>
@@ -18,7 +18,7 @@ const createNavigator = initialRouteName =>
       },
       App: createStackNavigator(
         {
-          MainStack: createStackNavigator(MainStack, {
+          MainStack: createStackPersistNavigator(MainStack, {
             initialRouteName: 'Home',
             headerMode: 'none',
             gestureEnabled: Platform.OS !== 'web',

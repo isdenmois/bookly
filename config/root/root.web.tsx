@@ -8,9 +8,7 @@ import { create } from '../router';
 
 class App extends React.Component<any> {
   state = { isLoaded: false };
-  RootStack: any = null;
-  loadNavigationState: Function = null;
-  persistNavigationState: Function = null;
+  stack: any = null;
   style = { flex: 1 };
 
   sync = async () => {
@@ -40,20 +38,16 @@ class App extends React.Component<any> {
       return <ActivityIndicator />;
     }
 
-    if (!this.RootStack) {
-      this.RootStack = create(session.userId ? 'App' : 'Login');
+    if (!this.stack) {
+      this.stack = create(session.userId ? 'App' : 'Login');
     }
 
-    const { RootStack, loadNavigationState, persistNavigationState } = this;
+    const RootStack = this.stack;
 
     return (
       <View style={this.style}>
         <StatusBar backgroundColor='#fff' barStyle='dark-content' />
-        <RootStack
-          ref={navigation.setRef}
-          loadNavigationState={loadNavigationState}
-          persistNavigationState={persistNavigationState}
-        />
+        <RootStack ref={navigation.setRef} />
       </View>
     );
   }
