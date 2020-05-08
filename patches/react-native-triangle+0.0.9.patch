@@ -1,0 +1,11 @@
+diff --git a/node_modules/react-native-triangle/Triangle.js b/node_modules/react-native-triangle/Triangle.js
+index 3bb7e6b..513f4f0 100644
+--- a/node_modules/react-native-triangle/Triangle.js
++++ b/node_modules/react-native-triangle/Triangle.js
+@@ -141,4 +141,5 @@ var PropTypes = require('prop-types')
+    },
+  });
+ 
+- module.exports = Triangle;
++export default Triangle;
++

@@ -1,8 +1,68 @@
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
+index 8ceec05..2834e7d 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
+@@ -6,15 +6,9 @@ Object.defineProperty(exports, "__esModule", {
+ exports.default = void 0;
+ 
+ function createWorker(useWebWorker) {
+-  if (useWebWorker) {
+-    var LokiWebWorker = require('./worker/index.worker');
++  var LokiWebWorker = require('./worker/index.worker');
+ 
+-    return new LokiWebWorker();
+-  }
+-
+-  var WebWorkerMock = require('./worker/workerMock').default;
+-
+-  return new WebWorkerMock();
++  return new LokiWebWorker();
+ }
+ 
+ var _actionId = 0;
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/index.d.ts b/node_modules/@nozbe/watermelondb/adapters/lokijs/index.d.ts
+index b4dee6e..e2a4815 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/index.d.ts
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/index.d.ts
+@@ -20,6 +20,7 @@ declare module '@nozbe/watermelondb/adapters/lokijs' {
+     dbName?: string
+     schema: AppSchema
+     migrations?: SchemaMigrations
++    useWebWorker?: boolean
+     _testLokiAdapter?: LokiMemoryAdapter,
+   }
+ 
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
+index 406f312..bec7436 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
+@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
+ });
+ exports.default = executeQuery;
+ 
+-var _lokijs = _interopRequireDefault(require("lokijs"));
+-
+ var _encodeMatcher = _interopRequireDefault(require("../../../observation/encodeMatcher"));
+ 
+ var _QueryDescription = require("../../../QueryDescription");
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
+index 4bdde70..7411f7d 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
+@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
+ });
+ exports.default = void 0;
+ 
+-var _lokijs = _interopRequireWildcard(require("lokijs"));
+-
+ var _rambdax = require("rambdax");
+ 
+ var _common = require("../../../utils/common");
 diff --git a/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js b/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
-index 5a53128..edebc5f 100644
+index 2c454ef..69b5131 100644
 --- a/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
 +++ b/node_modules/@nozbe/watermelondb/adapters/sqlite/encodeQuery/index.js
-@@ -134,7 +134,7 @@ var encodeMethod = function (table, countMode, needsDistinct) {
+@@ -131,7 +131,7 @@ var encodeMethod = function (table, countMode, needsDistinct) {
  
  var encodeAssociation = function (mainTable) {
    return function ([joinedTable, association]) {
