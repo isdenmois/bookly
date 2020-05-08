@@ -21,14 +21,13 @@ export function createStackPersistNavigator(stack, options) {
   };
 
   nav.router.getActionForPathAndParams = function (path, params) {
-    return getActionForPathAndParams(path, params);
+    return session.persistState ? null : getActionForPathAndParams(path, params);
   };
 
   nav.router.getStateForAction = function (action, state) {
     if (session.persistState && !state) {
       try {
         initState = JSON.parse(localStorage.getItem(PERSISTENCE_KEY));
-        initState.index = 0;
 
         return initState;
       } catch (e) {}
