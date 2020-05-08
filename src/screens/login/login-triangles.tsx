@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, View, ViewStyle } from 'react-native';
-
-const Triangle = require('react-native-triangle') as any;
+import Triangle from 'react-native-triangle';
 
 export class LoginTriangles extends React.PureComponent<any> {
   width: number = 0;

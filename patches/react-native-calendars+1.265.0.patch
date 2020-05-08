@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-calendars/src/agenda/index.js b/node_modules/react-native-calendars/src/agenda/index.js
-index c31db08..8221b5c 100644
+index dd56905..498e47e 100644
 --- a/node_modules/react-native-calendars/src/agenda/index.js
 +++ b/node_modules/react-native-calendars/src/agenda/index.js
 @@ -15,7 +15,7 @@ import {AGENDA_CALENDAR_KNOB} from '../testIDs';
@@ -12,7 +12,7 @@ index c31db08..8221b5c 100644
  /**
   * @description: Agenda component
 diff --git a/node_modules/react-native-calendars/src/calendar/index.js b/node_modules/react-native-calendars/src/calendar/index.js
-index 2fd2ac5..17d6ec7 100644
+index 07138a6..b6dfe2a 100644
 --- a/node_modules/react-native-calendars/src/calendar/index.js
 +++ b/node_modules/react-native-calendars/src/calendar/index.js
 @@ -17,7 +17,7 @@ import {SELECT_DATE_SLOT} from '../testIDs';
@@ -24,3 +24,19 @@ index 2fd2ac5..17d6ec7 100644
  const EmptyArray = [];
  
  /**
+diff --git a/node_modules/react-native-calendars/src/component-updater.js b/node_modules/react-native-calendars/src/component-updater.js
+index 19402f0..40e323b 100644
+--- a/node_modules/react-native-calendars/src/component-updater.js
++++ b/node_modules/react-native-calendars/src/component-updater.js
+@@ -1,8 +1,9 @@
+-const _ = require('lodash');
++const isEqual = require('lodash/isEqual');
++const get = require('lodash/get');
+ 
+ function shouldUpdate(a, b, paths) {
+   for (let i = 0; i < paths.length; i++) {
+-    const equals = _.isEqual(_.get(a, paths[i]), _.get(b, paths[i]));
++    const equals = isEqual(_.get(a, paths[i]), get(b, paths[i]));
+     if (!equals) {
+       return true;
+     }
