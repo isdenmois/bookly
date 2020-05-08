@@ -16,7 +16,6 @@ import { ThumbnailSelectModal } from 'modals/thumbnail-select/thumbnail-select.m
 import { ReviewWriteModal } from 'modals/review-write/review-write.modal';
 import { FantlabLoginModal } from 'modals/fantlab-login/fantlab-login.modal';
 import { BookTitleEditModal } from 'modals/book-title-edit/book-title-edit.modal';
-import { ScanAddressModal } from 'modals/scan-address/scan-address.modal';
 import { ScanIsbnModal } from 'modals/scan-isbn/scan-isbn.modal';
 
 export const MainStack = {
@@ -40,6 +39,5 @@ export const ModalStack = {
   ReviewWrite: ReviewWriteModal,
   FantlabLogin: FantlabLoginModal,
   BookTitleEdit: BookTitleEditModal,
-  ScanAddress: ScanAddressModal,
   ScanIsbn: ScanIsbnModal,
 };

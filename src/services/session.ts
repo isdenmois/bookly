@@ -14,7 +14,6 @@ const SETTINGS_FIELDS = <const>[
   'totalBooks',
   'withFantlab',
   'saveDateInChangeStatus',
-  'lastAddress',
   'defaultSort',
   'fantlabAuth',
   'minYear',
@@ -27,7 +26,6 @@ const INITIAL_SETTINGS: any = {
   totalBooks: INITIAL_BOOKS_COUNT,
   fantlabAuth: '',
   defaultSort: INITIAL_SORT,
-  lastAddress: '',
   minYear: INITIAL_YEAR,
 };
 
@@ -36,7 +34,6 @@ export class Session {
   @observable totalBooks: number = INITIAL_BOOKS_COUNT;
   @observable withFantlab: boolean = false;
   @observable saveDateInChangeStatus: boolean = false;
-  @observable lastAddress: string = '';
   @observable audio: boolean = false;
   @observable withoutTranslation: boolean = false;
   @observable paper: boolean = false;
