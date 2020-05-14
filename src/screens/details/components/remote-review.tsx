@@ -39,14 +39,7 @@ export class RemoteReview extends React.PureComponent<Props> {
       <View style={s.container} onLayout={_.noop} ref={this.rootRef}>
         <View style={s.dataRow}>
           <View style={s.mainInfo}>
-            <Thumbnail
-              style={s.avatar}
-              url={review.userAvatar}
-              width={32}
-              height={32}
-              title={review.user}
-              auto='none'
-            />
+            <Thumbnail style={s.avatar} url={review.userAvatar} width={32} height={32} title={review.user} />
             <Text style={s.user}>{review.user}</Text>
             <Text style={s.date}>{isLivelib ? review.date : formatDate(review.date)}</Text>
           </View>

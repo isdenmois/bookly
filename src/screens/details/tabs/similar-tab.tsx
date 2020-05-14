@@ -34,7 +34,7 @@ export class SimilarTab extends React.Component<Props> {
 
     return (
       <TouchableOpacity key={book.id} onPress={() => this.openBook(book)} style={style}>
-        <Thumbnail auto='none' title={book.title} url={book.thumbnail} width={50} height={80} />
+        <Thumbnail title={book.title} url={book.thumbnail} width={50} height={80} />
 
         <View style={s.info}>
           <Text style={s.title}>{book.title}</Text>

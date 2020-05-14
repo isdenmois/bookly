@@ -36,6 +36,7 @@ export class ProfileScreen extends React.Component<Props> {
           <SessionParamToggler title='Типы книг: аудио' param='audio' />
           <SessionParamToggler title='Типы книг: оригинал' param='withoutTranslation' />
           <SessionParamToggler title='Типы книг: бумага' param='paper' />
+          <SessionParamToggler title='Топ книг' param='topRate' />
           {isWeb && <SessionParamToggler title='Сохранять состояние приложения' param='persistState' />}
           <BookListSort />
           <RemoveDeleted />

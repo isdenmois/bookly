@@ -59,7 +59,7 @@ export class ScreenHeader extends React.PureComponent<Props, State> {
           <TouchIcon name='search' size={24} color={color.PrimaryText} onPress={this.openSearch} />
         )}
         {!this.props.onSearch && <View style={s.noSearch} />}
-        {this.props.onRight && (
+        {this.props.right && (
           <TouchIcon name={this.props.right} size={24} color={color.PrimaryText} onPress={this.props.onRight} />
         )}
       </View>
