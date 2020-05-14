@@ -43,7 +43,7 @@ export class EditionCard extends React.PureComponent<Props> {
       <View style={s.card}>
         <View style={s.thumbnail}>
           <TouchableOpacity activeOpacity={0.5} onPress={this.openEditionPage}>
-            <Thumbnail auto={null} width={76} height={117} url={edition.thumbnail} />
+            <Thumbnail width={76} height={117} url={edition.thumbnail} />
           </TouchableOpacity>
           <View style={s.yearBlock}>
             <Text style={s.yearText}>{edition.year}</Text>

@@ -210,7 +210,7 @@ function SecondaryWithThumbnailData({ book, navigation }) {
       </View>
 
       <TouchableOpacity onPress={openChangeThumbnail} style={s.thumbnailContainer}>
-        <Thumbnail style={s.thumbnail} width={120} height={180} url={book.thumbnail} cache auto='none' />
+        <Thumbnail style={s.thumbnail} width={120} height={180} url={book.thumbnail} cache />
       </TouchableOpacity>
     </View>
   );

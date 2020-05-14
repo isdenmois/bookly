@@ -17,6 +17,7 @@ export const WISH_LIST_SORTS = ['title', 'author', 'id', 'createdAt'];
 export class WishListScreen extends ReadList {
   state = createQueryState(defaultFilters, session.defaultSort);
 
+  showTopRate = null;
   filters = WISH_LIST_FILTERS;
   sorts = WISH_LIST_SORTS;
   title = 'Хочу прочитать';

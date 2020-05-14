@@ -18,7 +18,7 @@ interface Props {
   width?: number;
   height?: number;
   title?: string;
-  auto?: string;
+  auto?: 'height' | 'width';
   style?: ImageStyle;
   resizeMode?: Image.ResizeMode;
   cache?: boolean;
@@ -39,7 +39,3 @@ export function Thumbnail({ auto, style, title, width, height, url, resizeMode, 
 
   return <Image style={[style, { width, height }]} source={source} resizeMode={resizeMode} />;
 }
-
-Thumbnail.defaultProps = {
-  auto: 'height',
-};

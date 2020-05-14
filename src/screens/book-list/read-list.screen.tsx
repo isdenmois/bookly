@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import _ from 'lodash';
 import { Platform, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
@@ -12,6 +12,8 @@ import { getCurrentYear } from 'utils/date';
 import { Button, ScreenHeader } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
+import { session } from 'services';
+import Book from 'store/book';
 
 const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'paper', 'isLiveLib'];
 
@@ -37,7 +39,9 @@ export class ReadList extends React.Component<Props, State> {
   );
 
   readonly = this.props.navigation.getParam('readonly');
+  bookListRef = createRef<any>();
 
+  showTopRate = true;
   filters = READ_LIST_FILTERS;
   sorts = READ_LIST_SORTS;
   title = 'Прочитано';
@@ -49,7 +53,14 @@ export class ReadList extends React.Component<Props, State> {
     return (
       <View style={s.container}>
         <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
-        <BookList query={query} sort={sort} filters={filters} onChange={this.setFilters} readonly={readonly} />
+        <BookList
+          query={query}
+          sort={sort}
+          filters={filters}
+          onChange={this.setFilters}
+          readonly={readonly}
+          ref={this.bookListRef}
+        />
         <View style={s.buttonContainer}>
           <Button
             label='ФИЛЬТРЫ'
@@ -58,6 +69,15 @@ export class ReadList extends React.Component<Props, State> {
             style={s.button}
             textStyle={s.buttonText}
           />
+          {this.showTopRate && session.topRate && (
+            <Button
+              label='ТОП'
+              onPress={this.openTopRated}
+              icon={<Icon name='vials' size={18} color={color.PrimaryText} />}
+              style={s.button}
+              textStyle={s.buttonText}
+            />
+          )}
         </View>
       </View>
     );
@@ -79,6 +99,17 @@ export class ReadList extends React.Component<Props, State> {
       filters: this.state.filters,
       sort: this.state.sort,
     });
+
+  openTopRated = () => {
+    const data: Book[] = this.bookListRef.current?.state.values?.books || [];
+    if (data.length === 0) return;
+    const books = data.map(b => ({
+      ..._.pick(b, ['id', 'author', 'thumbnail', 'rating', 'title']),
+      date: b.date.getTime(),
+    }));
+
+    this.props.navigation.navigate('TopRate', { books });
+  };
 }
 
 export const ReadListScreen = withScroll(ReadList);
@@ -94,6 +125,8 @@ const s = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   } as ViewStyle,
   button: {
     backgroundColor: color.Background,

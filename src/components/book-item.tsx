@@ -61,15 +61,7 @@ export class BookItem extends React.Component<Props> {
       <View style={s.container}>
         <TouchableOpacity style={s.thumbnailView} onPress={this.openBook}>
           <View style={s.thumbnail}>
-            <Thumbnail
-              cache={cache}
-              auto={null}
-              style={s.image}
-              width={65}
-              height={100}
-              title={book.title}
-              url={book.thumbnail}
-            />
+            <Thumbnail cache={cache} style={s.image} width={65} height={100} title={book.title} url={book.thumbnail} />
           </View>
         </TouchableOpacity>
 
