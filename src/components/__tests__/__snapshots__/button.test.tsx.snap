@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button renders button 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#009688",
+      "borderRadius": 20,
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "opacity": 1,
+      "paddingHorizontal": 25,
+      "paddingVertical": 10,
+    }
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontSize": 16,
+        },
+        Array [
+          Object {
+            "color": "#FFF",
+            "fontFamily": "sans-serif-medium",
+            "lineHeight": 19,
+            "textAlign": "center",
+          },
+          undefined,
+        ],
+      ]
+    }
+  >
+    Superb
+  </Text>
+</View>
+`;
+
+exports[`Button renders disabled 1`] = `
+<View
+  onPress={false}
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#009688",
+        "borderRadius": 20,
+        "flexDirection": "row",
+        "justifyContent": "center",
+        "paddingHorizontal": 25,
+        "paddingVertical": 10,
+      },
+      Object {
+        "opacity": 0.4,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontSize": 16,
+        },
+        Array [
+          Object {
+            "color": "#FFF",
+            "fontFamily": "sans-serif-medium",
+            "lineHeight": 19,
+            "textAlign": "center",
+          },
+          undefined,
+        ],
+      ]
+    }
+  >
+    You won't click me
+  </Text>
+</View>
+`;
+
+exports[`Button renders icon 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#009688",
+      "borderRadius": 20,
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "opacity": 1,
+      "paddingHorizontal": 25,
+      "paddingVertical": 10,
+    }
+  }
+>
+  <Text />
+  <Text
+    style={
+      Array [
+        Object {
+          "fontSize": 16,
+        },
+        Array [
+          Object {
+            "color": "#FFF",
+            "fontFamily": "sans-serif-medium",
+            "lineHeight": 19,
+            "textAlign": "center",
+          },
+          Object {
+            "marginLeft": 10,
+          },
+          undefined,
+        ],
+      ]
+    }
+  >
+    Test
+  </Text>
+</View>
+`;

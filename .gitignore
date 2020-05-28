@@ -64,3 +64,4 @@ RELEASE_NOTES.md
 dist/*
 !dist/now.json
 !dist/api
+coverage

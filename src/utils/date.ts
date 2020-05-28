@@ -12,7 +12,7 @@ const flags = {
 };
 export const ONE_DAY = 1000 * 60 * 60 * 24;
 
-export function format(date: any, mask: string) {
+export function format(date: any, mask: string): string {
   if (!(date instanceof Date)) {
     date = new Date(date);
   }
@@ -20,7 +20,7 @@ export function format(date: any, mask: string) {
   return mask.replace(TOKEN, $0 => flags[$0](date));
 }
 
-export function formatDate(date) {
+export function formatDate(date): string {
   return format(date, DATE_FORMAT);
 }
 
@@ -41,5 +41,5 @@ export function dayOfYear(): number {
   const start = getStartOfYear(now);
   const diff = now.getTime() - start.getTime() + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
 
-  return Math.floor(diff / ONE_DAY);
+  return Math.floor(diff / ONE_DAY) + 1;
 }

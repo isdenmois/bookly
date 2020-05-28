@@ -25,10 +25,8 @@ export class Button extends React.Component<Props> {
 
     return (
       <Component testID={this.props.testID} onPress={!disabled && this.props.onPress} style={viewStyles}>
-        <>
-          {!!icon && icon}
-          <TextM style={textStyles}>{label}</TextM>
-        </>
+        {!!icon && icon}
+        <TextM style={textStyles}>{label}</TextM>
       </Component>
     );
   }

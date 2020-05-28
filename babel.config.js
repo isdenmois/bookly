@@ -17,7 +17,7 @@ const config = {
   ],
 };
 
-if (!process.env.RN_SRC_EXT || !process.env.RN_SRC_EXT.includes('e2e')) {
+if (process.env.NODE_ENV === 'production' && !process.env.RN_SRC_EXT?.includes('e2e')) {
   config.plugins.push([
     'babel-plugin-jsx-remove-data-test-id',
     {

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Counter 1`] = `
+<View
+  style={
+    Object {
+      "flexDirection": "column",
+      "justifyContent": "center",
+    }
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontSize": 24,
+        },
+        Object {
+          "color": "#000",
+          "fontWeight": "bold",
+          "marginBottom": 5,
+          "textAlign": "center",
+        },
+      ]
+    }
+  >
+    10
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#000",
+        "fontSize": 14,
+      }
+    }
+  >
+    Total
+  </Text>
+</View>
+`;
