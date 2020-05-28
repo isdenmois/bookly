@@ -29,9 +29,13 @@ export async function loadSettings() {
 
     if (_.isEmpty(data)) return;
 
-    omitFields.forEach(field => (data[field] = session[field]));
+    omitFields.forEach(field => {
+      if (session[field] !== undefined) {
+        data[field] = session[field];
+      }
+    });
 
-    if (!_.isEmpty(data) && !_.isEqual(data, session.serialize())) {
+    if (!_.isEqual(data, session.serialize())) {
       session.setDefaults(data);
 
       await session.saveSession(false);

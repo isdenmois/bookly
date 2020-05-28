@@ -55,7 +55,7 @@ export class Session {
   }
 
   @action set(setting: Setting, value: any) {
-    if (this[setting] !== value) {
+    if (SETTINGS_FIELDS.includes(setting) && this[setting] !== value) {
       this[setting as any] = value;
       this.saveSession(true);
     }
@@ -71,7 +71,7 @@ export class Session {
 
   @action setDefaults(data) {
     SETTINGS_FIELDS.forEach(field => {
-      this[field as any] = data[field] ?? INITIAL_SETTINGS[field];
+      this[field as any] = data[field] ?? INITIAL_SETTINGS[field] ?? null;
     });
   }
 
