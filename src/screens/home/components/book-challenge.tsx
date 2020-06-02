@@ -23,7 +23,7 @@ function BookChallengeComponent({ readCount }: Props) {
   return (
     <TouchableOpacity style={s.row} onPress={showProgress}>
       <Counter label='Прочитано' value={readCount} />
-      <Counter label='Запланировано' value={totalBooks} />
+      <Counter label='Запланировано' value={totalBooks} testID='PlannedBooksCount' />
       <Counter label='Опережение' value={forecast} />
     </TouchableOpacity>
   );

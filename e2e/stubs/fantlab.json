@@ -1,0 +1,65 @@
+{
+  "work": {
+    "293": {
+      "work_id": 293,
+      "work_name": "Противостояние",
+      "authors": [{ "id": 22, "name": "Стивен Кинг" }],
+      "work_year": 1978
+    },
+    "289": {
+      "work_id": 289,
+      "work_name": "Кэрри",
+      "authors": [{ "id": 22, "name": "Стивен Кинг" }],
+      "work_year": 1974
+    }
+  },
+  "similars": {
+    "293": [
+      {
+        "creators": {
+          "authors": [
+            {
+              "name": "Роберт Маккаммон"
+            }
+          ]
+        },
+        "id": 38297,
+        "image": "//data.fantlab.ru/images/editions/big/12727",
+        "image_preview": "//data.fantlab.ru/images/editions/small/12727",
+        "name": "Песня Сван",
+        "name_orig": "Swan Song",
+        "name_type": "роман",
+        "name_type_icon": "novel",
+        "name_type_id": 1,
+        "name_type_image": "//fantlab.ru/img/coverwork_novel.svg",
+        "published": 1,
+        "saga_type": null,
+        "saga_work_id": 0,
+        "stat": {
+          "rating": "8.02",
+          "responses": 29,
+          "voters": 553
+        },
+        "title": "Роберт Маккаммон «Песня Сван»",
+        "type": "work",
+        "url": "//fantlab.ru/work38297",
+        "year": 1987
+      }
+    ]
+  },
+  "responses": {
+    "293": {
+      "items": [
+        {
+          "response_id": 103653,
+          "response_text": "DUH",
+          "response_votes": 32,
+          "response_date_iso": "2009-03-28T01: 52: 28+03",
+          "mark": 5,
+          "user_name": "petuuh"
+        }
+      ],
+      "total_count": 1
+    }
+  }
+}
