@@ -27,7 +27,7 @@
     "analyze": "react-native-bundle-visualizer --platform android"
   },
   "dependencies": {
-    "@nozbe/watermelondb": "0.16.0",
+    "@nozbe/watermelondb": "0.16.2",
     "@nozbe/with-observables": "1.0.5",
     "@react-native-community/async-storage": "1.11.0",
     "@react-native-community/datetimepicker": "2.4.0",
