@@ -268,7 +268,7 @@ const s = StyleSheet.create({
   title: {
     color: color.PrimaryTextInverse,
     fontSize: 24,
-    lineHeight: 28,
+    lineHeight: 30,
     fontFamily: 'sans-serif-medium',
   } as TextStyle,
   author: {

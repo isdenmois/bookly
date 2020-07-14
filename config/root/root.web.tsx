@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import 'mobx-react-lite/batchingForReactDom';
 import { onChanges } from 'store';
 
 import { session, syncService, navigation } from 'services';

@@ -101,7 +101,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
 
   render() {
     if (this.state.isLoading && !this.appending) {
-      return <ActivityIndicator style={s.loading} size='large' />;
+      return <ActivityIndicator style={s.loading} size='large' color={color.Primary} />;
     }
 
     if (this.state.error) {

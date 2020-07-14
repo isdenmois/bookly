@@ -10,7 +10,6 @@ export default class Author extends Model {
   static table = 'authors';
   static associations: any = {
     book_authors: { type: 'has_many', foreignKey: 'author_id' },
-    books: { type: 'belongs_to', key: 'book_id', table: 'book_authors' },
   };
 
   @field('name') name: string;

@@ -80,7 +80,7 @@ export function withScroll(WrappedComponent, withContext?: boolean): any {
     onSubviewLoad = () => this.scrollTo(this.props.y);
 
     setRef = view => {
-      this.scroll = view?.getNode();
+      this.scroll = view;
 
       if (withContext) {
         this.tabScroll.rootId = findNodeHandle(view);

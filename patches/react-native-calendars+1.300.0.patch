@@ -1,31 +1,31 @@
 diff --git a/node_modules/react-native-calendars/src/agenda/index.js b/node_modules/react-native-calendars/src/agenda/index.js
-index dd56905..498e47e 100644
+index a0fb939..3eca8ec 100644
 --- a/node_modules/react-native-calendars/src/agenda/index.js
 +++ b/node_modules/react-native-calendars/src/agenda/index.js
-@@ -15,7 +15,7 @@ import {AGENDA_CALENDAR_KNOB} from '../testIDs';
- const HEADER_HEIGHT = 104;
+@@ -16,7 +16,7 @@ const HEADER_HEIGHT = 104;
  const KNOB_HEIGHT = 24;
  // Fallback when RN version is < 0.44
+ const {Text, View, Dimensions, Animated, ViewPropTypes} = ReactNative;
 -const viewPropTypes = ViewPropTypes || View.propTypes;
 +const viewPropTypes = ViewPropTypes || View.propTypes || {};
  
  /**
   * @description: Agenda component
 diff --git a/node_modules/react-native-calendars/src/calendar/index.js b/node_modules/react-native-calendars/src/calendar/index.js
-index 07138a6..b6dfe2a 100644
+index d2a247c..28e6a42 100644
 --- a/node_modules/react-native-calendars/src/calendar/index.js
 +++ b/node_modules/react-native-calendars/src/calendar/index.js
-@@ -17,7 +17,7 @@ import {SELECT_DATE_SLOT} from '../testIDs';
- 
+@@ -19,7 +19,7 @@ import {SELECT_DATE_SLOT} from '../testIDs';
  
  //Fallback when RN version is < 0.44
+ const {View, ViewPropTypes} = ReactNative;
 -const viewPropTypes = ViewPropTypes || View.propTypes;
 +const viewPropTypes = ViewPropTypes || View.propTypes || {};
  const EmptyArray = [];
  
  /**
 diff --git a/node_modules/react-native-calendars/src/component-updater.js b/node_modules/react-native-calendars/src/component-updater.js
-index 19402f0..40e323b 100644
+index 19402f0..f6f5c5e 100644
 --- a/node_modules/react-native-calendars/src/component-updater.js
 +++ b/node_modules/react-native-calendars/src/component-updater.js
 @@ -1,8 +1,9 @@
@@ -36,7 +36,7 @@ index 19402f0..40e323b 100644
  function shouldUpdate(a, b, paths) {
    for (let i = 0; i < paths.length; i++) {
 -    const equals = _.isEqual(_.get(a, paths[i]), _.get(b, paths[i]));
-+    const equals = isEqual(_.get(a, paths[i]), get(b, paths[i]));
++    const equals = isEqual(get(a, paths[i]), get(b, paths[i]));
      if (!equals) {
        return true;
      }

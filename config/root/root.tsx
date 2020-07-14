@@ -3,6 +3,7 @@ import { ActivityIndicator, StatusBar, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { onChanges } from 'store';
+import 'mobx-react-lite/batchingForReactNative';
 
 import { session, syncService, navigation } from 'services';
 

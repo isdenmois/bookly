@@ -23,7 +23,10 @@ interface State {
 }
 
 const withAuthors: Function = withObservables(null, (props: Props) => {
-  const queries = [Q.on('books', 'status', props.status), Q.on('book_authors', '_status', Q.notEq('deleted'))];
+  const queries = [
+    Q.experimentalNestedJoin('book_authors', 'books'),
+    Q.on('book_authors', Q.on('books', 'status', props.status)),
+  ];
   const authors = database.collections.get('authors');
 
   return { authors: authors.query(...queries) };

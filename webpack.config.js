@@ -169,10 +169,12 @@ module.exports = {
       __DEV__: webpackEnv === 'development',
     }),
     ...(isProd ? [] : [new webpack.HotModuleReplacementPlugin()]),
-    new CopyPlugin([
-      { from: path.resolve(rootDir, 'web/apple-launch-750x1334.png'), to: 'assets' },
-      { from: path.resolve(rootDir, 'android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png'), to: 'assets' },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        { from: path.resolve(rootDir, 'web/apple-launch-750x1334.png'), to: 'assets' },
+        { from: path.resolve(rootDir, 'android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png'), to: 'assets' },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.web.tsx', '.web.ts', '.tsx', '.ts', '.web.jsx', '.web.js', '.jsx', '.js'], // read files in fillowing order
