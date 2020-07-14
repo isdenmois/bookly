@@ -53,7 +53,7 @@ export const transition: TabTransition = {
 };
 
 export const ByYear: StatTab = {
-  header: ['Год', 'Книг', 'Дней', 'Оценка'],
+  header: ['year', 'stat.books', 'stat.days', 'stat.mark'],
   columns: ['id', 'count', 'days', 'rating'],
   flexes: [2, 1, 1, 1],
   factory: ByYearFactory,

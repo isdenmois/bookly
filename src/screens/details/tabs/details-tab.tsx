@@ -28,6 +28,7 @@ import {
   ViewLineAction,
 } from '../components/book-details-lines';
 import { withScroll } from './tab';
+import { t } from 'services';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -55,9 +56,16 @@ export class DetailsTab extends React.Component<Props> {
 
   get readDate() {
     const book = this.props.book;
-    const parts = [formatDate(book.date), book.audio && 'аудиокнига', book.withoutTranslation && 'в оригинале'];
+    const parts = [
+      formatDate(book.date),
+      book.audio && t('common.audiobook'),
+      book.withoutTranslation && t('common.original'),
+    ];
 
-    return parts.filter(p => p).join(', ');
+    return parts
+      .filter(p => p)
+      .join(', ')
+      .toLowerCase();
   }
 
   render() {
@@ -73,38 +81,40 @@ export class DetailsTab extends React.Component<Props> {
     return (
       <View>
         {all && <ViewLine title='ID' value={book.id} />}
-        {all && <ViewLine title='Тип' value={BOOK_TYPE_NAMES[book.type]} />}
+        {all && <ViewLine title={t('details.type')} value={BOOK_TYPE_NAMES[book.type]} />}
 
-        {!all && !book.thumbnail && !!book.genre && <ViewLine title='Жанр' value={book.genre} />}
+        {!all && !book.thumbnail && !!book.genre && <ViewLine title={t('details.genre')} value={book.genre} />}
 
-        {(all || !book.thumbnail) && !!book.avgRating && <ViewLine title='Средняя оценка' value={book.avgRating} />}
+        {(all || !book.thumbnail) && !!book.avgRating && (
+          <ViewLine title={t('details.average')} value={book.avgRating} />
+        )}
 
-        {(all || !book.thumbnail) && !!book.year && <ViewLine title='Год' value={book.year} />}
+        {(all || !book.thumbnail) && !!book.year && <ViewLine title={t('year')} value={book.year} />}
 
         {this.renderTranslators()}
 
-        {isRead && <ViewLine title='Дата прочтения' value={this.readDate} />}
+        {isRead && <ViewLine title={t('details.read-date')} value={this.readDate} />}
 
         {!!book.editionCount && (
           <ViewLineTouchable
-            title='Изданий'
+            title={t('details.editions')}
             value={book.editionCount}
             onPress={this.openEditions}
             onLongPress={this.openChangeThumbnail}
           />
         )}
 
-        {!!book.language && <ViewLine title='Язык написания' value={book.language} />}
+        {!!book.language && <ViewLine title={t('details.language')} value={book.language} />}
         {!!book.title && !!book.originalTitle && (
           <ViewLineTouchable
-            title='Оригинальное название'
+            title={t('details.original-title')}
             value={book.originalTitle}
             onPress={this.openTelegram}
             onLongPress={this.copyBookOriginalTitle}
           />
         )}
 
-        {!!otherTitles && <ViewLine title='Другие названия' value={otherTitles} />}
+        {!!otherTitles && <ViewLine title={t('details.other-titles')} value={otherTitles} />}
 
         {all && book.classification?.length > 0 && this.renderClassification()}
 
@@ -116,23 +126,26 @@ export class DetailsTab extends React.Component<Props> {
 
         {all && !isLivelib && (
           <ViewLineAction
-            title='Найти в LiveLib'
+            title={t('details.find-ll')}
             onPress={this.forceSearchInLivelib}
             onLongPress={this.searchInLivelib}
           />
         )}
 
-        {all && isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
+        {all && isExist && <ViewLineAction title={t('details.edit')} onPress={this.openEditModal} />}
 
         {all && isExist && (
-          <ViewLineAction title={hasPaper ? 'Есть в бумаге' : 'Нет в бумаге'} onPress={this.togglePaper} />
+          <ViewLineAction
+            title={t(hasPaper ? 'details.has-paper' : 'details.has-no-paper')}
+            onPress={this.togglePaper}
+          />
         )}
 
         {all && isExist && isRead && hasPaper && (
-          <ViewLineAction title={book.leave ? 'Отдам' : 'Оставлю'} onPress={this.toggleLeave} />
+          <ViewLineAction title={t(book.leave ? 'details.leave' : 'details.keep')} onPress={this.toggleLeave} />
         )}
 
-        {all && isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
+        {all && isExist && <ViewLineModelRemove model={book} warning={t('details.delete')} />}
       </View>
     );
   }
@@ -144,7 +157,7 @@ export class DetailsTab extends React.Component<Props> {
       return null;
     }
 
-    const title = translators.length > 1 ? 'Переводчики' : 'Переводчик';
+    const title = t(translators.length > 1 ? 'details.translators' : 'details.translator');
 
     return <ViewLine title={title} value={translators.join('\n')} />;
   }
@@ -166,7 +179,7 @@ export class DetailsTab extends React.Component<Props> {
   renderParentBooks() {
     return (
       <View style={s.parentBooks}>
-        <Text style={s.header}>ВХОДИТ В</Text>
+        <Text style={s.header}>{t('details.series')}</Text>
 
         {this.props.book.parent.map(book => (
           <ViewLineTouchable key={book.id} onPress={() => this.openBook(book)} title={book.type} value={book.title} />
@@ -178,7 +191,7 @@ export class DetailsTab extends React.Component<Props> {
   renderFilms() {
     return (
       <View style={s.parentBooks}>
-        <Text style={s.header}>ЭКРАНИЗАЦИИ</Text>
+        <Text style={s.header}>{t('details.films')}</Text>
 
         {this.props.book.films.map(this.renderFilm)}
       </View>
@@ -207,12 +220,12 @@ export class DetailsTab extends React.Component<Props> {
 
   copyBookOriginalTitle = () => {
     Clipboard.setString(this.props.book.originalTitle);
-    ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
+    ToastAndroid.show(t('details.copied'), ToastAndroid.SHORT);
   };
 
   openChangeThumbnail = () => {
     if (!this.props.isExist) {
-      return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
+      return ToastAndroid.show(t('details.should-add'), ToastAndroid.SHORT);
     }
 
     this.props.navigation.push('/modal/thumbnail-select', { book: this.props.book });

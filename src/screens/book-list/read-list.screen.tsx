@@ -12,7 +12,7 @@ import { getCurrentYear } from 'utils/date';
 import { Button, ScreenHeader } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
-import { session } from 'services';
+import { session, t } from 'services';
 import Book from 'store/book';
 
 const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'paper', 'isLiveLib'];
@@ -44,7 +44,7 @@ export class ReadList extends React.Component<Props, State> {
   showTopRate = true;
   filters = READ_LIST_FILTERS;
   sorts = READ_LIST_SORTS;
-  title = 'Прочитано';
+  title = 'nav.read';
 
   render() {
     const { query, sort, filters } = this.state;
@@ -52,7 +52,7 @@ export class ReadList extends React.Component<Props, State> {
 
     return (
       <View style={s.container}>
-        <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
+        <ScreenHeader title={t(this.title)} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
         <BookList
           query={query}
           sort={sort}
@@ -63,7 +63,7 @@ export class ReadList extends React.Component<Props, State> {
         />
         <View style={s.buttonContainer}>
           <Button
-            label='ФИЛЬТРЫ'
+            label={t('modal.filters').toUpperCase()}
             onPress={this.openFiltersModal}
             icon={<Icon name='sliders-h' size={18} color={color.PrimaryText} />}
             style={s.button}

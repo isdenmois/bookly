@@ -5,6 +5,7 @@ import { withNavigationProps } from 'utils/with-navigation-props';
 import Book from 'store/book';
 import { Dialog, Thumbnail } from 'components';
 import { ThumbnailList } from './components/thumbnail-list';
+import { t } from 'services';
 
 interface Props {
   book: Book;
@@ -24,7 +25,7 @@ export class ThumbnailSelectModal extends React.Component<Props, State> {
     const changed = book.thumbnail !== this.state.selected;
 
     return (
-      <Dialog title='Обложка' onApply={changed && this.save}>
+      <Dialog title={t('modal.cover')} onApply={changed && this.save}>
         <View style={s.thumbnail}>
           <Thumbnail auto='height' width={150} height={200} url={this.state.selected} title={book.title} />
         </View>

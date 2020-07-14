@@ -2,7 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle, ToastAndroid } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { observer } from 'mobx-react';
-import { session } from 'services';
+import { session, t } from 'services';
 import { Counter } from 'components';
 import { dayOfYear } from 'utils/date';
 import { readBooksThisYearQuery, booksReadForecast } from '../home.queries';
@@ -22,9 +22,9 @@ function BookChallengeComponent({ readCount }: Props) {
 
   return (
     <TouchableOpacity style={s.row} onPress={showProgress}>
-      <Counter label='Прочитано' value={readCount} />
-      <Counter label='Запланировано' value={totalBooks} testID='PlannedBooksCount' />
-      <Counter label='Опережение' value={forecast} />
+      <Counter label={t('home.challenge.completed')} value={readCount} />
+      <Counter label={t('home.challenge.anticipate')} value={totalBooks} testID='PlannedBooksCount' />
+      <Counter label={t('home.challenge.ahead')} value={forecast} />
     </TouchableOpacity>
   );
 }

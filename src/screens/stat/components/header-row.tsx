@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { Text, View, ViewStyle, StyleSheet, TextStyle } from 'react-native';
 import { color } from 'types/colors';
+import { t } from 'services';
 
 interface Props {
   columns: string[];
@@ -12,7 +13,7 @@ export const HeaderRow = memo(({ columns, flexes }: Props) => {
     <View style={s.container}>
       {columns.map((c, i) => (
         <Text key={c} style={flexes ? [s.text, { flex: flexes[i] }] : s.text}>
-          {c}
+          {t(c)}
         </Text>
       ))}
     </View>

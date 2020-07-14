@@ -24,6 +24,7 @@ import { withBook } from 'components/book-item';
 import { LiveLibBook } from 'services/api/livelib/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookDetailsHeader } from './book-details-header';
+import { t } from 'services';
 
 interface Props {
   book: Book & BookExtended & LiveLibBook;
@@ -132,7 +133,7 @@ function ThumbnailBackground({ children, book }) {
 function Header({ bookTitle, navigation, bookId }) {
   const copyBookTitle = React.useCallback(() => {
     Clipboard.setString(bookTitle);
-    ToastAndroid.show('Название скопировано', ToastAndroid.SHORT);
+    ToastAndroid.show(t('details.copied'), ToastAndroid.SHORT);
   }, [bookTitle]);
   const openTelegram = React.useCallback(() => Linking.openURL(`tg://share?text=${bookTitle}`), [bookTitle]);
 
@@ -181,7 +182,7 @@ function SecondaryWithThumbnailData({ book, navigation }) {
     }
 
     if (!book.status) {
-      return ToastAndroid.show('Книга не добавлена в колекцию', ToastAndroid.SHORT);
+      return ToastAndroid.show(t('details.should-add'), ToastAndroid.SHORT);
     }
 
     if (book.editionCount <= 1) {

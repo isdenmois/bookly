@@ -8,6 +8,7 @@ import Review, { createReview } from 'store/review';
 import { dbAction } from 'services/db';
 import { database } from 'store';
 import { Button, Dialog } from 'components';
+import { t } from 'services';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -26,7 +27,7 @@ const NUMBER_OF_LINES = 10;
 export class ReviewWriteModal extends React.Component<Props, State> {
   state = { changed: false, body: this.props.review ? this.props.review.body : '' };
 
-  buttonTitle = this.props.review ? 'Обновить' : 'Добавить';
+  buttonTitle = t(this.props.review ? 'button.update' : 'button.add');
 
   render() {
     const changed = this.state.changed && Boolean(this.state.body);
@@ -36,7 +37,7 @@ export class ReviewWriteModal extends React.Component<Props, State> {
         <ScrollView style={s.scroll}>
           <TextInput
             style={s.text}
-            placeholder='Введите текст отзыва'
+            placeholder={t('modal.enter-review')}
             value={this.state.body}
             onChangeText={this.setBody}
             numberOfLines={NUMBER_OF_LINES}
@@ -70,13 +71,13 @@ export class ReviewWriteModal extends React.Component<Props, State> {
   async updateReview() {
     await this.props.review.setBody(this.state.body);
 
-    ToastAndroid.show('Отзыв был обновлен', ToastAndroid.SHORT);
+    ToastAndroid.show(t('modal.review-updated'), ToastAndroid.SHORT);
   }
 
   @dbAction async createReview() {
     const record = await createReview(database, this.props.book, this.state.body);
 
-    ToastAndroid.show('Отзыв добавлен', ToastAndroid.SHORT);
+    ToastAndroid.show(t('modal.review-updated'), ToastAndroid.SHORT);
 
     return record;
   }

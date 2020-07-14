@@ -3,6 +3,7 @@ import React from 'react';
 import { navigation, api } from 'services';
 import { SearchBar } from 'components';
 import { ActivityIndicator } from 'react-native';
+import { t } from 'services/i18n';
 import { livelib } from 'screens/search/search.screen';
 
 interface State {
@@ -21,7 +22,7 @@ export class HomeHeader extends React.Component<any, State> {
     }
     return (
       <SearchBar
-        placeholder='Поиск по FantLab'
+        placeholder={t('home.search')}
         value={query}
         actionIcon='barcode'
         onChange={this.queryChange}

@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Insets, Text, TouchableOpacity, ScrollView, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import classnames from 'rn-classnames';
 import { color } from 'types/colors';
+import { t } from 'services';
 
 interface Props {
   type: string;
@@ -9,11 +10,11 @@ interface Props {
 }
 
 const groups = [
-  { id: 'MONTH', title: 'По месяцам' },
-  { id: 'AUTHOR', title: 'По автору' },
-  { id: 'RATING', title: 'По оценке' },
-  { id: 'YEAR', title: 'По годам' },
-  { id: 'TYPE', title: 'По типу' },
+  { id: 'MONTH', title: 'stat.by-month' },
+  { id: 'AUTHOR', title: 'stat.by-author' },
+  { id: 'RATING', title: 'stat.by-mark' },
+  { id: 'YEAR', title: 'stat.by-year' },
+  { id: 'TYPE', title: 'stat.by-type' },
 ];
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
@@ -30,7 +31,7 @@ export const StatGroups = memo(({ type, onChange }: Props) => {
           style={cn('group', isLast(i))}
           onPress={isSelected(group) ? null : () => onChange(group.id)}
         >
-          <Text style={cn('text', isSelected(group))}>{group.title}</Text>
+          <Text style={cn('text', isSelected(group))}>{t(group.title)}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>

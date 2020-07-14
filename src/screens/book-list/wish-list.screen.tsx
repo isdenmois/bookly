@@ -20,5 +20,5 @@ export class WishListScreen extends ReadList {
   showTopRate = null;
   filters = WISH_LIST_FILTERS;
   sorts = WISH_LIST_SORTS;
-  title = 'Хочу прочитать';
+  title = 'nav.wish';
 }

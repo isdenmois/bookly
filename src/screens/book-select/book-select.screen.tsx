@@ -7,6 +7,7 @@ import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { createQueryState } from 'screens/book-list/book-list.service';
 import { NavigationStackProp } from 'react-navigation-stack';
+import { t } from 'services/i18n';
 import { BookSelector } from './book-selector';
 import { BookListFilters } from 'screens/book-list/components/book-list-filters';
 
@@ -32,7 +33,7 @@ export class BookSelectScreen extends Component<Props> {
   render() {
     return (
       <View style={s.container}>
-        <ScreenHeader title='Выбор книги' right='sliders-h' onRight={this.openFilters} />
+        <ScreenHeader title={t('headers.book-select')} right='sliders-h' onRight={this.openFilters} />
 
         <View style={s.filters}>
           <BookListFilters filters={this.state.filters} onChange={this.setFilters} />

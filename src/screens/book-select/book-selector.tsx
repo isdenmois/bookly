@@ -7,7 +7,7 @@ import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { color } from 'types/colors';
-import { navigation } from 'services';
+import { navigation, t } from 'services';
 import { database } from 'store';
 
 interface Props {
@@ -61,8 +61,8 @@ function BookSelectorComponent({ books, openFilters }: Props) {
       </View>
 
       <View style={s.buttons}>
-        <Button label='Найти в Telegram' onPress={openTelegram} />
-        <Button style={s.more} label='Еще' onPress={more} />
+        <Button label={t('button.tg-search')} onPress={openTelegram} />
+        <Button style={s.more} label={t('button.more')} onPress={more} />
       </View>
     </View>
   );

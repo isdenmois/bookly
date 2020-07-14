@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, ScrollView, StyleSheet, ViewStyle, TextStyle } 
 import classnames from 'rn-classnames';
 import { color } from 'types/colors';
 import { getCurrentYear } from 'utils/date';
+import { t } from 'services';
 
 interface Props {
   minYear: number;
@@ -15,7 +16,7 @@ export const YearSelection = memo(({ minYear, year, onChange }: Props) => {
 
   return (
     <ScrollView horizontal style={s.container} contentContainerStyle={s.scroll}>
-      <Text style={s.label}>Год:</Text>
+      <Text style={s.label}>{t('year')}:</Text>
 
       {years.map(y => (
         <TouchableOpacity
@@ -23,7 +24,7 @@ export const YearSelection = memo(({ minYear, year, onChange }: Props) => {
           style={cn('year', y === year && 'selected')}
           onPress={y === year ? null : () => onChange(y)}
         >
-          <Text style={cn('text', y === year && 'textSelected')}>{y || 'Все'}</Text>
+          <Text style={cn('text', y === year && 'textSelected')}>{y || t('all')}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>

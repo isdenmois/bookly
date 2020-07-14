@@ -6,6 +6,7 @@ import { color } from 'types/colors';
 import { BookData } from 'store/book';
 import { Button } from 'components/button';
 import { Rating } from 'components/rating';
+import { t } from 'services';
 
 interface Props {
   openChangeStatus: () => void;
@@ -23,7 +24,7 @@ export function ReadButton(props: Props) {
     return (
       <Button
         testID={props.testID}
-        label='Сейчас читаю'
+        label={t('button.current')}
         icon={<Icon name='clock' size={18} color={color.Secondary} />}
         style={[props.style, s.orange]}
         textStyle={s.textOrange}
@@ -44,7 +45,7 @@ export function ReadButton(props: Props) {
   return (
     <Button
       testID={props.testID}
-      label={status === BOOK_STATUSES.WISH ? 'Хочу прочитать' : 'Добавить'}
+      label={t(status === BOOK_STATUSES.WISH ? 'button.wish' : 'button.add')}
       icon={<Icon name='bookmark' size={18} color={color.Primary} />}
       style={[props.style, s.green]}
       textStyle={s.textGreen}

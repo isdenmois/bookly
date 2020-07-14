@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { api } from 'services';
+import { api, t } from 'services';
 import { Fetcher } from 'components';
 import Book, { BookData } from 'store/book';
 import { BookExtended } from 'types/book-extended';
@@ -22,16 +22,6 @@ interface Props {
   navigation: NavigationStackProp;
 }
 
-const TABS = {
-  MAIN: { key: 'main', title: 'Кратко', component: DetailsTab },
-  CHILDREN: { key: 'children', title: 'Состав', component: ChildrenTab },
-  REVIEWS: { key: 'reviews', title: 'Отзывы', component: ReviewsTab },
-  SIMILAR: { key: 'similar', title: 'Похожие', component: SimilarTab },
-  DETAILS: { key: 'details', title: 'Детали', component: DetailsTab },
-  LIVELIB: { key: 'livelib', title: 'Детали', component: LivelibTab },
-  L_REVIEWS: { key: 'lreviews', title: 'Отзывы', component: LivelibReviewsTab },
-};
-
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
 
 @withNavigationProps()
@@ -49,6 +39,15 @@ export class DetailsScreen extends React.Component<Props> {
   }
 
   tabs = null;
+  TABS = {
+    MAIN: { key: 'main', title: t('details.briefly'), component: DetailsTab },
+    CHILDREN: { key: 'children', title: t('details.content'), component: ChildrenTab },
+    REVIEWS: { key: 'reviews', title: t('details.reviews'), component: ReviewsTab },
+    SIMILAR: { key: 'similar', title: t('details.similar'), component: SimilarTab },
+    DETAILS: { key: 'details', title: t('details.details'), component: DetailsTab },
+    LIVELIB: { key: 'livelib', title: t('details.details'), component: LivelibTab },
+    L_REVIEWS: { key: 'lreviews', title: t('details.reviews'), component: LivelibReviewsTab },
+  };
 
   render() {
     return (
@@ -60,6 +59,7 @@ export class DetailsScreen extends React.Component<Props> {
 
   renderResult = (book: Book & BookExtended) => {
     const isExist = book && !!book.status;
+    const TABS = this.TABS;
 
     if (this.props.extra && !isExist) {
       Object.assign(book, this.props.extra);

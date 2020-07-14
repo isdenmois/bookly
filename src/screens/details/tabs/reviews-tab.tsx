@@ -11,6 +11,7 @@ import { Button, Tag } from 'components';
 import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
+import { t } from 'services';
 
 interface Props {
   book: Book;
@@ -69,7 +70,7 @@ export const AddButton = observer(({ book, navigation, scrollY }: FixedProps) =>
     <Animated.View style={style}>
       {hasRead && (
         <Button
-          label='Добавить'
+          label={t('button.add')}
           onPress={openReviewWriteModal}
           icon={<Icon name='edit' size={18} color={color.PrimaryText} />}
           style={s.button}
@@ -98,9 +99,9 @@ const ReviewsTabComponent = observer((props: Props) => {
     <>
       {type === 'Fantlab' && (
         <View style={s.sortList}>
-          <SelectReviewSort sort='rating' selected={sort} setSort={setSort} title='По рейтингу' />
-          <SelectReviewSort sort='date' selected={sort} setSort={setSort} title='По дате' />
-          <SelectReviewSort sort='mark' selected={sort} setSort={setSort} title='По оценке' />
+          <SelectReviewSort sort='rating' selected={sort} setSort={setSort} title={t('details.by-rating')} />
+          <SelectReviewSort sort='date' selected={sort} setSort={setSort} title={t('details.by-date')} />
+          <SelectReviewSort sort='mark' selected={sort} setSort={setSort} title={t('details.by-mark')} />
         </View>
       )}
 

@@ -86,7 +86,7 @@ export const transition: TabTransition = {
 };
 
 export const ByMonth: StatTab = {
-  header: ['Месяц', 'Книг', 'Дней', 'Оценка'],
+  header: ['stat.month', 'stat.books', 'stat.days', 'stat.mark'],
   columns: ['name', 'count', 'days', 'rating'],
   flexes: [2, 1, 1, 1],
   factory: ByMonthFactory,

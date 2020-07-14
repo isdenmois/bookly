@@ -11,6 +11,7 @@ import Book from 'store/book';
 import { BookItem, Button } from 'components';
 import { EmptyResult } from 'components/fetcher';
 import { BookListFilters } from './book-list-filters';
+import { t } from 'services';
 
 interface Props {
   query: Where[];
@@ -57,7 +58,9 @@ export class BookList extends React.PureComponent<Props> {
     return (
       <>
         <BookListFilters filters={this.props.filters} onChange={this.props.onChange} />
-        <Text style={s.found}>Найдено: {this.props.books.length}</Text>
+        <Text style={s.found}>
+          {t('common.found')}: {this.props.books.length}
+        </Text>
       </>
     );
   }

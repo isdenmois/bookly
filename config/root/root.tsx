@@ -4,6 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { onChanges } from 'store';
 import 'mobx-react-lite/batchingForReactNative';
+import { i18n } from 'services/i18n';
 
 import { session, syncService, navigation } from 'services';
 
@@ -30,8 +31,7 @@ class App extends React.Component<any> {
   constructor(props, context) {
     super(props, context);
 
-    session
-      .loadSession()
+    Promise.all([session.loadSession(), i18n.init()])
       .then(() => this.setState({ isLoaded: true }))
       .then(this.sync);
   }

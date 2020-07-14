@@ -9,6 +9,7 @@ import { Dialog } from 'components';
 
 import { BookSelectHeader } from './components/header';
 import { BookList } from './components/book-list';
+import { t } from 'services';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -30,7 +31,7 @@ export class BookSelectModal extends React.Component<Props, State> {
         <BookList search={search} selected={!!selected && selected.id} onSelect={this.selectBook} />
         {selected && (
           <TouchableOpacity style={[s.button, s.borderRadius]} onPress={this.setBookSelected} testID='DoSelectBook'>
-            <Text style={s.text}>Выбрать</Text>
+            <Text style={s.text}>{t('button.apply')}</Text>
           </TouchableOpacity>
         )}
       </Dialog>

@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import { HeaderRow } from './components/header-row';
 import { ScreenHeader } from 'components';
 import { Row } from './components/row';
-import { session } from 'services';
+import { session, t } from 'services';
 import { Q } from '@nozbe/watermelondb';
 import { database } from 'store';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
@@ -91,7 +91,7 @@ export class StatScreen extends React.Component<Props> {
 
     return (
       <View style={s.container}>
-        <ScreenHeader title='Статистика' />
+        <ScreenHeader title={t('nav.stat')} />
         {isLoading && this.renderSpinner()}
         {!isLoading && (
           <>

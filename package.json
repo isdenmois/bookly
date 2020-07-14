@@ -34,6 +34,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/web": "1.0.0-alpha.9",
     "bbcode-to-react": "0.2.9",
+    "i18next": "19.6.0",
     "lodash": "4.17.19",
     "mobx": "5.15.4",
     "mobx-react": "6.2.2",

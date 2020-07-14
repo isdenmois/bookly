@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, StyleSheet, View, ViewStyle, TextStyle, Platform, Switch } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { api, session } from 'services';
+import { api, session, t } from 'services';
 import { color } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
@@ -12,18 +12,6 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { database } from 'store';
 import { Button, Dialog, DateTimePicker, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
-
-const statusOptions = [
-  { key: BOOK_STATUSES.WISH, title: 'Хочу прочитать' },
-  { key: BOOK_STATUSES.NOW, title: 'Читаю' },
-  { key: BOOK_STATUSES.READ, title: 'Прочитано' },
-];
-
-const statusMap = {
-  [BOOK_STATUSES.WISH]: 'Хочу прочитать',
-  [BOOK_STATUSES.NOW]: 'Сейчас читаю',
-  [BOOK_STATUSES.READ]: 'Прочитано',
-};
 
 const PRIMARY_BOOK_FIELDS = ['id', 'title', 'author', 'authors', 'thumbnail', 'type', 'search', 'paper'];
 
@@ -48,6 +36,17 @@ export class ChangeStatusModal extends React.Component<Props> {
     statusEditable: true,
     dateEditable: false,
   };
+
+  statusMap = {
+    [BOOK_STATUSES.WISH]: t('button.wish'),
+    [BOOK_STATUSES.NOW]: t('button.current'),
+    [BOOK_STATUSES.READ]: t('button.read'),
+  };
+  statusOptions = [
+    { key: BOOK_STATUSES.WISH, title: t('button.wish') },
+    { key: BOOK_STATUSES.NOW, title: t('button.reading') },
+    { key: BOOK_STATUSES.READ, title: t('button.read') },
+  ];
 
   get isFantlab() {
     return !this.props.book.id.startsWith('l_');
@@ -105,10 +104,10 @@ export class ChangeStatusModal extends React.Component<Props> {
             onPress={!statusEditable && this.toggleStatus}
             icon={<Icon name='book-reader' style={s.icon} size={20} color={color.PrimaryText} />}
             border={!statusEditable}
-            value={statusMap[status]}
+            value={this.statusMap[status]}
           >
             {statusEditable && (
-              <Switcher style={s.switcher} options={statusOptions} value={status} onChange={this.setStatus} />
+              <Switcher style={s.switcher} options={this.statusOptions} value={status} onChange={this.setStatus} />
             )}
           </ListItem>
 
@@ -145,7 +144,7 @@ export class ChangeStatusModal extends React.Component<Props> {
               {session.audio && (
                 <ListItem
                   rowStyle={s.row}
-                  label='Аудиокнига'
+                  label={t('common.audiobook')}
                   icon={<Icon name='headphones' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.toggleAudio}
                 >
@@ -156,7 +155,7 @@ export class ChangeStatusModal extends React.Component<Props> {
               {session.withoutTranslation && (
                 <ListItem
                   rowStyle={s.row}
-                  label='На языке оригинала'
+                  label={t('common.original')}
                   icon={<Icon name='language' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.toggleWithoutTranslation}
                 >
@@ -167,7 +166,7 @@ export class ChangeStatusModal extends React.Component<Props> {
               {session.paper && !book.paper && (
                 <ListItem
                   rowStyle={s.row}
-                  label='Есть в бумаге'
+                  label={t('details.has-paper')}
                   icon={<Icon name='book' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.togglePaper}
                 >
@@ -178,7 +177,7 @@ export class ChangeStatusModal extends React.Component<Props> {
               {session.paper && (book.paper || this.state.paper) && (
                 <ListItem
                   rowStyle={s.row}
-                  label='Отдам'
+                  label={t('details.leave')}
                   icon={<Icon name='ban' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.toggleLeave}
                 >
@@ -201,7 +200,7 @@ export class ChangeStatusModal extends React.Component<Props> {
         <Button
           testID='applyButton'
           disabled={this.disabled}
-          label='Сохранить'
+          label={t('button.apply')}
           style={s.button}
           textStyle={s.buttonText}
           onPress={this.save}

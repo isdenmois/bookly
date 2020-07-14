@@ -1,0 +1,100 @@
+{
+  "common": {
+    "original": "In English",
+    "audiobook": "Audiobook",
+    "found": "Found"
+  },
+  "home": {
+    "search": "Search in FantLab",
+    "empty": {
+      "noBooks": "What are you reading?",
+      "choose": "Select the book that you are currently reading",
+      "select": "Select a book"
+    },
+    "challenge": {
+      "anticipate": "Anticipate",
+      "completed": "Completed",
+      "ahead": "Ahead"
+    }
+  },
+  "button": {
+    "apply": "Apply",
+    "current": "Currently Reading",
+    "reading": "Reading",
+    "read": "Finished",
+    "add": "Add",
+    "wish": "Want to read",
+    "update": "Update",
+    "tg-search": "Search in Telegram",
+    "more": "More"
+  },
+  "nav": {
+    "read": "Read books",
+    "wish": "Want to read",
+    "pick": "Pick a book",
+    "stat": "Reading stats",
+    "profile": "Profile"
+  },
+  "headers": {
+    "book-select": "Book selecting"
+  },
+  "details": {
+    "briefly": "Briefly",
+    "reviews": "Reviews",
+    "similar": "Similar",
+    "details": "Details",
+    "content": "Content",
+    "translator": "Translator",
+    "translators": "Translators",
+    "editions": "Editions count",
+    "genre": "Genre",
+    "language": "Language",
+    "original-title": "Original title",
+    "other-titles": "Other titles",
+    "series": "SERIES",
+    "films": "ADAPDATIONS",
+    "read-date": "Date of read",
+    "type": "Form",
+    "average": "Average mark",
+    "find-ll": "Find in LiveLib",
+    "edit": "Edit the book title",
+    "has-paper": "Possess a paper copy",
+    "has-no-paper": "Don't have a paper copy",
+    "leave": "Will give away",
+    "keep": "Keep",
+    "delete": "Delete the book from the collection",
+    "copied": "The title has copied",
+    "should-add": "One should add the book to the collection",
+    "desc": "DESCRIPTION",
+    "by-rating": "Best",
+    "by-date": "Newest",
+    "by-mark": "By mark"
+  },
+  "stat": {
+    "by-month": "Monthly",
+    "by-author": "Authors",
+    "by-mark": "Marks",
+    "by-year": "By year",
+    "by-type": "Other",
+    "month": "Month",
+    "days": "Days",
+    "mark": "Mark",
+    "books": "Books",
+    "type": "Type"
+  },
+  "modal": {
+    "edit": "Edit the title",
+    "enter-title": "Enter the book title",
+    "select-book": "Select the book",
+    "cover": "Cover",
+    "scan-isbn": "ISBN scanning",
+    "enter-review": "Enter your review",
+    "review-added": "The review has added",
+    "review-updated": "The review has updated",
+    "filters": "Filters",
+    "title": "Title"
+  },
+  "author": "Author",
+  "year": "Year",
+  "all": "All"
+}

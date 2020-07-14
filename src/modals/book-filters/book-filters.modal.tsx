@@ -16,6 +16,7 @@ import { BookTitleFilter } from './components/book-title-fitler';
 import { BookIsLiveLibFilter } from './components/book-is-livelib-filter';
 import { BookPaperFilter } from './components/book-paper-filter';
 import { BookFilters } from './book-filters.service';
+import { t } from 'services';
 
 const FILTER_COMPONENTS_MAP = {
   title: BookTitleFilter,
@@ -52,7 +53,7 @@ export class BookFiltersModal extends React.Component<Props> {
     const changed = this.service.changed;
 
     return (
-      <Dialog style={s.modalStyle} title='Фильтры' onApply={changed && this.save}>
+      <Dialog style={s.modalStyle} title={t('modal.filters')} onApply={changed && this.save}>
         <ScrollView style={s.scroll} contentContainerStyle={s.filters}>
           {!!sortFields && <BookListSort fields={sortFields} value={this.service.sort} onChange={this.setSort} />}
 
@@ -61,7 +62,7 @@ export class BookFiltersModal extends React.Component<Props> {
 
         {changed && (
           <View style={s.buttonRow}>
-            <Button label='Применить' onPress={this.save} />
+            <Button label={t('button.apply')} onPress={this.save} />
           </View>
         )}
       </Dialog>

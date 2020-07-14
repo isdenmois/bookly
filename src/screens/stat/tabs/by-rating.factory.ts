@@ -36,7 +36,7 @@ export const transition: TabTransition = {
 };
 
 export const ByRating: StatTab = {
-  header: ['Оценка', 'Книг'],
+  header: ['stat.mark', 'stat.books'],
   columns: ['rating', 'count'],
   factory: ByRatingFactory,
   flexes: [1, 2],

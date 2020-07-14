@@ -53,7 +53,7 @@ export const transition: TabTransition = {
 };
 
 export const ByAuthor: StatTab = {
-  header: ['Автор', 'Книг', 'Оценка'],
+  header: ['author', 'stat.books', 'stat.mark'],
   columns: ['id', 'count', 'rating'],
   flexes: [2, 1, 1],
   factory: ByAuthorFactory,

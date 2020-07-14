@@ -14,6 +14,7 @@ import {
 import { Model } from '@nozbe/watermelondb';
 import { color } from 'types/colors';
 import { database } from 'store';
+import { t } from 'services';
 
 interface Props {
   description: string;
@@ -44,7 +45,7 @@ const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export const BookDescriptionLine = (props: Props) => (
   <View style={s.descriptionRow}>
-    <Text style={s.headerTitle}>ОПИСАНИЕ</Text>
+    <Text style={s.headerTitle}>{t('details.desc')}</Text>
     <Text style={s.value}>{props.description}</Text>
   </View>
 );

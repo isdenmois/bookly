@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
 import { color } from 'types/colors';
 import { SearchBar, TouchIcon } from 'components';
+import { t } from 'services';
 
 interface Props {
   search: string;
@@ -31,7 +32,7 @@ export class BookSelectHeader extends React.Component<Props, State> {
 
   render() {
     const { opened, value, search } = this.state;
-    const title = search || 'Выбрать книгу';
+    const title = search || t('modal.select-book');
 
     return (
       <View style={s.container}>

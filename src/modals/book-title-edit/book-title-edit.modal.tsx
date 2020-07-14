@@ -8,6 +8,7 @@ import Book from 'store/book';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { BookExtended } from 'types/book-extended';
 import { color } from 'types/colors';
+import { t } from 'services';
 
 interface Props {
   book: Book & BookExtended;
@@ -19,18 +20,18 @@ const TITLE_SEPARATOR = /\s*;\s*/g;
 export const BookTitleEditModal = withNavigationProps()(({ book, navigation }: Props) => {
   const [title, setTitle] = useState(book.title);
   const update = useCallback(() => updateTitle(navigation, book, title), [title]);
-  const titles: string[] = useMemo(() => getTitles(book.otherTitles, book.title), []);
+  const titles: string[] = useMemo(() => getTitles(book.otherTitles, book.title, book.originalTitle), []);
   const enabled = title && title.trim() !== book.title;
   const onPress = enabled ? update : null;
   const isLiveLib = book.id.startsWith('l_');
 
   return (
-    <Dialog style={s.dialog} title='Редактирование' onApply={onPress}>
+    <Dialog style={s.dialog} title={t('modal.edit')} onApply={onPress}>
       <TextInput
         style={s.input}
         value={title}
         returnKeyType='done'
-        placeholder='Введите название книги'
+        placeholder={t('modal.enter-title')}
         onChangeText={setTitle}
         onSubmitEditing={onPress}
       />
@@ -46,7 +47,7 @@ export const BookTitleEditModal = withNavigationProps()(({ book, navigation }: P
         </ScrollView>
       )}
 
-      <Button style={s.button} label='Сохранить' disabled={!enabled} onPress={onPress} />
+      <Button style={s.button} label={t('button.apply')} disabled={!enabled} onPress={onPress} />
     </Dialog>
   );
 });
@@ -58,8 +59,12 @@ function updateTitle(navigation: NavigationStackProp, book: Book, title: string)
   book.setData({ title, search });
 }
 
-function getTitles(otherTitles: string, title: string) {
+function getTitles(otherTitles: string, title: string, originalTitle: string) {
   const allTitles = [title].concat((otherTitles || '').split(TITLE_SEPARATOR));
+
+  if (originalTitle) {
+    allTitles.unshift(originalTitle);
+  }
 
   return _.uniq(allTitles);
 }

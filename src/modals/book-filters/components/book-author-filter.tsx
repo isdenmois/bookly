@@ -9,6 +9,7 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { color } from 'types/colors';
 import Author from 'store/author';
 import { database } from 'store';
+import { t } from 'services';
 import { EditableListItem } from './editable-list-item';
 import { BookFilters } from '../book-filters.service';
 
@@ -51,7 +52,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
 
     return (
       <EditableListItem
-        title='Автор'
+        title={t('author')}
         fields={this.sortAuthors(authors)}
         labelKey='name'
         value={author?.id}
