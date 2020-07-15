@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-web/dist/exports/Image/index.js b/node_modules/react-native-web/dist/exports/Image/index.js
+index 2e0a1b3..5713869 100644
+--- a/node_modules/react-native-web/dist/exports/Image/index.js
++++ b/node_modules/react-native-web/dist/exports/Image/index.js
+@@ -270,7 +270,7 @@ var Image = forwardRef(function (props, ref) {
+         updateState(LOADED);
+ 
+         if (onLoad) {
+-          onLoad();
++          onLoad({nativeEvent: {width: hiddenImageRef.current.naturalWidth, height: hiddenImageRef.current.naturalHeight}});
+         }
+ 
+         if (onLoadEnd) {
