@@ -1,5 +1,5 @@
 import React, { ReactChild, ReactNode, useCallback } from 'react';
-import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle } from 'react-native';
+import { Text, View, StyleSheet, TouchableWithoutFeedback, TextStyle, ViewStyle, Platform } from 'react-native';
 import { color } from 'types/colors';
 import { navigation } from 'services';
 import { TouchIcon } from 'components/touch-icon';
@@ -99,7 +99,7 @@ const s = StyleSheet.create({
   content: {
     flexDirection: 'column',
     alignItems: 'stretch',
-    maxHeight: '100%',
+    maxHeight: Platform.OS === 'web' ? '80vh' : '100%',
   } as ViewStyle,
   noApplyIcon: {
     width: 24,
