@@ -2,13 +2,16 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { ScrollView, View, StyleSheet, ViewStyle } from 'react-native';
 import { color } from 'types/colors';
 
-const WIDTH = 10;
+const BUBLE_SIZE = 10;
 
-export function Carousel({ children }) {
+interface Props {
+  children: any;
+  width?: number;
+}
+
+export function Carousel({ children, width }: Props) {
   const [offset, setOffset] = useState(0);
-  const [width, setWidth] = useState<string | number>('100%');
   const style: ViewStyle = useMemo(() => ({ width, overflow: 'hidden' }), [width]);
-  const onLayout = useCallback(e => setWidth(e.nativeEvent.layout.width), []);
   const onScroll = useCallback(e => setOffset(e.nativeEvent.contentOffset.x), []);
 
   if (children?.length < 2) {
@@ -16,7 +19,7 @@ export function Carousel({ children }) {
   }
 
   return (
-    <View onLayout={onLayout}>
+    <View>
       <ScrollView
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={onScroll}
@@ -53,16 +56,16 @@ const s = StyleSheet.create({
     marginTop: 5,
   } as ViewStyle,
   empty: {
-    width: WIDTH,
-    height: WIDTH,
+    width: BUBLE_SIZE,
+    height: BUBLE_SIZE,
     backgroundColor: color.Border,
     borderRadius: 15,
     alignSelf: 'center',
     marginLeft: 1,
   } as ViewStyle,
   filled: {
-    width: WIDTH,
-    height: WIDTH,
+    width: BUBLE_SIZE,
+    height: BUBLE_SIZE,
     backgroundColor: color.Primary,
     borderRadius: 15,
     alignSelf: 'center',

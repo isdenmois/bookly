@@ -3,6 +3,7 @@ import { ActivityIndicator, StatusBar, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import 'mobx-react-lite/batchingForReactDom';
 import { onChanges } from 'store';
+import { i18n } from 'services/i18n';
 
 import { session, syncService, navigation } from 'services';
 import { create } from '../router';
@@ -28,8 +29,7 @@ class App extends React.Component<any> {
   constructor(props, context) {
     super(props, context);
 
-    session
-      .loadSession()
+    Promise.all([session.loadSession(), i18n.init()])
       .then(() => this.setState({ isLoaded: true }))
       .then(this.sync);
   }
