@@ -5,7 +5,7 @@ import Book from 'store/book';
 import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { color } from 'types/colors';
 import { navigation, t } from 'services';
 import { database } from 'store';

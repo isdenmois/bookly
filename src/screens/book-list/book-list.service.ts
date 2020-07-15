@@ -59,8 +59,10 @@ const WHERE_FILTERS = {
 };
 
 export function createQueryState(filters: Partial<BookFilters>, sort: BookSort) {
+  const and = buildQueries(WHERE_FILTERS, filters);
+
   return {
-    query: [...buildQueries(ON_FITLERS, filters), Q.and(...buildQueries(WHERE_FILTERS, filters))] as Where[],
+    query: [...buildQueries(ON_FITLERS, filters), and.length > 1 ? Q.and(...and) : and[0]] as Where[],
     sort,
     filters,
   };
