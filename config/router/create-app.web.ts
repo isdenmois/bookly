@@ -12,12 +12,11 @@ export const createApp = input => createBrowserApp(input, { history: 'hash' });
 export function createStackPersistNavigator(stack, options) {
   const nav = createStackNavigator(stack, options);
   const { getPathAndParamsForState, getActionForPathAndParams, getStateForAction } = nav.router;
+  const indices = Object.keys(stack);
 
   nav.router.getPathAndParamsForState = function (state) {
-    if (session.persistState && !state.isTransitioning && !_.isEqual(initState, state)) {
-      localStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state));
-      localStorage.setItem(PERSISTENCE_TIME, getMinute().toString());
-      initState = state;
+    if (session.persistState && !state.isTransitioning) {
+      saveState(state, indices);
     }
 
     return getPathAndParamsForState(state);
@@ -28,23 +27,83 @@ export function createStackPersistNavigator(stack, options) {
   };
 
   nav.router.getStateForAction = function (action, state) {
-    if (session.persistState && !state) {
-      try {
-        const startTime = localStorage.getItem(PERSISTENCE_TIME);
-        const duration = getMinute() - +startTime;
-
-        if (duration && duration < SESSION_EXPIRE) {
-          initState = JSON.parse(localStorage.getItem(PERSISTENCE_KEY));
-
-          return initState;
-        }
-      } catch (e) {}
+    if (session.persistState && !state && (initState = getState(indices))) {
+      return initState;
     }
 
     return getStateForAction(action, state);
   };
 
   return nav;
+}
+
+function saveState(state, indices) {
+  state = _.map(state.routes?.slice(1), r => pickRoute(r, indices));
+
+  if (state.length < 1 && localStorage.getItem(PERSISTENCE_TIME)) {
+    localStorage.removeItem(PERSISTENCE_KEY);
+    localStorage.removeItem(PERSISTENCE_TIME);
+    initState = null;
+  } else if (!_.isEqual(initState, state)) {
+    localStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state));
+    localStorage.setItem(PERSISTENCE_TIME, getMinute().toString());
+    initState = state;
+  }
+}
+
+function getState(indices) {
+  const startTime = localStorage.getItem(PERSISTENCE_TIME);
+  const duration = getMinute() - +startTime;
+
+  if (startTime && duration < SESSION_EXPIRE) {
+    try {
+      const home = indices.indexOf('Home');
+      const routes = [home]
+        .concat(JSON.parse(localStorage.getItem(PERSISTENCE_KEY)))
+        .map((r, i) => restoreRoute(r, i, indices));
+      const state = {
+        index: routes.length - 1,
+        isTransitioning: false,
+        routeName: 'MainStack',
+        key: 'MainStack-0',
+        routes,
+      };
+
+      return state;
+    } catch (e) {}
+  }
+}
+
+function pickRoute(route, indices) {
+  route = omitNil(route);
+  route.key = indices.indexOf(route.routeName);
+
+  if (Object.keys(route).length === 2) {
+    return route.key;
+  }
+
+  if (route.params) {
+    route.params = omitNil(route.params);
+  }
+
+  return _.omit(route, 'routeName');
+}
+
+function restoreRoute(route, i, indices) {
+  if (_.isNumber(route)) {
+    route = { key: route };
+  }
+
+  const routeName = indices[route.key];
+
+  route.key = `${routeName}-${i}`;
+  route.routeName = routeName;
+
+  return route;
+}
+
+function omitNil(obj) {
+  return _.omitBy(obj, _.isNil);
 }
 
 function getMinute() {
