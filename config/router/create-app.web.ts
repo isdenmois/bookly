@@ -4,6 +4,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { session } from 'services/session';
 
 const PERSISTENCE_KEY = 'REACT_DEV_NAVIGATION';
+const PERSISTENCE_TIME = `${PERSISTENCE_KEY}_TIME`;
+const SESSION_EXPIRE = 30; // Minutes
 let initState = null;
 
 export const createApp = input => createBrowserApp(input, { history: 'hash' });
@@ -14,6 +16,7 @@ export function createStackPersistNavigator(stack, options) {
   nav.router.getPathAndParamsForState = function (state) {
     if (session.persistState && !state.isTransitioning && !_.isEqual(initState, state)) {
       localStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state));
+      localStorage.setItem(PERSISTENCE_TIME, getMinute().toString());
       initState = state;
     }
 
@@ -27,9 +30,14 @@ export function createStackPersistNavigator(stack, options) {
   nav.router.getStateForAction = function (action, state) {
     if (session.persistState && !state) {
       try {
-        initState = JSON.parse(localStorage.getItem(PERSISTENCE_KEY));
+        const startTime = localStorage.getItem(PERSISTENCE_TIME);
+        const duration = getMinute() - +startTime;
 
-        return initState;
+        if (duration && duration < SESSION_EXPIRE) {
+          initState = JSON.parse(localStorage.getItem(PERSISTENCE_KEY));
+
+          return initState;
+        }
       } catch (e) {}
     }
 
@@ -37,4 +45,8 @@ export function createStackPersistNavigator(stack, options) {
   };
 
   return nav;
+}
+
+function getMinute() {
+  return Math.round(Date.now() / 1000 / 60);
 }
