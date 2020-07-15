@@ -26,6 +26,8 @@ const WHERE_FILTERS = {
     return Q.where('date', dateFilter);
   },
   date({ from, to }: Interval<Date>) {
+    from = from instanceof Date ? from : new Date(from);
+    to = to instanceof Date ? to : new Date(to);
     const dateFilter = Q.between(from.getTime() - HALF_DAY, to.getTime() + HALF_DAY);
 
     return Q.where('date', dateFilter);
