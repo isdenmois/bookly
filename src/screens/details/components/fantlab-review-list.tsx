@@ -8,6 +8,7 @@ interface Props {
   bookId: string;
   sort: string;
   type: string;
+  mode: string;
 }
 
 export class FantlabReviewList extends React.Component<Props> {
@@ -22,6 +23,6 @@ export class FantlabReviewList extends React.Component<Props> {
   }
 
   renderReview = (review: IRemoteReview) => {
-    return <RemoteReview key={review.id} review={review} />;
+    return <RemoteReview key={review.id} review={review} mode={this.props.mode} />;
   };
 }

@@ -1,15 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
+import { Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import Book from 'store/book';
 import { Dialog } from 'components';
 
 import { BookSelectHeader } from './components/header';
 import { BookList } from './components/book-list';
 import { t } from 'services';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -21,10 +22,14 @@ interface State {
 }
 
 export class BookSelectModal extends React.Component<Props, State> {
+  static contextType = ColorSchemeContext;
+
   state: State = { search: '', selected: null };
 
   render() {
     const { search, selected } = this.state;
+    const s = ds[this.context];
+
     return (
       <Dialog testID='BookSelectModal' modalStyle={s.borderRadius}>
         <BookSelectHeader search={this.state.search} onChange={this.setSearch} />
@@ -52,7 +57,7 @@ export class BookSelectModal extends React.Component<Props, State> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   borderRadius: {
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -60,10 +65,10 @@ const s = StyleSheet.create({
   } as ViewStyle,
   button: {
     paddingVertical: 20,
-    backgroundColor: color.Primary,
+    backgroundColor: dynamicColor.Primary,
   } as ViewStyle,
   text: {
-    color: color.PrimaryTextInverse,
+    color: dynamicColor.PrimaryTextInverse,
     fontSize: 18,
     textAlign: 'center',
     fontFamily: 'sans-serif-medium',

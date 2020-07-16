@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { color as light, dark } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
+import { DynamicStyleSheet, DynamicValue, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   value: string;
@@ -18,13 +19,17 @@ interface Props {
 }
 
 export class SearchBar extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   input: TextInput;
 
   render() {
     const { style, value, actionIcon, onChange, onBack, onAction } = this.props;
+    const ds = dynamicStyle[this.context];
+    const color = this.context === 'dark' ? dark : light;
 
     return (
-      <View style={[s.container, style]}>
+      <View style={style ? [ds.container, style] : ds.container}>
         {onBack && (
           <TouchIcon
             padding={5}
@@ -96,13 +101,6 @@ export class SearchBar extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
-  container: {
-    height: 40,
-    backgroundColor: color.SearchBackground,
-    borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  } as ViewStyle,
   touchIcon: {
     paddingVertical: 5,
   } as ViewStyle,
@@ -122,4 +120,14 @@ const s = StyleSheet.create({
     fontSize: 16,
     padding: 0,
   } as TextStyle,
+});
+
+const dynamicStyle = new DynamicStyleSheet({
+  container: {
+    height: 40,
+    backgroundColor: new DynamicValue(light.SearchBackground, dark.SearchBackground),
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
 });

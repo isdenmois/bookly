@@ -1,17 +1,18 @@
 import _ from 'lodash';
 import React from 'react';
-import { Text, StyleSheet, View, ViewStyle, TextStyle, Platform, Switch } from 'react-native';
+import { Text, View, ViewStyle, TextStyle, Platform } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { api, session, t } from 'services';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import Book, { BookData, createBook } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { database } from 'store';
-import { Button, Dialog, DateTimePicker, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
+import { Button, Checkbox, Dialog, DateTimePicker, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 const PRIMARY_BOOK_FIELDS = ['id', 'title', 'author', 'authors', 'thumbnail', 'type', 'search', 'paper'];
 
@@ -25,6 +26,8 @@ let defaultDate: Date;
 
 @withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   state = {
     date: this.defaultDate,
     rating: this.props.book.rating || 0,
@@ -88,6 +91,8 @@ export class ChangeStatusModal extends React.Component<Props> {
     const { book } = this.props;
     const { status, statusEditable } = this.state;
     const isWeb = Platform.OS === 'web';
+    const s = ds[this.context];
+    const color = getColor(this.context);
 
     return (
       <Dialog testID='changeStatusModal' style={s.dialog}>
@@ -148,7 +153,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                   icon={<Icon name='headphones' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.toggleAudio}
                 >
-                  <Switch value={this.state.audio} onValueChange={this.toggleAudio} />
+                  <Checkbox value={this.state.audio} onValueChange={this.toggleAudio} />
                 </ListItem>
               )}
 
@@ -159,7 +164,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                   icon={<Icon name='language' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.toggleWithoutTranslation}
                 >
-                  <Switch value={this.state.withoutTranslation} onValueChange={this.toggleWithoutTranslation} />
+                  <Checkbox value={this.state.withoutTranslation} onValueChange={this.toggleWithoutTranslation} />
                 </ListItem>
               )}
 
@@ -170,7 +175,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                   icon={<Icon name='book' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.togglePaper}
                 >
-                  <Switch value={this.state.paper} onValueChange={this.togglePaper} />
+                  <Checkbox value={this.state.paper} onValueChange={this.togglePaper} />
                 </ListItem>
               )}
 
@@ -181,7 +186,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                   icon={<Icon name='ban' style={s.icon} size={20} color={color.PrimaryText} />}
                   onPress={this.toggleLeave}
                 >
-                  <Switch value={this.state.leave} onValueChange={this.toggleLeave} />
+                  <Checkbox value={this.state.leave} onValueChange={this.toggleLeave} />
                 </ListItem>
               )}
             </>
@@ -269,7 +274,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   dialog: {
     paddingHorizontal: 25,
     paddingVertical: 15,
@@ -279,7 +284,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   title: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 20,
     fontFamily: 'sans-serif-medium',
     alignSelf: 'center',

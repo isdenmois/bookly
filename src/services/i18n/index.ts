@@ -3,10 +3,10 @@ import i18next from 'i18next';
 export const i18n = {
   init: () => {
     return i18next.init({
-      lng: 'en',
+      lng: 'ru',
       debug: true,
       resources: {
-        en: { translation: require('./en.json') },
+        // en: { translation: require('./en.json') },
         ru: { translation: require('./ru.json') },
       },
     });

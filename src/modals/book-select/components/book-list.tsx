@@ -7,10 +7,11 @@ import { FlatList, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } fr
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { database } from 'store';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import Book from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ListItem, Thumbnail } from 'components';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   search: string;
@@ -25,9 +26,15 @@ const withBooks: Function = withObservables(['search'], ({ search }: Props) => (
 
 @withBooks
 export class BookList extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+  color: string;
+
   sortBooks = sortBy(prop('title'));
 
   render() {
+    const s = ds[this.context];
+    this.color = getColor(this.context).Primary;
+
     if (isFalsy(this.props.books)) {
       return <Text style={s.emptyText}>Нет книг</Text>;
     }
@@ -38,6 +45,7 @@ export class BookList extends React.Component<Props> {
   }
 
   renderBookItem = ({ item: book, index }) => {
+    const s = ds[this.context];
     const selected = this.props.selected;
     const lastIndex = this.props.books.length;
 
@@ -45,9 +53,9 @@ export class BookList extends React.Component<Props> {
       <ListItem
         key={book.id}
         style={s.listItem}
-        icon={this.thumbnail(book)}
+        icon={this.thumbnail(book, s)}
         last={index === lastIndex}
-        selected={book.id === selected && <Icon name='check' size={18} color={color.Primary} />}
+        selected={book.id === selected && <Icon name='check' size={18} color={this.color} />}
         testID={`BookToSelect${book.id}`}
         onPress={() => this.props.onSelect(book)}
       >
@@ -60,11 +68,11 @@ export class BookList extends React.Component<Props> {
   };
 
   thumbnail(book) {
-    return <Thumbnail style={s.thumbnail} width={60} height={60} title={book.title} url={book.thumbnail} cache />;
+    return <Thumbnail style={ds.dark.thumbnail} width={60} height={60} title={book.title} url={book.thumbnail} cache />;
   }
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   scroll: {
     maxHeight: 400,
   } as ViewStyle,
@@ -79,11 +87,11 @@ const s = StyleSheet.create({
   } as ImageStyle,
   title: {
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontFamily: 'sans-serif-medium',
   } as TextStyle,
   author: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 16,
     marginTop: 5,
     fontFamily: 'sans-serif-light',
@@ -92,7 +100,7 @@ const s = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     paddingVertical: 20,
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 14,
   } as TextStyle,
 });

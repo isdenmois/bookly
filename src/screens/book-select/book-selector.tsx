@@ -6,9 +6,10 @@ import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { navigation, t } from 'services';
 import { database } from 'store';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 
 interface Props {
   query: Where[];
@@ -23,6 +24,7 @@ function BookSelectorComponent({ books, openFilters }: Props) {
   const more = useCallback(() => setIndex(index < list.length - 1 ? index + 1 : 0), [index, list]);
   const openTelegram = useCallback(() => Linking.openURL(`tg://share?text=${list[index].title}`), [list, index]);
   const openBook = useCallback(() => navigation.push('Details', { bookId: list[index].id }), [list, index]);
+  const s = useDynamicValue(ds);
 
   if (!list || !list[index]) {
     return (
@@ -68,7 +70,7 @@ function BookSelectorComponent({ books, openFilters }: Props) {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -86,13 +88,13 @@ const s = StyleSheet.create({
   } as ImageStyle,
   title: {
     fontSize: 20,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontFamily: 'sans-serif-medium',
     marginTop: 20,
   } as TextStyle,
   author: {
     fontSize: 20,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontFamily: 'sans-serif-light',
     marginTop: 10,
   } as TextStyle,
@@ -106,7 +108,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   empty: {
     fontSize: 24,
-    color: color.Empty,
+    color: dynamicColor.Empty,
   } as TextStyle,
 });
 

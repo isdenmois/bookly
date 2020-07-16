@@ -5,7 +5,7 @@ import { Text, View, ActivityIndicator, StyleSheet, ViewStyle, ScrollView } from
 import { action, computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { HeaderRow } from './components/header-row';
-import { ScreenHeader } from 'components';
+import { ScreenHeader, Screen } from 'components';
 import { Row } from './components/row';
 import { session, t } from 'services';
 import { Q } from '@nozbe/watermelondb';
@@ -90,7 +90,7 @@ export class StatScreen extends React.Component<Props> {
     const group = STAT_GROUPS[type];
 
     return (
-      <View style={s.container}>
+      <Screen>
         <ScreenHeader title={t('nav.stat')} />
         {isLoading && this.renderSpinner()}
         {!isLoading && (
@@ -106,7 +106,7 @@ export class StatScreen extends React.Component<Props> {
             </ScrollView>
           </>
         )}
-      </View>
+      </Screen>
     );
   }
 

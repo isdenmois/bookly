@@ -3,8 +3,9 @@ import { Subscription } from 'rxjs';
 import _ from 'lodash';
 import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle, FlatList, SectionList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
-import { color } from 'types/colors';
+import { color, dynamicColor } from 'types/colors';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 import { database } from 'store';
 import { TextXL } from './text';
 import { Button } from './button';
@@ -28,6 +29,7 @@ interface GroupBy {
   field: string;
   title: string;
   sort: any;
+  mode: string;
 }
 
 type Props<P = {}> = {
@@ -179,8 +181,8 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
     const renderItem = (this.renderItem = this.renderItem || (row => this.props.children(row.item, row.index)));
 
     if (this.props.groupBy) {
-      const { field, sort, title } = this.props.groupBy;
-      list = _.map(_.groupBy(list, field), (data, id) => ({ id, data, title: data[0][title] }));
+      const { field, sort, title, mode } = this.props.groupBy;
+      list = _.map(_.groupBy(list, field), (data, id) => ({ id, data, title: data[0][title], mode }));
       list = _.orderBy(list, sort);
 
       return (
@@ -279,8 +281,8 @@ function getIds(data) {
   return [data.id];
 }
 
-function renderSectionHeader({ section: { title } }: any): React.ReactElement {
-  return <Text style={s.section}>{capitalize(title)}</Text>;
+function renderSectionHeader({ section: { title, mode } }: any): React.ReactElement {
+  return <Text style={ds[mode].section}>{capitalize(title)}</Text>;
 }
 
 function mapData(data, it) {
@@ -367,9 +369,13 @@ const s = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 15,
   },
+});
+
+const ds = new DynamicStyleSheet({
   section: {
     paddingHorizontal: 10,
     marginBottom: 10,
     fontSize: 18,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
 });

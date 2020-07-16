@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { color } from 'types/colors';
 import { syncService } from 'services';
+import { Screen } from 'components/screen';
 import { HomeHeader } from './components/header';
 import { CurrentBook } from './components/current-book';
 import { BookChallenge } from './components/book-challenge';
@@ -21,15 +21,17 @@ export class HomeScreen extends React.Component<Props, State> {
 
   render() {
     return (
-      <ScrollView testID='homeScreen' contentContainerStyle={s.container} refreshControl={this.renderRefresh()}>
-        <HomeHeader />
+      <Screen>
+        <ScrollView testID='homeScreen' contentContainerStyle={s.container} refreshControl={this.renderRefresh()}>
+          <HomeHeader />
 
-        <CurrentBook />
+          <CurrentBook />
 
-        <BookChallenge />
+          <BookChallenge />
 
-        <NavigationLinks />
-      </ScrollView>
+          <NavigationLinks />
+        </ScrollView>
+      </Screen>
     );
   }
 
@@ -50,7 +52,6 @@ const s = StyleSheet.create({
   container: {
     paddingTop: 10,
     paddingHorizontal: 24,
-    backgroundColor: color.Background,
     flex: 1,
   } as ViewStyle,
 });

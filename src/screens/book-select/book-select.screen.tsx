@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { ScreenHeader } from 'components';
+import { ScreenHeader, Screen } from 'components';
 import { color } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
@@ -32,7 +32,7 @@ export class BookSelectScreen extends Component<Props> {
 
   render() {
     return (
-      <View style={s.container}>
+      <Screen>
         <ScreenHeader title={t('headers.book-select')} right='sliders-h' onRight={this.openFilters} />
 
         <View style={s.filters}>
@@ -40,7 +40,7 @@ export class BookSelectScreen extends Component<Props> {
         </View>
 
         <BookSelector query={this.state.query} openFilters={this.openFilters} />
-      </View>
+      </Screen>
     );
   }
 
@@ -55,10 +55,6 @@ export class BookSelectScreen extends Component<Props> {
 }
 
 const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: color.Background,
-  } as ViewStyle,
   filters: {
     marginTop: 20,
     paddingHorizontal: 20,

@@ -1,10 +1,11 @@
 import React from 'react';
-import { ScrollView, StyleSheet, ViewStyle, View, TouchableOpacity } from 'react-native';
+import { ScrollView, ViewStyle, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import { api } from 'services';
 import { FantlabThumnail } from 'services/api/fantlab/thumbnails';
 import { Fetcher, Thumbnail } from 'components';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   bookId: string;
@@ -15,7 +16,11 @@ interface Props {
 const OBSERVE_FIELDS = ['bookId'];
 
 export class ThumbnailList extends React.PureComponent<Props> {
+  static contextType = ColorSchemeContext;
+
   render() {
+    const s = ds[this.context];
+
     return (
       <ScrollView style={s.container} contentContainerStyle={s.content} horizontal>
         <Fetcher
@@ -31,6 +36,8 @@ export class ThumbnailList extends React.PureComponent<Props> {
   }
 
   renderThumbnail = (thumbnail: FantlabThumnail) => {
+    const s = ds[this.context];
+    const color = getColor(this.context);
     const isSelected = thumbnail.url === this.props.selected;
     const onPress: any = isSelected ? null : () => this.props.onSelect(thumbnail.url);
 
@@ -47,9 +54,9 @@ export class ThumbnailList extends React.PureComponent<Props> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
-    borderTopColor: color.Border,
+    borderTopColor: dynamicColor.Border,
     borderTopWidth: 0.5,
     marginTop: 25,
   } as ViewStyle,
@@ -64,7 +71,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   check: {
     borderRadius: 50,
-    backgroundColor: color.Primary,
+    backgroundColor: dynamicColor.Primary,
     position: 'absolute',
     padding: 4,
     top: 5,

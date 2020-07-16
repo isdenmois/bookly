@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { color } from 'types/colors';
 import { api } from 'services';
-import { Fetcher, ScreenHeader } from 'components';
+import { Fetcher, ScreenHeader, Screen } from 'components';
 import { withNavigationProps } from 'utils/with-navigation-props';
+import { ColorSchemeContext } from 'react-native-dynamic';
 import { withScroll } from 'utils/scroll-to-top';
 import { EditionTranslators } from 'types/book-extended';
 import { Edition } from 'services/api/fantlab/editions';
@@ -18,15 +18,22 @@ interface Props {
 @withNavigationProps()
 @withScroll
 export class EditionsListScreen extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   state = { sort: '-year' };
   e = this.props.editionIds.join(',');
 
   render() {
     const count = this.props.editionIds.length;
+    groupBy.mode = this.context;
+
     return (
-      <View style={s.container}>
-        <ScreenHeader title={'Список изданий'} />
-        {count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}
+      <Screen>
+        <View style={s.container}>
+          <ScreenHeader title={'Список изданий'} />
+          {count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}
+        </View>
+
         <Fetcher
           contentContainerStyle={s.scroll}
           api={api.editions}
@@ -37,14 +44,21 @@ export class EditionsListScreen extends React.Component<Props> {
         >
           {this.renderEditionsList}
         </Fetcher>
-      </View>
+      </Screen>
     );
   }
 
   setSort = sort => this.setState({ sort });
 
   renderEditionsList = (edition: Edition) => {
-    return <EditionCard key={edition.id} edition={edition} translators={this.props.translators[edition.id]} />;
+    return (
+      <EditionCard
+        key={edition.id}
+        edition={edition}
+        translators={this.props.translators[edition.id]}
+        mode={this.context}
+      />
+    );
   };
 }
 
@@ -52,12 +66,11 @@ const groupBy = {
   field: 'lang_code',
   title: 'lang',
   sort: [e => (e.id === 'ru' ? 0 : 1), 'title'],
+  mode: null,
 };
 
 const s = StyleSheet.create({
   container: {
-    backgroundColor: color.Background,
-    flex: 1,
     marginHorizontal: 10,
   } as ViewStyle,
   scroll: {

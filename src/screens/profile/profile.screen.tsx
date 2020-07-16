@@ -1,17 +1,18 @@
 import React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { StyleSheet, View, ViewStyle, TextStyle, Platform } from 'react-native';
+import { StyleSheet, View, ViewStyle, TextStyle, Platform, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from 'types/colors';
 import { session } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { database } from 'store';
 import { saveSettings } from 'services/settings-sync';
-import { Button, ScreenHeader, ListItem } from 'components';
+import { Button, ScreenHeader, ListItem, Screen } from 'components';
 import { SessionEditor } from './components/session-param-editor';
 import { SessionParamToggler } from './components/session-param-toggler';
 import { BookListSort } from './components/book-list-sort';
 import { RemoveDeleted } from './components/remove-deleted';
+import { ThemeSelector } from './components/theme-selector';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -19,16 +20,13 @@ interface Props {
 
 export class ProfileScreen extends React.Component<Props> {
   render() {
-    const v8runtime = (global as any)._v8runtime;
-    const isHermes = (global as any).HermesInternal;
     const isWeb = Platform.OS === 'web';
-    const engine = v8runtime ? `V8 ${v8runtime().version}` : isHermes ? 'Hermes' : false;
 
     return (
-      <View style={s.container}>
+      <Screen>
         <ScreenHeader title={session.userId} />
 
-        <View style={s.content}>
+        <ScrollView contentContainerStyle={s.content}>
           <SessionEditor title='Хочу читать книг в год' prop='totalBooks' />
           <SessionEditor title='Вести статистику с' prop='minYear' />
           <SessionParamToggler title='Синхронизировать с Fantlab' param='withFantlab' />
@@ -38,12 +36,12 @@ export class ProfileScreen extends React.Component<Props> {
           <SessionParamToggler title='Типы книг: бумага' param='paper' />
           <SessionParamToggler title='Топ книг' param='topRate' />
           {isWeb && <SessionParamToggler title='Сохранять состояние приложения' param='persistState' />}
+          <ThemeSelector />
           <BookListSort />
           <RemoveDeleted />
 
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
-          {engine && <ListItem label='Engine' value={engine} />}
-        </View>
+        </ScrollView>
 
         <View style={s.buttonContainer}>
           <Button
@@ -54,7 +52,7 @@ export class ProfileScreen extends React.Component<Props> {
             textStyle={s.buttonText}
           />
         </View>
-      </View>
+      </Screen>
     );
   }
 
@@ -70,12 +68,9 @@ export class ProfileScreen extends React.Component<Props> {
 }
 
 const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: color.Background,
-  } as ViewStyle,
   content: {
     paddingHorizontal: 15,
+    paddingBottom: 70,
   } as ViewStyle,
   buttonContainer: {
     position: 'absolute',

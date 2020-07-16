@@ -1,11 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextStyle, Insets } from 'react-native';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   numberOfLines?: number;
   children: React.ReactNode;
+  mode: string;
   onShrink?: () => void;
 }
 
@@ -21,6 +23,7 @@ export function ExpandableText(props: Props) {
   }, [expanded]);
   const lines = expanded ? null : props.numberOfLines;
   const onTextPress = expanded ? null : toggleExpanded;
+  const s = ds[props.mode];
 
   return (
     <View style={s.container}>
@@ -47,26 +50,26 @@ ExpandableText.defaultProps = {
   numberOfLines: 3,
 };
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
   },
   up: {
     width: 20,
     marginLeft: 10,
-    backgroundColor: color.LightBackground,
+    backgroundColor: dynamicColor.LightBackground,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'center',
     paddingBottom: 7,
   },
   body: {
-    color: color.Review,
+    color: dynamicColor.Review,
     marginTop: 10,
   } as TextStyle,
   toggleText: {
     paddingVertical: 5,
     textAlign: 'right',
-    color: color.ReadMore,
+    color: dynamicColor.ReadMore,
   } as TextStyle,
 });

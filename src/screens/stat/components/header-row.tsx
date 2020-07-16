@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
-import { Text, View, ViewStyle, StyleSheet, TextStyle } from 'react-native';
-import { color } from 'types/colors';
+import { Text, View, ViewStyle, TextStyle } from 'react-native';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
+import { dynamicColor } from 'types/colors';
 import { t } from 'services';
 
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export const HeaderRow = memo(({ columns, flexes }: Props) => {
+  const s = useDynamicValue(ds);
+
   return (
     <View style={s.container}>
       {columns.map((c, i) => (
@@ -20,14 +23,14 @@ export const HeaderRow = memo(({ columns, flexes }: Props) => {
   );
 });
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
     marginTop: 20,
     marginHorizontal: 15,
   } as ViewStyle,
   text: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontFamily: 'sans-serif-medium',
     fontSize: 16,
   } as TextStyle,

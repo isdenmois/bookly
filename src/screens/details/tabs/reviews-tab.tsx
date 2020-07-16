@@ -5,17 +5,19 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { color } from 'types/colors';
+import { dynamicColor, useSColor } from 'types/colors';
 import Book from 'store/book';
 import { Button, Tag } from 'components';
 import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
 import { t } from 'services';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   book: Book;
   navigation: NavigationScreenProp<any>;
+  mode: string;
 }
 
 interface FixedProps extends Props {
@@ -33,7 +35,7 @@ const BUTTON_TOP = 60;
 
 const source = observable.box('Fantlab');
 
-function useTransformStyle(scrollY) {
+function useTransformStyle(scrollY, s) {
   return useMemo(
     () => [
       s.buttonContainer,
@@ -49,13 +51,14 @@ function useTransformStyle(scrollY) {
         ],
       },
     ],
-    [scrollY],
+    [scrollY, s.buttonContainer],
   );
 }
 
 export const AddButton = observer(({ book, navigation, scrollY }: FixedProps) => {
   const hasRead = book.status === BOOK_STATUSES.READ;
-  const style = useTransformStyle(scrollY);
+  const { s, color } = useSColor(ds);
+  const style = useTransformStyle(scrollY, s);
 
   const openReviewWriteModal = useCallback(() => navigation.navigate('/modal/review-write', { book }), [book]);
   const toggleSearchSource = useCallback(() => source.set(source.get() === 'Fantlab' ? 'Livelib' : 'Fantlab'), []);
@@ -94,6 +97,7 @@ const ReviewsTabComponent = observer((props: Props) => {
   const [sort, setSort] = React.useState('rating');
   const type = source.get();
   const bookId = type === 'Fantlab' ? props.book.id : props.book.lid;
+  const s = ds[props.mode];
 
   return (
     <>
@@ -105,8 +109,8 @@ const ReviewsTabComponent = observer((props: Props) => {
         </View>
       )}
 
-      <LocalReviewList book={props.book} />
-      <FantlabReviewList bookId={bookId} type={type} sort={sort} />
+      <LocalReviewList book={props.book} mode={props.mode} />
+      <FantlabReviewList bookId={bookId} type={type} sort={sort} mode={props.mode} />
     </>
   );
 });
@@ -123,7 +127,7 @@ function SelectReviewSort(props: SelectReviewSortProps) {
   return <Tag title={props.title} selected={isSelected} onPress={onPress} outline />;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   buttonContainer: {
     position: 'absolute',
     bottom: 10,
@@ -134,7 +138,7 @@ const s = StyleSheet.create({
     justifyContent: 'space-around',
   } as ViewStyle,
   button: {
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.SearchBackground,
     ...Platform.select({
       android: {
         elevation: 3,
@@ -145,7 +149,7 @@ const s = StyleSheet.create({
     }),
   } as ViewStyle,
   buttonText: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
   sortList: {
     flexDirection: 'row',

@@ -4,16 +4,17 @@ import { Platform, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProp } from 'react-navigation';
-import { color } from 'types/colors';
+import { getColor, dynamicColor } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { withScroll } from 'utils/scroll-to-top';
 import { getCurrentYear } from 'utils/date';
-import { Button, ScreenHeader } from 'components';
+import { Button, ScreenHeader, Screen } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
 import { session, t } from 'services';
 import Book from 'store/book';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
 const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'paper', 'isLiveLib'];
 
@@ -30,6 +31,8 @@ interface State {
 }
 
 export class ReadList extends React.Component<Props, State> {
+  static contextType = ColorSchemeContext;
+
   state: State = createQueryState(
     {
       status: BOOK_STATUSES.READ,
@@ -49,9 +52,11 @@ export class ReadList extends React.Component<Props, State> {
   render() {
     const { query, sort, filters } = this.state;
     const readonly = this.readonly;
+    const s = ds[this.context];
+    const color = getColor(this.context);
 
     return (
-      <View style={s.container}>
+      <Screen>
         <ScreenHeader title={t(this.title)} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
         <BookList
           query={query}
@@ -59,6 +64,7 @@ export class ReadList extends React.Component<Props, State> {
           filters={filters}
           onChange={this.setFilters}
           readonly={readonly}
+          mode={this.context}
           ref={this.bookListRef}
         />
         <View style={s.buttonContainer}>
@@ -79,7 +85,7 @@ export class ReadList extends React.Component<Props, State> {
             />
           )}
         </View>
-      </View>
+      </Screen>
     );
   }
 
@@ -114,11 +120,7 @@ export class ReadList extends React.Component<Props, State> {
 
 export const ReadListScreen = withScroll(ReadList);
 
-const s = StyleSheet.create({
-  container: {
-    backgroundColor: color.Background,
-    flex: 1,
-  } as ViewStyle,
+const ds = new DynamicStyleSheet({
   buttonContainer: {
     position: 'absolute',
     bottom: 10,
@@ -129,7 +131,7 @@ const s = StyleSheet.create({
     justifyContent: 'space-around',
   } as ViewStyle,
   button: {
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.SearchBackground,
     ...Platform.select({
       android: {
         elevation: 3,
@@ -140,6 +142,6 @@ const s = StyleSheet.create({
     }),
   } as ViewStyle,
   buttonText: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
 });

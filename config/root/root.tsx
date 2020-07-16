@@ -1,19 +1,24 @@
 import React from 'react';
-import { ActivityIndicator, StatusBar, View } from 'react-native';
+import { ActivityIndicator, StatusBar, View, ViewStyle } from 'react-native';
+import { observer } from 'mobx-react';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
-import { onChanges } from 'store';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import { ColorSchemeProvider, ColorSchemeContext } from 'react-native-dynamic';
 import 'mobx-react-lite/batchingForReactNative';
+import { onChanges } from 'store';
 import { i18n } from 'services/i18n';
 
 import { session, syncService, navigation } from 'services';
+import { dark, color } from 'types/colors';
 
+@observer
 class App extends React.Component<any> {
   state = { isLoaded: false };
   RootStack: any = null;
   loadNavigationState: Function = null;
   persistNavigationState: Function = null;
-  style = { flex: 1 };
+  style: ViewStyle = { flex: 1 };
 
   sync = async () => {
     const lastSync: number = +(await AsyncStorage.getItem('lastSync')) || 0;
@@ -53,11 +58,28 @@ class App extends React.Component<any> {
       }
     }
 
+    return (
+      <ColorSchemeProvider mode={session.mode || undefined}>
+        <ColorSchemeContext.Consumer>{this.renderRoot}</ColorSchemeContext.Consumer>
+      </ColorSchemeProvider>
+    );
+  }
+
+  renderRoot = mode => {
     const { RootStack, loadNavigationState, persistNavigationState } = this;
+    const isDark = mode === 'dark';
+
+    const barStyle = isDark ? 'light-content' : 'dark-content';
+    const backgroundColor = isDark ? dark.Background : color.Background;
+
+    if (this.style.backgroundColor !== backgroundColor) {
+      this.style = { flex: 1, backgroundColor };
+      changeNavigationBarColor(backgroundColor, !isDark, false);
+    }
 
     return (
       <View style={this.style}>
-        <StatusBar backgroundColor='#fff' barStyle='dark-content' />
+        <StatusBar backgroundColor={backgroundColor} barStyle={barStyle} />
         <RootStack
           ref={navigation.setRef}
           loadNavigationState={loadNavigationState}
@@ -65,7 +87,7 @@ class App extends React.Component<any> {
         />
       </View>
     );
-  }
+  };
 
   componentWillUnmount() {
     this.subscription.unsubscribe();

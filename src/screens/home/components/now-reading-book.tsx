@@ -1,52 +1,51 @@
-import React from 'react';
-import { StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle, TouchableOpacity } from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, Text, View, ViewStyle, ImageStyle, TouchableOpacity } from 'react-native';
 import Book from 'store/book';
-import { color } from 'types/colors';
+import { color, dark } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { navigation } from 'services';
 import { ReadButton, TextXL, Thumbnail } from 'components';
+import { DynamicStyleSheet, DynamicValue, useDynamicValue } from 'react-native-dynamic';
 
 interface Props {
   book: Book;
 }
 
-export class NowReadingBook extends React.Component<Props> {
-  render() {
-    const book = this.props.book;
+export function NowReadingBook({ book }: Props) {
+  const ds = useDynamicValue(dynamicStyles);
+  const openChangeStatus = useCallback(
+    () => navigation.navigate('/modal/change-status', { book, status: BOOK_STATUSES.READ }),
+    [],
+  );
+  const openBook = useCallback(() => navigation.push('Details', { bookId: book.id }), []);
 
-    return (
-      <View style={s.container}>
-        <TouchableOpacity style={s.thumbnail} onPress={this.openBook} testID='CurrentThumbnail'>
-          <Thumbnail
-            auto='height'
-            cache
-            style={s.image}
-            width={120}
-            height={192}
-            title={book.title}
-            url={book.thumbnail}
-          />
+  return (
+    <View style={s.container}>
+      <TouchableOpacity style={s.thumbnail} onPress={openBook} testID='CurrentThumbnail'>
+        <Thumbnail
+          auto='height'
+          cache
+          style={s.image}
+          width={120}
+          height={192}
+          title={book.title}
+          url={book.thumbnail}
+        />
+      </TouchableOpacity>
+
+      <View style={s.details}>
+        <TouchableOpacity onPress={openBook}>
+          <TextXL testID='homeBookTitle' style={ds.title}>
+            {book.title}
+          </TextXL>
         </TouchableOpacity>
-
-        <View style={s.details}>
-          <TouchableOpacity onPress={this.openBook}>
-            <TextXL testID='homeBookTitle' style={s.title}>
-              {book.title}
-            </TextXL>
-          </TouchableOpacity>
-          <Text testID='homeBookAuthor' style={s.author}>
-            {book.author}
-          </Text>
-          <ReadButton testID='homeReadButton' openChangeStatus={this.openChangeStatus} book={book} />
-        </View>
+        <Text testID='homeBookAuthor' style={ds.author}>
+          {book.author}
+        </Text>
+        <ReadButton testID='homeReadButton' openChangeStatus={openChangeStatus} book={book} />
       </View>
-    );
-  }
-
-  openChangeStatus = () =>
-    navigation.navigate('/modal/change-status', { book: this.props.book, status: BOOK_STATUSES.READ });
-
-  openBook = () => navigation.push('Details', { bookId: this.props.book.id });
+    </View>
+  );
 }
 
 const s = StyleSheet.create({
@@ -66,12 +65,15 @@ const s = StyleSheet.create({
     alignItems: 'flex-start',
     flex: 1,
   } as ViewStyle,
+});
+
+const dynamicStyles = new DynamicStyleSheet({
   title: {
-    color: color.PrimaryText,
-  } as TextStyle,
+    color: new DynamicValue(color.PrimaryText, dark.PrimaryText),
+  },
   author: {
     fontSize: 14,
-    color: color.SecondaryText,
+    color: new DynamicValue(color.SecondaryText, dark.SecondaryText),
     marginTop: 5,
-  } as TextStyle,
+  },
 });

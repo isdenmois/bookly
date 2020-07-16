@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { DynamicStyleSheet } from 'react-native-dynamic';
+import { dynamicColor, useSColor } from 'types/colors';
 
 interface Props {
   title: string;
@@ -13,6 +14,7 @@ interface Props {
 
 function TagComponent({ title, selected, outline, icon, onPress }: Props) {
   const Wrapper: any = onPress && !selected ? TouchableOpacity : View;
+  const { s, color } = useSColor(ds);
   const wraperStyle = [s.wrapper, outline ? s.outline : null, selected ? s.selected : null];
 
   return (
@@ -25,9 +27,9 @@ function TagComponent({ title, selected, outline, icon, onPress }: Props) {
 
 export const Tag = React.memo(TagComponent);
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   wrapper: {
-    backgroundColor: color.LightBackground,
+    backgroundColor: dynamicColor.LightBackground,
     paddingHorizontal: 10,
     paddingVertical: 3,
     marginRight: 10,
@@ -38,14 +40,14 @@ const s = StyleSheet.create({
   } as ViewStyle,
   outline: {
     backgroundColor: null,
-    borderColor: color.LightBackground,
+    borderColor: dynamicColor.LightBackground,
     borderWidth: 1,
   } as ViewStyle,
   selected: {
-    backgroundColor: color.LightBackground,
+    backgroundColor: dynamicColor.LightBackground,
   } as ViewStyle,
   text: {
-    color: color.Review,
+    color: dynamicColor.Review,
     fontSize: 14,
     lineHeight: 16,
   } as TextStyle,

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { api, t } from 'services';
-import { Fetcher } from 'components';
+import { Fetcher, Screen } from 'components';
 import Book, { BookData } from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
@@ -51,9 +51,11 @@ export class DetailsScreen extends React.Component<Props> {
 
   render() {
     return (
-      <Fetcher api={this.isLiveLib ? api.lBook : api.book} bookId={this.props.bookId} collection='books'>
-        {this.renderResult}
-      </Fetcher>
+      <Screen>
+        <Fetcher api={this.isLiveLib ? api.lBook : api.book} bookId={this.props.bookId} collection='books'>
+          {this.renderResult}
+        </Fetcher>
+      </Screen>
     );
   }
 

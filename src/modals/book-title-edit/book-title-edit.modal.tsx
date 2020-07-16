@@ -1,14 +1,15 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import _ from 'lodash';
-import { Text, TextInput, TouchableOpacity, StyleSheet, TextStyle, ViewStyle, ScrollView } from 'react-native';
+import { Text, TextInput, TouchableOpacity, TextStyle, ViewStyle, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { Dialog, Button } from 'components';
 import Book from 'store/book';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { BookExtended } from 'types/book-extended';
-import { color } from 'types/colors';
+import { dynamicColor, useSColor } from 'types/colors';
 import { t } from 'services';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   book: Book & BookExtended;
@@ -24,6 +25,7 @@ export const BookTitleEditModal = withNavigationProps()(({ book, navigation }: P
   const enabled = title && title.trim() !== book.title;
   const onPress = enabled ? update : null;
   const isLiveLib = book.id.startsWith('l_');
+  const { s, color } = useSColor(ds);
 
   return (
     <Dialog style={s.dialog} title={t('modal.edit')} onApply={onPress}>
@@ -69,14 +71,14 @@ function getTitles(otherTitles: string, title: string, originalTitle: string) {
   return _.uniq(allTitles);
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   dialog: {
     paddingHorizontal: 20,
     paddingBottom: 30,
   } as ViewStyle,
   input: {
     fontSize: 14,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     paddingHorizontal: 0,
     paddingVertical: 10,
     margin: 0,
@@ -89,7 +91,7 @@ const s = StyleSheet.create({
   text: {
     fontSize: 14,
     lineHeight: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     marginLeft: 10,
   } as TextStyle,
   button: {

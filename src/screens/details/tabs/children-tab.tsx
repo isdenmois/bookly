@@ -8,13 +8,14 @@ import { CollapsibleChildren } from '../components/collapsible-children';
 interface Props {
   book: BookExtended;
   navigation: NavigationStackProp;
+  mode: string;
 }
 
 export const ChildrenTab = withScroll((props: Props) => {
   return (
     <View>
       {props.book.children.map(book => (
-        <CollapsibleChildren key={book.id || book.title} book={book} navigation={props.navigation} />
+        <CollapsibleChildren key={book.id || book.title} book={book} navigation={props.navigation} mode={props.mode} />
       ))}
     </View>
   );

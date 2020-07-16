@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
-import { ViewStyle, StyleSheet, Switch } from 'react-native';
+import { ViewStyle, StyleSheet } from 'react-native';
 import { session } from 'services';
-import { ListItem } from 'components';
+import { Checkbox, ListItem } from 'components';
 import { Setting } from 'services/session';
 
 interface Props {
@@ -10,25 +10,16 @@ interface Props {
   param: Setting;
 }
 
-@observer
-export class SessionParamToggler extends React.Component<Props> {
-  render() {
-    const param = this.props.param;
-    const value = !!session[param];
+export const SessionParamToggler = observer(({ title, param }: Props) => {
+  const toggle = useCallback(() => session.set(param, !session[param]), []);
+  const value = !!session[param];
 
-    return (
-      <ListItem style={s.container} rowStyle={s.row} label={this.props.title} onPress={this.toggle}>
-        <Switch value={value} onValueChange={this.toggle} />
-      </ListItem>
-    );
-  }
-
-  toggle = () => {
-    const p = this.props.param;
-
-    session.set(p, !session[p]);
-  };
-}
+  return (
+    <ListItem style={s.container} rowStyle={s.row} label={title} onPress={toggle}>
+      <Checkbox value={value} onValueChange={toggle} />
+    </ListItem>
+  );
+});
 
 const s = StyleSheet.create({
   container: {

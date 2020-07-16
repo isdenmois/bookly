@@ -1,8 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import { Text, TouchableOpacity, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { getColor, dynamicColor } from 'types/colors';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   title: string;
@@ -14,7 +15,11 @@ interface Props {
 }
 
 export class SelectList extends React.PureComponent<Props> {
+  static contextType = ColorSchemeContext;
+
   render() {
+    const s = ds[this.context];
+
     return (
       <View style={s.container}>
         <View style={s.headerRow}>
@@ -31,6 +36,8 @@ export class SelectList extends React.PureComponent<Props> {
   renderList() {
     const { fields, value } = this.props;
     const labelKey = this.props.labelKey || 'label';
+    const s = ds[this.context];
+    const color = getColor(this.context);
 
     return _.map(fields, field => (
       <TouchableOpacity key={field.id} style={s.row} onPress={() => this.props.onChange(field.id)}>
@@ -41,7 +48,7 @@ export class SelectList extends React.PureComponent<Props> {
   }
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
     alignItems: 'stretch',
@@ -59,11 +66,11 @@ const s = StyleSheet.create({
   } as ViewStyle,
   title: {
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     paddingVertical: 15,
   } as TextStyle,
   optionText: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 14,
     marginLeft: 10,
   } as TextStyle,

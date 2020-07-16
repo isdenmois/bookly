@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Text, View, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid } from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TabScrollContext, HEADER_HEIGHT } from 'screens/details/tabs/tab';
@@ -7,12 +7,14 @@ import { RemoteReview as IRemoteReview } from 'services/api/fantlab/review-list'
 import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
 import { parser } from 'utils/bbcode';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import { api } from 'services';
 import { confirm } from './book-details-lines';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   review: IRemoteReview;
+  mode: string;
 }
 
 export class RemoteReview extends React.PureComponent<Props> {
@@ -30,10 +32,12 @@ export class RemoteReview extends React.PureComponent<Props> {
   }
 
   render() {
-    const review = this.props.review;
+    const { mode, review } = this.props;
     const { isLiked, likes } = this.state;
     const isLivelib = this.isLivelib;
     const LikeComponent: any = !isLivelib && !isLiked ? TouchableOpacity : View;
+    const color = getColor(mode);
+    const s = ds[mode];
 
     return (
       <View style={s.container} onLayout={_.noop} ref={this.rootRef}>
@@ -58,7 +62,9 @@ export class RemoteReview extends React.PureComponent<Props> {
           </LikeComponent>
         </View>
 
-        <ExpandableText onShrink={this.scrollToElement}>{parser.toReact(review.body)}</ExpandableText>
+        <ExpandableText onShrink={this.scrollToElement} mode={mode}>
+          {parser.toReact(review.body)}
+        </ExpandableText>
       </View>
     );
   }
@@ -94,7 +100,7 @@ export class RemoteReview extends React.PureComponent<Props> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     marginTop: 15,
   } as ViewStyle,
@@ -112,17 +118,17 @@ const s = StyleSheet.create({
   },
   user: {
     fontFamily: 'sans-serif-medium',
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 14,
     marginLeft: 10,
   } as TextStyle,
   date: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 12,
     marginLeft: 10,
   } as TextStyle,
   rating: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 14,
     marginLeft: 3,
   } as TextStyle,

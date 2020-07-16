@@ -1,18 +1,8 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-  Linking,
-  ToastAndroid,
-  Clipboard,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, View, ViewStyle, TextStyle, Linking, ToastAndroid, Clipboard, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book from 'store/book';
 import { hasUpdates } from 'utils/has-updates';
@@ -29,12 +19,14 @@ import {
 } from '../components/book-details-lines';
 import { withScroll } from './tab';
 import { t } from 'services';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   navigation: NavigationStackProp;
   book: Book & BookExtended;
   isExist: boolean;
   tab: string;
+  mode: string;
 }
 
 const TITLE_SEPARATOR = /\s*;\s*/g;
@@ -46,6 +38,7 @@ const paths = [
   'book.leave',
   'book.audio',
   'book.withoutTranslation',
+  'mode',
 ];
 
 @withScroll
@@ -74,51 +67,56 @@ export class DetailsTab extends React.Component<Props> {
     const isLivelib = typeof book.id === 'string' && book.id.startsWith('l_');
     const hasPaper = book.paper;
     const isRead = book.status === BOOK_STATUSES.READ;
+    const mode = this.props.mode;
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
       .join('\n');
 
     return (
       <View>
-        {all && <ViewLine title='ID' value={book.id} />}
-        {all && <ViewLine title={t('details.type')} value={BOOK_TYPE_NAMES[book.type]} />}
+        {all && <ViewLine title='ID' value={book.id} mode={mode} />}
+        {all && <ViewLine title={t('details.type')} value={BOOK_TYPE_NAMES[book.type]} mode={mode} />}
 
-        {!all && !book.thumbnail && !!book.genre && <ViewLine title={t('details.genre')} value={book.genre} />}
-
-        {(all || !book.thumbnail) && !!book.avgRating && (
-          <ViewLine title={t('details.average')} value={book.avgRating} />
+        {!all && !book.thumbnail && !!book.genre && (
+          <ViewLine title={t('details.genre')} value={book.genre} mode={mode} />
         )}
 
-        {(all || !book.thumbnail) && !!book.year && <ViewLine title={t('year')} value={book.year} />}
+        {(all || !book.thumbnail) && !!book.avgRating && (
+          <ViewLine title={t('details.average')} value={book.avgRating} mode={mode} />
+        )}
+
+        {(all || !book.thumbnail) && !!book.year && <ViewLine title={t('year')} value={book.year} mode={mode} />}
 
         {this.renderTranslators()}
 
-        {isRead && <ViewLine title={t('details.read-date')} value={this.readDate} />}
+        {isRead && <ViewLine title={t('details.read-date')} value={this.readDate} mode={mode} />}
 
         {!!book.editionCount && (
           <ViewLineTouchable
             title={t('details.editions')}
             value={book.editionCount}
+            mode={mode}
             onPress={this.openEditions}
             onLongPress={this.openChangeThumbnail}
           />
         )}
 
-        {!!book.language && <ViewLine title={t('details.language')} value={book.language} />}
+        {!!book.language && <ViewLine title={t('details.language')} value={book.language} mode={mode} />}
         {!!book.title && !!book.originalTitle && (
           <ViewLineTouchable
             title={t('details.original-title')}
             value={book.originalTitle}
+            mode={mode}
             onPress={this.openTelegram}
             onLongPress={this.copyBookOriginalTitle}
           />
         )}
 
-        {!!otherTitles && <ViewLine title={t('details.other-titles')} value={otherTitles} />}
+        {!!otherTitles && <ViewLine title={t('details.other-titles')} value={otherTitles} mode={mode} />}
 
         {all && book.classification?.length > 0 && this.renderClassification()}
 
-        {all && !!book.description && <BookDescriptionLine description={book.description} />}
+        {all && !!book.description && <BookDescriptionLine description={book.description} mode={mode} />}
 
         {!!book.parent?.length && this.renderParentBooks()}
 
@@ -127,25 +125,31 @@ export class DetailsTab extends React.Component<Props> {
         {all && !isLivelib && (
           <ViewLineAction
             title={t('details.find-ll')}
+            mode={mode}
             onPress={this.forceSearchInLivelib}
             onLongPress={this.searchInLivelib}
           />
         )}
 
-        {all && isExist && <ViewLineAction title={t('details.edit')} onPress={this.openEditModal} />}
+        {all && isExist && <ViewLineAction title={t('details.edit')} onPress={this.openEditModal} mode={mode} />}
 
         {all && isExist && (
           <ViewLineAction
+            mode={mode}
             title={t(hasPaper ? 'details.has-paper' : 'details.has-no-paper')}
             onPress={this.togglePaper}
           />
         )}
 
         {all && isExist && isRead && hasPaper && (
-          <ViewLineAction title={t(book.leave ? 'details.leave' : 'details.keep')} onPress={this.toggleLeave} />
+          <ViewLineAction
+            title={t(book.leave ? 'details.leave' : 'details.keep')}
+            onPress={this.toggleLeave}
+            mode={mode}
+          />
         )}
 
-        {all && isExist && <ViewLineModelRemove model={book} warning={t('details.delete')} />}
+        {all && isExist && <ViewLineModelRemove model={book} warning={t('details.delete')} mode={mode} />}
       </View>
     );
   }
@@ -159,10 +163,12 @@ export class DetailsTab extends React.Component<Props> {
 
     const title = t(translators.length > 1 ? 'details.translators' : 'details.translator');
 
-    return <ViewLine title={title} value={translators.join('\n')} />;
+    return <ViewLine title={title} value={translators.join('\n')} mode={this.props.mode} />;
   }
 
   renderClassification() {
+    const s = ds[this.props.mode];
+
     return _.map(this.props.book.classification, detail => (
       <View key={detail.id} style={s.classification}>
         <Text style={s.title}>{detail.title}</Text>
@@ -177,23 +183,33 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   renderParentBooks() {
+    const s = ds[this.props.mode];
+
     return (
       <View style={s.parentBooks}>
         <Text style={s.header}>{t('details.series')}</Text>
 
         {this.props.book.parent.map(book => (
-          <ViewLineTouchable key={book.id} onPress={() => this.openBook(book)} title={book.type} value={book.title} />
+          <ViewLineTouchable
+            key={book.id}
+            onPress={() => this.openBook(book)}
+            title={book.type}
+            value={book.title}
+            mode={this.props.mode}
+          />
         ))}
       </View>
     );
   }
 
   renderFilms() {
+    const s = ds[this.props.mode];
+
     return (
       <View style={s.parentBooks}>
         <Text style={s.header}>{t('details.films')}</Text>
 
-        {this.props.book.films.map(this.renderFilm)}
+        {this.props.book.films.map(f => this.renderFilm(f))}
       </View>
     );
   }
@@ -201,7 +217,7 @@ export class DetailsTab extends React.Component<Props> {
   renderFilm(film: Film) {
     const value = film.country ? `${film.title} (${film.country})` : film.title;
 
-    return <ViewLine key={film.id} title={film.year} value={value} />;
+    return <ViewLine key={film.id} title={film.year} value={value} mode={this.props.mode} />;
   }
 
   openBook(book: Book | ParentBook) {
@@ -257,9 +273,9 @@ export class DetailsTab extends React.Component<Props> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   header: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 14,
     marginBottom: 10,
   } as TextStyle,
@@ -270,11 +286,11 @@ const s = StyleSheet.create({
     marginBottom: 20,
   } as ViewStyle,
   title: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 12,
   } as TextStyle,
   value: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 18,
   } as TextStyle,
 });

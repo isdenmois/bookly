@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
-import { Insets, Text, TouchableOpacity, ScrollView, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Insets, Text, TouchableOpacity, ScrollView, ViewStyle, TextStyle } from 'react-native';
 import classnames from 'rn-classnames';
-import { color } from 'types/colors';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
+import { dynamicColor } from 'types/colors';
 import { t } from 'services';
 
 interface Props {
@@ -21,6 +22,8 @@ const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 export const StatGroups = memo(({ type, onChange }: Props) => {
   const isLast = i => i === groups.length && 'last';
   const isSelected = group => group.id === type && 'selected';
+  const s = useDynamicValue(ds);
+  const cn = classnames(s);
 
   return (
     <ScrollView style={s.container} contentContainerStyle={s.scroll} horizontal>
@@ -38,11 +41,11 @@ export const StatGroups = memo(({ type, onChange }: Props) => {
   );
 });
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
     paddingHorizontal: 15,
-    borderBottomColor: '#eee',
+    borderBottomColor: dynamicColor.LightBackground,
     borderBottomWidth: 1,
   } as ViewStyle,
   scroll: {
@@ -53,12 +56,12 @@ const s = StyleSheet.create({
     paddingRight: 30,
   } as ViewStyle,
   selected: {
-    borderBottomColor: color.Primary,
+    borderBottomColor: dynamicColor.Primary,
     borderBottomWidth: 3,
   } as ViewStyle,
   text: {
     fontSize: 18,
     paddingBottom: 5,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
 });
-const cn = classnames(s);

@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import classnames from 'rn-classnames';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 
 interface Option {
   key: any;
@@ -15,31 +16,30 @@ interface Props {
   onChange: (value: any) => void;
 }
 
-export class Switcher extends React.Component<Props> {
-  render() {
-    const { style, value } = this.props;
-    const lastIndex = this.props.options.length - 1;
+export function Switcher({ style, value, options, onChange }: Props) {
+  const lastIndex = options.length - 1;
+  const s = useDynamicValue(ds);
+  const cn = classnames(s);
 
-    return (
-      <View style={[s.container, style]}>
-        {this.props.options.map((option, index) => (
-          <TouchableOpacity
-            style={cn('option', { selected: option.key === value, lastOption: index === lastIndex })}
-            key={option.key}
-            onPress={() => this.props.onChange(option.key)}
-          >
-            <Text style={cn('text', { selectedText: option.key === value })}>{option.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  }
+  return (
+    <View style={[s.container, style]}>
+      {options.map((option, index) => (
+        <TouchableOpacity
+          style={cn('option', { selected: option.key === value, lastOption: index === lastIndex })}
+          key={option.key}
+          onPress={() => onChange(option.key)}
+        >
+          <Text style={cn('text', { selectedText: option.key === value })}>{option.title}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
-    borderColor: color.Primary,
+    borderColor: dynamicColor.Primary,
     borderWidth: 0.5,
     borderRadius: 5,
     overflow: 'hidden',
@@ -48,7 +48,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRightColor: color.Primary,
+    borderRightColor: dynamicColor.Primary,
     borderRightWidth: 0.5,
     paddingVertical: 5,
   } as ViewStyle,
@@ -56,15 +56,14 @@ const s = StyleSheet.create({
     borderRightWidth: 0,
   } as ViewStyle,
   selected: {
-    backgroundColor: color.Primary,
+    backgroundColor: dynamicColor.Primary,
   } as ViewStyle,
   text: {
-    color: color.Primary,
+    color: dynamicColor.Primary,
     fontFamily: 'sans-serif-medium',
     fontSize: 13,
   } as TextStyle,
   selectedText: {
-    color: color.PrimaryTextInverse,
+    color: dynamicColor.PrimaryTextInverse,
   } as TextStyle,
 });
-const cn = classnames(s);

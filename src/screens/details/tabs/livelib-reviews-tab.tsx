@@ -10,15 +10,19 @@ import { RemoteReview as IRemoteReview } from 'services/api/fantlab/review-list'
 
 interface Props {
   book: Book;
+  mode: string;
 }
 
-function LivelibReviewsTabComponent(props: Props) {
-  const renderReview = useCallback((review: IRemoteReview) => <RemoteReview key={review.id} review={review} />, []);
+function LivelibReviewsTabComponent({ book, mode }: Props) {
+  const renderReview = useCallback(
+    (review: IRemoteReview) => <RemoteReview key={review.id} review={review} mode={mode} />,
+    [mode],
+  );
 
   return (
     <>
-      <LocalReviewList book={props.book} />
-      <Fetcher api={api.lReviews} bookId={props.book.id}>
+      <LocalReviewList book={book} mode={mode} />
+      <Fetcher api={api.lReviews} bookId={book.id}>
         {renderReview}
       </Fetcher>
     </>

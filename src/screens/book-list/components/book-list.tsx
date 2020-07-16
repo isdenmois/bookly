@@ -1,23 +1,25 @@
 import React from 'react';
 import _ from 'lodash';
-import { FlatList, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
+import { FlatList, Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
 import { BookSort, BookFilters } from 'types/book-filters';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { database } from 'store';
 import Book from 'store/book';
 import { BookItem, Button } from 'components';
 import { EmptyResult } from 'components/fetcher';
 import { BookListFilters } from './book-list-filters';
 import { t } from 'services';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   query: Where[];
   sort: BookSort;
   filters: Partial<BookFilters>;
   onChange: (filters: Partial<BookFilters>) => void;
+  mode?: string;
   books?: Book[];
   readonly?: boolean;
 }
@@ -42,7 +44,7 @@ export class BookList extends React.PureComponent<Props> {
 
     return (
       <FlatList
-        contentContainerStyle={s.scrollContainer}
+        contentContainerStyle={ds.dark.scrollContainer}
         data={books}
         initialNumToRender={24}
         keyExtractor={this.keyExtractor}
@@ -55,6 +57,8 @@ export class BookList extends React.PureComponent<Props> {
   }
 
   private renderHeader() {
+    const s = ds[this.props.mode];
+
     return (
       <>
         <BookListFilters filters={this.props.filters} onChange={this.props.onChange} />
@@ -79,6 +83,7 @@ export class BookList extends React.PureComponent<Props> {
     }
 
     const label = year || date.to.getTime() - date.from.getTime() > YEAR ? 'Еще год' : 'Еще месяц';
+    const s = ds[this.props.mode];
 
     return <Button style={s.moreButton} textStyle={s.buttonText} label={label} onPress={this.increaseDateFilter} />;
   };
@@ -107,7 +112,7 @@ export class BookList extends React.PureComponent<Props> {
   private keyExtractor = book => book.id;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   scrollContainer: {
     paddingTop: 10,
     paddingBottom: 60,
@@ -115,18 +120,18 @@ const s = StyleSheet.create({
   } as ViewStyle,
   found: {
     fontSize: 18,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
   moreButton: {
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 10,
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.Background,
     borderWidth: 0.5,
-    borderColor: color.Border,
+    borderColor: dynamicColor.Border,
   } as ViewStyle,
   buttonText: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
 });
 

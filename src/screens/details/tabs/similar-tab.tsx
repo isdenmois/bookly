@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { api } from 'services';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'services/api/fantlab/similar';
@@ -9,6 +9,7 @@ import { BookExtended } from 'types/book-extended';
 import Book from 'store/book';
 import { hasUpdates } from 'utils/has-updates';
 import { withScroll } from './tab';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   book: Book & BookExtended;
@@ -17,6 +18,8 @@ interface Props {
 
 @withScroll
 export class SimilarTab extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   shouldComponentUpdate(props, state) {
     return hasUpdates(this, props, state, ['book']);
   }
@@ -30,6 +33,7 @@ export class SimilarTab extends React.Component<Props> {
   }
 
   renderBook = (book: BookSimilar, index: number) => {
+    const s = ds[this.context];
     const style = index === 0 ? s.firstRow : s.row;
 
     return (
@@ -49,7 +53,7 @@ export class SimilarTab extends React.Component<Props> {
   }
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   row: {
     flexDirection: 'row',
     paddingVertical: 10,
@@ -63,11 +67,11 @@ const s = StyleSheet.create({
     flex: 1,
   } as ViewStyle,
   title: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 18,
   } as TextStyle,
   author: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontFamily: 'sans-serif-light',
     fontSize: 18,
   } as TextStyle,

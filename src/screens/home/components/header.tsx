@@ -20,6 +20,7 @@ export class HomeHeader extends React.Component<any, State> {
     if (fetching) {
       return <ActivityIndicator />;
     }
+
     return (
       <SearchBar
         placeholder={t('home.search')}

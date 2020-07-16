@@ -1,3 +1,5 @@
+import { DynamicValue, useDarkModeContext } from 'react-native-dynamic';
+
 export const color = {
   Black: '#000',
   Red: '#F44336',
@@ -7,17 +9,70 @@ export const color = {
   SecondaryText: '#757575',
   ErrorText: '#F44336',
 
-  Background: '#FFF',
+  Background: '#FFFFFF',
+  DialogBackground: '#FFF',
   OrangeBackground: '#FFE0B2',
   SearchBackground: '#F5F5F5',
   LightBackground: '#EEE',
+  BookItem: '#FFF',
 
   Primary: '#009688',
   Secondary: '#F57C00',
   Empty: '#90A4AE',
-  Stars: '#FF9800',
+  Stars: '#FF9032',
   Border: '#E0E0E0',
   BlueIcon: '#0D47A1',
   Review: '#454754',
   ReadMore: '#4E342E',
 };
+
+export const light = color;
+
+export const dark = {
+  Red: '#F44336',
+
+  PrimaryText: '#FAFAFB',
+  PrimaryTextInverse: '#FAFAFB',
+  SecondaryText: '#898993',
+  ErrorText: '#F44336',
+
+  Background: '#13131A',
+  DialogBackground: '#1C1C24',
+  OrangeBackground: '#1B976D',
+  SearchBackground: '#292932',
+  LightBackground: '#3F434A',
+  BookItem: '#1F2125',
+
+  Primary: '#DF6448',
+  Secondary: '#F0F0F0',
+  Empty: '#8E8E98',
+  // Stars: '#FFC542',
+  Stars: '#FAFAFB',
+  Border: '#E0E0E0',
+  BlueIcon: '#357AE9',
+  Review: '#F4EDEA',
+  ReadMore: '#8E8E98',
+};
+
+type Color = typeof color | typeof dark;
+
+export function getColor(mode): Color {
+  return mode === 'dark' ? dark : light;
+}
+
+export const dynamicColor: Color = {} as any;
+for (let name in dark) {
+  dynamicColor[name] = new DynamicValue(light[name], dark[name]);
+}
+
+export function useSColor(ds) {
+  const mode = useDarkModeContext();
+
+  return { s: ds[mode], color: getColor(mode) };
+}
+
+export function useColor() {
+  const mode = useDarkModeContext();
+
+  return getColor(mode);
+}

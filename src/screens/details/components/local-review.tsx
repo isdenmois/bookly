@@ -1,21 +1,25 @@
 import React, { useCallback } from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View, ViewStyle, TextStyle } from 'react-native';
 import { navigation, session } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import { ExpandableText, TouchIcon } from 'components';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   book: BookData;
   review: Review;
+  mode: string;
 }
 
 const navigate = (review, book) => navigation.navigate('/modal/review-write', { review, book });
 
-export function LocalReview({ review, book }: Props) {
+export function LocalReview({ review, book, mode }: Props) {
   const openEditReview = useCallback(() => navigate(review, book), [review]);
+  const color = getColor(mode);
+  const s = ds[mode];
 
   return (
     <View style={s.container}>
@@ -27,12 +31,12 @@ export function LocalReview({ review, book }: Props) {
         <TouchIcon style={s.icon} name='pen' size={16} color={color.PrimaryText} onPress={openEditReview} />
       </View>
 
-      <ExpandableText>{review.body}</ExpandableText>
+      <ExpandableText mode={mode}>{review.body}</ExpandableText>
     </View>
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     marginTop: 15,
   } as ViewStyle,
@@ -50,17 +54,17 @@ const s = StyleSheet.create({
   },
   user: {
     fontFamily: 'sans-serif-medium',
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 14,
     marginLeft: 10,
   } as TextStyle,
   date: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 12,
     marginLeft: 10,
   } as TextStyle,
   rating: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 14,
     marginLeft: 3,
   } as TextStyle,

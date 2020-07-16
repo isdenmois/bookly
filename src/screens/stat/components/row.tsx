@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { color } from 'types/colors';
+import { Text, View, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
+import { dynamicColor } from 'types/colors';
 import { IRow, TabTransition } from '../tabs/shared';
 import { transition as ByMonthTransition } from '../tabs/by-month.factory';
 import { transition as ByAuthorTransition } from '../tabs/by-author.factory';
@@ -28,6 +29,7 @@ export const Row = memo(({ row, columns, flexes, type, year }: Props) => {
   const enabled = transitions[type].enabled(row, year);
   const go = useCallback(() => transitions[type].go(row, year), [row, year]);
   const Component: any = enabled ? TouchableOpacity : View;
+  const s = useDynamicValue(ds);
 
   return (
     <Component style={s.container} onPress={go}>
@@ -40,13 +42,13 @@ export const Row = memo(({ row, columns, flexes, type, year }: Props) => {
   );
 });
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
     paddingBottom: 15,
   } as ViewStyle,
   text: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 16,
   } as TextStyle,
 });

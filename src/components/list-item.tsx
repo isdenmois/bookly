@@ -1,16 +1,8 @@
 import React, { ReactNode } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-  TextStyle,
-  KeyboardTypeOptions,
-  TextInput,
-} from 'react-native';
+import { Text, TouchableOpacity, View, ViewStyle, TextStyle, KeyboardTypeOptions, TextInput } from 'react-native';
+import { ColorSchemeContext, DynamicStyleSheet, DynamicValue } from 'react-native-dynamic';
 import classnames from 'rn-classnames';
-import { color } from 'types/colors';
+import { light, dark, dynamicColor } from 'types/colors';
 import { TextM } from './text';
 import { TouchIcon } from './touch-icon';
 
@@ -39,6 +31,8 @@ interface Props {
 }
 
 export class ListItem extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   static defaultProps = {
     border: true,
   };
@@ -49,6 +43,9 @@ export class ListItem extends React.Component<Props> {
     const { style, icon, counter, first, border, selected, label, disabled, children, testID } = this.props;
     const isEditable = Boolean(this.props.onChange);
     const Container: any = (this.props.onPress || isEditable) && !disabled ? TouchableOpacity : View;
+    const s = ds[this.context];
+    const cn = classnames(s);
+    const color = this.context === 'dark' ? dark : light;
 
     return (
       <Container style={[s.container, style]} onPress={this.onPress} testID={counter || isEditable ? null : testID}>
@@ -106,7 +103,7 @@ export class ListItem extends React.Component<Props> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -121,25 +118,25 @@ const s = StyleSheet.create({
   } as ViewStyle,
   borderFirst: {
     borderTopWidth: 0.5,
-    borderTopColor: color.Border,
-  } as ViewStyle,
+    borderTopColor: dynamicColor.Border,
+  },
   label: {
-    color: color.PrimaryText,
-  } as TextStyle,
+    color: dynamicColor.PrimaryText,
+  },
   text: {
     flex: 1,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     padding: 0,
     margin: 0,
     height: 20,
-  } as TextStyle,
+  },
   textRight: {
     textAlign: 'right',
   } as TextStyle,
   counter: {
     marginLeft: 10,
-    color: color.SecondaryText,
-  } as TextStyle,
+    color: dynamicColor.SecondaryText,
+  },
   icon: {
     marginRight: 15,
   } as ViewStyle,
@@ -147,4 +144,3 @@ const s = StyleSheet.create({
     opacity: 0.3,
   } as ViewStyle,
 });
-const cn = classnames(s);

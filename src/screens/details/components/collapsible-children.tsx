@@ -1,21 +1,25 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { View, Text, TouchableOpacity, TextStyle, ViewStyle } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { ChildBook } from 'types/book-extended';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchIcon } from 'components';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   book: ChildBook;
   navigation: NavigationStackProp;
+  mode: string;
 }
 
-export function CollapsibleChildren({ book, navigation }: Props) {
+export function CollapsibleChildren({ book, navigation, mode }: Props) {
   const [collapsed, setCollapsed] = useState(true);
   const openBook = useCallback(() => navigation.push('Details', { bookId: String(book.id) }), []);
   const toggleCollapse = useCallback(() => setCollapsed(!collapsed), [collapsed, setCollapsed]);
   const Touch: any = book.id ? TouchableOpacity : View;
+  const s = ds[mode];
+  const color = getColor(mode);
 
   return (
     <>
@@ -42,7 +46,7 @@ export function CollapsibleChildren({ book, navigation }: Props) {
       {!collapsed && (
         <View style={s.children}>
           {book.children.map(c => (
-            <CollapsibleChildren key={c.id || c.title} book={c} navigation={navigation} />
+            <CollapsibleChildren key={c.id || c.title} book={c} navigation={navigation} mode={mode} />
           ))}
         </View>
       )}
@@ -58,7 +62,7 @@ function getChildBookTitle(book) {
   return book.title;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   row: {
     marginBottom: 20,
     flexDirection: 'row',
@@ -74,7 +78,7 @@ const s = StyleSheet.create({
     flex: 1,
   } as ViewStyle,
   title: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 12,
   } as TextStyle,
   touch: {
@@ -82,7 +86,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   value: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 18,
     marginRight: 5,
     flex: 1,

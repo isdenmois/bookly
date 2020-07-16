@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
   ViewStyle,
   TextStyle,
   ImageStyle,
@@ -14,7 +13,7 @@ import {
   Linking,
 } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { ReadButton, Thumbnail } from 'components';
@@ -25,6 +24,7 @@ import { LiveLibBook } from 'services/api/livelib/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookDetailsHeader } from './book-details-header';
 import { t } from 'services';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   book: Book & BookExtended & LiveLibBook;
@@ -35,14 +35,16 @@ interface Props {
   children?: React.ReactNode;
   navigation: NavigationStackProp;
   status?: BOOK_STATUSES;
+  mode: string;
 }
 
 const MARGIN = 30;
 
 export const BookMainInfo = memo(
-  withBook(function ({ book, navigation, scrollY, headerHeight, scrollHeight, children, onLayout }: Props) {
+  withBook(function ({ book, navigation, scrollY, headerHeight, scrollHeight, children, onLayout, mode }: Props) {
     const Background: any = book.thumbnail ? ThumbnailBackground : AvatarBackground;
     const bookTitle = book.title || book.originalTitle;
+    const s = ds[mode];
 
     return (
       <Collapsible
@@ -51,22 +53,24 @@ export const BookMainInfo = memo(
         scrollY={scrollY}
         onLayout={onLayout}
         scrollHeight={scrollHeight}
+        mode={mode}
       >
-        <Background bookTitle={bookTitle} book={book}>
+        <Background bookTitle={bookTitle} book={book} mode={mode}>
           <View style={s.darkOverlay} testID={`Details${book.id}`}>
-            <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} />
-            <BookAuthor book={book} navigation={navigation} />
-            {!book.thumbnail && <SecondaryData book={book} navigation={navigation} />}
+            <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} mode={mode} />
+            <BookAuthor book={book} navigation={navigation} mode={mode} />
+            {!book.thumbnail && <SecondaryData book={book} navigation={navigation} mode={mode} />}
           </View>
         </Background>
 
-        {!!book.thumbnail && <SecondaryWithThumbnailData book={book} navigation={navigation} />}
+        {!!book.thumbnail && <SecondaryWithThumbnailData book={book} navigation={navigation} mode={mode} />}
       </Collapsible>
     );
   }),
 );
 
-function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scrollHeight }) {
+function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scrollHeight, mode }) {
+  const s = ds[mode];
   const headerStyle = React.useMemo(
     () =>
       headerHeight
@@ -122,7 +126,9 @@ function AvatarBackground({ children, bookTitle }) {
   return <View style={style}>{children}</View>;
 }
 
-function ThumbnailBackground({ children, book }) {
+function ThumbnailBackground({ children, book, mode }) {
+  const s = ds[mode];
+
   return (
     <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: getThumbnailUrl(book.thumbnail) }}>
       {children}
@@ -130,7 +136,8 @@ function ThumbnailBackground({ children, book }) {
   );
 }
 
-function Header({ bookTitle, navigation, bookId }) {
+function Header({ bookTitle, navigation, bookId, mode }) {
+  const s = ds[mode];
   const copyBookTitle = React.useCallback(() => {
     Clipboard.setString(bookTitle);
     ToastAndroid.show(t('details.copied'), ToastAndroid.SHORT);
@@ -146,7 +153,8 @@ function Header({ bookTitle, navigation, bookId }) {
   );
 }
 
-function BookAuthor({ book, navigation }) {
+function BookAuthor({ book, navigation, mode }) {
+  const s = ds[mode];
   const searchAuthor = React.useCallback(() => navigation.push('Search', { query: book.author }), [book, navigation]);
 
   return (
@@ -158,7 +166,8 @@ function BookAuthor({ book, navigation }) {
   );
 }
 
-function SecondaryData({ book, navigation }) {
+function SecondaryData({ book, navigation, mode }) {
+  const s = ds[mode];
   const openChangeStatus = React.useCallback(() => navigation.navigate('/modal/change-status', { book }), [
     book,
     navigation,
@@ -171,7 +180,8 @@ function SecondaryData({ book, navigation }) {
   );
 }
 
-function SecondaryWithThumbnailData({ book, navigation }) {
+function SecondaryWithThumbnailData({ book, navigation, mode }) {
+  const s = ds[mode];
   const openChangeStatus = React.useCallback(() => navigation.navigate('/modal/change-status', { book }), [
     book,
     navigation,
@@ -217,7 +227,7 @@ function SecondaryWithThumbnailData({ book, navigation }) {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   scroll: {
     flex: 1,
   } as ViewStyle,
@@ -226,14 +236,14 @@ const s = StyleSheet.create({
     alignItems: 'stretch',
   } as ViewStyle,
   collapsible: {
-    backgroundColor: 'white',
+    backgroundColor: dynamicColor.Background,
     overflow: 'hidden',
   } as ViewStyle,
   tabbar: {
     overflow: 'hidden',
     paddingBottom: 2,
     zIndex: 5,
-    backgroundColor: 'white',
+    backgroundColor: dynamicColor.Background,
   } as ViewStyle,
   imageBackground: {
     width: '100%',
@@ -261,19 +271,19 @@ const s = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderWidth: 5,
-    borderColor: 'white',
+    backgroundColor: dynamicColor.Background,
   } as ImageStyle,
   titleWrapper: {
     flex: 1,
   } as ViewStyle,
   title: {
-    color: color.PrimaryTextInverse,
+    color: dynamicColor.PrimaryTextInverse,
     fontSize: 24,
     lineHeight: 30,
     fontFamily: 'sans-serif-medium',
   } as TextStyle,
   author: {
-    color: color.PrimaryTextInverse,
+    color: dynamicColor.PrimaryTextInverse,
     fontSize: 24,
     lineHeight: 26,
     fontFamily: 'sans-serif-light',
@@ -284,7 +294,7 @@ const s = StyleSheet.create({
     flex: 1,
   } as ViewStyle,
   secondary: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 18,
     marginTop: 15,
     lineHeight: 20,
@@ -297,11 +307,11 @@ const s = StyleSheet.create({
     alignSelf: 'flex-start',
   } as ViewStyle,
   blackRating: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 18,
   } as TextStyle,
   whiteRating: {
-    color: color.PrimaryTextInverse,
+    color: dynamicColor.PrimaryTextInverse,
     fontSize: 18,
   } as TextStyle,
   header: {

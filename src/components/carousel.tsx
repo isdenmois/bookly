@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { ScrollView, View, StyleSheet, ViewStyle } from 'react-native';
-import { color } from 'types/colors';
+import { color, dark } from 'types/colors';
+import { DynamicStyleSheet, DynamicValue, useDynamicValue } from 'react-native-dynamic';
 
 const BUBLE_SIZE = 10;
 
@@ -13,6 +14,7 @@ export function Carousel({ children, width }: Props) {
   const [offset, setOffset] = useState(0);
   const style: ViewStyle = useMemo(() => ({ width, overflow: 'hidden' }), [width]);
   const onScroll = useCallback(e => setOffset(e.nativeEvent.contentOffset.x), []);
+  const ds = useDynamicValue(dynamicStyles);
 
   if (children?.length < 2) {
     return children;
@@ -38,7 +40,7 @@ export function Carousel({ children, width }: Props) {
 
       <View style={s.bubbles}>
         {children.map((c, i) => (
-          <View key={i} style={isFilled(width, offset, i) ? s.filled : s.empty} />
+          <View key={i} style={isFilled(width, offset, i) ? ds.filled : ds.empty} />
         ))}
       </View>
     </View>
@@ -55,20 +57,23 @@ const s = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 5,
   } as ViewStyle,
+});
+
+const dynamicStyles = new DynamicStyleSheet({
   empty: {
     width: BUBLE_SIZE,
     height: BUBLE_SIZE,
-    backgroundColor: color.Border,
+    backgroundColor: new DynamicValue(color.Border, dark.Border),
     borderRadius: 15,
     alignSelf: 'center',
     marginLeft: 1,
-  } as ViewStyle,
+  },
   filled: {
     width: BUBLE_SIZE,
     height: BUBLE_SIZE,
-    backgroundColor: color.Primary,
+    backgroundColor: new DynamicValue(color.Primary, dark.Primary),
     borderRadius: 15,
     alignSelf: 'center',
     marginLeft: 1,
-  } as ViewStyle,
+  },
 });

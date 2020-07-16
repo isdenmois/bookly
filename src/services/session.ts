@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { action, observable } from 'mobx';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Mode } from 'react-native-dynamic';
 
 export type Setting = typeof SETTINGS_FIELDS[number];
 
@@ -22,6 +23,7 @@ const SETTINGS_FIELDS = <const>[
   'paper',
   'persistState',
   'topRate',
+  'mode',
 ];
 const INITIAL_SETTINGS: any = {
   totalBooks: INITIAL_BOOKS_COUNT,
@@ -41,6 +43,7 @@ export class Session {
   @observable persistState: boolean = false;
   @observable topRate: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
+  @observable mode: Mode = null;
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;
 

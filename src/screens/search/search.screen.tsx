@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { StyleSheet, View, ViewStyle, TextStyle, Platform } from 'react-native';
+import { View, ViewStyle, TextStyle, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { api } from 'services';
 import Book from 'store/book';
-import { BookItem, Button, Fetcher, SearchBar } from 'components';
+import { BookItem, Button, Fetcher, SearchBar, Screen } from 'components';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -28,6 +29,8 @@ export const livelib = 'LiveLib';
 
 @withNavigationProps()
 export class SearchScreen extends React.Component<Props, State> {
+  static contextType = ColorSchemeContext;
+
   state: State = {
     q: this.props.query,
     query: this.props.query,
@@ -36,9 +39,11 @@ export class SearchScreen extends React.Component<Props, State> {
 
   render() {
     const apiProp = this.state.source === fantlab ? api.searchBooks : api.lBooksSearch;
+    const s = ds[this.context];
+    const color = getColor(this.context);
 
     return (
-      <View style={s.container}>
+      <Screen>
         <SearchBar
           style={s.header}
           value={this.state.query}
@@ -67,7 +72,7 @@ export class SearchScreen extends React.Component<Props, State> {
             textStyle={s.buttonText}
           />
         </View>
-      </View>
+      </Screen>
     );
   }
 
@@ -119,12 +124,7 @@ function isEqual(a: string, b: string, withStartsWith: boolean) {
   return a === b;
 }
 
-const s = StyleSheet.create({
-  container: {
-    backgroundColor: color.Background,
-    flexDirection: 'column',
-    flex: 1,
-  } as ViewStyle,
+const ds = new DynamicStyleSheet({
   header: {
     marginVertical: 10,
     marginHorizontal: 10,
@@ -141,7 +141,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   button: {
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.SearchBackground,
     ...Platform.select({
       android: {
         elevation: 3,
@@ -152,6 +152,6 @@ const s = StyleSheet.create({
     }),
   } as ViewStyle,
   buttonText: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
 });

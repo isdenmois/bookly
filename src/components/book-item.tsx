@@ -3,12 +3,13 @@ import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextSt
 import withObservables from '@nozbe/with-observables';
 import { of } from 'rxjs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { getColor, dynamicColor } from 'types/colors';
 import { navigation } from 'services';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book, { BookData } from 'store/book';
 import { formatDate } from 'utils/date';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
 const NEXT_STATUSES = {
   [BOOK_STATUSES.WISH]: BOOK_STATUSES.NOW,
@@ -23,9 +24,9 @@ const STATUS_ICONS = {
 };
 
 const STATUS_COLORS = {
-  bookmark: color.Primary,
-  flag: color.Secondary,
-  star: color.Secondary,
+  bookmark: 'Primary',
+  flag: 'Secondary',
+  star: 'Secondary',
 };
 
 interface Props {
@@ -42,6 +43,8 @@ export const withBook: Function = withObservables(['book'], ({ book }: Props) =>
 
 @withBook
 export class BookItem extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   get nextStatus() {
     if (this.props.nextStatus) {
       return this.props.nextStatus;
@@ -54,8 +57,10 @@ export class BookItem extends React.Component<Props> {
     const book = this.props.book;
     const nextStatus = this.nextStatus;
     const statusIcon = book.status === BOOK_STATUSES.READ ? 'star' : STATUS_ICONS[nextStatus];
-    const statusColor = STATUS_COLORS[statusIcon];
     const cache = this.props.cacheThumbnail;
+    const s = ds[this.context];
+    const color = getColor(this.context);
+    const statusColor = color[STATUS_COLORS[statusIcon]];
 
     return (
       <View style={s.container}>
@@ -96,14 +101,14 @@ export class BookItem extends React.Component<Props> {
     navigation.navigate('/modal/change-status', { book, status });
   };
 }
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     marginTop: 15,
   } as ViewStyle,
   thumbnailView: {
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.BookItem,
     elevation: 4,
     borderRadius: 5,
     borderBottomRightRadius: 0,
@@ -125,7 +130,7 @@ const s = StyleSheet.create({
     paddingLeft: 25,
     borderBottomRightRadius: 5,
     borderTopRightRadius: 5,
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.BookItem,
     elevation: 4,
     flex: 1,
   } as ViewStyle,
@@ -142,23 +147,23 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 5,
     paddingVertical: 5,
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.BookItem,
   } as ViewStyle,
   iconText: {
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     marginLeft: 5,
   } as TextStyle,
   title: {
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
   author: {
     fontSize: 12,
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
   } as TextStyle,
   date: {
     fontSize: 10,
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
   } as TextStyle,
 });

@@ -1,14 +1,18 @@
 package com.bookly;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.content.res.Configuration;
+import android.view.View;
+import android.view.Window;
 
-import com.facebook.react.ReactFragmentActivity;
+import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import org.devio.rn.splashscreen.SplashScreen;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
-public class MainActivity extends ReactFragmentActivity {
+public class MainActivity extends ReactActivity {
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
@@ -40,5 +44,11 @@ public class MainActivity extends ReactFragmentActivity {
     protected void onPause() {
         SplashScreen.hide(this);
         super.onPause();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getReactInstanceManager().onConfigurationChanged(this, newConfig);
     }
 }

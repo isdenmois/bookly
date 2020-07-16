@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native';
-import { color } from 'types/colors';
+import { Text, View, ViewStyle } from 'react-native';
+import { light, dark } from 'types/colors';
 import { TextXL } from 'components/text';
+import { DynamicStyleSheet, useDynamicValue, DynamicValue } from 'react-native-dynamic';
 
 interface Props {
   value: string | number;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export function Counter(props: Props) {
+  const s = useDynamicValue(ds);
+
   return (
     <View style={s.container}>
       <TextXL style={s.value} testID={props.testID}>
@@ -20,19 +23,19 @@ export function Counter(props: Props) {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'column',
     justifyContent: 'center',
   } as ViewStyle,
   value: {
-    color: color.PrimaryText,
+    color: new DynamicValue(light.PrimaryText, dark.PrimaryText),
     textAlign: 'center',
     marginBottom: 5,
     fontWeight: 'bold',
-  } as TextStyle,
+  },
   label: {
-    color: color.PrimaryText,
+    color: new DynamicValue(light.PrimaryText, dark.PrimaryText),
     fontSize: 14,
-  } as TextStyle,
+  },
 });

@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import { Text, View, ToastAndroid, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { Text, View, ToastAndroid, TextStyle, ViewStyle } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import Book from 'store/book';
 import { formatDate } from 'utils/date';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { database } from 'store';
 import { LiveLibBook } from 'services/api/livelib/book';
 import { hasUpdates } from 'utils/has-updates';
 import { BookDescriptionLine, ViewLine, ViewLineModelRemove, ViewLineAction } from '../components/book-details-lines';
 import { withScroll } from './tab';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   book: Book & LiveLibBook;
   isExist: boolean;
   navigation: NavigationStackProp;
   fantlabId: string;
+  mode: string;
 }
 
-const paths = ['book', 'book.status', 'book.paper'];
+const paths = ['book', 'book.status', 'book.paper', 'mode'];
 
 @withScroll
 export class LivelibTab extends Component<Props> {
@@ -34,23 +36,25 @@ export class LivelibTab extends Component<Props> {
   }
 
   render() {
-    const { book, isExist } = this.props;
+    const { book, isExist, mode } = this.props;
     const fantlabId = !!this.props.fantlabId;
     const hasPaper = book.paper;
 
     return (
       <View>
-        {!book.thumbnail && !!book.avgRating && <ViewLine title='Средняя оценка' value={book.avgRating} />}
-        {!!book.series && <ViewLine title='Серия' value={book.series} />}
-        {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
-        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={this.readDate} />}
-        {!!book.tags && <ViewLine title='Теги' value={book.tags} />}
+        {!book.thumbnail && !!book.avgRating && <ViewLine title='Средняя оценка' value={book.avgRating} mode={mode} />}
+        {!!book.series && <ViewLine title='Серия' value={book.series} mode={mode} />}
+        {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} mode={mode} />}
+        {book.status === BOOK_STATUSES.READ && <ViewLine title='Дата прочтения' value={this.readDate} mode={mode} />}
+        {!!book.tags && <ViewLine title='Теги' value={book.tags} mode={mode} />}
         {!!book.cycles?.length && this.renderCycles()}
-        {!!book.description && <BookDescriptionLine description={book.description} />}
-        {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} />}
-        {isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} />}
-        {isExist && <ViewLineAction title={hasPaper ? 'Есть в бумаге' : 'Нет в бумаге'} onPress={this.togglePaper} />}
-        {isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' />}
+        {!!book.description && <BookDescriptionLine description={book.description} mode={mode} />}
+        {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} mode={mode} />}
+        {isExist && <ViewLineAction title='Редактировать название' onPress={this.openEditModal} mode={mode} />}
+        {isExist && (
+          <ViewLineAction title={hasPaper ? 'Есть в бумаге' : 'Нет в бумаге'} onPress={this.togglePaper} mode={mode} />
+        )}
+        {isExist && <ViewLineModelRemove model={book} warning='Удалить книгу из коллекции' mode={mode} />}
       </View>
     );
   }
@@ -76,36 +80,28 @@ export class LivelibTab extends Component<Props> {
   };
 
   renderCycles() {
+    const mode = this.props.mode;
+    const s = ds[mode];
+
     return (
       <View style={s.parentBooks}>
         <Text style={s.header}>ВХОДИТ В</Text>
 
         {this.props.book.cycles.map(book => (
-          <ViewLine key={book.id} title={book.type} value={book.title} />
+          <ViewLine key={book.id} title={book.type} value={book.title} mode={mode} />
         ))}
       </View>
     );
   }
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   header: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 14,
     marginBottom: 10,
   } as TextStyle,
   parentBooks: {
     marginTop: 10,
   } as ViewStyle,
-  classification: {
-    marginBottom: 20,
-  } as ViewStyle,
-  title: {
-    color: color.SecondaryText,
-    fontSize: 12,
-  } as TextStyle,
-  value: {
-    color: color.PrimaryText,
-    fontSize: 18,
-  } as TextStyle,
 });

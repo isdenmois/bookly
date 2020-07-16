@@ -1,15 +1,16 @@
 import React from 'react';
 import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { Animated, StyleSheet, Dimensions, ViewStyle, TextStyle } from 'react-native';
+import { Animated, Dimensions, ViewStyle, TextStyle } from 'react-native';
 import { TabView, TabBar, Route } from 'react-native-tab-view';
 import { Scene } from 'react-native-tab-view/src/types';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
 import { withBook } from 'components/book-item';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { BookMainInfo } from './book-main-info';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   book: Book & BookExtended;
@@ -31,6 +32,8 @@ const HEADER_HEIGHT = 110;
 
 @withBook
 export class BookDetailsTabs extends React.Component<Props, State> {
+  static contextType = ColorSchemeContext;
+
   state: State = {
     index: 0,
     routes: this.props.tabs,
@@ -83,29 +86,35 @@ export class BookDetailsTabs extends React.Component<Props, State> {
     });
   };
 
-  renderTabBar = props => (
-    <BookMainInfo
-      book={this.props.book as any}
-      scrollY={this.scrollY}
-      headerHeight={this.state.headerHeight}
-      scrollHeight={HEADER_HEIGHT}
-      navigation={this.props.navigation}
-      onLayout={this.setHeaderHeight}
-      status={this.props.book.status}
-    >
-      <TabBar
-        {...props}
-        scrollEnabled
-        getLabelText={getLabelText}
-        activeColor={color.PrimaryText}
-        inactiveColor={color.PrimaryText}
-        indicatorStyle={s.indicator}
-        labelStyle={s.label}
-        tabStyle={s.tabBar}
-        style={s.tab}
-      />
-    </BookMainInfo>
-  );
+  renderTabBar = props => {
+    const s = ds[this.context];
+    const color = dynamicColor.PrimaryText[this.context];
+
+    return (
+      <BookMainInfo
+        book={this.props.book as any}
+        scrollY={this.scrollY}
+        headerHeight={this.state.headerHeight}
+        scrollHeight={HEADER_HEIGHT}
+        navigation={this.props.navigation}
+        onLayout={this.setHeaderHeight}
+        status={this.props.book.status}
+        mode={this.context}
+      >
+        <TabBar
+          {...props}
+          scrollEnabled
+          getLabelText={getLabelText}
+          activeColor={color}
+          inactiveColor={color}
+          indicatorStyle={s.indicator}
+          labelStyle={s.label}
+          tabStyle={s.tabBar}
+          style={s.tab}
+        />
+      </BookMainInfo>
+    );
+  };
 
   renderScene = ({ route }: Scene<Route & { component: any }>) => {
     const Component = route.component;
@@ -122,6 +131,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
         isExist={this.props.isExist}
         fantlabId={this.props.fantlabId}
         lid={this.props.book.lid}
+        mode={this.context}
         ref={ctrl => (this.tabCtrls[route.key] = ctrl)}
       />
     );
@@ -140,9 +150,9 @@ function getLabelText(scene: Scene<Route>) {
   return scene.route.title;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   indicator: {
-    backgroundColor: color.Primary,
+    backgroundColor: dynamicColor.Primary,
   } as ViewStyle,
   label: {
     fontSize: 18,
@@ -153,7 +163,7 @@ const s = StyleSheet.create({
     width: 'auto',
   } as ViewStyle,
   tab: {
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.Background,
     zIndex: 1,
   } as ViewStyle,
 });

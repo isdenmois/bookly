@@ -2,11 +2,12 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { color } from 'types/colors';
+import { light, dark } from 'types/colors';
 import { BookData } from 'store/book';
 import { Button } from 'components/button';
 import { Rating } from 'components/rating';
 import { t } from 'services';
+import { useDynamicValue, DynamicStyleSheet, DynamicValue, useDarkModeContext } from 'react-native-dynamic';
 
 interface Props {
   openChangeStatus: () => void;
@@ -19,6 +20,9 @@ interface Props {
 
 export function ReadButton(props: Props) {
   const status = props.book.status;
+  const mode = useDarkModeContext();
+  const s = ds[mode];
+  const color = mode === 'dark' ? dark : light;
 
   if (status === BOOK_STATUSES.NOW) {
     return (
@@ -55,26 +59,26 @@ export function ReadButton(props: Props) {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   rating: {
     marginTop: 10,
   } as ViewStyle,
   orange: {
-    backgroundColor: color.OrangeBackground,
+    backgroundColor: new DynamicValue(light.OrangeBackground, dark.OrangeBackground),
     marginTop: 10,
-  } as ViewStyle,
+  },
   textOrange: {
     fontSize: 18,
-    color: color.Secondary,
-  } as TextStyle,
+    color: new DynamicValue(light.Secondary, dark.Secondary),
+  },
   green: {
-    backgroundColor: color.Background,
-    borderColor: color.Primary,
+    backgroundColor: new DynamicValue(light.Background, dark.Background),
+    color: new DynamicValue(light.Primary, dark.Primary),
     borderWidth: 1,
     marginTop: 10,
-  } as ViewStyle,
+  },
   textGreen: {
     fontSize: 18,
-    color: color.Primary,
-  } as TextStyle,
+    color: new DynamicValue(light.Primary, dark.Primary),
+  },
 });

@@ -1,9 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import { Text, StyleSheet, TextStyle } from 'react-native';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { ListItem } from 'components';
 import { SelectList } from './select-list';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   title: string;
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export class EditableListItem extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   state = { edit: false };
 
   fields = this.props.labelKey ? null : _.map(this.props.fields, (label, id) => ({ id, label }));
@@ -33,6 +36,7 @@ export class EditableListItem extends React.Component<Props> {
     const { title, value, clearable, labelKey } = this.props;
     const options = this.fields || this.props.fields;
     const edit = this.state.edit;
+    const s = ds[this.context];
 
     return (
       <ListItem
@@ -69,10 +73,10 @@ export class EditableListItem extends React.Component<Props> {
   startEdit = () => this.setState({ edit: true });
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   value: {
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     flex: 1,
     textAlign: 'right',
   } as TextStyle,

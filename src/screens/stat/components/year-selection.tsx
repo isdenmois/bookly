@@ -1,7 +1,8 @@
 import React, { memo, useMemo } from 'react';
 import { Text, TouchableOpacity, ScrollView, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 import classnames from 'rn-classnames';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { getCurrentYear } from 'utils/date';
 import { t } from 'services';
 
@@ -13,6 +14,8 @@ interface Props {
 
 export const YearSelection = memo(({ minYear, year, onChange }: Props) => {
   const years = useMemo(() => createYears(minYear), [minYear]);
+  const s = useDynamicValue(ds);
+  const cn = classnames(s);
 
   return (
     <ScrollView horizontal style={s.container} contentContainerStyle={s.scroll}>
@@ -40,7 +43,7 @@ function createYears(min) {
   return result;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     marginTop: 15,
     marginHorizontal: 15,
@@ -51,7 +54,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   label: {
     fontSize: 18,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     marginRight: 20,
     paddingVertical: 2,
   } as TextStyle,
@@ -61,16 +64,15 @@ const s = StyleSheet.create({
   } as ViewStyle,
   selected: {
     borderRadius: 15,
-    backgroundColor: color.Primary,
+    backgroundColor: dynamicColor.Primary,
   },
   text: {
     fontSize: 18,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     paddingHorizontal: 7,
     paddingVertical: 2,
   } as TextStyle,
   textSelected: {
-    color: color.PrimaryTextInverse,
+    color: dynamicColor.PrimaryTextInverse,
   } as TextStyle,
 });
-const cn = classnames(s);

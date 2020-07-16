@@ -1,8 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import { color } from 'types/colors';
+import { getColor } from 'types/colors';
 import { TouchIcon } from 'components';
 import { EditableListItem } from './editable-list-item';
+import { ColorSchemeContext } from 'react-native-dynamic';
 
 const SORT_LABELS = {
   date: 'дата',
@@ -21,9 +22,12 @@ interface Props {
 }
 
 export class BookListSort extends React.PureComponent<Props> {
+  static contextType = ColorSchemeContext;
+
   render() {
     const fields: any = _.pick(SORT_LABELS, this.props.fields);
     const title = this.props.title || 'Сортировка';
+    const color = getColor(this.context);
 
     return (
       <EditableListItem title={title} fields={fields} value={this.props.value.field} onChange={this.setField}>

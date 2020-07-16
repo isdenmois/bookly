@@ -3,7 +3,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  StyleSheet,
   ViewStyle,
   TextStyle,
   Alert,
@@ -12,16 +11,19 @@ import {
   Platform,
 } from 'react-native';
 import { Model } from '@nozbe/watermelondb';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { database } from 'store';
 import { t } from 'services';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
+  mode: string;
   description: string;
 }
 
 interface ViewListProps {
   title: string | number;
+  mode: string;
   value?: any;
 }
 
@@ -31,11 +33,13 @@ interface ViewListTouchableProps extends ViewListProps {
 }
 
 interface ViewLineModelRemoveProps {
+  mode: string;
   warning: string;
   model: Model;
 }
 
 interface ViewLineActionProps {
+  mode: string;
   title: string;
   onPress?: () => void;
   onLongPress?: () => void;
@@ -43,31 +47,44 @@ interface ViewLineActionProps {
 
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
-export const BookDescriptionLine = (props: Props) => (
-  <View style={s.descriptionRow}>
-    <Text style={s.headerTitle}>{t('details.desc')}</Text>
-    <Text style={s.value}>{props.description}</Text>
-  </View>
-);
+export const BookDescriptionLine = (props: Props) => {
+  const s = ds[props.mode];
 
-export const ViewLine = (props: ViewListProps) => (
-  <View style={s.row}>
-    <Text style={s.title}>{props.title}</Text>
-    <Text style={s.value}>{props.value}</Text>
-  </View>
-);
+  return (
+    <View style={s.descriptionRow}>
+      <Text style={s.headerTitle}>{t('details.desc')}</Text>
+      <Text style={s.value}>{props.description}</Text>
+    </View>
+  );
+};
 
-export const ViewLineTouchable = (props: ViewListTouchableProps) => (
-  <View style={s.row}>
-    <Text style={s.title}>{props.title}</Text>
-    <TouchableOpacity onPress={props.onPress} onLongPress={props.onLongPress} style={s.value} hitSlop={hitSlop}>
+export const ViewLine = (props: ViewListProps) => {
+  const s = ds[props.mode];
+
+  return (
+    <View style={s.row}>
+      <Text style={s.title}>{props.title}</Text>
       <Text style={s.value}>{props.value}</Text>
-    </TouchableOpacity>
-  </View>
-);
+    </View>
+  );
+};
+
+export const ViewLineTouchable = (props: ViewListTouchableProps) => {
+  const s = ds[props.mode];
+
+  return (
+    <View style={s.row}>
+      <Text style={s.title}>{props.title}</Text>
+      <TouchableOpacity onPress={props.onPress} onLongPress={props.onLongPress} style={s.value} hitSlop={hitSlop}>
+        <Text style={s.value}>{props.value}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
   const onPress = React.useCallback(() => confirmRemoveModel(props.model, props.warning), [props.model, props.warning]);
+  const s = ds[props.mode];
 
   return (
     <View style={s.row}>
@@ -78,7 +95,9 @@ export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
   );
 }
 
-export function ViewLineAction({ title, onPress, onLongPress }: ViewLineActionProps) {
+export function ViewLineAction({ title, mode, onPress, onLongPress }: ViewLineActionProps) {
+  const s = ds[mode];
+
   return (
     <View style={s.row}>
       <TouchableOpacity onPress={onPress} onLongPress={onLongPress} style={s.value} hitSlop={hitSlop}>
@@ -115,7 +134,7 @@ function removeModel(model: any) {
     .then(() => ToastAndroid.show('Удалено из коллекции', ToastAndroid.LONG));
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   row: {
     marginBottom: 20,
   } as ViewStyle,
@@ -124,24 +143,24 @@ const s = StyleSheet.create({
     marginBottom: 20,
   } as ViewStyle,
   title: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 12,
   } as TextStyle,
   headerTitle: {
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     fontSize: 14,
     marginBottom: 10,
   } as TextStyle,
   value: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontSize: 18,
   } as TextStyle,
   dangerousText: {
-    color: color.ErrorText,
+    color: dynamicColor.ErrorText,
     fontSize: 18,
   } as TextStyle,
   actionText: {
-    color: color.BlueIcon,
+    color: dynamicColor.BlueIcon,
     fontSize: 18,
   } as TextStyle,
 });

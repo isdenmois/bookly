@@ -1,14 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, TextStyle, ViewStyle, Text, TouchableOpacity, Linking } from 'react-native';
+import { View, TextStyle, ViewStyle, Text, TouchableOpacity, Linking } from 'react-native';
 import pluralize from 'pluralize-ru';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { Thumbnail } from 'components';
 import { thousandsSeparator } from 'utils/number-format';
 import { Edition } from 'services/api/fantlab/editions';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   edition: Edition;
   translators: string[];
+  mode: string;
 }
 
 export class EditionCard extends React.PureComponent<Props> {
@@ -38,6 +40,7 @@ export class EditionCard extends React.PureComponent<Props> {
 
   render() {
     const edition = this.props.edition;
+    const s = ds[this.props.mode];
 
     return (
       <View style={s.card}>
@@ -63,7 +66,7 @@ export class EditionCard extends React.PureComponent<Props> {
   openEditionPage = () => Linking.openURL(`https:${this.props.edition.url}`);
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   card: {
     flexDirection: 'row',
     marginBottom: 20,
@@ -76,7 +79,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   title: {
     fontFamily: 'sans-serif-medium',
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     marginBottom: 10,
   } as TextStyle,
   thumbnail: {
@@ -85,7 +88,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   description: {
     fontSize: 14,
-    color: color.SecondaryText,
+    color: dynamicColor.SecondaryText,
     marginBottom: 10,
   } as TextStyle,
   yearBlock: {
