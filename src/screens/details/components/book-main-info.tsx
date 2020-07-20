@@ -13,7 +13,7 @@ import {
   Linking,
 } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText, lightText } from 'types/colors';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { ReadButton, Thumbnail } from 'components';
@@ -280,15 +280,15 @@ const ds = new DynamicStyleSheet({
     color: dynamicColor.PrimaryTextInverse,
     fontSize: 24,
     lineHeight: 30,
-    fontFamily: 'sans-serif-medium',
+    ...boldText,
   } as TextStyle,
   author: {
     color: dynamicColor.PrimaryTextInverse,
     fontSize: 24,
     lineHeight: 26,
-    fontFamily: 'sans-serif-light',
     paddingLeft: 52,
     paddingRight: 20,
+    ...lightText,
   } as TextStyle,
   secondaryBlock: {
     flex: 1,

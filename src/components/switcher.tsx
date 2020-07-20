@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import classnames from 'rn-classnames';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText } from 'types/colors';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 
 interface Option {
@@ -60,8 +60,8 @@ const ds = new DynamicStyleSheet({
   } as ViewStyle,
   text: {
     color: dynamicColor.Primary,
-    fontFamily: 'sans-serif-medium',
     fontSize: 13,
+    ...boldText,
   } as TextStyle,
   selectedText: {
     color: dynamicColor.PrimaryTextInverse,

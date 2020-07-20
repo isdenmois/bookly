@@ -7,7 +7,7 @@ import { FlatList, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } fr
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { database } from 'store';
-import { dynamicColor, getColor } from 'types/colors';
+import { dynamicColor, getColor, boldText, lightText } from 'types/colors';
 import Book from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { ListItem, Thumbnail } from 'components';
@@ -88,13 +88,13 @@ const ds = new DynamicStyleSheet({
   title: {
     fontSize: 16,
     color: dynamicColor.PrimaryText,
-    fontFamily: 'sans-serif-medium',
+    ...boldText,
   } as TextStyle,
   author: {
     color: dynamicColor.SecondaryText,
     fontSize: 16,
     marginTop: 5,
-    fontFamily: 'sans-serif-light',
+    ...lightText,
   } as TextStyle,
   emptyText: {
     width: '100%',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, lightText } from 'types/colors';
 import { api } from 'services';
 import { Fetcher, Thumbnail } from 'components';
 import { BookSimilar } from 'services/api/fantlab/similar';
@@ -72,7 +72,7 @@ const ds = new DynamicStyleSheet({
   } as TextStyle,
   author: {
     color: dynamicColor.SecondaryText,
-    fontFamily: 'sans-serif-light',
     fontSize: 18,
+    ...lightText,
   } as TextStyle,
 });

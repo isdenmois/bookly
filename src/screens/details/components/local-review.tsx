@@ -4,7 +4,7 @@ import { navigation, session } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
-import { dynamicColor, getColor } from 'types/colors';
+import { dynamicColor, getColor, boldText } from 'types/colors';
 import { ExpandableText, TouchIcon } from 'components';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 
@@ -53,10 +53,10 @@ const ds = new DynamicStyleSheet({
     borderRadius: 16,
   },
   user: {
-    fontFamily: 'sans-serif-medium',
     color: dynamicColor.PrimaryText,
     fontSize: 14,
     marginLeft: 10,
+    ...boldText,
   } as TextStyle,
   date: {
     color: dynamicColor.SecondaryText,

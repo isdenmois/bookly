@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Text, View, TouchableOpacity, ScrollView, FlatList, ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { Thumbnail, ScreenHeader, Screen } from 'components';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText, lightText } from 'types/colors';
 
 interface Props {}
 
@@ -134,7 +134,7 @@ const ds = new DynamicStyleSheet({
   topText: {
     fontSize: 20,
     color: dynamicColor.PrimaryText,
-    fontFamily: 'sans-serif-medium',
+    ...boldText,
   } as TextStyle,
   thumbnail: {
     borderRadius: 10,
@@ -142,15 +142,15 @@ const ds = new DynamicStyleSheet({
   title: {
     fontSize: 20,
     color: dynamicColor.PrimaryText,
-    fontFamily: 'sans-serif-medium',
     marginTop: 20,
     overflow: 'hidden',
+    ...boldText,
   } as TextStyle,
   author: {
     fontSize: 20,
     color: dynamicColor.PrimaryText,
-    fontFamily: 'sans-serif-light',
     marginTop: 10,
     overflow: 'hidden',
+    ...lightText,
   } as TextStyle,
 });

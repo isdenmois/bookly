@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextStyle, ViewStyle, Text, TouchableOpacity, Linking } from 'react-native';
 import pluralize from 'pluralize-ru';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText } from 'types/colors';
 import { Thumbnail } from 'components';
 import { thousandsSeparator } from 'utils/number-format';
 import { Edition } from 'services/api/fantlab/editions';
@@ -78,9 +78,9 @@ const ds = new DynamicStyleSheet({
     flex: 1,
   } as ViewStyle,
   title: {
-    fontFamily: 'sans-serif-medium',
     color: dynamicColor.PrimaryText,
     marginBottom: 10,
+    ...boldText,
   } as TextStyle,
   thumbnail: {
     marginRight: 20,

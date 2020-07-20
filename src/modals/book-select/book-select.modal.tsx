@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText } from 'types/colors';
 import Book from 'store/book';
 import { Dialog } from 'components';
 
@@ -71,6 +71,6 @@ const ds = new DynamicStyleSheet({
     color: dynamicColor.PrimaryTextInverse,
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'sans-serif-medium',
+    ...boldText,
   } as ViewStyle,
 });

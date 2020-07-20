@@ -4,7 +4,7 @@ import { Text, View, ViewStyle, TextStyle, Platform } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { api, session, t } from 'services';
-import { dynamicColor, getColor } from 'types/colors';
+import { dynamicColor, getColor, boldText } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import Book, { BookData, createBook } from 'store/book';
@@ -286,10 +286,10 @@ const ds = new DynamicStyleSheet({
   title: {
     color: dynamicColor.PrimaryText,
     fontSize: 20,
-    fontFamily: 'sans-serif-medium',
     alignSelf: 'center',
     flex: 1,
     marginLeft: 20,
+    ...boldText,
   } as TextStyle,
   list: {
     marginTop: 15,

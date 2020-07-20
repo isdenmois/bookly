@@ -1,4 +1,5 @@
 import { DynamicValue, useDarkModeContext } from 'react-native-dynamic';
+import { Platform } from 'react-native';
 
 export const color = {
   Black: '#000',
@@ -78,3 +79,21 @@ export function useColor() {
 
   return getColor(mode);
 }
+
+export const boldText: any = Platform.select({
+  web: {
+    fontWeight: 600,
+  },
+  default: {
+    fontFamily: 'sans-serif-medium',
+  },
+});
+
+export const lightText: any = Platform.select({
+  web: {
+    fontWeight: 300,
+  },
+  default: {
+    fontFamily: 'sans-serif-light',
+  },
+});

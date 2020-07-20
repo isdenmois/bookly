@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Text, View, ViewStyle, TextStyle } from 'react-native';
-import { useSColor, dynamicColor } from 'types/colors';
+import { useSColor, dynamicColor, boldText } from 'types/colors';
 import { SearchBar, TouchIcon } from 'components';
 import { t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
@@ -71,8 +71,8 @@ const ds = new DynamicStyleSheet({
   title: {
     flex: 1,
     fontSize: 20,
-    fontFamily: 'sans-serif-medium',
     color: dynamicColor.PrimaryText,
     paddingVertical: 12,
+    ...boldText,
   } as TextStyle,
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
+import { TouchableOpacity, View, ViewStyle, TextStyle, Platform } from 'react-native';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 import classnames from 'rn-classnames';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText } from 'types/colors';
 import { TextM } from 'components/text';
 
 interface Props {
@@ -64,9 +64,9 @@ const ds = new DynamicStyleSheet({
   } as ViewStyle,
   text: {
     color: dynamicColor.PrimaryTextInverse,
-    fontFamily: 'sans-serif-medium',
     textAlign: 'center',
     lineHeight: 19,
+    ...boldText,
   } as TextStyle,
   inversed: {
     color: dynamicColor.Primary,

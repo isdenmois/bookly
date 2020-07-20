@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Text, View, ViewStyle, TextStyle } from 'react-native';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText } from 'types/colors';
 import { t } from 'services';
 
 interface Props {
@@ -31,7 +31,7 @@ const ds = new DynamicStyleSheet({
   } as ViewStyle,
   text: {
     color: dynamicColor.PrimaryText,
-    fontFamily: 'sans-serif-medium',
     fontSize: 16,
+    ...boldText,
   } as TextStyle,
 });
