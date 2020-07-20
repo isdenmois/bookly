@@ -10,7 +10,6 @@ import {
   ImageStyle,
   ToastAndroid,
   Clipboard,
-  Linking,
 } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { dynamicColor, boldText, lightText } from 'types/colors';
@@ -25,6 +24,7 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookDetailsHeader } from './book-details-header';
 import { t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { openInTelegram } from 'screens/book-select/book-selector';
 
 interface Props {
   book: Book & BookExtended & LiveLibBook;
@@ -142,7 +142,7 @@ function Header({ bookTitle, navigation, bookId, mode }) {
     Clipboard.setString(bookTitle);
     ToastAndroid.show(t('details.copied'), ToastAndroid.SHORT);
   }, [bookTitle]);
-  const openTelegram = React.useCallback(() => Linking.openURL(`tg://share?text=${bookTitle}`), [bookTitle]);
+  const openTelegram = React.useCallback(() => openInTelegram(bookTitle), [bookTitle]);
 
   return (
     <BookDetailsHeader bookId={bookId} navigation={navigation}>

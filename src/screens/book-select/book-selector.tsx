@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import _ from 'lodash';
-import { Text, View, ViewStyle, StyleSheet, ImageStyle, TextStyle, Linking } from 'react-native';
+import { Text, View, ViewStyle, StyleSheet, ImageStyle, TextStyle, Linking, Platform } from 'react-native';
 import Book from 'store/book';
 import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, boldText, lightText } from 'types/colors';
 import { navigation, t } from 'services';
 import { database } from 'store';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
@@ -17,12 +17,18 @@ interface Props {
   books?: Book[];
 }
 
+export function openInTelegram(text) {
+  const action = Platform.OS === 'web' ? 'msg' : 'share';
+
+  Linking.openURL(`tg://${action}?text=${text}`);
+}
+
 function BookSelectorComponent({ books, openFilters }: Props) {
   const [index, setIndex] = useState(0);
   useEffect(() => setIndex(0), [books]);
   const list = useMemo(() => generate(books), [books]);
   const more = useCallback(() => setIndex(index < list.length - 1 ? index + 1 : 0), [index, list]);
-  const openTelegram = useCallback(() => Linking.openURL(`tg://share?text=${list[index].title}`), [list, index]);
+  const openTelegram = useCallback(() => openInTelegram(list[index].title), [list, index]);
   const openBook = useCallback(() => navigation.push('Details', { bookId: list[index].id }), [list, index]);
   const s = useDynamicValue(ds);
 
@@ -89,14 +95,14 @@ const ds = new DynamicStyleSheet({
   title: {
     fontSize: 20,
     color: dynamicColor.PrimaryText,
-    fontFamily: 'sans-serif-medium',
     marginTop: 20,
+    ...boldText,
   } as TextStyle,
   author: {
     fontSize: 20,
     color: dynamicColor.PrimaryText,
-    fontFamily: 'sans-serif-light',
     marginTop: 10,
+    ...lightText,
   } as TextStyle,
   buttons: {
     flexDirection: 'row',

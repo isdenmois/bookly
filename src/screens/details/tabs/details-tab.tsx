@@ -20,6 +20,7 @@ import {
 import { withScroll } from './tab';
 import { t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { openInTelegram } from 'screens/book-select/book-selector';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -230,7 +231,7 @@ export class DetailsTab extends React.Component<Props> {
     this.props.navigation.push('Editions', { editionIds, translators: editionTranslators });
   };
 
-  openTelegram = () => Linking.openURL(`tg://share?text=${this.props.book.originalTitle}`);
+  openTelegram = () => openInTelegram(this.props.book.originalTitle);
 
   openGenre = (ids: number[]) => Linking.openURL(`https://fantlab.ru/bygenre?${ids.map(i => `wg${i}=on`).join('&')}`);
 
