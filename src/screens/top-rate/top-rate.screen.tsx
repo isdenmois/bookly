@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  StyleSheet,
-  ImageStyle,
-  TextStyle,
-  ViewStyle,
-} from 'react-native';
-import { Thumbnail, ScreenHeader } from 'components';
-import { color } from 'types/colors';
+import { Text, View, TouchableOpacity, ScrollView, FlatList, ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+import { Thumbnail, ScreenHeader, Screen } from 'components';
+import { dynamicColor } from 'types/colors';
 
 interface Props {}
 
@@ -20,6 +11,8 @@ const SHORT_TOP = 3;
 const LONG_TOP = 5;
 
 export class TopRateScreen extends Component<Props> {
+  static contextType = ColorSchemeContext;
+
   books = _.shuffle(this.props.navigation.getParam('books'));
   state = {
     // longTop: this.books,
@@ -29,52 +22,56 @@ export class TopRateScreen extends Component<Props> {
   };
 
   render() {
+    const mode = this.context;
     if (!this.state.best) {
       return (
-        <View>
+        <Screen>
           <ScreenHeader title='Сравните' />
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            <BookMatch book={this.state.pair[0]} onSelect={this.matchA} />
-            <BookMatch book={this.state.pair[1]} onSelect={this.matchB} />
+            <BookMatch book={this.state.pair[0]} onSelect={this.matchA} mode={mode} />
+            <BookMatch book={this.state.pair[1]} onSelect={this.matchB} mode={mode} />
           </View>
-        </View>
+        </Screen>
       );
     }
 
     const { best, shortTop, longTop } = this.state;
+    const s = ds[this.context];
 
     return (
-      <ScrollView contentContainerStyle={s.top}>
+      <Screen>
         <ScreenHeader title='' />
 
-        <Text style={s.topText}>Лучшая книга</Text>
-        <BookItem book={best} width={150} height={250} />
+        <ScrollView contentContainerStyle={s.top}>
+          <Text style={s.topText}>Лучшая книга</Text>
+          <BookItem book={best} width={150} height={250} mode={mode} />
 
-        {shortTop?.length >= SHORT_TOP && (
-          <>
-            <Text style={s.topText}>ТОП-{SHORT_TOP}</Text>
-            <FlatList
-              horizontal
-              data={shortTop}
-              keyExtractor={b => b.id}
-              renderItem={({ item }) => <BookItem book={item} width={100} height={160} />}
-            />
-          </>
-        )}
+          {shortTop?.length >= SHORT_TOP && (
+            <>
+              <Text style={s.topText}>ТОП-{SHORT_TOP}</Text>
+              <FlatList
+                horizontal
+                data={shortTop}
+                keyExtractor={b => b.id}
+                renderItem={({ item }) => <BookItem book={item} width={100} height={160} mode={mode} />}
+              />
+            </>
+          )}
 
-        {longTop?.length >= LONG_TOP && (
-          <>
-            <Text style={s.topText}>ТОП-{LONG_TOP}</Text>
-            <FlatList
-              horizontal
-              data={longTop}
-              keyExtractor={b => b.id}
-              renderItem={({ item }) => <BookItem book={item} width={65} height={100} />}
-            />
-          </>
-        )}
-      </ScrollView>
+          {longTop?.length >= LONG_TOP && (
+            <>
+              <Text style={s.topText}>ТОП-{LONG_TOP}</Text>
+              <FlatList
+                horizontal
+                data={longTop}
+                keyExtractor={b => b.id}
+                renderItem={({ item }) => <BookItem book={item} width={65} height={100} mode={mode} />}
+              />
+            </>
+          )}
+        </ScrollView>
+      </Screen>
     );
   }
 
@@ -98,15 +95,17 @@ export class TopRateScreen extends Component<Props> {
   }
 }
 
-function BookMatch({ book, onSelect }) {
+function BookMatch({ book, mode, onSelect }) {
   return (
     <TouchableOpacity onPress={onSelect}>
-      <BookItem book={book} width={150} height={250} />
+      <BookItem book={book} width={150} height={250} mode={mode} />
     </TouchableOpacity>
   );
 }
 
-function BookItem({ book, width, height }) {
+function BookItem({ book, width, height, mode }) {
+  const s = ds[mode];
+
   return (
     <View style={{ overflow: 'hidden', width }}>
       <Thumbnail style={s.thumbnail} width={width} height={height} title={book.title} url={book.thumbnail} cache />
@@ -128,13 +127,13 @@ function getPair(array): any[] {
   return [array[index], array[index + 1]];
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   top: {
     alignItems: 'center',
   } as ViewStyle,
   topText: {
     fontSize: 20,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontFamily: 'sans-serif-medium',
   } as TextStyle,
   thumbnail: {
@@ -142,14 +141,14 @@ const s = StyleSheet.create({
   } as ImageStyle,
   title: {
     fontSize: 20,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontFamily: 'sans-serif-medium',
     marginTop: 20,
     overflow: 'hidden',
   } as TextStyle,
   author: {
     fontSize: 20,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     fontFamily: 'sans-serif-light',
     marginTop: 10,
     overflow: 'hidden',

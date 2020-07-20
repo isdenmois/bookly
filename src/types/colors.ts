@@ -8,6 +8,7 @@ export const color = {
   PrimaryTextInverse: '#FFF',
   SecondaryText: '#757575',
   ErrorText: '#F44336',
+  DisabledText: '#B8B8B8',
 
   Background: '#FFFFFF',
   DialogBackground: '#FFF',
@@ -35,6 +36,7 @@ export const dark = {
   PrimaryTextInverse: '#FAFAFB',
   SecondaryText: '#898993',
   ErrorText: '#F44336',
+  DisabledText: '#47474D',
 
   Background: '#13131A',
   DialogBackground: '#1C1C24',

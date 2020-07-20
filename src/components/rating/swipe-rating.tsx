@@ -1,8 +1,9 @@
 import React from 'react';
 import { times } from 'rambdax';
-import { View, StyleSheet, ViewStyle, TextStyle, PanResponder } from 'react-native';
+import { View, ViewStyle, TextStyle, PanResponder } from 'react-native';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import { TextM } from 'components/text';
 
 const SIZE = 10;
@@ -53,6 +54,7 @@ export function formatRating(rating: any): string {
 }
 
 export class SwipeRating extends React.PureComponent<SwipeRatingProps, SwiperRatingState> {
+  static contextType = ColorSchemeContext;
   static defaultProps: Partial<SwipeRatingProps> = { size: SIZE };
 
   static getDerivedStateFromProps(nextProps: SwipeRatingProps, prevState: SwiperRatingState) {
@@ -92,7 +94,7 @@ export class SwipeRating extends React.PureComponent<SwipeRatingProps, SwiperRat
     <Icon
       key={index}
       onLayout={index === 0 ? this.setStarWidth : null}
-      style={s.star}
+      style={ds[this.context].star}
       name='star'
       size={22}
       solid={index >= this.state.from && index <= this.state.to}
@@ -133,6 +135,7 @@ export class SwipeRating extends React.PureComponent<SwipeRatingProps, SwiperRat
 
   render() {
     const { size, style } = this.props;
+    const s = ds[this.context];
 
     return (
       <View style={[s.container, style]}>
@@ -150,23 +153,23 @@ export class SwipeRating extends React.PureComponent<SwipeRatingProps, SwiperRat
     this.setLayout();
   };
 
-  setLayout = () => this.marker && this.marker.measure((x, y, width, height, pageX) => (this.left = pageX));
+  setLayout = () => this.marker?.measure?.((x, y, width, height, pageX) => (this.left = pageX));
   setStarWidth = ev => (this.width = ev.nativeEvent.layout.width);
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
   } as ViewStyle,
   star: {
-    color: color.Stars,
+    color: dynamicColor.Stars,
   } as TextStyle,
   stars: {
     flexDirection: 'row',
   } as ViewStyle,
   text: {
     width: 50,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
 });

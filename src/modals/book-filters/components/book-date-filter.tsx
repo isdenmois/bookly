@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, ViewStyle, View } from 'react-native';
 import { Calendar, DateObject } from 'react-native-calendars';
+import { ColorSchemeContext } from 'react-native-dynamic';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { observer } from 'mobx-react';
-import { color } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { TouchIcon } from 'components';
 import { OpenableListItem } from './openable-list-item';
@@ -21,7 +22,6 @@ interface State {
 }
 
 const HALF_DAY = 12 * 60 * 60 * 1000;
-const MARKED_DAY = { startingDay: true, color: color.Primary };
 
 export function formatPeriod(period) {
   const value: any = period || {};
@@ -32,6 +32,7 @@ export function formatPeriod(period) {
 
 @observer
 export class BookDateFilter extends React.PureComponent<Props, State> {
+  static contextType = ColorSchemeContext;
   state: State = { opened: false, from: null, markedDates: null };
 
   today = new Date();
@@ -39,6 +40,7 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
 
   render() {
     const date = formatPeriod(this.props.filters.date);
+    const color = getColor(this.context);
 
     return (
       <OpenableListItem title='Дата' viewValue={date} onClear={this.clear} onClose={this.resetState}>
@@ -61,6 +63,13 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
             firstDay={1}
             hideDayNames
             renderArrow={this.renderArrow}
+            theme={{
+              calendarBackground: 'transparent',
+              todayTextColor: color.Primary,
+              monthTextColor: color.PrimaryText,
+              dayTextColor: color.PrimaryText,
+              textDisabledColor: color.DisabledText,
+            }}
             ref={this.setCalRef}
           />
           <TouchIcon
@@ -76,9 +85,9 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
     );
   }
 
-  renderArrow(direction: string) {
-    return <Icon name={`caret-${direction}`} size={20} color={color.PrimaryText} />;
-  }
+  renderArrow = (direction: string) => {
+    return <Icon name={`caret-${direction}`} size={20} color={dynamicColor.PrimaryText[this.context]} />;
+  };
 
   setCalRef = calendar => (this.calendar = calendar);
 
@@ -91,7 +100,17 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
     if (this.state.markedDates) {
       this.setDate(date);
     } else {
-      this.setState({ from: date, markedDates: { [dateString]: MARKED_DAY } });
+      const mode = this.context;
+      this.setState({
+        from: date,
+        markedDates: {
+          [dateString]: {
+            startingDay: true,
+            color: dynamicColor.Primary[mode],
+            textColor: dynamicColor.PrimaryText[mode],
+          },
+        },
+      });
     }
   };
 

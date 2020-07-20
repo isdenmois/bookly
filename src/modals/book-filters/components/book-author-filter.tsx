@@ -1,12 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
-import { TextInput, StyleSheet, TextStyle } from 'react-native';
+import { TextInput, TextStyle } from 'react-native';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 import { sortBy, prop } from 'rambdax';
 import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
 import { observer } from 'mobx-react';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { color } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import Author from 'store/author';
 import { database } from 'store';
 import { t } from 'services';
@@ -36,6 +37,7 @@ const withAuthors: Function = withObservables(null, (props: Props) => {
 @withAuthors
 @observer
 export class BookAuthorFilter extends React.PureComponent<Props, State> {
+  static contextType = ColorSchemeContext;
   state: State = { name: '' };
 
   sortAuthors = sortBy(prop('name'));
@@ -50,6 +52,9 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
       authors = authors.filter(a => a.name.toLowerCase().indexOf(name) >= 0);
     }
 
+    const s = ds[this.context];
+    const placeholderTextColor = dynamicColor.SecondaryText[this.context];
+
     return (
       <EditableListItem
         title={t('author')}
@@ -59,7 +64,13 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
         onChange={this.setAuthor}
         clearable
       >
-        <TextInput style={s.input} onChangeText={this.setName} value={this.state.name} placeholder='поиск' />
+        <TextInput
+          style={s.input}
+          placeholderTextColor={placeholderTextColor}
+          onChangeText={this.setName}
+          value={this.state.name}
+          placeholder='поиск'
+        />
       </EditableListItem>
     );
   }
@@ -74,12 +85,12 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   input: {
     flex: 1,
     textAlign: 'right',
     fontSize: 16,
-    color: color.Black,
+    color: dynamicColor.PrimaryText,
     padding: 0,
     paddingRight: 5,
     paddingVertical: 15,

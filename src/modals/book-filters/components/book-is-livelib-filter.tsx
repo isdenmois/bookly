@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import { Switch, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 import { observer } from 'mobx-react';
-import { ListItem } from 'components';
+import { ListItem, Checkbox } from 'components';
 import { BookFilters } from '../book-filters.service';
 
 interface Props {
@@ -13,7 +13,7 @@ export const BookIsLiveLibFilter = observer(({ filters }: Props) => {
 
   return (
     <ListItem rowStyle={s.row} label='Из LiveLib' onPress={toggle}>
-      <Switch value={filters.isLiveLib} onValueChange={toggle} />
+      <Checkbox value={filters.isLiveLib} onValueChange={toggle} />
     </ListItem>
   );
 });

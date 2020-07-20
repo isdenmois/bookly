@@ -1,71 +1,60 @@
-import React from 'react';
-import { Text, StyleSheet, TextStyle, View, TouchableOpacity } from 'react-native';
-import { color } from 'types/colors';
+import React, { useState, useEffect } from 'react';
+import { Text, TextStyle, View, TouchableOpacity } from 'react-native';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
+import { dynamicColor } from 'types/colors';
 import { ListItem } from 'components';
 
 interface Props {
   title: string;
   viewValue: string;
+  children?: React.ReactChild;
   onClear: () => void;
   onClose?: () => void;
 }
 
-interface State {
-  opened: boolean;
-  viewValue?: string;
-}
+export function OpenableListItem({ title, viewValue, children, onClear, onClose }: Props) {
+  const [opened, setOpened] = useState(false);
+  const s = useDynamicValue(ds);
 
-export class OpenableListItem extends React.Component<Props, State> {
-  state: State = { opened: false };
+  useEffect(() => {
+    setOpened(false);
+  }, [viewValue]);
 
-  static getDerivedStateFromProps(props: Props, state: State) {
-    if (state && props.viewValue && props.viewValue !== state.viewValue) {
-      return { opened: false, viewValue: props.viewValue };
-    }
-
-    return null;
-  }
-
-  render() {
-    const { title, viewValue, children, onClear } = this.props;
-    const defined = Boolean(viewValue);
-    const opened = this.state.opened;
-
-    return (
-      <ListItem onPress={opened ? null : this.open} value={viewValue} clearable={defined && !opened} onChange={onClear}>
-        {!opened && <Text style={s.title}>{title}</Text>}
-        {opened && (
-          <View style={s.container}>
-            <TouchableOpacity onPress={this.close}>
-              <Text style={s.title}>{title}</Text>
-            </TouchableOpacity>
-
-            {children}
-          </View>
-        )}
-        {defined && !opened && <Text style={s.value}>{viewValue}</Text>}
-      </ListItem>
-    );
-  }
-
-  open = () => this.setState({ opened: true });
-  close = () => {
-    this.setState({ opened: false });
-    this.props.onClose && this.props.onClose();
+  const open = () => setOpened(true);
+  const close = () => {
+    setOpened(false);
+    onClose?.();
   };
+  const defined = Boolean(viewValue);
+
+  return (
+    <ListItem onPress={opened ? null : open} value={viewValue} clearable={defined && !opened} onChange={onClear}>
+      {!opened && <Text style={s.title}>{title}</Text>}
+      {opened && (
+        <View style={s.container}>
+          <TouchableOpacity onPress={close}>
+            <Text style={s.title}>{title}</Text>
+          </TouchableOpacity>
+
+          {children}
+        </View>
+      )}
+      {defined && !opened && <Text style={s.value}>{viewValue}</Text>}
+    </ListItem>
+  );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   title: {
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
   container: {
     flex: 1,
   },
   value: {
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     flex: 1,
     textAlign: 'right',
   } as TextStyle,

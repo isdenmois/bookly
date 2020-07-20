@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color as light, dark } from 'types/colors';
+import { dynamicColor, getColor } from 'types/colors';
 import { TouchIcon } from 'components/touch-icon';
-import { DynamicStyleSheet, DynamicValue, ColorSchemeContext } from 'react-native-dynamic';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   value: string;
@@ -26,7 +26,7 @@ export class SearchBar extends React.Component<Props> {
   render() {
     const { style, value, actionIcon, onChange, onBack, onAction } = this.props;
     const ds = dynamicStyle[this.context];
-    const color = this.context === 'dark' ? dark : light;
+    const color = getColor(this.context);
 
     return (
       <View style={style ? [ds.container, style] : ds.container}>
@@ -43,7 +43,7 @@ export class SearchBar extends React.Component<Props> {
         {!onBack && <Icon style={s.searchIcon} name='search' size={20} color={color.SecondaryText} />}
 
         <TextInput
-          style={s.text}
+          style={ds.text}
           autoFocus={this.props.autoFocus}
           placeholder={this.props.placeholder}
           placeholderTextColor={color.SecondaryText}
@@ -114,20 +114,21 @@ const s = StyleSheet.create({
     padding: 10,
     paddingRight: 5,
   } as ViewStyle,
-  text: {
-    flex: 1,
-    marginHorizontal: 5,
-    fontSize: 16,
-    padding: 0,
-  } as TextStyle,
 });
 
 const dynamicStyle = new DynamicStyleSheet({
   container: {
     height: 40,
-    backgroundColor: new DynamicValue(light.SearchBackground, dark.SearchBackground),
+    backgroundColor: dynamicColor.SearchBackground,
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'stretch',
-  },
+  } as ViewStyle,
+  text: {
+    flex: 1,
+    marginHorizontal: 5,
+    fontSize: 16,
+    padding: 0,
+    color: dynamicColor.PrimaryText,
+  } as TextStyle,
 });
