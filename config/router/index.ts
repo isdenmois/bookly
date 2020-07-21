@@ -21,10 +21,10 @@ const createNavigator = initialRouteName =>
           MainStack: createStackPersistNavigator(MainStack, {
             initialRouteName: 'Home',
             headerMode: 'none',
-            gestureEnabled: Platform.OS !== 'web',
+            gestureEnabled: true,
             defaultNavigationOptions: {
               ...TransitionPresets.SlideFromRightIOS,
-              gestureEnabled: Platform.OS !== 'web',
+              gestureEnabled: true,
               cardStyle: { backgroundColor: null },
               cardOverlayEnabled: false,
               cardShadowEnabled: false,
