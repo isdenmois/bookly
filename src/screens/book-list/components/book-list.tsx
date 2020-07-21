@@ -30,6 +30,9 @@ const withBooks: Function = withObservables(['query', 'sort'], ({ query, sort }:
   books: bookListQuery(query).observeWithColumns(sort ? [sort.field] : []),
 }));
 
+const ITEM_HEIGHT = 116;
+const HEADER_HEIGHT = 33;
+
 @withBooks
 export class BookList extends React.PureComponent<Props> {
   static contextType = ScrollToTopContext;
@@ -51,9 +54,14 @@ export class BookList extends React.PureComponent<Props> {
         renderItem={this.renderItem}
         ListHeaderComponent={this.renderHeader()}
         ListFooterComponent={this.renderFooter()}
+        getItemLayout={this.getItemLayout}
         ref={this.context.setScroll}
       />
     );
+  }
+
+  private getItemLayout(data, index) {
+    return { length: ITEM_HEIGHT, offset: HEADER_HEIGHT + ITEM_HEIGHT * index, index };
   }
 
   private renderHeader() {

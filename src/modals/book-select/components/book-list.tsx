@@ -20,6 +20,8 @@ interface Props {
   onSelect: (book: Book) => void;
 }
 
+const ITEM_HEIGHT = 75;
+
 const withBooks: Function = withObservables(['search'], ({ search }: Props) => ({
   books: database.collections.get('books').query(...bookListQuery(search)),
 }));
@@ -41,7 +43,19 @@ export class BookList extends React.Component<Props> {
 
     const books = this.sortBooks(this.props.books);
 
-    return <FlatList style={s.scroll} data={books} keyExtractor={b => b.id} renderItem={this.renderBookItem} />;
+    return (
+      <FlatList
+        style={s.scroll}
+        data={books}
+        keyExtractor={b => b.id}
+        renderItem={this.renderBookItem}
+        getItemLayout={this.getItemLayout}
+      />
+    );
+  }
+
+  private getItemLayout(data, index) {
+    return { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index };
   }
 
   renderBookItem = ({ item: book, index }) => {
