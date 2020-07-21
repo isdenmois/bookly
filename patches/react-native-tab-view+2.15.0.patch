@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-tab-view/lib/module/TabBar.js b/node_modules/react-native-tab-view/lib/module/TabBar.js
+index afd8e4c..5652443 100644
+--- a/node_modules/react-native-tab-view/lib/module/TabBar.js
++++ b/node_modules/react-native-tab-view/lib/module/TabBar.js
+@@ -300,7 +300,7 @@ export default class TabBar extends React.Component {
+         inactiveColor: inactiveColor,
+         pressColor: pressColor,
+         pressOpacity: pressOpacity,
+-        onLayout: isWidthDynamic ? e => {
++        onLayout: isWidthDynamic && !this.measuredTabWidths[route.key]? e => {
+           this.measuredTabWidths[route.key] = e.nativeEvent.layout.width; // When we have measured widths for all of the tabs, we should updates the state
+           // We avoid doing separate setState for each layout since it triggers multiple renders and slows down app
+ 

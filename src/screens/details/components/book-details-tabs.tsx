@@ -153,6 +153,7 @@ function getLabelText(scene: Scene<Route>) {
 const ds = new DynamicStyleSheet({
   indicator: {
     backgroundColor: dynamicColor.Primary,
+    opacity: 1,
   } as ViewStyle,
   label: {
     fontSize: 18,
