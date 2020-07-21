@@ -55,7 +55,6 @@ export const BookChallenge = withObservables(null, () => ({
 const s = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: 20,

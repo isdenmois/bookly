@@ -26,7 +26,8 @@ export function Counter(props: Props) {
 const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'column',
-    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
   } as ViewStyle,
   value: {
     color: new DynamicValue(light.PrimaryText, dark.PrimaryText),
