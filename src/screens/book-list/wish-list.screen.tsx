@@ -6,7 +6,6 @@ import { createQueryState } from './book-list.service';
 
 const defaultFilters = {
   status: BOOK_STATUSES.WISH,
-  paper: 'e',
 };
 
 const WISH_LIST_FILTERS = ['title', 'author', 'type', 'paper', 'isLiveLib'];
@@ -15,7 +14,14 @@ export const WISH_LIST_SORTS = ['title', 'author', 'id', 'createdAt'];
 
 @withScroll
 export class WishListScreen extends ReadList {
-  state = createQueryState(defaultFilters, session.defaultSort);
+  state = createQueryState(
+    {
+      ...defaultFilters,
+      status: BOOK_STATUSES.WISH,
+      ...(session.paper ? {} : { paper: 'e' }),
+    },
+    session.defaultSort,
+  );
 
   showTopRate = null;
   filters = WISH_LIST_FILTERS;
