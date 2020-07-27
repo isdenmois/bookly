@@ -6,11 +6,11 @@ export default {
   process(value, key, options) {
     return pluralize(options.count % 1 !== 0 ? 2 : options.count, ...value.split(';'));
   },
-};
+} as any;
 
 const REG_EXP = /\$r\((.*?)(,.*?)?\)/gi;
 
-export const rp = {
+export const rp: any = {
   name: 'rp',
   type: 'postProcessor',
   process(value, _, options, translator) {

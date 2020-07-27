@@ -3,10 +3,11 @@ import { ActivityIndicator, View, Button, KeyboardAvoidingView, ViewStyle, TextS
 import { NavigationScreenProp } from 'react-navigation';
 import { TextL, ListItem } from 'components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { dynamicColor, useSColor } from 'types/colors';
 
 import { LoginTriangles } from './login-triangles';
 import { useLoginStore } from './login.store';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -16,6 +17,7 @@ interface Props {
 export function LoginScreen({ navigation, location }: Props) {
   const navigateTo = location?.state.from?.pathname || 'Home';
   const { login, setLogin, submit, submitting } = useLoginStore(navigation, navigateTo);
+  const { s, color } = useSColor(ds);
 
   return (
     <View style={s.container}>
@@ -47,7 +49,7 @@ export function LoginScreen({ navigation, location }: Props) {
   );
 }
 
-const s = {
+const ds = new DynamicStyleSheet({
   container: {
     backgroundColor: '#b8e6e3',
     flex: 1,
@@ -59,7 +61,7 @@ const s = {
     alignItems: 'center',
   } as ViewStyle,
   card: {
-    backgroundColor: 'white',
+    backgroundColor: dynamicColor.Background,
     marginHorizontal: 20,
     marginTop: 10,
     paddingHorizontal: 20,
@@ -74,4 +76,4 @@ const s = {
     textAlign: 'center',
     color: 'white',
   } as TextStyle,
-};
+});

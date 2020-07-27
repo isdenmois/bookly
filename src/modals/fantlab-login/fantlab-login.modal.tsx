@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { View, Text, TextInput, TextStyle, ViewStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { color } from 'types/colors';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+import { dynamicColor } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
 import { api, session } from 'services';
 import { FantlabLoginRequest } from 'services/api/fantlab/login';
@@ -15,6 +16,8 @@ interface Props {
 
 @withNavigationProps()
 export class FantlabLoginModal extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   state = {
     isLoading: false,
     login: session.userId,
@@ -29,6 +32,8 @@ export class FantlabLoginModal extends React.Component<Props> {
   }
 
   render() {
+    const s = ds[this.context];
+
     return (
       <Dialog style={s.container} title='Fantlab логин' onClose={this.props.onClose}>
         {this.state.error && <Text style={s.error}>{this.state.error.toString()}</Text>}
@@ -101,12 +106,12 @@ export class FantlabLoginModal extends React.Component<Props> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     paddingHorizontal: 20,
   },
   error: {
-    color: color.ErrorText,
+    color: dynamicColor.ErrorText,
   } as TextStyle,
   list: {
     paddingVertical: 0,
@@ -114,7 +119,7 @@ const s = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
     padding: 0,
     paddingRight: 5,
     paddingVertical: 15,

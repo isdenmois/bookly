@@ -9,7 +9,7 @@ export const i18n = {
       .use(ruplurProcessor)
       .use(rp)
       .init({
-        debug: true,
+        debug: false,
         resources: {
           en: { translation: require('./en.json') },
           ru: { translation: require('./ru.json') },

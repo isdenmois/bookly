@@ -1,8 +1,9 @@
 import React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { StyleSheet, View, ViewStyle, TextStyle, Platform, ScrollView } from 'react-native';
+import { View, ViewStyle, TextStyle, Platform, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { color } from 'types/colors';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+import { dynamicColor, getColor } from 'types/colors';
 import { session } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { database } from 'store';
@@ -20,8 +21,12 @@ interface Props {
 }
 
 export class ProfileScreen extends React.Component<Props> {
+  static contextType = ColorSchemeContext;
+
   render() {
     const isWeb = Platform.OS === 'web';
+    const s = ds[this.context];
+    const color = getColor(this.context);
 
     return (
       <Screen>
@@ -69,7 +74,7 @@ export class ProfileScreen extends React.Component<Props> {
   };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   content: {
     paddingHorizontal: 15,
     paddingBottom: 70,
@@ -82,7 +87,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
   } as ViewStyle,
   button: {
-    backgroundColor: color.Background,
+    backgroundColor: dynamicColor.SearchBackground,
     ...Platform.select({
       android: {
         elevation: 3,
@@ -93,6 +98,6 @@ const s = StyleSheet.create({
     }),
   } as ViewStyle,
   buttonText: {
-    color: color.PrimaryText,
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
 });
