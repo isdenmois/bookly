@@ -1,8 +1,9 @@
 import React from 'react';
-import { ScrollView, TextInput, StyleSheet, ViewStyle, TextStyle, ToastAndroid } from 'react-native';
+import { ScrollView, TextInput, ViewStyle, TextStyle, ToastAndroid } from 'react-native';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { NavigationScreenProp } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { color } from 'types/colors';
+import { color, dynamicColor } from 'types/colors';
 import Book from 'store/book';
 import Review, { createReview } from 'store/review';
 import { dbAction } from 'services/db';
@@ -25,12 +26,15 @@ const NUMBER_OF_LINES = 10;
 
 @withNavigationProps()
 export class ReviewWriteModal extends React.Component<Props, State> {
+  static contextType = ColorSchemeContext;
+
   state = { changed: false, body: this.props.review ? this.props.review.body : '' };
 
   buttonTitle = t(this.props.review ? 'button.update' : 'button.add');
 
   render() {
     const changed = this.state.changed && Boolean(this.state.body);
+    const s = ds[this.context];
 
     return (
       <Dialog style={s.dialog} title={this.props.book.title} onApply={changed && this.save}>
@@ -77,13 +81,13 @@ export class ReviewWriteModal extends React.Component<Props, State> {
   @dbAction async createReview() {
     const record = await createReview(database, this.props.book, this.state.body);
 
-    ToastAndroid.show(t('modal.review-updated'), ToastAndroid.SHORT);
+    ToastAndroid.show(t('modal.review-added'), ToastAndroid.SHORT);
 
     return record;
   }
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   dialog: {
     paddingHorizontal: 15,
     paddingVertical: 15,
@@ -99,6 +103,7 @@ const s = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 8,
     textAlignVertical: 'top',
+    color: dynamicColor.PrimaryText,
   } as TextStyle,
   button: {
     marginTop: 20,

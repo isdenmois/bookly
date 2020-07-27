@@ -271,6 +271,7 @@ const ds = new DynamicStyleSheet({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderWidth: 5,
+    borderColor: dynamicColor.Background,
     backgroundColor: dynamicColor.Background,
   } as ImageStyle,
   titleWrapper: {
