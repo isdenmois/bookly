@@ -23,7 +23,7 @@ const MONTHS = [
 ];
 
 function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
-  const result: MonthRow[] = MONTHS.map(m => ({ ...m, count: 0, days: 0, rating: 0 }));
+  let result: MonthRow[] = MONTHS.map(m => ({ ...m, count: 0, days: 0, rating: 0 }));
   const years = new Set();
 
   if (year) {
@@ -49,6 +49,10 @@ function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
 
   if (hasCurrentYear) {
     total = total - 365 + dayOfYear();
+
+    if (year === CURRENT_YEAR) {
+      result = result.slice(0, currentMonth + 1);
+    }
   }
 
   result.push({
@@ -61,7 +65,7 @@ function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
   });
 
   result.forEach((m, i) => {
-    const size = hasCurrentYear && i > currentMonth && i < 12 ? years.size - 1 : years.size;
+    const size = hasCurrentYear && i > currentMonth && i < result.length - 1 ? years.size - 1 : years.size;
 
     m.days = m.count ? round((m.d / m.count) * size) : 0;
     m.rating = m.count ? round(m.rating / m.count) : 0;

@@ -13,13 +13,12 @@ import { database } from 'store';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { StatGroups } from './components/stat-groups';
 import { YearSelection } from './components/year-selection';
-import { getCurrentYear } from 'utils/date';
 import { ByMonth } from './tabs/by-month.factory';
 import { ByRating } from './tabs/by-rating.factory';
 import { ByYear } from './tabs/by-year.factory';
 import { ByAuthor } from './tabs/by-author.factory';
 import { ByType } from './tabs/by-type.factory';
-import { mapBooks, BookItems, StatBook, IRow, StatTab, TABS, byYear } from './tabs/shared';
+import { CURRENT_YEAR, mapBooks, BookItems, StatBook, IRow, StatTab, TABS, byYear } from './tabs/shared';
 
 const STAT_GROUPS: Record<string, StatTab> = {
   MONTH: ByMonth,
@@ -28,8 +27,6 @@ const STAT_GROUPS: Record<string, StatTab> = {
   YEAR: ByYear,
   TYPE: ByType,
 };
-
-const CURRENT_YEAR = getCurrentYear();
 
 const withBooks: Function = withObservables(null, () => {
   const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
