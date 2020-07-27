@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "visualstudioexptteam.vscodeintellicode",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "asvetliakov.snapshot-tools",
+    "mikestead.dotenv",
+    "tombonnike.vscode-status-bar-format-toggle",
+    "wix.glean",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "orta.vscode-jest",
+    "andys8.jest-snippets",
+    "msjsdiag.vscode-react-native",
+    "jasonnutter.search-node-modules",
+    "shan.code-settings-sync",
+    "k--kato.intellij-idea-keybindings"
+  ]
+}
