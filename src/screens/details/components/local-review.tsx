@@ -7,6 +7,7 @@ import { formatDate } from 'utils/date';
 import { dynamicColor, getColor, boldText } from 'types/colors';
 import { ExpandableText, TouchIcon } from 'components';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { confirmRemoveModel } from './book-details-lines';
 
 interface Props {
   book: BookData;
@@ -17,7 +18,8 @@ interface Props {
 const navigate = (review, book) => navigation.navigate('/modal/review-write', { review, book });
 
 export function LocalReview({ review, book, mode }: Props) {
-  const openEditReview = useCallback(() => navigate(review, book), [review]);
+  const openEditReview = useCallback(() => navigate(review, book), []);
+  const deleteReview = useCallback(() => confirmRemoveModel(review, 'удалить отзыв'), []);
   const color = getColor(mode);
   const s = ds[mode];
 
@@ -28,6 +30,7 @@ export function LocalReview({ review, book, mode }: Props) {
           <Text style={s.user}>{session.userId}</Text>
           <Text style={s.date}>{formatDate(review.date)}</Text>
         </View>
+        <TouchIcon style={s.icon} name='times' size={24} color={color.ErrorText} onPress={deleteReview} />
         <TouchIcon style={s.icon} name='pen' size={16} color={color.PrimaryText} onPress={openEditReview} />
       </View>
 
@@ -69,6 +72,6 @@ const ds = new DynamicStyleSheet({
     marginLeft: 3,
   } as TextStyle,
   icon: {
-    marginLeft: 10,
+    marginLeft: 20,
   } as TextStyle,
 });
