@@ -30,7 +30,7 @@ export class ThumbnailSelectModal extends React.Component<Props, State> {
           <Thumbnail auto='height' width={150} height={200} url={this.state.selected} title={book.title} />
         </View>
 
-        <ThumbnailList bookId={book.id} selected={this.state.selected} onSelect={this.setThumbnail} />
+        <ThumbnailList book={book} selected={this.state.selected} onSelect={this.setThumbnail} />
       </Dialog>
     );
   }

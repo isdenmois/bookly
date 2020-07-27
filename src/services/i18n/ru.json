@@ -73,7 +73,9 @@
     "desc": "ОПИСАНИЕ",
     "by-rating": "По рейтингу",
     "by-date": "По дате",
-    "by-mark": "По оценке"
+    "by-mark": "По оценке",
+    "thumbnail": "Обложка",
+    "livelib": "LiveLib"
   },
   "stat": {
     "by-month": "По месяцам",

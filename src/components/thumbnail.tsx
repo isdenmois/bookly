@@ -5,11 +5,17 @@ import { Avatar } from 'components/avatar';
 import { AutoSizeImage } from './auto-size-image';
 
 const THUMBNAIL_URL = 'https://data.fantlab.ru/images/editions/big';
+const getLURL = id => `https://s1.livelib.ru/boocover/${id}/200x305/d261/boocover.jpg`;
 
 export function getThumbnailUrl(url: string) {
   if (+url) {
     return `${THUMBNAIL_URL}/${url}`;
   }
+
+  if (url?.startsWith('l_')) {
+    return getLURL(url.slice(2));
+  }
+
   return url;
 }
 

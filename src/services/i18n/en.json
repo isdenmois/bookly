@@ -70,7 +70,9 @@
     "desc": "DESCRIPTION",
     "by-rating": "Best",
     "by-date": "Newest",
-    "by-mark": "By mark"
+    "by-mark": "By mark",
+    "thumbnail": "Thumbnail",
+    "livelib": "LiveLib"
   },
   "stat": {
     "by-month": "Monthly",

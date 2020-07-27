@@ -101,6 +101,14 @@ export class DetailsTab extends React.Component<Props> {
             onLongPress={this.openChangeThumbnail}
           />
         )}
+        {!book.editionCount && !!book.lid && (
+          <ViewLineTouchable
+            title={t('details.thumbnail')}
+            value={t('details.livelib')}
+            mode={mode}
+            onPress={this.openChangeThumbnail}
+          />
+        )}
 
         {!!book.language && <ViewLine title={t('details.language')} value={book.language} mode={mode} />}
         {!!book.title && !!book.originalTitle && (

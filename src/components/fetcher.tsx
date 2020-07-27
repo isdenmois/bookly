@@ -46,6 +46,7 @@ type Props<P = {}> = {
   collection?: 'books' | 'authors' | 'reviews';
   sort?: string;
   groupBy?: GroupBy;
+  additional: any[];
 } & Omit<P, 'page'>;
 
 export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
@@ -110,7 +111,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
       return this.renderError();
     }
 
-    if (_.isEmpty(this.state.data)) {
+    if (_.isEmpty(this.state.data) && _.isEmpty(this.props.additional)) {
       return this.renderEmpty();
     }
 
@@ -172,6 +173,10 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   }
 
   renderList(list: any[], footer?) {
+    if (this.props.additional) {
+      list = list.concat(this.props.additional);
+    }
+
     if (!this.props.useFlatlist) {
       const res = _.map(list, (item, index) => this.props.children(item, index));
 

@@ -6,9 +6,10 @@ import { api } from 'services';
 import { FantlabThumnail } from 'services/api/fantlab/thumbnails';
 import { Fetcher, Thumbnail } from 'components';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+import Book from 'store/book';
 
 interface Props {
-  bookId: string;
+  book: Book;
   selected: string;
   onSelect: (value: string) => void;
 }
@@ -18,6 +19,8 @@ const OBSERVE_FIELDS = ['bookId'];
 export class ThumbnailList extends React.PureComponent<Props> {
   static contextType = ColorSchemeContext;
 
+  additional = getAdditional(this.props.book.lid);
+
   render() {
     const s = ds[this.context];
 
@@ -26,8 +29,9 @@ export class ThumbnailList extends React.PureComponent<Props> {
         <Fetcher
           observe={OBSERVE_FIELDS}
           api={api.thumbnails}
-          bookId={this.props.bookId}
+          bookId={this.props.book.id}
           selected={this.props.selected}
+          additional={this.additional}
         >
           {this.renderThumbnail}
         </Fetcher>
@@ -52,6 +56,14 @@ export class ThumbnailList extends React.PureComponent<Props> {
       </TouchableOpacity>
     );
   };
+}
+
+function getAdditional(lid: string): any[] {
+  if (lid) {
+    lid = `l_${lid}`;
+
+    return [{ id: lid, url: lid }];
+  }
 }
 
 const ds = new DynamicStyleSheet({
