@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Text, StyleSheet, TextStyle } from 'react-native';
+import { Text, TextStyle } from 'react-native';
 import { dynamicColor } from 'types/colors';
 import { ListItem } from 'components';
 import { SelectList } from './select-list';
@@ -8,7 +8,7 @@ import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   title: string;
-  fields: any[];
+  fields: any[] | Record<string, string>;
   labelKey?: string;
   value?: string;
   clearable?: boolean;

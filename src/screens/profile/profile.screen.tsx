@@ -13,6 +13,7 @@ import { SessionParamToggler } from './components/session-param-toggler';
 import { BookListSort } from './components/book-list-sort';
 import { RemoveDeleted } from './components/remove-deleted';
 import { ThemeSelector } from './components/theme-selector';
+import { LanguageSelector } from './components/language-selector';
 
 interface Props {
   navigation: NavigationScreenProp<any>;
@@ -36,6 +37,7 @@ export class ProfileScreen extends React.Component<Props> {
           <SessionParamToggler title='Типы книг: бумага' param='paper' />
           <SessionParamToggler title='Топ книг' param='topRate' />
           {isWeb && <SessionParamToggler title='Сохранять состояние приложения' param='persistState' />}
+          {isWeb && <LanguageSelector />}
           <ThemeSelector />
           <BookListSort />
           <RemoveDeleted />
