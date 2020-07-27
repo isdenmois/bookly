@@ -4,8 +4,9 @@ exports[`Counter 1`] = `
 <View
   style={
     Object {
+      "alignItems": "center",
+      "flex": 1,
       "flexDirection": "column",
-      "justifyContent": "center",
     }
   }
 >

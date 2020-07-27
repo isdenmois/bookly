@@ -14,7 +14,9 @@
     "challenge": {
       "anticipate": "Anticipate",
       "completed": "Completed",
-      "ahead": "Ahead"
+      "ahead": "Ahead",
+      "progress": "Read a book before {{date}} to manage to complete the challenge",
+      "forecast": "Read a book before {{date}} to keep the rate and read {{count}} $t(book-count)"
     }
   },
   "button": {
@@ -96,5 +98,7 @@
   },
   "author": "Author",
   "year": "Year",
-  "all": "All"
+  "all": "All",
+  "book-count": "book",
+  "book-count_plural": "books"
 }

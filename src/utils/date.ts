@@ -36,10 +36,21 @@ export function getStartOfYear(date = new Date()) {
   return new Date(date.getFullYear(), 0, 1, 0);
 }
 
-export function dayOfYear(): number {
-  const now = new Date();
-  const start = getStartOfYear(now);
-  const diff = now.getTime() - start.getTime() + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+export function dayOfYear(date = new Date()): number {
+  const start = getStartOfYear(date);
+  const diff = date.getTime() - start.getTime() + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
 
   return Math.floor(diff / ONE_DAY) + 1;
+}
+
+export function daysAmount(year: number | Date = new Date()) {
+  if (year instanceof Date) {
+    year = year.getFullYear();
+  }
+
+  return isLeapYear(year) ? 366 : 365;
+}
+
+function isLeapYear(year: number) {
+  return year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0);
 }

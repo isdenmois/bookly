@@ -1,4 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
+import { map } from 'rxjs/operators';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dayOfYear, getStartOfYear } from 'utils/date';
 import { database } from 'store';
@@ -25,4 +26,12 @@ export function readBooksThisYearQuery() {
 
 export function readBooksQuery() {
   return database.collections.get('books').query(Q.where('status', BOOK_STATUSES.READ));
+}
+
+export function lastReadDateObserver() {
+  return database.collections
+    .get('books')
+    .query(Q.where('status', BOOK_STATUSES.READ), Q.experimentalSortBy('date', Q.desc), Q.experimentalTake(1))
+    .observeWithColumns(['date'])
+    .pipe(map(rows => rows[0].date));
 }

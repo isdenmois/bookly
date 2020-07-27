@@ -1,23 +1,28 @@
+import _ from 'lodash';
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle, ToastAndroid } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { observer } from 'mobx-react';
-import { session, t } from 'services';
+import { session } from 'services';
+import { t } from 'services/i18n';
 import { Counter } from 'components';
-import { dayOfYear } from 'utils/date';
-import { readBooksThisYearQuery, booksReadForecast } from '../home.queries';
-const pluralize = require('pluralize-ru');
+import { dayOfYear, format, daysAmount } from 'utils/date';
+import { readBooksThisYearQuery, booksReadForecast, lastReadDateObserver } from '../home.queries';
+
+const DATE_FORMAT = 'DD.MM';
+const formatDate = date => format(date, DATE_FORMAT);
 
 interface Props {
   readCount?: number;
+  lastReadDate?: Date;
 }
 
-function BookChallengeComponent({ readCount }: Props) {
+function BookChallengeComponent({ readCount, lastReadDate }: Props) {
   const totalBooks = session.totalBooks;
   const forecast = useMemo(() => booksReadForecast(readCount, totalBooks), [readCount, totalBooks]);
   const showProgress = useCallback(
-    () => ToastAndroid.show(getProgressMessage(readCount, totalBooks), ToastAndroid.SHORT),
-    [readCount, totalBooks],
+    () => ToastAndroid.show(getChallengeMessage(readCount, totalBooks, new Date(lastReadDate)), ToastAndroid.SHORT),
+    [readCount, totalBooks, lastReadDate],
   );
 
   return (
@@ -29,27 +34,135 @@ function BookChallengeComponent({ readCount }: Props) {
   );
 }
 
-function getProgressMessage(readCount, totalBooks): string {
+export function getChallengeMessage(readCount: number, totalBooks: number, lastRead: Date): string {
   if (readCount >= totalBooks) {
-    return 'Вы завершили книжный вызов!';
+    return t('home.challenge.youve-completed');
+    // return 'Вы завершили книжный вызов!';
   }
 
-  const days = 365 - dayOfYear();
+  return [
+    getProgressMessage(readCount, totalBooks, lastRead),
+    getZerocastMessage(readCount, totalBooks, lastRead),
+    getForecastMessage(readCount, lastRead),
+  ]
+    .filter(_.identity)
+    .join('\n\n');
+}
+
+export function getProgressMessage(readCount: number, totalBooks: number, lastRead: Date): string {
+  const today = dayOfYear();
+  const amount = daysAmount();
+  const remainDays = daysAmount() - dayOfYear();
+  const needToRead = Math.round((today / amount) * totalBooks);
+
+  if (readCount > needToRead) {
+    const dueDate = (readCount / totalBooks) * amount;
+    lastRead.setMonth(0, dueDate);
+
+    return t('home.challenge.progress', { date: formatDate(lastRead) });
+    // return `Прочитайте книгу до ${formatDate(lastRead)}, чтобы успеть выполнить вызов`;
+  }
+
   const toRead = totalBooks - readCount;
-  const dayCount = Math.floor(days / toRead);
-  const bookCount = (toRead / days) * 7;
+  const dayCount = Math.floor(remainDays / toRead);
 
-  if (bookCount >= 2) {
-    const books = pluralize(Math.round(bookCount * 10) / 10, '', '%d книге', '%d книги', '%d книг');
-    return `Читайте по ${books} в неделю, чтобы успеть выполнить вызов`;
+  if (dayCount < 3) {
+    return 'Вы не успеете закончить книжный вызов';
   }
 
-  const count = pluralize(dayCount, '', 'каждый %d день', 'каждые %d дня', 'каждые %d дней');
-  return `Читайте по книге ${count}, чтобы успеть выполнить вызов`;
+  // console.log({ readCount, totalBooks, remainDays, toRead, dayCount, dd: remainDays / toRead, zzz });
+
+  lastRead.setDate(lastRead.getDate() + dayCount);
+
+  while (dayOfYear(lastRead) < today) {
+    lastRead.setDate(lastRead.getDate() + dayCount);
+  }
+
+  const rate = Math.round((remainDays / toRead) * 10) / 10;
+
+  return t('home.challenge.progress-rate', { date: formatDate(lastRead), rate, postProcess: 'rp' });
+  // return `Прочитайте книгу до ${formatDate(lastRead)} (раз в ${
+  //   Math.round((remainDays / toRead) * 10) / 10
+  // } дня), чтобы успеть выполнить вызов`;
+
+  // return t('home.challenge.progress', { date: formatDate(date) }); // `Прочитайте книгу до ${}, чтобы успеть выполнить вызов`;
+}
+
+export function getZerocastMessage(readCount: number, totalBooks: number, lastRead: Date) {
+  const total = daysAmount();
+  const today = dayOfYear();
+  const getForecast = d => ((today + d) / total) * totalBooks;
+  let speed = today / (totalBooks - readCount);
+
+  if (speed < 3.5 || readCount >= getForecast(0)) return null;
+
+  if (speed > 10) {
+    speed = speed / 2;
+  } else if (speed > 6) {
+    speed = speed - 2;
+  } else if (speed > 4.1) {
+    speed = speed - 1;
+  } else {
+    speed = 3;
+  }
+
+  let dueDate: Date | string = new Date();
+
+  let add = speed;
+  let j = readCount + 1;
+  while (getForecast(add) > j) {
+    j++;
+    add += speed;
+
+    if (add + today >= total) {
+      return null;
+    }
+  }
+
+  lastRead.setDate(lastRead.getDate() + speed);
+  dueDate.setDate(dueDate.getDay() + add);
+
+  while (dayOfYear(lastRead) < today) {
+    lastRead.setDate(lastRead.getDate() + speed);
+  }
+
+  speed = Math.round(speed * 10) / 10;
+
+  return t('home.challenge.zerocast', {
+    date: formatDate(lastRead),
+    rate: speed,
+    due: formatDate(dueDate),
+    postProcess: 'rp',
+  });
+  // return `Прочитайте книгу до ${formatDate(lastRead)} (раз в ${speed} дня), чтобы выйти в 0 до ${dueDate}`;
+}
+
+export function getForecastMessage(readCount: number, lastRead: Date): string {
+  const remainDays = daysAmount() - dayOfYear();
+  const today = dayOfYear();
+  let speed = today / readCount;
+  const dayCount = Math.floor(speed);
+  const willRead = readCount + Math.round(remainDays / speed);
+
+  lastRead.setDate(lastRead.getDate() + dayCount);
+
+  while (dayOfYear(lastRead) < today) {
+    lastRead.setDate(lastRead.getDate() + dayCount);
+  }
+
+  speed = Math.round(speed * 10) / 10;
+
+  return t('home.challenge.forecast', { date: formatDate(lastRead), rate: speed, count: willRead, postProcess: 'rp' });
+  // return `Прочитайте книгу до ${formatDate(
+  //   lastRead,
+  // )} (раз в ${speed} дня), чтобы сохранить темп и прочитать ${willRead} книг за год`;
+  // return t('home.challenge.forecast', { date: formatDate(date), count: willRead });
+  // return `Прочитайте книгу до ${formatDate(date)}, чтобы сохранить темп и прочитать ${willRead} книг`;
 }
 
 export const BookChallenge = withObservables(null, () => ({
   readCount: readBooksThisYearQuery().observeCount(),
+  lastReadDate: lastReadDateObserver(),
 }))(observer(BookChallengeComponent));
 
 const s = StyleSheet.create({
