@@ -1,0 +1,79 @@
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
+index 8ceec05..637c6d2 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
+@@ -6,15 +6,9 @@ Object.defineProperty(exports, "__esModule", {
+ exports.default = void 0;
+ 
+ function createWorker(useWebWorker) {
+-  if (useWebWorker) {
+-    var LokiWebWorker = require('./worker/index.worker');
++  var LokiWebWorker = require('./worker/index.worker');
+ 
+-    return new LokiWebWorker();
+-  }
+-
+-  var WebWorkerMock = require('./worker/workerMock').default;
+-
+-  return new WebWorkerMock();
++  return new LokiWebWorker();
+ }
+ 
+ var _actionId = 0;
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
+index bf5b1c9..c23d774 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
+@@ -234,11 +234,11 @@ function encodeQuery(query) {
+     associations: associations
+   } = query; // TODO: implement support for Q.sortBy(), Q.take(), Q.skip() for Loki adapter
+ 
+-  (0, _invariant.default)(!sortBy.length, '[WatermelonDB][Loki] Q.sortBy() not yet supported');
+-  (0, _invariant.default)(!take, '[WatermelonDB][Loki] Q.take() not yet supported');
+   return {
+     table: table,
+     query: encodeRootConditions(associations)(where),
++    sortBy: sortBy.length ? [sortBy[0].sortColumn, {desc: sortBy[0].sortOrder === 'desc'}] : null,
++    take: take,
+     hasJoins: !!joinTables.length
+   };
+ }
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
+index 2768cd6..85304c2 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
+@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
+ });
+ exports.default = executeQuery;
+ 
+-var _lokijs = _interopRequireDefault(require("lokijs"));
+-
+ var _encodeQuery = _interopRequireDefault(require("./encodeQuery"));
+ 
+ var _performJoins = _interopRequireDefault(require("./performJoins"));
+@@ -35,6 +33,12 @@ function executeQuery(query, loki) {
+ 
+   var collection = loki.getCollection(query.table).chain();
+   var results = collection.find(mainQuery); // Step three: execute extra filter, if passed in query
++  if (lokiQuery.sortBy) {
++    results = results.simplesort(...lokiQuery.sortBy)
++  }
++  if (lokiQuery.take) {
++    results = results.limit(lokiQuery.take)
++  }
+ 
+   if (lokiFilter) {
+     return results.where(function (rawRecord) {
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
+index 4a1b0fd..6d193a7 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
+@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
+ });
+ exports.default = void 0;
+ 
+-var _lokijs = _interopRequireWildcard(require("lokijs"));
+-
+ var _rambdax = require("rambdax");
+ 
+ var _common = require("../../../utils/common");
