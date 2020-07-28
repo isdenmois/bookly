@@ -3,7 +3,7 @@ import { ScrollView, TextInput, ViewStyle, TextStyle, ToastAndroid } from 'react
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { NavigationScreenProp } from 'react-navigation';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { color, dynamicColor } from 'types/colors';
+import { dynamicColor } from 'types/colors';
 import Book from 'store/book';
 import Review, { createReview } from 'store/review';
 import { dbAction } from 'services/db';
