@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Text, View, TouchableOpacity, ScrollView, FlatList, ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+  ImageStyle,
+  TextStyle,
+  ViewStyle,
+  Platform,
+} from 'react-native';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { Thumbnail, ScreenHeader, Screen } from 'components';
 import { navigation } from 'services';
@@ -226,11 +236,21 @@ const ds = new DynamicStyleSheet({
     textAlign: 'center',
   } as TextStyle,
   all: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
     alignSelf: 'stretch',
+    ...Platform.select({
+      android: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      },
+    }),
   } as ViewStyle,
   allScroll: {
+    ...Platform.select({
+      web: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      },
+    }),
     paddingHorizontal: 10,
   } as ViewStyle,
 });
