@@ -94,7 +94,7 @@ const ds = new DynamicStyleSheet({
     overflow: 'hidden',
   } as ViewStyle,
   scroll: {
-    borderColor: color.Border,
+    borderColor: dynamicColor.Border,
     borderWidth: 0.5,
     borderRadius: 10,
   } as ViewStyle,

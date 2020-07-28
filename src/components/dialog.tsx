@@ -82,7 +82,7 @@ const ds = new DynamicStyleSheet({
   modalView: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    backgroundColor: dynamicColor.Background,
+    backgroundColor: dynamicColor.DialogBackground,
     flex: 1,
   } as ViewStyle,
   header: {

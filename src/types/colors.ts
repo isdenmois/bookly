@@ -40,7 +40,7 @@ export const dark = {
   DisabledText: '#47474D',
 
   Background: '#13131A',
-  DialogBackground: '#1C1C24',
+  DialogBackground: '#22222F',
   OrangeBackground: '#1B976D',
   SearchBackground: '#292932',
   LightBackground: '#3F434A',
@@ -51,7 +51,7 @@ export const dark = {
   Empty: '#8E8E98',
   // Stars: '#FFC542',
   Stars: '#FAFAFB',
-  Border: '#E0E0E0',
+  Border: '#404040',
   BlueIcon: '#357AE9',
   Review: '#F4EDEA',
   ReadMore: '#8E8E98',
