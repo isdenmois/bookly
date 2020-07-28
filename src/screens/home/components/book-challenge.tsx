@@ -40,9 +40,9 @@ export function getChallengeMessage(readCount: number, totalBooks: number, lastR
   }
 
   return [
-    getProgressMessage(readCount, totalBooks, lastRead),
-    getZerocastMessage(readCount, totalBooks, lastRead),
-    getForecastMessage(readCount, lastRead),
+    getProgressMessage(readCount, totalBooks, new Date(lastRead)),
+    getZerocastMessage(readCount, totalBooks, new Date(lastRead)),
+    getForecastMessage(readCount, new Date(lastRead)),
   ]
     .filter(_.identity)
     .join('\n\n');
@@ -82,8 +82,9 @@ export function getProgressMessage(readCount: number, totalBooks: number, lastRe
 export function getZerocastMessage(readCount: number, totalBooks: number, lastRead: Date) {
   const total = daysAmount();
   const today = dayOfYear();
+  const remainDays = total - today;
   const getForecast = d => ((today + d) / total) * totalBooks;
-  let speed = today / (totalBooks - readCount);
+  let speed = remainDays / (totalBooks - readCount);
 
   if (speed < 3.5 || readCount >= getForecast(0)) return null;
 
@@ -111,7 +112,7 @@ export function getZerocastMessage(readCount: number, totalBooks: number, lastRe
   }
 
   lastRead.setDate(lastRead.getDate() + speed);
-  dueDate.setDate(dueDate.getDay() + add);
+  dueDate.setDate(dueDate.getDate() + add);
 
   while (dayOfYear(lastRead) < today) {
     lastRead.setDate(lastRead.getDate() + speed);
@@ -128,8 +129,8 @@ export function getZerocastMessage(readCount: number, totalBooks: number, lastRe
 }
 
 export function getForecastMessage(readCount: number, lastRead: Date): string {
-  const remainDays = daysAmount() - dayOfYear();
   const today = dayOfYear();
+  const remainDays = daysAmount() - today;
   let speed = today / readCount;
   const dayCount = Math.floor(speed);
   const willRead = readCount + Math.round(remainDays / speed);
