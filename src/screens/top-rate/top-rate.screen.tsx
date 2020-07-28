@@ -125,6 +125,18 @@ export class TopRateScreen extends Component<Props> {
               />
             </>
           )}
+
+          <Text style={s.topText}>Все</Text>
+          <FlatList
+            style={s.all}
+            contentContainerStyle={s.allScroll}
+            horizontal
+            data={result}
+            keyExtractor={b => b.id}
+            renderItem={({ item, index }) => (
+              <BookItem book={item} width={65} height={100} mode={mode} fontSize={14} n={index + 1} openable />
+            )}
+          />
         </ScrollView>
       </Screen>
     );
@@ -142,13 +154,14 @@ function BookMatch({ book, mode, onSelect }) {
   );
 }
 
-function BookItem({ book, width, height, mode, fontSize, openable = false }) {
+function BookItem({ book, width, height, mode, fontSize, n = null, openable = false }) {
   const s = ds[mode];
   const Cmp: any = openable ? TouchableOpacity : View;
   const onPress = openable ? () => navigation.push('Details', { bookId: book.id }) : null;
 
   return (
     <Cmp style={[s.book, { width }]} onPress={onPress}>
+      {n !== null && <Text style={s.n}>#{n}</Text>}
       <Thumbnail style={s.thumbnail} width={width} height={height} title={book.title} url={book.thumbnail} cache />
       <Text style={[s.title, { fontSize }]} numberOfLines={1}>
         {book.title}
@@ -206,5 +219,18 @@ const ds = new DynamicStyleSheet({
   book: {
     overflow: 'hidden',
     marginHorizontal: 3,
+  } as ViewStyle,
+  n: {
+    fontSize: 14,
+    color: dynamicColor.PrimaryText,
+    textAlign: 'center',
+  } as TextStyle,
+  all: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    alignSelf: 'stretch',
+  } as ViewStyle,
+  allScroll: {
+    paddingHorizontal: 10,
   } as ViewStyle,
 });
