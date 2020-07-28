@@ -33,7 +33,7 @@ export class BookSelectScreen extends Component<Props> {
   render() {
     return (
       <Screen>
-        <ScreenHeader title={t('headers.book-select')} right='sliders-h' onRight={this.openFilters} />
+        <ScreenHeader title='headers.book-select' right='sliders-h' onRight={this.openFilters} />
 
         <View style={s.filters}>
           <BookListFilters filters={this.state.filters} onChange={this.setFilters} />

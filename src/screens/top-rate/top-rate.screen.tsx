@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { Thumbnail, ScreenHeader, Screen } from 'components';
-import { navigation } from 'services';
+import { navigation, t } from 'services';
 import Book from 'store/book';
 import { dynamicColor, boldText, lightText } from 'types/colors';
 import { merge } from './top-rate-sort';
@@ -69,7 +69,7 @@ export class TopRateScreen extends Component<Props> {
     if (!result) {
       return (
         <Screen>
-          <ScreenHeader title='Сравните' />
+          <ScreenHeader title='top.compare' />
 
           {pair && (
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
@@ -84,10 +84,10 @@ export class TopRateScreen extends Component<Props> {
     if (result.length < 2) {
       return (
         <Screen>
-          <ScreenHeader title='Сравните' />
+          <ScreenHeader title='top.compare' />
 
           <View style={s.empty}>
-            <Text style={s.emptyText}>Недостаточно данных для сравнения</Text>
+            <Text style={s.emptyText}>{t('top.empty')}</Text>
           </View>
         </Screen>
       );
@@ -97,18 +97,21 @@ export class TopRateScreen extends Component<Props> {
     const long = 6;
     const shortTop = result.length > 3 ? result.slice(1, short) : [];
     const longTop = result.length > 10 ? result.slice(short, long) : [];
+    const top = t('common.top').toUpperCase();
 
     return (
       <Screen>
         <ScreenHeader title='' />
 
         <ScrollView contentContainerStyle={s.scroll}>
-          <Text style={[s.topText, s.firstTop]}>Лучшая книга</Text>
+          <Text style={[s.topText, s.firstTop]}>{t('top.best')}</Text>
           <BookItem book={result[0]} width={150} height={250} mode={mode} fontSize={18} openable />
 
           {shortTop.length > 0 && (
             <>
-              <Text style={s.topText}>ТОП {short > 2 ? `2-${short}` : 2}</Text>
+              <Text style={s.topText}>
+                {top} {short > 2 ? `2-${short}` : 2}
+              </Text>
               <FlatList
                 horizontal
                 data={shortTop}
@@ -123,7 +126,7 @@ export class TopRateScreen extends Component<Props> {
           {longTop.length > 0 && (
             <>
               <Text style={s.topText}>
-                ТОП {short + 1}-{long}
+                {top} {short + 1}-{long}
               </Text>
               <FlatList
                 horizontal
@@ -136,7 +139,7 @@ export class TopRateScreen extends Component<Props> {
             </>
           )}
 
-          <Text style={s.topText}>Все</Text>
+          <Text style={s.topText}>{t('all')}</Text>
           <FlatList
             style={s.all}
             contentContainerStyle={s.allScroll}

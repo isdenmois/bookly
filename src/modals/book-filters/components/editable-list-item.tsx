@@ -5,6 +5,7 @@ import { dynamicColor } from 'types/colors';
 import { ListItem } from 'components';
 import { SelectList } from './select-list';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+import { t } from 'services';
 
 interface Props {
   title: string;
@@ -27,9 +28,9 @@ export class EditableListItem extends React.Component<Props> {
     if (!labelKey) {
       return fields[id];
     }
-    const obj = _.find(fields, { id } as any);
+    const obj = _.find<any>(fields, { id } as any);
 
-    return obj?.[labelKey];
+    return obj?.key ? t(obj.key) : obj?.[labelKey];
   }
 
   render() {

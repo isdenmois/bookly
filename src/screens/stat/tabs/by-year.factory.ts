@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { CURRENT_YEAR, dayOfYear, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
+import { t } from 'services';
 
 interface YearRow extends IRow {
   rating: number;
@@ -30,7 +31,7 @@ function ByYearFactory(books: StatBook[]): YearRow[] {
   books = books.filter(_.identity);
 
   result.push({
-    id: 'Итого',
+    id: t('total'),
     rating: totalRating,
     count: totalCount,
     days: 0,

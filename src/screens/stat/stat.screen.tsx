@@ -88,7 +88,7 @@ export class StatScreen extends React.Component<Props> {
 
     return (
       <Screen>
-        <ScreenHeader title={t('nav.stat')} />
+        <ScreenHeader title='nav.stat' />
         {isLoading && this.renderSpinner()}
         {!isLoading && (
           <>
@@ -113,7 +113,7 @@ export class StatScreen extends React.Component<Props> {
 
   renderRows() {
     if (!this.rows?.length) {
-      return <Text>Ничего не найдено</Text>;
+      return <Text>{t('empty')}</Text>;
     }
 
     const { type, year } = this;

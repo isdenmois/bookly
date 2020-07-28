@@ -28,7 +28,7 @@ export const BookTitleEditModal = withNavigationProps()(({ book, navigation }: P
   const { s, color } = useSColor(ds);
 
   return (
-    <Dialog style={s.dialog} title={t('modal.edit')} onApply={onPress}>
+    <Dialog style={s.dialog} title='modal.edit' onApply={onPress}>
       <TextInput
         style={s.input}
         value={title}

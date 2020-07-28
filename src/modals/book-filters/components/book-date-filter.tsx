@@ -43,7 +43,7 @@ export class BookDateFilter extends React.PureComponent<Props, State> {
     const color = getColor(this.context);
 
     return (
-      <OpenableListItem title='Дата' viewValue={date} onClear={this.clear} onClose={this.resetState}>
+      <OpenableListItem title='modal.date' viewValue={date} onClear={this.clear} onClose={this.resetState}>
         <View style={s.calendarRow}>
           <TouchIcon
             paddingVertical={16}

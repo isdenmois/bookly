@@ -10,7 +10,7 @@ export const BookRatingFilter = observer(({ filters }) => {
   const clear = React.useCallback(() => filters.setFilter('rating', null), [filters]);
 
   return (
-    <OpenableListItem title='Рейтинг' viewValue={formatRating(filters.rating)} onClear={clear}>
+    <OpenableListItem title='modal.rating' viewValue={formatRating(filters.rating)} onClear={clear}>
       <View style={s.row}>
         <SwipeRating value={filters.rating} onChange={setRating} />
       </View>

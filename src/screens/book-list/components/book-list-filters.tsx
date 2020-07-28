@@ -6,7 +6,7 @@ import { BookFilters } from 'types/book-filters';
 import { formatRating } from 'components/rating';
 import { formatPeriod } from 'modals/book-filters/components/book-date-filter';
 import { Tag } from 'components';
-import { session } from 'services';
+import { session, t } from 'services';
 
 interface Props {
   filters: Partial<BookFilters>;
@@ -23,12 +23,12 @@ const filterMap = {
   type: t => BOOK_TYPE_NAMES[t],
   isLiveLib: () => 'LiveLib',
   minYear() {
-    return `С ${session.minYear}`;
+    return t('common.fromy', { year: session.minYear });
   },
-  paper: p => (p === 'y' ? 'В бумаге' : 'В электронке'),
-  audio: p => (p === 'y' ? 'Аудиокнига' : 'Не аудио'),
-  withoutTranslation: p => (p === 'y' ? 'В оригинале' : 'На русском'),
-  leave: p => (p === 'y' ? 'Отдала' : 'Оставила'),
+  paper: p => (p === 'y' ? 'common.paper' : 'common.ebook'),
+  audio: p => (p === 'y' ? 'common.audiobook' : 'common.no-audio'),
+  withoutTranslation: p => (p === 'y' ? 'common.original' : 'common.ru'),
+  leave: p => (p === 'y' ? 'stat.leave' : 'stat.keep'),
 };
 
 export function BookListFilters({ filters, onChange }: Props) {

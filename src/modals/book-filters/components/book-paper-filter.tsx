@@ -3,9 +3,9 @@ import { observer } from 'mobx-react';
 import { EditableListItem } from './editable-list-item';
 
 const fields = [
-  { id: null, name: 'Все' },
-  { id: 'y', name: 'В бумаге' },
-  { id: 'n', name: 'В электронке' },
+  { id: null, key: 'all' },
+  { id: 'y', key: 'common.paper' },
+  { id: 'e', key: 'common.ebook' },
 ];
 
 export const BookPaperFilter = observer(({ filters }) => {
@@ -13,7 +13,7 @@ export const BookPaperFilter = observer(({ filters }) => {
 
   return (
     <EditableListItem
-      title='Вид книги'
+      title='modal.format'
       fields={fields}
       labelKey='name'
       value={filters.paper}

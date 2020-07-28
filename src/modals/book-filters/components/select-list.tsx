@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { getColor, dynamicColor } from 'types/colors';
 import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
+import { t } from 'services';
 
 interface Props {
   title: string;
@@ -42,7 +43,7 @@ export class SelectList extends React.PureComponent<Props> {
     return _.map(fields, field => (
       <TouchableOpacity key={field.id} style={s.row} onPress={() => this.props.onChange(field.id)}>
         <Icon name={value === field.id ? 'check-circle' : 'circle'} size={18} color={color.PrimaryText} />
-        <Text style={s.optionText}>{field[labelKey]}</Text>
+        <Text style={s.optionText}>{field.key ? t(field.key) : field[labelKey]}</Text>
       </TouchableOpacity>
     ));
   }

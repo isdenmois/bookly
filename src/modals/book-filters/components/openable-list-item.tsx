@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, TextStyle, View, TouchableOpacity } from 'react-native';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
+import { t } from 'services';
 import { dynamicColor } from 'types/colors';
 import { ListItem } from 'components';
 
@@ -29,11 +30,11 @@ export function OpenableListItem({ title, viewValue, children, onClear, onClose 
 
   return (
     <ListItem onPress={opened ? null : open} value={viewValue} clearable={defined && !opened} onChange={onClear}>
-      {!opened && <Text style={s.title}>{title}</Text>}
+      {!opened && <Text style={s.title}>{t(title)}</Text>}
       {opened && (
         <View style={s.container}>
           <TouchableOpacity onPress={close}>
-            <Text style={s.title}>{title}</Text>
+            <Text style={s.title}>{t(title)}</Text>
           </TouchableOpacity>
 
           {children}

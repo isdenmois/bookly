@@ -2,24 +2,24 @@ import { dayOfYear } from 'utils/date';
 import { CURRENT_YEAR, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 
 export interface MonthRow extends IRow {
-  name: string;
+  key: string;
   days: number;
   rating: number;
 }
 
 const MONTHS = [
-  { id: 0, name: 'Январь', d: 31 },
-  { id: 1, name: 'Февраль', d: 28 },
-  { id: 2, name: 'Март', d: 31 },
-  { id: 3, name: 'Апрель', d: 30 },
-  { id: 4, name: 'Май', d: 31 },
-  { id: 5, name: 'Июнь', d: 30 },
-  { id: 6, name: 'Июль', d: 31 },
-  { id: 7, name: 'Август', d: 31 },
-  { id: 8, name: 'Сентябрь', d: 30 },
-  { id: 9, name: 'Октябрь', d: 31 },
-  { id: 10, name: 'Ноябрь', d: 30 },
-  { id: 11, name: 'Декабрь', d: 31 },
+  { id: 0, key: 'common.jan', d: 31 },
+  { id: 1, key: 'common.feb', d: 28 },
+  { id: 2, key: 'common.mar', d: 31 },
+  { id: 3, key: 'common.apr', d: 30 },
+  { id: 4, key: 'common.may', d: 31 },
+  { id: 5, key: 'common.jun', d: 30 },
+  { id: 6, key: 'common.jul', d: 31 },
+  { id: 7, key: 'common.aug', d: 31 },
+  { id: 8, key: 'common.sep', d: 30 },
+  { id: 9, key: 'common.oct', d: 31 },
+  { id: 10, key: 'common.nov', d: 30 },
+  { id: 11, key: 'common.dec', d: 31 },
 ];
 
 function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
@@ -57,7 +57,7 @@ function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
 
   result.push({
     id: 'total',
-    name: 'Итого',
+    key: 'total',
     count: totalCount * years.size,
     days: 0,
     rating: totalRating * years.size,

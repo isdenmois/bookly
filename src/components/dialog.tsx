@@ -2,7 +2,7 @@ import React, { ReactChild, ReactNode, useCallback } from 'react';
 import { Text, View, TouchableWithoutFeedback, TextStyle, ViewStyle, Platform } from 'react-native';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, light, useSColor } from 'types/colors';
-import { navigation } from 'services';
+import { navigation, t } from 'services';
 import { TouchIcon } from 'components/touch-icon';
 
 interface Props {
@@ -43,7 +43,7 @@ function renderDialogHeader(title: ReactChild, back, onApply, s, color) {
     <View style={s.header}>
       <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={back} />
       <Text numberOfLines={1} style={s.title}>
-        {title}
+        {t(title)}
       </Text>
       {onApply && <TouchIcon name='check' size={24} color={color.PrimaryText} onPress={onApply} />}
       {!onApply && <View style={s.noApplyIcon} />}

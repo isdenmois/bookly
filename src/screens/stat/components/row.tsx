@@ -2,6 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { Text, View, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 import { dynamicColor } from 'types/colors';
+import { t } from 'services';
 import { IRow, TabTransition } from '../tabs/shared';
 import { transition as ByMonthTransition } from '../tabs/by-month.factory';
 import { transition as ByAuthorTransition } from '../tabs/by-author.factory';
@@ -35,7 +36,7 @@ export const Row = memo(({ row, columns, flexes, type, year }: Props) => {
     <Component style={s.container} onPress={go}>
       {columns.map((c, i) => (
         <Text key={c} style={flexes ? [s.text, { flex: flexes[i] }] : s.text}>
-          {row[c]}
+          {c === 'name' && 'key' in row ? t(row.key) : row[c]}
         </Text>
       ))}
     </Component>

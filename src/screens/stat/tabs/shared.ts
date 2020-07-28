@@ -43,6 +43,7 @@ export interface IRow {
   id: number | string;
   count: number;
   d?: number;
+  key?: string;
 }
 
 export const CURRENT_YEAR = getCurrentYear();

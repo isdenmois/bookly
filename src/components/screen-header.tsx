@@ -2,7 +2,7 @@ import React, { memo, useContext, useState, useCallback, useEffect } from 'react
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { useSColor, dynamicColor } from 'types/colors';
-import { navigation } from 'services';
+import { navigation, t } from 'services';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
 import { TouchIcon } from './touch-icon';
 import { SearchBar } from './search-bar';
@@ -36,7 +36,7 @@ export const ScreenHeader = memo((props: Props) => {
         autoFocus
         style={s.searchHeader}
         value={query}
-        placeholder='Поиск по названию'
+        placeholder={t('common.search-by-title')}
         onChange={setQuery}
         onSearch={onSearch}
         onBack={goBack}
@@ -49,7 +49,7 @@ export const ScreenHeader = memo((props: Props) => {
     <View style={s.header}>
       <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={goBack} onLongPress={goToHome} />
       <Text style={s.title} onPress={scroll}>
-        {props.title}
+        {t(props.title)}
       </Text>
       {props.onSearch && <TouchIcon name='search' size={24} color={color.PrimaryText} onPress={openSearch} />}
       {!props.onSearch && <View style={s.noSearch} />}

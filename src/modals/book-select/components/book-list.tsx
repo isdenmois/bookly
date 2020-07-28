@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
 import { sortBy, prop, isFalsy } from 'rambdax';
 
-import { FlatList, StyleSheet, Text, View, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { FlatList, Text, View, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { database } from 'store';

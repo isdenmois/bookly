@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { t } from 'services';
 import { IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 
 export interface RatingRow extends IRow {
@@ -17,7 +18,7 @@ function ByRatingFactory(books: StatBook[]): RatingRow[] {
 
   result.push({
     id: 'total',
-    rating: 'Итого',
+    rating: t('total'),
     count: totalCount,
   });
 

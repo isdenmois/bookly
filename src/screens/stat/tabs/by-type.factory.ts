@@ -1,4 +1,5 @@
 import { StatTab, TabTransition, IRow, round, openRead, StatBook } from './shared';
+import { t } from 'services';
 
 export interface TypeRow extends IRow {
   rating: number;
@@ -49,12 +50,12 @@ function ByTypeFactory(books: StatBook[]): TypeRow[] {
   keep.r = round(keep.r / keep.c);
 
   return [
-    { id: 'Бумажных', count: paper.c, rating: paper.r, f: { paper: 'y', audio: 'n' } },
-    { id: 'Электронных', count: ebook.c, rating: ebook.r, f: { paper: 'n', audio: 'n' } },
-    { id: 'Аудио', count: audio.c, rating: audio.r, f: { audio: 'y' } },
-    { id: 'В оригинале', count: withoutTranslation.c, rating: withoutTranslation.r, f: { withoutTranslation: 'y' } },
-    { id: 'Оставила', count: leave.c && keep.c, rating: keep.r, f: { leave: 'n', paper: 'y' } },
-    { id: 'Отдала', count: leave.c, rating: leave.r, f: { leave: 'y', paper: 'y' } },
+    { id: t('stat.paper'), count: paper.c, rating: paper.r, f: { paper: 'y', audio: 'n' } },
+    { id: t('stat.ebook'), count: ebook.c, rating: ebook.r, f: { paper: 'n', audio: 'n' } },
+    { id: t('stat.audio'), count: audio.c, rating: audio.r, f: { audio: 'y' } },
+    { id: t('stat.eng'), count: withoutTranslation.c, rating: withoutTranslation.r, f: { withoutTranslation: 'y' } },
+    { id: t('stat.keep'), count: leave.c && keep.c, rating: keep.r, f: { leave: 'n', paper: 'y' } },
+    { id: t('stat.leave'), count: leave.c, rating: leave.r, f: { leave: 'y', paper: 'y' } },
   ].filter(r => r.count > 0);
 }
 

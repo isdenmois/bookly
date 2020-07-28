@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, TextStyle, ViewStyle, Text, TouchableOpacity, Linking } from 'react-native';
-import pluralize from 'pluralize-ru';
 import { dynamicColor, boldText } from 'types/colors';
 import { Thumbnail } from 'components';
+import { t } from 'services';
 import { thousandsSeparator } from 'utils/number-format';
 import { Edition } from 'services/api/fantlab/editions';
 import { DynamicStyleSheet } from 'react-native-dynamic';
@@ -35,7 +35,8 @@ export class EditionCard extends React.PureComponent<Props> {
   }
 
   get pageCount() {
-    return pluralize(this.props.edition.pages, '%d страниц', '%d страница', '%d страницы', '%d страниц');
+    const count = this.props.edition.pages;
+    return t('pages', { postProcess: 'ruplur', count });
   }
 
   render() {
@@ -57,7 +58,9 @@ export class EditionCard extends React.PureComponent<Props> {
           <Text style={s.title}>{this.title}</Text>
           <Text style={s.description}>{this.translators}</Text>
           <Text style={s.description}>{this.pageCount}</Text>
-          <Text style={s.description}>{thousandsSeparator(edition.copies)} экз.</Text>
+          <Text style={s.description}>
+            {thousandsSeparator(edition.copies)} {t('copies')}
+          </Text>
         </View>
       </View>
     );

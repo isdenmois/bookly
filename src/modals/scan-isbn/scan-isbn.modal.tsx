@@ -3,7 +3,6 @@ import { View, StyleSheet, ViewStyle } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { Dialog } from 'components';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { t } from 'services';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -20,7 +19,7 @@ export function ScanIsbnModal({ navigation }: Props) {
   }, []);
 
   return (
-    <Dialog style={s.d} title={t('modal.scan-isbn')}>
+    <Dialog style={s.d} title='modal.scan-isbn'>
       <View style={s.cameraRow}>
         <RNCamera
           style={s.camera}

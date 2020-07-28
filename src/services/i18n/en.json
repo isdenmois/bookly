@@ -1,8 +1,29 @@
 {
   "common": {
     "original": "In English",
+    "ru": "In Russian",
     "audiobook": "Audiobook",
-    "found": "Found"
+    "no-audio": "Not audiobook",
+    "found": "Found",
+    "search-by-title": "Search by title",
+    "top": "top",
+    "paper": "Paper",
+    "ebook": "E-Book",
+    "fromll": "From LiveLib",
+    "copies": "Copies",
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "may": "May",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December",
+    "fromy": "From {{year}}"
   },
   "home": {
     "search": "Search in FantLab",
@@ -15,8 +36,12 @@
       "anticipate": "Anticipate",
       "completed": "Completed",
       "ahead": "Ahead",
+      "youve-completed": "You have completed the challenge!",
       "progress": "Read a book before {{date}} to manage to complete the challenge",
-      "forecast": "Read a book before {{date}} to keep the rate and read {{count}} $t(book-count)"
+      "progress-rate": "Read a book before {{date}} (once per {{rate}} $t(day, {\"count\": {{rate}}})) to complete the challenge",
+      "zerocast": "Read a book before {{date}} (once per {{rate}} $t(day, {count: {{rate}}})) to reach 0 before {{due}}",
+      "forecast": "Read a book before {{date}} to keep the rate and read {{count}} $t(book-count, {\"count\": {{count}}})",
+      "cantdoit": "You can't complete the challenge"
     }
   },
   "button": {
@@ -38,7 +63,8 @@
     "profile": "Profile"
   },
   "headers": {
-    "book-select": "Book selecting"
+    "book-select": "Book selecting",
+    "editions": "Editions"
   },
   "details": {
     "briefly": "Briefly",
@@ -84,7 +110,18 @@
     "days": "Days",
     "mark": "Mark",
     "books": "Books",
-    "type": "Type"
+    "type": "Type",
+    "paper": "Papers",
+    "ebook": "E-Books",
+    "audio": "Audiobooks",
+    "eng": "In English",
+    "keep": "Keep",
+    "leave": "Leave"
+  },
+  "top": {
+    "compare": "Compare",
+    "best": "The best book",
+    "empty": "Not enough data for comparison"
   },
   "modal": {
     "edit": "Edit the title",
@@ -96,11 +133,21 @@
     "review-added": "The review has added",
     "review-updated": "The review has updated",
     "filters": "Filters",
-    "title": "Title"
+    "title": "Title",
+    "sort": "Sort",
+    "date": "Date",
+    "rating": "Rating",
+    "by-add": "By add",
+    "id": "id",
+    "format": "Format"
   },
   "author": "Author",
   "year": "Year",
   "all": "All",
   "book-count": "book",
-  "book-count_plural": "books"
+  "book-count_plural": "books",
+  "pages": "{{count}} pages",
+  "copies": "copies",
+  "empty": "Nothing has found",
+  "total": "Total"
 }

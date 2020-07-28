@@ -5,6 +5,7 @@ import classnames from 'rn-classnames';
 import { light, dark, dynamicColor } from 'types/colors';
 import { TextM } from './text';
 import { TouchIcon } from './touch-icon';
+import { t } from 'services';
 
 interface Props {
   value?: string;
@@ -51,7 +52,7 @@ export class ListItem extends React.Component<Props> {
       <Container style={[s.container, style]} onPress={this.onPress} testID={counter || isEditable ? null : testID}>
         {!!icon && <View style={s.icon}>{icon}</View>}
         <View style={[...cn({ border, borderFirst: first, disabled }), this.props.rowStyle]}>
-          {!!label && <TextM style={s.label}>{label}</TextM>}
+          {!!label && <TextM style={s.label}>{t(label)}</TextM>}
           {!children && !isEditable && <TextM style={cn('text', { textRight: !!label })}>{this.props.value}</TextM>}
           {!children && isEditable && (
             <TextInput

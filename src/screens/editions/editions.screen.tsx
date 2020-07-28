@@ -30,7 +30,7 @@ export class EditionsListScreen extends React.Component<Props> {
     return (
       <Screen>
         <View style={s.container}>
-          <ScreenHeader title={'Список изданий'} />
+          <ScreenHeader title='headers.editions' />
           {count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}
         </View>
 

@@ -57,7 +57,7 @@ export class ReadList extends React.Component<Props, State> {
 
     return (
       <Screen>
-        <ScreenHeader title={t(this.title)} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
+        <ScreenHeader title={this.title} query={this.state.filters.title} onSearch={!readonly && this.setSearch} />
         <BookList
           query={query}
           sort={sort}
@@ -77,7 +77,7 @@ export class ReadList extends React.Component<Props, State> {
           />
           {this.showTopRate && session.topRate && (
             <Button
-              label='ТОП'
+              label={t('common.top').toUpperCase()}
               onPress={this.openTopRated}
               icon={<Icon name='vials' size={18} color={color.PrimaryText} />}
               style={s.button}

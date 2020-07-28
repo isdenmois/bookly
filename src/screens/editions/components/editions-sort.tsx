@@ -9,10 +9,10 @@ interface Props {
 }
 
 const sorts = {
-  '-year': 'Год',
-  year: 'Год',
-  '-copies': 'Тираж',
-  copies: 'Тираж',
+  '-year': 'year',
+  year: 'year',
+  '-copies': 'common.copies',
+  copies: 'common.copies',
 };
 
 export const EditionsSort = memo(({ sort, onChange }: Props) => {

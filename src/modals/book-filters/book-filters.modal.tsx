@@ -53,7 +53,7 @@ export class BookFiltersModal extends React.Component<Props> {
     const changed = this.service.changed;
 
     return (
-      <Dialog style={s.modalStyle} title={t('modal.filters')} onApply={changed && this.save}>
+      <Dialog style={s.modalStyle} title='modal.filters' onApply={changed && this.save}>
         <ScrollView style={s.scroll} contentContainerStyle={s.filters}>
           {!!sortFields && <BookListSort fields={sortFields} value={this.service.sort} onChange={this.setSort} />}
 

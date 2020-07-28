@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ViewStyle, TextStyle } from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, useSColor } from 'types/colors';
+import { t } from 'services';
 
 interface Props {
   title: string;
@@ -19,7 +20,7 @@ function TagComponent({ title, selected, outline, icon, onPress }: Props) {
 
   return (
     <Wrapper style={wraperStyle} onPress={onPress}>
-      <Text style={s.text}>{title}</Text>
+      <Text style={s.text}>{t(title)}</Text>
       {!!icon && <Icon style={s.icon} name={icon} size={14} color={color.Review} />}
     </Wrapper>
   );

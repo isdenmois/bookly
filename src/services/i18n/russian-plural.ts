@@ -3,7 +3,9 @@ const pluralize = require('pluralize-ru');
 export default {
   name: 'ruplur',
   type: 'postProcessor',
-  process(value, key, options) {
+  process(value: string, key, options) {
+    if (!value.includes(';')) return value;
+
     return pluralize(options.count % 1 !== 0 ? 2 : options.count, ...value.split(';'));
   },
 } as any;

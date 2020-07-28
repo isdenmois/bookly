@@ -12,7 +12,7 @@ export const BookIsLiveLibFilter = observer(({ filters }: Props) => {
   const toggle = useCallback(() => filters.setFilter('isLiveLib', filters.isLiveLib ? null : true), [filters]);
 
   return (
-    <ListItem rowStyle={s.row} label='Из LiveLib' onPress={toggle}>
+    <ListItem rowStyle={s.row} label='common.fromll' onPress={toggle}>
       <Checkbox value={filters.isLiveLib} onValueChange={toggle} />
     </ListItem>
   );

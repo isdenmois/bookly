@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { ListItem } from 'components';
 import { BookFilters } from '../book-filters.service';
-import { t } from 'services';
 
 interface Props {
   filters: BookFilters;
@@ -14,7 +13,7 @@ export const BookTitleFilter = observer(({ filters, onApply }: Props) => {
 
   return (
     <ListItem
-      label={t('modal.title')}
+      label='modal.title'
       keyboardType='default'
       value={filters.title}
       onChange={setTitle}
