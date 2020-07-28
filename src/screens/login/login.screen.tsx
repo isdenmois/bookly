@@ -40,7 +40,7 @@ export function LoginScreen({ navigation, location }: Props) {
             icon={<Icon name='user' size={18} color={color.PrimaryText} />}
           />
 
-          {submitting && <ActivityIndicator size='large' />}
+          {submitting && <ActivityIndicator size='large' color={color.Primary} />}
 
           {!submitting && <Button testID='submitButton' title='Войти' disabled={!login} onPress={submit} />}
         </View>
