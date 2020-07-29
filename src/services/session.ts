@@ -30,7 +30,6 @@ const INITIAL_SETTINGS: any = {
   fantlabAuth: '',
   defaultSort: INITIAL_SORT,
   minYear: INITIAL_YEAR,
-  mode: 'dark',
 };
 
 export class Session {
@@ -44,7 +43,7 @@ export class Session {
   @observable persistState: boolean = false;
   @observable topRate: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
-  @observable mode: Mode = 'dark';
+  @observable mode: Mode = null;
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;
 
