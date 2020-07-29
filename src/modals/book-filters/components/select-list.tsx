@@ -25,7 +25,7 @@ export class SelectList extends React.PureComponent<Props> {
       <View style={s.container}>
         <View style={s.headerRow}>
           <TouchableOpacity onPress={this.props.onClose}>
-            <Text style={s.title}>{this.props.title}</Text>
+            <Text style={s.title}>{t(this.props.title)}</Text>
           </TouchableOpacity>
           {this.props.children}
         </View>
