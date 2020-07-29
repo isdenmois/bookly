@@ -3,9 +3,7 @@ const { getFeatures } = require('./get-features');
 const { writeLog } = require('./write');
 const { formatMarkdown } = require('./format-log');
 
-const argv = require('yargs')
-  .option('type', { default: 'release' })
-  .help().argv;
+const argv = require('yargs').option('type', { default: 'release' }).boolean('major').help().argv;
 
 async function printChangelog(type) {
   const tag = await getLatestTag();
@@ -16,7 +14,7 @@ async function printChangelog(type) {
   }
 
   if (type === 'release') {
-    return writeLog(features);
+    return writeLog(features, argv.major);
   } else {
     console.log(formatMarkdown(features));
   }

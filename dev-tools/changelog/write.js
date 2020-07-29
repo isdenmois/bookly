@@ -2,11 +2,12 @@ const { execSync } = require('child_process');
 const { formatMarkdown } = require('./format-log');
 const fs = require('fs');
 
-exports.writeLog = function(features) {
+exports.writeLog = function (features, major) {
   const message = formatMarkdown(features);
   const hasFeatures = checkFeaturesExisting(features);
+  const type = major ? 'major' : hasFeatures ? 'minor' : 'patch';
 
-  execSync(`yarn version ${hasFeatures ? '--minor' : '--patch'}`);
+  execSync(`yarn version --${type}`);
   fs.writeFileSync('RELEASE_NOTES.md', message);
 };
 

@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-locale-detector/android/build.gradle b/node_modules/react-native-locale-detector/android/build.gradle
+index 1f9f4e0..01998dc 100755
+--- a/node_modules/react-native-locale-detector/android/build.gradle
++++ b/node_modules/react-native-locale-detector/android/build.gradle
+@@ -11,7 +11,7 @@ buildscript {
+ apply plugin: 'com.android.library'
+ 
+ android {
+-    compileSdkVersion 23
++    compileSdkVersion 28
+     buildToolsVersion "23.0.1"
+ 
+     defaultConfig {
