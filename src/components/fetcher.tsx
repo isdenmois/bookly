@@ -47,6 +47,7 @@ type Props<P = {}> = {
   sort?: string;
   groupBy?: GroupBy;
   additional: any[];
+  notSendRequest?: boolean;
 } & Omit<P, 'page'>;
 
 export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
@@ -131,6 +132,10 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   }
 
   fetchData(append?: boolean) {
+    if (this.props.notSendRequest) {
+      return this.setState({ data: [], isLoading: false });
+    }
+
     const sort = this.props.sort;
 
     this.unsubscribe();

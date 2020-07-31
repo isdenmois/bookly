@@ -7,9 +7,10 @@ import { FantlabThumnail } from 'services/api/fantlab/thumbnails';
 import { Fetcher, Thumbnail } from 'components';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import Book from 'store/book';
+import { BookExtended } from 'types/book-extended';
 
 interface Props {
-  book: Book;
+  book: Book & BookExtended;
   selected: string;
   onSelect: (value: string) => void;
 }
@@ -23,15 +24,17 @@ export class ThumbnailList extends React.PureComponent<Props> {
 
   render() {
     const s = ds[this.context];
+    const book = this.props.book;
 
     return (
       <ScrollView style={s.container} contentContainerStyle={s.content} horizontal>
         <Fetcher
           observe={OBSERVE_FIELDS}
           api={api.thumbnails}
-          bookId={this.props.book.id}
+          bookId={book.id}
           selected={this.props.selected}
           additional={this.additional}
+          notSendRequest={book.editionCount === 0}
         >
           {this.renderThumbnail}
         </Fetcher>
