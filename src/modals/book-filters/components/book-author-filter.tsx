@@ -10,6 +10,7 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dynamicColor } from 'types/colors';
 import Author from 'store/author';
 import { database } from 'store';
+import { t } from 'services';
 import { EditableListItem } from './editable-list-item';
 import { BookFilters } from '../book-filters.service';
 
@@ -68,7 +69,7 @@ export class BookAuthorFilter extends React.PureComponent<Props, State> {
           placeholderTextColor={placeholderTextColor}
           onChangeText={this.setName}
           value={this.state.name}
-          placeholder='поиск'
+          placeholder={t('common.search').toLowerCase()}
         />
       </EditableListItem>
     );

@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextStyle, Insets } from 'react-native';
+import { View, Text, TouchableOpacity, TextStyle, Insets } from 'react-native';
 import { dynamicColor } from 'types/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { t } from 'services';
 
 interface Props {
   numberOfLines?: number;
@@ -33,7 +34,7 @@ export function ExpandableText(props: Props) {
         </Text>
 
         <TouchableOpacity onPress={toggleExpanded} hitSlop={hitSlop}>
-          <Text style={s.toggleText}>{expanded ? 'Свернуть' : 'Читать далее'}</Text>
+          <Text style={s.toggleText}>{t(expanded ? 'common.collapse' : 'common.read-more')}</Text>
         </TouchableOpacity>
       </View>
 

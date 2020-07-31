@@ -5,6 +5,7 @@
     "audiobook": "Audiobook",
     "no-audio": "Not audiobook",
     "found": "Found",
+    "search": "Search",
     "search-by-title": "Search by title",
     "top": "top",
     "paper": "Paper",
@@ -23,7 +24,9 @@
     "oct": "October",
     "nov": "November",
     "dec": "December",
-    "fromy": "From {{year}}"
+    "fromy": "From {{year}}",
+    "collapse": "Collapse",
+    "read-more": "Read more"
   },
   "home": {
     "search": "Search in FantLab",

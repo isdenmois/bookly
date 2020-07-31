@@ -5,6 +5,7 @@
     "audiobook": "Аудиокнига",
     "no-audio": "Не аудиокнига",
     "found": "Найдено",
+    "search": "Поиск",
     "search-by-title": "Поиск по названию",
     "top": "топ",
     "paper": "В бумаге",
@@ -23,7 +24,9 @@
     "oct": "Октябрь",
     "nov": "Ноябрь",
     "dec": "Декабрь",
-    "fromy": "С {{year}}"
+    "fromy": "С {{year}}",
+    "collapse": "Свернуть",
+    "read-more": "Читать далее"
   },
   "home": {
     "search": "Поиск по FantLab",
