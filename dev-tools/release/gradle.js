@@ -26,17 +26,17 @@ function runGradle(cwd, tasks) {
   return new Promise((resolve, reject) => {
     const gradlew = spawn('./gradlew', tasks, { cwd, shell: true });
 
-    gradlew.stdout.on('data', (data) => {
+    gradlew.stdout.on('data', data => {
       console.log(data.toString());
     });
 
-    gradlew.stderr.on('data', (data) => {
+    gradlew.stderr.on('data', data => {
       console.log(`stderr: ${data}`);
     });
 
     gradlew.on('error', reject);
 
-    gradlew.on('close', (code) => {
+    gradlew.on('close', code => {
       if (code === 0) {
         resolve();
       } else {

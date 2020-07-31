@@ -1,7 +1,6 @@
 const Diawi = require('diawi');
 const npath = require('path');
 const fs = require('fs');
-const { name, version } = require('../../package.json');
 
 exports.upload = function upload(path) {
   return new Promise((resolve, reject) => {
@@ -17,6 +16,7 @@ exports.upload = function upload(path) {
 };
 
 function renameApk(path) {
+  const { name, version } = require('../../package.json');
   const newPath = npath.join(npath.dirname(path), `${name}-${version}.apk`);
 
   if (newPath !== path) {
