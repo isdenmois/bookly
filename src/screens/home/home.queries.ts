@@ -1,12 +1,12 @@
 import { Q } from '@nozbe/watermelondb';
 import { map } from 'rxjs/operators';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { dayOfYear, getStartOfYear } from 'utils/date';
+import { dayOfYear, getStartOfYear, daysAmount } from 'utils/date';
 import { database } from 'store';
 
 export function booksReadForecast(read: number, total: number): number {
-  const yearProgress = dayOfYear() / 365;
-  const needToRead = Math.round(yearProgress * total);
+  const yearProgress = dayOfYear() / daysAmount();
+  const needToRead = Math.floor(yearProgress * total);
 
   return read - needToRead;
 }
