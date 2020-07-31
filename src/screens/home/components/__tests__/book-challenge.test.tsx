@@ -101,6 +101,9 @@ describe('Book challenge', () => {
         'Прочитайте книгу до 29.07 (раз в 4.1 дня), чтобы сохранить темп и прочитать 89 книг за год',
       );
       expect(getForecastMessage(51, 89)).toBeNull();
+
+      mockdate.set('2020-07-31');
+      expect(getZerocastMessage(43, 74)).toBeNull();
     });
   });
 });

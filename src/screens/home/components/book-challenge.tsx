@@ -111,7 +111,7 @@ export function getZerocastMessage(readCount: number, totalBooks: number) {
   const getForecast = d => ((today + d) / total) * totalBooks;
   let speed = remainDays / (totalBooks - readCount);
 
-  if (speed < 3.5 || readCount >= getForecast(0)) return null;
+  if (speed < 3.5 || readCount >= Math.round(getForecast(0))) return null;
 
   if (speed > 10) {
     speed = speed / 2;
