@@ -39,7 +39,7 @@
       "youve-completed": "You have completed the challenge!",
       "progress": "Read a book before {{date}} to manage to complete the challenge",
       "progress-rate": "Read a book before {{date}} (once per {{rate}} $t(day, {\"count\": {{rate}}})) to complete the challenge",
-      "zerocast": "Read a book before {{date}} (once per {{rate}} $t(day, {\"count\": {{rate}}})) to reach 0 before {{due}}",
+      "zerocast": "Read a book before {{date}} (once per {{rate}} $t(day, {\"count\": {{rate}}})) to reach 0 before {{zero}}",
       "forecast": "Read a book before {{date}} to keep the rate and read {{count}} $t(book-count, {\"count\": {{count}}})",
       "cantdoit": "You can't complete the challenge"
     }
