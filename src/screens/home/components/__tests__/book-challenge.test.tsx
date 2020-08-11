@@ -61,7 +61,7 @@ describe('Book challenge', () => {
 
       expect(getProgressMessage(35, 70)).toBeNull();
       expect(getForecastMessage(35, 70, lastRead)).toBe(
-        'Прочитайте книгу до 10.08 (раз в 6.1 дня), чтобы сохранить темп и прочитать 59 книг за год',
+        'Прочитайте книгу до 06.08 (раз в 6.1 дня), чтобы сохранить темп и прочитать 60 книг за год',
       );
       expect(getZerocastMessage(35, 70, lastRead)).toBe(
         'Прочитайте книгу до 04.08 (раз в 3.3 дня), чтобы выйти в 0 до 25.09',
@@ -72,7 +72,7 @@ describe('Book challenge', () => {
         'Прочитайте книгу до 04.08 (раз в 3.4 дня), чтобы успеть выполнить вызов',
       );
       expect(getForecastMessage(25, 70, lastRead)).toBe(
-        'Прочитайте книгу до 13.08 (раз в 8.6 дня), чтобы сохранить темп и прочитать 42 книги за год',
+        'Прочитайте книгу до 08.08 (раз в 8.6 дня), чтобы сохранить темп и прочитать 43 книги за год',
       );
       expect(getZerocastMessage(25, 70, lastRead)).toBeNull();
 
@@ -87,7 +87,7 @@ describe('Book challenge', () => {
 
       expect(getProgressMessage(8, 70)).toBeNull();
       expect(getForecastMessage(8, 70, lastRead)).toBe(
-        'Прочитайте книгу до 09.09 (раз в 26.8 дня), чтобы сохранить темп и прочитать 13 книг за год',
+        'Прочитайте книгу до 22.08 (раз в 26.8 дня), чтобы сохранить темп и прочитать 14 книг за год',
       );
       expect(getZerocastMessage(8, 70, lastRead)).toBeNull();
 
@@ -95,9 +95,11 @@ describe('Book challenge', () => {
       lastRead = new Date('2020-07-27');
       expect(getProgressMessage(42, 70)).toBe('Прочитайте книгу до 11.08, чтобы успеть выполнить вызов');
       expect(getForecastMessage(42, 70, lastRead)).toBe(
-        'Прочитайте книгу до 02.08 (раз в 5 дней), чтобы сохранить темп и прочитать 73 книги за год',
+        'Прочитайте книгу до 30.07 (раз в 5 дней), чтобы сохранить темп и прочитать 74 книги за год',
       );
-      expect(getForecastMessage(42, 73, lastRead)).toBeNull();
+      expect(getForecastMessage(42, 73, lastRead)).toBe(
+        'Прочитайте книгу до 30.07 (раз в 5 дней), чтобы сохранить темп и прочитать 74 книги за год',
+      );
       expect(getProgressMessage(42, 73)).toBe('Прочитайте книгу до 02.08, чтобы успеть выполнить вызов');
 
       expect(getProgressMessage(51, 90)).toBe('Прочитайте книгу до 29.07, чтобы успеть выполнить вызов');
@@ -142,6 +144,13 @@ describe('Book challenge', () => {
     expect(getNegativeProgress(43, 76, lastRead)).toBe(
       'Прочитайте книгу до 08.08 (раз в 4.4 дня), чтобы успеть выполнить вызов',
     );
+
+    lastRead = new Date('2020-08-01');
+    mockdate.set('2020-08-11');
+    expect(getNegativeProgress(54, 90, lastRead)).toBe(
+      'Прочитайте книгу до 12.08 (раз в 3.9 дня), чтобы успеть выполнить вызов',
+    );
+    expect(getNegativeProgress(54, 89, lastRead)).toBeNull();
   });
 
   it('getProgressMessage', () => {
@@ -153,6 +162,12 @@ describe('Book challenge', () => {
 
     mockdate.set('2020-08-04');
     expect(getProgressMessage(43, 74)).toBe('Прочитайте книгу до 04.08, чтобы успеть выполнить вызов');
+
+    mockdate.set('2020-08-11');
+    expect(getProgressMessage(54, 90)).toBeNull();
+    expect(getProgressMessage(46, 76)).toBe('Прочитайте книгу до 13.08, чтобы успеть выполнить вызов');
+    expect(getProgressMessage(46, 75)).toBe('Прочитайте книгу до 16.08, чтобы успеть выполнить вызов');
+    expect(getProgressMessage(54, 89)).toBe('Прочитайте книгу до 13.08, чтобы успеть выполнить вызов');
   });
 
   it('getZerocastMessage', () => {
@@ -178,17 +193,27 @@ describe('Book challenge', () => {
     mockdate.set('2020-07-31');
 
     expect(getForecastMessage(43, 70, lastRead)).toBe(
-      'Прочитайте книгу до 07.08 (раз в 5 дней), чтобы сохранить темп и прочитать 73 книги за год',
+      'Прочитайте книгу до 04.08 (раз в 5 дней), чтобы сохранить темп и прочитать 74 книги за год',
     );
 
     mockdate.set('2020-08-01');
     expect(getForecastMessage(43, 70, lastRead)).toBe(
-      'Прочитайте книгу до 07.08 (раз в 5 дней), чтобы сохранить темп и прочитать 73 книги за год',
+      'Прочитайте книгу до 04.08 (раз в 5 дней), чтобы сохранить темп и прочитать 74 книги за год',
+    );
+
+    mockdate.set('2020-08-04');
+    expect(getForecastMessage(43, 70, lastRead)).toBe(
+      'Прочитайте книгу до 04.08 (раз в 5 дней), чтобы сохранить темп и прочитать 74 книги за год',
+    );
+
+    mockdate.set('2020-08-05');
+    expect(getForecastMessage(43, 70, lastRead)).toBe(
+      'Прочитайте книгу до 07.08 (раз в 5.1 дня), чтобы сохранить темп и прочитать 73 книги за год',
     );
 
     mockdate.set('2020-08-07');
     expect(getForecastMessage(43, 70, lastRead)).toBe(
-      'Прочитайте книгу до 07.08 (раз в 5 дней), чтобы сохранить темп и прочитать 73 книги за год',
+      'Прочитайте книгу до 07.08 (раз в 5.1 дня), чтобы сохранить темп и прочитать 73 книги за год',
     );
 
     mockdate.set('2020-08-08');
@@ -232,10 +257,12 @@ describe('Book challenge', () => {
     expect(getForecastMessage(54, 90, lastRead)).toBe(
       'Прочитайте книгу до 13.08 (раз в 4.2 дня), чтобы сохранить темп и прочитать 89 книг за год',
     );
+    expect(getForecastMessage(55, 90, new Date('2020-08-11'))).toBeNull();
 
-    mockdate.set('2020-08-11');
-    expect(getForecastMessage(55, 90, new Date('2020-08-11'))).toBe(
-      'Прочитайте книгу до 17.08 (раз в 4.1 дня), чтобы сохранить темп и прочитать 89 книг за год',
+    lastRead = new Date('2020-08-09');
+    expect(getForecastMessage(46, 76, lastRead)).toBeNull();
+    expect(getForecastMessage(46, 75, lastRead)).toBe(
+      'Прочитайте книгу до 13.08 (раз в 4.8 дня), чтобы сохранить темп и прочитать 76 книг за год',
     );
   });
 });

@@ -151,7 +151,7 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
   const today = dayOfYear();
   const total = daysAmount();
   const last = dayOfYear(lastRead);
-  let willRead = Math.floor((total / last) * readCount);
+  let willRead = Math.round((total / last) * readCount);
   let speed = last / readCount;
 
   if (willRead === totalBooks) {
