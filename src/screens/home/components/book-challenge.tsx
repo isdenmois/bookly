@@ -83,18 +83,19 @@ export function getNegativeProgress(readCount: number, totalBooks: number, lastR
 
   const remainDays = amount - today;
   const toRead = totalBooks - readCount;
-  const speed = remainDays / toRead;
+  let speed = remainDays / toRead;
 
   let last = dayOfYear(lastRead) + speed;
 
   while (today > last) {
     last += speed;
+    speed = (amount - last) / toRead;
   }
 
   lastRead = new Date(lastRead);
   lastRead.setMonth(0, last);
 
-  const rate = Math.round((remainDays / toRead) * 10) / 10;
+  const rate = Math.round(speed * 10) / 10;
 
   return t('home.challenge.progress-rate', { date: formatDate(lastRead), rate, postProcess: 'rp' });
 }
@@ -150,7 +151,7 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
   const today = dayOfYear();
   const total = daysAmount();
   const last = dayOfYear(lastRead);
-  let willRead = Math.round((total / last) * readCount);
+  let willRead = Math.floor((total / last) * readCount);
   let speed = last / readCount;
 
   if (willRead === totalBooks) {
@@ -161,7 +162,8 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
 
   while (today > dueDate) {
     willRead--;
-    dueDate += speed;
+    dueDate = ((readCount + 1) * total) / willRead;
+    speed = dueDate / readCount;
   }
 
   date.setMonth(0, dueDate);
