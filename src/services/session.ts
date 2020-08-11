@@ -24,6 +24,7 @@ const SETTINGS_FIELDS = <const>[
   'persistState',
   'topRate',
   'mode',
+  'authors',
 ];
 const INITIAL_SETTINGS: any = {
   totalBooks: INITIAL_BOOKS_COUNT,
@@ -44,6 +45,7 @@ export class Session {
   @observable topRate: boolean = false;
   @observable.ref defaultSort = INITIAL_SORT;
   @observable mode: Mode = null;
+  @observable authors: boolean = false;
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;
 

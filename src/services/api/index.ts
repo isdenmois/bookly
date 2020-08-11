@@ -18,6 +18,7 @@ import reviewVoteSchema from './fantlab/review-vote';
 import searchEditionsSchema from './fantlab/search-editions';
 import editionSchema from './fantlab/edition';
 import worksSchema from './fantlab/works';
+import authorsSchema from './fantlab/authors';
 
 import lBooksSearchSchema from './livelib/books-search';
 import lBookSchema from './livelib/book';
@@ -43,6 +44,7 @@ export class API {
   editions = editionsSchema.create(FANTLAB_URL);
   searchEditions = searchEditionsSchema.create(FANTLAB_URL);
   works = worksSchema.create(FANTLAB_URL);
+  authors = authorsSchema.create(FANTLAB_URL);
 
   reviewVote = reviewVoteSchema.create(FANTLAB_ROOT_URL);
 

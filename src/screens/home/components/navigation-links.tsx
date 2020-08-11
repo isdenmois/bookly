@@ -53,6 +53,13 @@ export class NavigationLinks extends React.Component<Props> {
           icon={<Icon name='chart-bar' size={20} color={color} />}
           value={t('nav.stat')}
         />
+        {session.authors && (
+          <ListItem
+            onPress={this.openAuthors}
+            icon={<Icon name='address-book' size={20} color={color} />}
+            value={t('nav.authors')}
+          />
+        )}
         <ListItem
           onPress={this.openProfile}
           icon={<Icon name='user' size={20} color={color} />}
@@ -69,6 +76,7 @@ export class NavigationLinks extends React.Component<Props> {
   openWishBooks = () => navigation.push('WishList');
   openBookSelect = () => navigation.push('BookSelect');
   openStat = () => navigation.push('Stat');
+  openAuthors = () => navigation.push('Authors');
   openProfile = () => navigation.push('Profile');
 }
 

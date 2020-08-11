@@ -21,12 +21,12 @@ function filter(data, fn) {
 }
 
 function mapResult(map, data) {
-  if (_.isArray(data)) {
-    return _.map(data, obj => mapObject(map, obj));
-  }
-
   if (typeof map === 'function') {
     return map(data);
+  }
+
+  if (_.isArray(data)) {
+    return _.map(data, obj => mapObject(map, obj));
   }
 
   return mapObject(map, data);

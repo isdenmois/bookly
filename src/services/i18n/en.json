@@ -28,6 +28,10 @@
     "collapse": "Collapse",
     "read-more": "Read more"
   },
+  "authors": {
+    "not-found": "No author is found",
+    "no-added": "No author was added"
+  },
   "home": {
     "search": "Search in FantLab",
     "empty": {
@@ -63,7 +67,8 @@
     "wish": "Want to read",
     "pick": "Pick a book",
     "stat": "Reading stats",
-    "profile": "Profile"
+    "profile": "Profile",
+    "authors": "Favorite authors"
   },
   "headers": {
     "book-select": "Book selecting",

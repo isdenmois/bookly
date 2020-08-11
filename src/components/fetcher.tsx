@@ -6,6 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import { color, dynamicColor } from 'types/colors';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { t } from 'services';
 import { database } from 'store';
 import { TextXL } from './text';
 import { Button } from './button';
@@ -21,6 +22,7 @@ const OMIT_FIELDS = [
   'collection',
   'sort',
   'setScrollTop',
+  'observeColumns',
 ];
 
 type ListItemRender = (item: any, index?: number) => ReactNode;
@@ -48,6 +50,7 @@ type Props<P = {}> = {
   groupBy?: GroupBy;
   additional: any[];
   notSendRequest?: boolean;
+  observeColumns?: string[];
 } & Omit<P, 'page'>;
 
 export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
@@ -249,7 +252,14 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   };
 
   mapModelsToData = models => {
-    const data = mapData(this.state.data, i => findModel(i, models) || i._orig || i);
+    const data = mapData(this.state.data, i => {
+      const model = findModel(i, models);
+      if (model) {
+        model.__orig = i;
+      }
+
+      return model || i._orig || i;
+    });
 
     this.setState({ isLoading: false, data });
   };
@@ -272,10 +282,12 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
   subscribe() {
     const query = database.collections
       .get(this.props.collection)
-      .query(Q.where('id', Q.oneOf(getIds(this.state.data))))
-      .observe();
+      .query(Q.where('id', Q.oneOf(getIds(this.state.data))));
+    const observable = this.props.observeColumns
+      ? query.observeWithColumns(this.props.observeColumns)
+      : query.observe();
 
-    this.subscription = query.subscribe(this.mapModelsToData) as any;
+    this.subscription = observable.subscribe(this.mapModelsToData) as any;
   }
 }
 
@@ -356,7 +368,7 @@ function order(array, sort) {
 export function EmptyResult({ text }) {
   return (
     <View style={s.container}>
-      <TextXL style={s.notFoundText}>{text}</TextXL>
+      <TextXL style={s.notFoundText}>{t(text)}</TextXL>
     </View>
   );
 }
