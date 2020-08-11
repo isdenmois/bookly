@@ -26,7 +26,8 @@
     "dec": "December",
     "fromy": "From {{year}}",
     "collapse": "Collapse",
-    "read-more": "Read more"
+    "read-more": "Read more",
+    "translated": "{{name}} [source {{lang}}]"
   },
   "authors": {
     "not-found": "No author is found",

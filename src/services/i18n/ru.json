@@ -26,7 +26,8 @@
     "dec": "Декабрь",
     "fromy": "С {{year}}",
     "collapse": "Свернуть",
-    "read-more": "Читать далее"
+    "read-more": "Читать далее",
+    "translated": "{{name}} [источник {{lang}}]"
   },
   "authors": {
     "not-found": "Автор не найден",

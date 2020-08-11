@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { t } from 'services/i18n';
 import { api } from '../base/api';
 import { thumbnailCodes } from './thumbnails';
 
@@ -136,9 +137,20 @@ function editionTranslators(w) {
 function translators(w) {
   let translations = _.find(w.translations, { lang_id: 1 });
   translations = translations?.translations || [];
-  translations = translations.map(t => _.map(t?.translators, 'short_name').join(', ')).filter(t => t);
+  translations = translations.map(getTranslation).filter(t => t);
 
   return translations.sort();
+}
+
+function getTranslation(item) {
+  if (!item) return;
+  const name = _.map(item.translators, 'short_name').join(', ');
+
+  if (item.source_lang) {
+    return t('common.translated', { name: name, lang: item.source_lang });
+  }
+
+  return name;
 }
 
 function films(w) {
