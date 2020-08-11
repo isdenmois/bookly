@@ -1,0 +1,13 @@
+diff --git a/node_modules/metro-inspector-proxy/src/Device.js b/node_modules/metro-inspector-proxy/src/Device.js
+index 4f79537..740acd4 100644
+--- a/node_modules/metro-inspector-proxy/src/Device.js
++++ b/node_modules/metro-inspector-proxy/src/Device.js
+@@ -263,7 +263,7 @@ class Device {
+   } // Sends 'getPages' request to device every PAGES_POLLING_INTERVAL milliseconds.
+ 
+   _setPagesPolling() {
+-    _rxjs.Observable.interval(PAGES_POLLING_INTERVAL).subscribe(_ =>
++    _rxjs.interval(PAGES_POLLING_INTERVAL).subscribe(_ =>
+       this._sendMessageToDevice({
+         event: "getPages"
+       })

@@ -1,4 +1,4 @@
-import { LIVELIB_APIKEY } from 'react-native-dotenv';
+import { LIVELIB_APIKEY } from 'services/config';
 import _ from 'lodash';
 import { api } from '../base/api';
 import { ReviewList } from '../fantlab/review-list';

@@ -1,12 +1,12 @@
 diff --git a/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js b/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js
-index faa7b52..15a2a7c 100644
+index a6210d8..0f37477 100644
 --- a/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js
 +++ b/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js
-@@ -6,17 +6,19 @@ function parseStylesFor(styles, mode) {
+@@ -6,10 +6,12 @@ function parseStylesFor(styles, mode) {
      for (const i in styles) {
          const style = styles[i];
          const newStyle = {};
-+        let subContainsDynamicValues
++        let subContainsDynamicValues;
          for (const i in style) {
              const value = style[i];
              if (value instanceof DynamicValue) {
@@ -15,11 +15,11 @@ index faa7b52..15a2a7c 100644
                  newStyle[i] = value[mode];
              }
              else {
-                 newStyle[i] = value;
+@@ -17,6 +19,7 @@ function parseStylesFor(styles, mode) {
              }
          }
--        newStyles[i] = newStyle;
+         newStyles[i] = newStyle;
 +        newStyles[i] = subContainsDynamicValues ? newStyle : style;
      }
-     if (!containsDynamicValues && __DEV__) {
+     if (!containsDynamicValues && process.env.NODE_ENV !== 'production') {
          console.warn('A DynamicStyleSheet was used without any DynamicValues. Consider replacing with a regular StyleSheet.');

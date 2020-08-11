@@ -1,4 +1,4 @@
-import { LIVELIB_APIKEY } from 'react-native-dotenv';
+import { LIVELIB_APIKEY } from 'services/config';
 import { ParentBook } from 'types/book-extended';
 import { api } from '../base/api';
 

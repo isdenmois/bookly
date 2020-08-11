@@ -1,6 +1,7 @@
 const config = {
-  presets: ['module:metro-react-native-babel-preset', 'module:react-native-dotenv', 'mobx'],
+  presets: ['module:metro-react-native-babel-preset', 'mobx'],
   plugins: [
+    'module:react-native-dotenv',
     '@babel/plugin-proposal-optional-chaining',
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     'transform-class-properties',

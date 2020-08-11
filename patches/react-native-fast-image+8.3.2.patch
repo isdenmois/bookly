@@ -1,0 +1,36 @@
+diff --git a/node_modules/react-native-fast-image/dist/index.js b/node_modules/react-native-fast-image/dist/index.js
+index acd3b64..5403167 100644
+--- a/node_modules/react-native-fast-image/dist/index.js
++++ b/node_modules/react-native-fast-image/dist/index.js
+@@ -39,11 +39,11 @@ function FastImageBase({
+   forwardedRef,
+   ...props
+ }) {
+-  if (fallback) {
++  if (fallback || !FastImageViewNativeModule) {
+     const cleanedSource = { ...source
+     };
+     delete cleanedSource.cache;
+-    const resolvedSource = Image.resolveAssetSource(cleanedSource);
++    const resolvedSource = FastImageViewNativeModule ? Image.resolveAssetSource(cleanedSource) : source;
+     return /*#__PURE__*/React.createElement(View, {
+       style: [styles.imageContainer, style],
+       ref: forwardedRef
+@@ -86,7 +86,7 @@ FastImage.resizeMode = resizeMode;
+ FastImage.cacheControl = cacheControl;
+ FastImage.priority = priority;
+ 
+-FastImage.preload = sources => FastImageViewNativeModule.preload(sources);
++FastImage.preload = sources => FastImageViewNativeModule && FastImageViewNativeModule.preload(sources);
+ 
+ const styles = StyleSheet.create({
+   imageContainer: {
+@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
+   }
+ }); // Types of requireNativeComponent are not correct.
+ 
+-const FastImageView = requireNativeComponent('FastImageView', FastImage, {
++const FastImageView = FastImageViewNativeModule && requireNativeComponent('FastImageView', FastImage, {
+   nativeOnly: {
+     onFastImageLoadStart: true,
+     onFastImageProgress: true,

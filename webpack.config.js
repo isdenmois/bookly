@@ -14,10 +14,10 @@ const babelConfig = {
         targets: 'ios 12.1',
       },
     ],
-    'module:react-native-dotenv',
     '@babel/preset-react',
   ],
   plugins: [
+    'module:react-native-dotenv',
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     [

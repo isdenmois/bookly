@@ -1,0 +1,16 @@
+diff --git a/node_modules/react-native-calendars/src/component-updater.js b/node_modules/react-native-calendars/src/component-updater.js
+index 19402f0..f6f5c5e 100644
+--- a/node_modules/react-native-calendars/src/component-updater.js
++++ b/node_modules/react-native-calendars/src/component-updater.js
+@@ -1,8 +1,9 @@
+-const _ = require('lodash');
++const isEqual = require('lodash/isEqual');
++const get = require('lodash/get');
+ 
+ function shouldUpdate(a, b, paths) {
+   for (let i = 0; i < paths.length; i++) {
+-    const equals = _.isEqual(_.get(a, paths[i]), _.get(b, paths[i]));
++    const equals = isEqual(get(a, paths[i]), get(b, paths[i]));
+     if (!equals) {
+       return true;
+     }
