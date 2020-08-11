@@ -49,8 +49,6 @@ async function toggleAuthorFav(author: Author) {
     } else {
       await createAuthor(database, { id: author.id, name: author.name, add, fav });
     }
-
-    ToastAndroid.show(fav ? 'Автор добавлен в интересные' : 'Автор убран из интересных', ToastAndroid.SHORT);
   } catch (e) {
     ToastAndroid.show('Не удалось выполнить действи: ' + e?.message, ToastAndroid.LONG);
   }
