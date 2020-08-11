@@ -44,13 +44,14 @@ function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
   });
 
   let total = years.size * 365;
-  const currentMonth = new Date().getMonth();
+  const currentMonth = getCurrentMonth();
   const hasCurrentYear = years.has(CURRENT_YEAR);
+  const isCurrentYear = hasCurrentYear && year === CURRENT_YEAR;
 
   if (hasCurrentYear) {
     total = total - 365 + dayOfYear();
 
-    if (year === CURRENT_YEAR) {
+    if (isCurrentYear) {
       result = result.slice(0, currentMonth + 1);
     }
   }
@@ -66,13 +67,22 @@ function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
 
   result.forEach((m, i) => {
     const size = hasCurrentYear && i > currentMonth && i < result.length - 1 ? years.size - 1 : years.size;
+    const d = isCurrentYear && i === currentMonth ? getCurrentDay() : m.d;
 
-    m.days = m.count ? round((m.d / m.count) * size) : 0;
+    m.days = m.count ? round((d / m.count) * size) : 0;
     m.rating = m.count ? round(m.rating / m.count) : 0;
     m.count = m.count ? round(m.count / size) : 0;
   });
 
   return result;
+}
+
+function getCurrentMonth() {
+  return new Date().getMonth();
+}
+
+function getCurrentDay() {
+  return new Date().getDate();
 }
 
 export const transition: TabTransition = {
