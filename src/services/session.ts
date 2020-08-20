@@ -25,6 +25,7 @@ const SETTINGS_FIELDS = <const>[
   'topRate',
   'mode',
   'authors',
+  'searchApp',
 ];
 const INITIAL_SETTINGS: any = {
   totalBooks: INITIAL_BOOKS_COUNT,
@@ -48,6 +49,7 @@ export class Session {
   @observable authors: boolean = false;
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;
+  searchApp: boolean = false;
 
   saving = false;
   needsToSave = false;

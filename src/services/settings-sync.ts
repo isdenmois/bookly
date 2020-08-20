@@ -3,7 +3,7 @@ import { api } from './api';
 import { session } from './session';
 
 let saving = false;
-const omitFields = ['userId', 'fantlabAuth', 'persistState', 'mode'];
+const omitFields = ['userId', 'fantlabAuth', 'persistState', 'mode', 'searchApp'];
 
 export async function saveSettings() {
   if (saving || !session.needsToSave) return;

@@ -1,13 +1,13 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import _ from 'lodash';
-import { Text, View, ViewStyle, StyleSheet, ImageStyle, TextStyle, Linking, Platform } from 'react-native';
+import { Text, View, ViewStyle, ImageStyle, TextStyle, Linking, Platform } from 'react-native';
 import Book from 'store/book';
 import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native';
 import { dynamicColor, boldText, lightText } from 'types/colors';
-import { navigation, t } from 'services';
+import { navigation, t, session } from 'services';
 import { database } from 'store';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 
@@ -20,7 +20,11 @@ interface Props {
 export function openInTelegram(text) {
   const action = Platform.OS === 'web' ? 'msg' : 'share';
 
-  Linking.openURL(`tg://${action}?text=${text}`);
+  if (session.searchApp) {
+    Linking.openURL(`booksearch://${text}`);
+  } else {
+    Linking.openURL(`tg://${action}?text=${text}`);
+  }
 }
 
 function BookSelectorComponent({ books, openFilters }: Props) {
