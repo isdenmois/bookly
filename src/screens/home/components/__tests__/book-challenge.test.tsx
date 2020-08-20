@@ -244,14 +244,10 @@ describe('Book challenge', () => {
     );
 
     mockdate.set('2020-08-09');
-    expect(getForecastMessage(54, 90, lastRead)).toBe(
-      'Прочитайте книгу до 10.08 (раз в 4.1 дня), чтобы сохранить темп и прочитать 90 книг за год',
-    );
+    expect(getForecastMessage(54, 90, lastRead)).toBeNull();
 
     mockdate.set('2020-08-10');
-    expect(getForecastMessage(54, 90, lastRead)).toBe(
-      'Прочитайте книгу до 10.08 (раз в 4.1 дня), чтобы сохранить темп и прочитать 90 книг за год',
-    );
+    expect(getForecastMessage(54, 90, lastRead)).toBeNull();
 
     mockdate.set('2020-08-11');
     expect(getForecastMessage(54, 90, lastRead)).toBe(
@@ -264,5 +260,8 @@ describe('Book challenge', () => {
     expect(getForecastMessage(46, 75, lastRead)).toBe(
       'Прочитайте книгу до 13.08 (раз в 4.8 дня), чтобы сохранить темп и прочитать 76 книг за год',
     );
+
+    mockdate.set('2020-08-15');
+    expect(getForecastMessage(46, 75, lastRead)).toBeNull();
   });
 });

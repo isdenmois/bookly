@@ -154,10 +154,6 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
   let willRead = Math.round((total / last) * readCount);
   let speed = last / readCount;
 
-  if (willRead === totalBooks) {
-    return null;
-  }
-
   let dueDate = ((readCount + 1) * total) / willRead;
 
   while (today > dueDate) {
@@ -168,6 +164,10 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
 
   date.setMonth(0, dueDate);
   speed = Math.round(speed * 10) / 10;
+
+  if (willRead === totalBooks) {
+    return null;
+  }
 
   return t('home.challenge.forecast', { date: formatDate(date), rate: speed, count: willRead, postProcess: 'rp' });
 }
