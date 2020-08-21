@@ -11,7 +11,7 @@ const babelConfig = {
     [
       '@babel/preset-env',
       {
-        targets: 'ios 12.1',
+        targets: 'ios 13.2',
       },
     ],
     '@babel/preset-react',
