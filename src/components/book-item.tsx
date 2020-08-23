@@ -61,6 +61,7 @@ export class BookItem extends React.Component<Props> {
     const s = ds[this.context];
     const color = getColor(this.context);
     const statusColor = color[STATUS_COLORS[statusIcon]];
+    const isSolid = book.status === BOOK_STATUSES.WISH;
 
     return (
       <View style={s.container}>
@@ -78,7 +79,7 @@ export class BookItem extends React.Component<Props> {
 
           <TouchableOpacity style={s.status} onPress={this.openChangeStatusModal}>
             <View style={s.icon}>
-              <Icon name={statusIcon} size={20} color={statusColor} />
+              <Icon name={statusIcon} size={20} color={statusColor} solid={isSolid} />
               {book.status === BOOK_STATUSES.READ && <Text style={s.iconText}>{book.rating}</Text>}
             </View>
             {book.status === BOOK_STATUSES.READ && <Text style={s.date}>{formatDate(book.date)}</Text>}
