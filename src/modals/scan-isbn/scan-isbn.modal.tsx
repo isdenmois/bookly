@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { Dialog } from 'components';
 import { NavigationStackProp } from 'react-navigation-stack';
