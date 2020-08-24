@@ -49,6 +49,7 @@ export class ProfileScreen extends React.Component<Props> {
           <BookListSort />
           <RemoveDeleted />
 
+          {isWeb && <ListItem label='Версия' value={process.env.VERSION} onPress={() => (global as any).wb.update()} />}
           {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
         </ScrollView>
 

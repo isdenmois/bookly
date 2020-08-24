@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 require('dotenv').config();
 
 const babelConfig = {
@@ -152,6 +153,7 @@ module.exports = {
         path.resolve(rootDir, 'dist/assets'),
         path.resolve(rootDir, 'dist/*.bundle.js'),
         path.resolve(rootDir, 'dist/*.worker.js'),
+        path.resolve(rootDir, 'dist/workbox-*.js'),
         ...(process.env.JSON ? [] : [path.resolve(rootDir, 'dist/stats.json')]),
       ],
     }),
@@ -166,6 +168,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.VERSION': JSON.stringify(require('./package.json').version + '-pwa-v6'),
       __DEV__: webpackEnv === 'development',
     }),
     ...(isProd ? [] : [new webpack.HotModuleReplacementPlugin()]),
@@ -175,6 +178,29 @@ module.exports = {
         { from: path.resolve(rootDir, 'android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png'), to: 'assets' },
       ],
     }),
+    ...(isProd
+      ? [
+          new WorkboxPlugin.GenerateSW({
+            // Exclude images from the precache
+            exclude: [/.(?:png|jpg|jpeg|svg)$/],
+            swDest: 'sw.js',
+
+            runtimeCaching: [
+              {
+                urlPattern: /.(?:png|jpg|jpeg|svg)$/,
+
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'images',
+                  expiration: {
+                    maxEntries: 20,
+                  },
+                },
+              },
+            ],
+          }),
+        ]
+      : []),
   ],
   resolve: {
     extensions: ['.web.tsx', '.web.ts', '.tsx', '.ts', '.web.jsx', '.web.js', '.jsx', '.js'], // read files in fillowing order
