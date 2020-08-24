@@ -168,7 +168,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env.VERSION': JSON.stringify(require('./package.json').version + '-pwa-v6'),
+      'process.env.VERSION': JSON.stringify(require('./package.json').version),
       __DEV__: webpackEnv === 'development',
     }),
     ...(isProd ? [] : [new webpack.HotModuleReplacementPlugin()]),
