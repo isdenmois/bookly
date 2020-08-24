@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { Animated, Platform, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
+import { Animated, Platform, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { observer } from 'mobx-react';

@@ -15,6 +15,7 @@ function response(r): ReviewList {
     date: i.creation_datetime,
     rating: i.rating,
     user: i.user?.login,
+    userId: i.user?.login,
     userAvatar: i.user?.pic_100,
   }));
 

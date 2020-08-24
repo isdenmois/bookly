@@ -10,6 +10,7 @@ const response = {
       date: `${r.response_date_iso}:00`,
       rating: r.mark,
       user: r.user_name,
+      userId: r.user_id,
       userAvatar: r.user_avatar ? `http:${r.user_avatar}` : null,
     })),
   total: 'total_count',
@@ -34,5 +35,6 @@ export interface RemoteReview {
   date: string;
   rating: number;
   user: string;
+  userId: string;
   userAvatar: string;
 }

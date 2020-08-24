@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { Text, View, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Text, View, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid, Linking } from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TabScrollContext, HEADER_HEIGHT } from 'screens/details/tabs/tab';
@@ -16,6 +16,9 @@ interface Props {
   review: IRemoteReview;
   mode: string;
 }
+
+const FANTLAB_USER_URL = 'https://fantlab.ru/user';
+const LIVELIB_USER_URL = 'https://www.livelib.ru/reader/';
 
 export class RemoteReview extends React.PureComponent<Props> {
   static contextType = TabScrollContext;
@@ -43,8 +46,10 @@ export class RemoteReview extends React.PureComponent<Props> {
       <View style={s.container} onLayout={_.noop} ref={this.rootRef}>
         <View style={s.dataRow}>
           <View style={s.mainInfo}>
-            <Thumbnail style={s.avatar} url={review.userAvatar} width={32} height={32} title={review.user} />
-            <Text style={s.user}>{review.user}</Text>
+            <TouchableOpacity style={s.userInfo} onPress={this.openUserPage}>
+              <Thumbnail style={s.avatar} url={review.userAvatar} width={32} height={32} title={review.user} />
+              <Text style={s.user}>{review.user}</Text>
+            </TouchableOpacity>
             <Text style={s.date}>{isLivelib ? review.date : formatDate(review.date)}</Text>
           </View>
           <Icon style={s.icon} name='star' size={16} color={color.PrimaryText} />
@@ -98,6 +103,13 @@ export class RemoteReview extends React.PureComponent<Props> {
       ToastAndroid.show('Не удалось поставить лайк', ToastAndroid.SHORT);
     }
   };
+
+  openUserPage = () => {
+    const prefix = this.isLivelib ? LIVELIB_USER_URL : FANTLAB_USER_URL;
+    const URL = prefix + this.props.review.userId;
+
+    Linking.openURL(URL);
+  };
 }
 
 const ds = new DynamicStyleSheet({
@@ -120,12 +132,18 @@ const ds = new DynamicStyleSheet({
     color: dynamicColor.PrimaryText,
     fontSize: 14,
     marginLeft: 10,
+    lineHeight: 14,
     ...boldText,
   } as TextStyle,
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  } as ViewStyle,
   date: {
     color: dynamicColor.SecondaryText,
     fontSize: 12,
     marginLeft: 10,
+    lineHeight: 12,
   } as TextStyle,
   rating: {
     color: dynamicColor.PrimaryText,
