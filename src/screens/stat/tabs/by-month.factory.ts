@@ -1,4 +1,4 @@
-import { dayOfYear } from 'utils/date';
+import { dayOfYear, daysAmount } from 'utils/date';
 import { CURRENT_YEAR, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 
 export interface MonthRow extends IRow {
@@ -24,7 +24,7 @@ const MONTHS = [
 
 function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
   let result: MonthRow[] = MONTHS.map(m => ({ ...m, count: 0, days: 0, rating: 0 }));
-  const years = new Set();
+  const years = new Set<number>();
 
   if (year) {
     years.add(year);
@@ -43,13 +43,17 @@ function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
     years.add(book.year);
   });
 
-  let total = years.size * 365;
+  let total = 0;
+  for (let y of years.values()) {
+    total += daysAmount(y);
+  }
+
   const currentMonth = getCurrentMonth();
   const hasCurrentYear = years.has(CURRENT_YEAR);
   const isCurrentYear = hasCurrentYear && year === CURRENT_YEAR;
 
   if (hasCurrentYear) {
-    total = total - 365 + dayOfYear();
+    total = total - daysAmount() + dayOfYear();
 
     if (isCurrentYear) {
       result = result.slice(0, currentMonth + 1);

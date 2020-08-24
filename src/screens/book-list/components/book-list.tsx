@@ -13,6 +13,7 @@ import { EmptyResult } from 'components/fetcher';
 import { BookListFilters } from './book-list-filters';
 import { t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { daysAmount } from 'utils/date';
 
 interface Props {
   query: Where[];
@@ -24,7 +25,7 @@ interface Props {
   readonly?: boolean;
 }
 
-const YEAR = 1000 * 60 * 60 * 24 * 365;
+const YEAR = 1000 * 60 * 60 * 24 * daysAmount();
 
 const withBooks: Function = withObservables(['query', 'sort'], ({ query, sort }: Props) => ({
   books: bookListQuery(query).observeWithColumns(sort ? [sort.field] : []),

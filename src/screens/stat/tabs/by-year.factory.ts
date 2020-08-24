@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { CURRENT_YEAR, dayOfYear, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 import { t } from 'services';
+import { daysAmount } from 'utils/date';
 
 interface YearRow extends IRow {
   rating: number;
@@ -16,10 +17,11 @@ function ByYearFactory(books: StatBook[]): YearRow[] {
   books.forEach(book => {
     const year = book.year;
     const i = CURRENT_YEAR - year;
+    const amount = daysAmount(year);
 
     if (!result[i]) {
-      result[i] = { id: year, count: 0, rating: 0, days: 0, d: 365 };
-      totalD += 365;
+      result[i] = { id: year, count: 0, rating: 0, days: 0, d: amount };
+      totalD += amount;
     }
 
     totalCount++;
