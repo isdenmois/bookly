@@ -230,7 +230,7 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   openBook(book: Book | ParentBook) {
-    this.props.navigation.push('Details', { bookId: String(book.id) });
+    this.props.navigation.push('Details', { bookId: String(book.id), initialTab: 'children' });
   }
 
   openEditions = () => {

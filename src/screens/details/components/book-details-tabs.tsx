@@ -14,6 +14,7 @@ import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   book: Book & BookExtended;
+  initialTab: number;
   isExist: boolean;
   navigation: NavigationStackProp;
   tabs: any[];
@@ -35,7 +36,7 @@ export class BookDetailsTabs extends React.Component<Props, State> {
   static contextType = ColorSchemeContext;
 
   state: State = {
-    index: 0,
+    index: this.props.initialTab,
     routes: this.props.tabs,
     headerHeight: 0,
   };

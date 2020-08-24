@@ -17,9 +17,10 @@ import { LivelibReviewsTab } from './tabs/livelib-reviews-tab';
 
 interface Props {
   bookId: string;
-  fantlabId: string;
-  extra: Partial<BookData>;
   navigation: NavigationStackProp;
+  extra?: Partial<BookData>;
+  fantlabId?: string;
+  initialTab?: string;
 }
 
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
@@ -74,6 +75,8 @@ export class DetailsScreen extends React.Component<Props> {
       ...(this.showSimilar(book) ? [TABS.SIMILAR] : []),
       ...(this.isLiveLib ? [] : [TABS.DETAILS]),
     ];
+    let initialTab = this.props.initialTab ? this.tabs.findIndex(tab => tab.key === this.props.initialTab) : 0;
+    initialTab = initialTab < 0 ? 0 : initialTab;
 
     return (
       <BookDetailsTabs
@@ -82,6 +85,7 @@ export class DetailsScreen extends React.Component<Props> {
         fantlabId={this.props.fantlabId}
         navigation={this.props.navigation}
         tabs={this.tabs}
+        initialTab={initialTab}
       />
     );
   };
