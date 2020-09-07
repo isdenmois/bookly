@@ -15,9 +15,10 @@ import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 
 interface Props {
   search: string;
-  selected: string;
+  selected: string | Set<string>;
   books?: Book[];
-  onSelect: (book: Book) => void;
+  onSelect: (book: Book | string) => void;
+  onUnselect?: (book: string) => void;
 }
 
 const ITEM_HEIGHT = 75;
@@ -50,6 +51,7 @@ export class BookList extends React.Component<Props> {
         keyExtractor={b => b.id}
         renderItem={this.renderBookItem}
         getItemLayout={this.getItemLayout}
+        extraData={this.props.selected}
       />
     );
   }
@@ -60,8 +62,27 @@ export class BookList extends React.Component<Props> {
 
   renderBookItem = ({ item: book, index }) => {
     const s = ds[this.context];
-    const selected = this.props.selected;
+    const selected: any = this.props.selected;
     const lastIndex = this.props.books.length;
+    let isSelected: boolean;
+
+    if (typeof selected === 'object') {
+      isSelected = selected.has(book.id);
+    } else {
+      isSelected = book.id === selected;
+    }
+
+    const onPress = () => {
+      if (this.props.onUnselect) {
+        if (isSelected) {
+          this.props.onUnselect(book.id);
+        } else {
+          this.props.onSelect(book.id);
+        }
+      } else {
+        this.props.onSelect(book);
+      }
+    };
 
     return (
       <ListItem
@@ -69,9 +90,9 @@ export class BookList extends React.Component<Props> {
         style={s.listItem}
         icon={this.thumbnail(book, s)}
         last={index === lastIndex}
-        selected={book.id === selected && <Icon name='check' size={18} color={this.color} />}
+        selected={isSelected && <Icon name='check' size={18} color={this.color} />}
         testID={`BookToSelect${book.id}`}
-        onPress={() => this.props.onSelect(book)}
+        onPress={onPress}
       >
         <View style={s.row}>
           <Text style={s.title}>{book.title}</Text>

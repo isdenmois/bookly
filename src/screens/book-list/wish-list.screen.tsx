@@ -25,6 +25,7 @@ export class WishListScreen extends ReadList {
   );
 
   showTopRate = null;
+  showListBookSelect = true;
   filters = WISH_LIST_FILTERS;
   sorts = WISH_LIST_SORTS;
   title = 'nav.wish';

@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import _ from 'lodash';
-import { Platform, StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { Platform, View, ViewStyle, TextStyle } from 'react-native';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { NavigationScreenProp } from 'react-navigation';
@@ -45,6 +45,7 @@ export class ReadList extends React.Component<Props, State> {
   bookListRef = createRef<any>();
 
   showTopRate = true;
+  showListBookSelect = false;
   filters = READ_LIST_FILTERS;
   sorts = READ_LIST_SORTS;
   title = 'nav.read';
@@ -54,6 +55,7 @@ export class ReadList extends React.Component<Props, State> {
     const readonly = this.readonly;
     const s = ds[this.context];
     const color = getColor(this.context);
+    const listId = this.props.navigation.getParam('listId', null);
 
     return (
       <Screen>
@@ -80,6 +82,15 @@ export class ReadList extends React.Component<Props, State> {
               label={t('common.top').toUpperCase()}
               onPress={this.openTopRated}
               icon={<Icon name='vials' size={18} color={color.PrimaryText} />}
+              style={s.button}
+              textStyle={s.buttonText}
+            />
+          )}
+          {this.showListBookSelect && listId && (
+            <Button
+              label={t('modal.list').toUpperCase()}
+              onPress={this.openListBookSelect}
+              icon={<Icon name='plus' size={18} color={color.PrimaryText} />}
               style={s.button}
               textStyle={s.buttonText}
             />
@@ -115,6 +126,12 @@ export class ReadList extends React.Component<Props, State> {
     }));
 
     this.props.navigation.navigate('TopRate', { books });
+  };
+
+  openListBookSelect = () => {
+    const listId = this.props.navigation.getParam('listId', null);
+
+    this.props.navigation.navigate('/modal/list-book-select', { listId });
   };
 }
 

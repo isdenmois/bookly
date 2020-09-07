@@ -76,6 +76,7 @@ export class DetailsTab extends React.Component<Props> {
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
       .join('\n');
+    const showLists = isExist && book.status === BOOK_STATUSES.WISH;
 
     return (
       <View>
@@ -140,7 +141,7 @@ export class DetailsTab extends React.Component<Props> {
 
         {!!book.films?.length && this.renderFilms()}
 
-        {all && <BookLists book={book} mode={mode} />}
+        {showLists && <BookLists book={book} mode={mode} />}
 
         {all && !isLivelib && (
           <ViewLineAction
