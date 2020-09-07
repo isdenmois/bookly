@@ -12,6 +12,7 @@ import { TopRateScreen } from 'screens/top-rate/top-rate.screen';
 import { AuthorsScreen } from 'screens/authors/authors.screen';
 import { AuthorSearchScreen } from 'screens/authors/author-search.screen';
 import { SettingsScreen } from 'screens/settings/settings.screen';
+import { ListsScreen } from 'screens/lists/lists.screen';
 
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
 import { BookSelectModal } from 'modals/book-select/book-select.modal';
@@ -21,6 +22,8 @@ import { ReviewWriteModal } from 'modals/review-write/review-write.modal';
 import { FantlabLoginModal } from 'modals/fantlab-login/fantlab-login.modal';
 import { BookTitleEditModal } from 'modals/book-title-edit/book-title-edit.modal';
 import { ScanIsbnModal } from 'modals/scan-isbn/scan-isbn.modal';
+import { ListAddModal } from 'modals/list-add.modal';
+import { ListEditModal } from 'modals/list-edit.modal';
 
 export const MainStack = {
   Home: HomeScreen,
@@ -37,6 +40,7 @@ export const MainStack = {
   Authors: AuthorsScreen,
   AuthorSearch: AuthorSearchScreen,
   Settings: SettingsScreen,
+  Lists: ListsScreen,
 };
 
 export const ModalStack = {
@@ -48,4 +52,6 @@ export const ModalStack = {
   FantlabLogin: FantlabLoginModal,
   BookTitleEdit: BookTitleEditModal,
   ScanIsbn: ScanIsbnModal,
+  ListAdd: ListAddModal,
+  ListEdit: ListEditModal,
 };

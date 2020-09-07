@@ -129,9 +129,7 @@ export function confirmRemoveModel(model: Model, warning: string) {
 }
 
 function removeModel(model: any) {
-  database
-    .action(() => model.experimentalMarkAsDeleted())
-    .then(() => ToastAndroid.show('Удалено из коллекции', ToastAndroid.LONG));
+  database.action(() => model.markAsDeleted()).then(() => ToastAndroid.show('Удалено из коллекции', ToastAndroid.LONG));
 }
 
 const ds = new DynamicStyleSheet({

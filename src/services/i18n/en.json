@@ -73,7 +73,8 @@
   },
   "headers": {
     "book-select": "Book selecting",
-    "editions": "Editions"
+    "editions": "Editions",
+    "lists": "Lists of books"
   },
   "details": {
     "briefly": "Briefly",
@@ -148,7 +149,11 @@
     "rating": "Rating",
     "by-add": "By add",
     "id": "id",
-    "format": "Format"
+    "format": "Format",
+    "list-add": "Add a list",
+    "list-edit": "Rename the list",
+    "enter-list-name": "Enter the list name",
+    "list-remove": "Are you sure you want to remove the list?"
   },
   "author": "Author",
   "year": "Year",

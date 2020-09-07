@@ -1,9 +1,69 @@
 import { schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
-import { to2 } from './to-2';
-import { to3 } from './to-3';
-import { to4 } from './to-4';
-import { to5 } from './to-5';
+import { addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
 
 export const migrations = schemaMigrations({
-  migrations: [to2, to3, to4, to5],
+  migrations: [
+    {
+      toVersion: 2,
+      steps: [
+        addColumns({
+          table: 'books',
+          columns: [{ name: 'created_at', type: 'number' }],
+        }),
+      ],
+    },
+    {
+      toVersion: 3,
+      steps: [
+        addColumns({
+          table: 'books',
+          columns: [
+            { name: 'lid', type: 'string' },
+            { name: 'paper', type: 'boolean' },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 4,
+      steps: [
+        addColumns({
+          table: 'books',
+          columns: [
+            { name: 'without_translation', type: 'boolean', isOptional: true },
+            { name: 'audio', type: 'boolean', isOptional: true },
+            { name: 'leave', type: 'boolean', isOptional: true },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 5,
+      steps: [
+        addColumns({
+          table: 'authors',
+          columns: [
+            { name: 'fav', type: 'boolean', isOptional: true },
+            { name: 'add', type: 'string', isOptional: true },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 6,
+      steps: [
+        createTable({
+          name: 'lists',
+          columns: [{ name: 'name', type: 'string' }],
+        }),
+        createTable({
+          name: 'list_books',
+          columns: [
+            { name: 'book_id', type: 'string', isIndexed: true },
+            { name: 'list_id', type: 'string', isIndexed: true },
+          ],
+        }),
+      ],
+    },
+  ],
 });

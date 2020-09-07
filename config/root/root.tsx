@@ -5,7 +5,6 @@ import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { ColorSchemeProvider, ColorSchemeContext } from 'react-native-dynamic';
-import 'mobx-react-lite/batchingForReactNative';
 import { onChanges } from 'store';
 import { i18n } from 'services/i18n';
 

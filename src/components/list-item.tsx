@@ -26,6 +26,7 @@ interface Props {
   rowStyle?: ViewStyle;
   testID?: string;
   onPress?: () => void;
+  onLongPress?: () => void;
   onChange?: (text: string) => void;
   onSubmit?: () => void;
   onBlur?: () => void;
@@ -49,7 +50,12 @@ export class ListItem extends React.Component<Props> {
     const color = this.context === 'dark' ? dark : light;
 
     return (
-      <Container style={[s.container, style]} onPress={this.onPress} testID={counter || isEditable ? null : testID}>
+      <Container
+        style={[s.container, style]}
+        onPress={this.onPress}
+        onLongPress={this.props.onLongPress}
+        testID={counter || isEditable ? null : testID}
+      >
         {!!icon && <View style={s.icon}>{icon}</View>}
         <View style={[...cn({ border, borderFirst: first, disabled }), this.props.rowStyle]}>
           {!!label && <TextM style={s.label}>{t(label)}</TextM>}

@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { Text, View, TouchableWithoutFeedback, TextStyle, ViewStyle, Platform } from 'react-native';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, light, useSColor } from 'types/colors';
@@ -8,9 +8,10 @@ import { TouchIcon } from 'components/touch-icon';
 interface Props {
   style?: ViewStyle;
   modalStyle?: ViewStyle;
-  title?: ReactChild;
+  title?: string;
   children: ReactNode;
   testID?: string;
+  rightIcon?: ReactNode;
   onApply?: () => void;
   onClose?: () => void;
 }
@@ -30,7 +31,7 @@ export const Dialog = (props: Props) => {
 
       <View style={s.modal}>
         <View style={[s.modalView, props.modalStyle]}>
-          {!!props.title && renderDialogHeader(props.title, back, props.onApply, s, color)}
+          {!!props.title && renderDialogHeader(props.title, back, props.rightIcon, props.onApply, s, color)}
           <View style={[s.content, props.style]}>{props.children}</View>
         </View>
       </View>
@@ -38,7 +39,7 @@ export const Dialog = (props: Props) => {
   );
 };
 
-function renderDialogHeader(title: ReactChild, back, onApply, s, color) {
+function renderDialogHeader(title: string, back, rightIcon, onApply, s, color) {
   return (
     <View style={s.header}>
       <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={back} />
@@ -47,6 +48,7 @@ function renderDialogHeader(title: ReactChild, back, onApply, s, color) {
       </Text>
       {onApply && <TouchIcon name='check' size={24} color={color.PrimaryText} onPress={onApply} />}
       {!onApply && <View style={s.noApplyIcon} />}
+      {rightIcon}
     </View>
   );
 }

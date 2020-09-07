@@ -14,6 +14,7 @@ export const WISH_LIST_SORTS = ['title', 'author', 'id', 'createdAt'];
 
 @withScroll
 export class WishListScreen extends ReadList {
+  // TODO: initial filters
   state = createQueryState(
     {
       ...defaultFilters,

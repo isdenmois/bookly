@@ -7,11 +7,13 @@ import Book from './book';
 import Author from './author';
 import BookAuthor from './book-author';
 import Review from './review';
+import List from './list';
+import ListBook from './list-book';
 
 export const database = new Database({
   adapter,
   actionsEnabled: true,
-  modelClasses: [Book, Author, BookAuthor, Review] as any,
+  modelClasses: [Book, Author, BookAuthor, Review, List, ListBook] as any,
 });
 
 const changes = new Subject();

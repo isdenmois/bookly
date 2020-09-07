@@ -28,6 +28,8 @@ export class ProfileScreen extends React.Component<Props> {
 
         <ScrollView contentContainerStyle={s.content}>
           <ListItem label='Настройки' onPress={this.openSettings} />
+          <ListItem label='Списки книг' onPress={this.openLists} />
+
           <RemoveDeleted />
 
           {isWeb && <ListItem label='Версия' value={process.env.VERSION} onPress={() => (global as any).wb.update()} />}
@@ -47,9 +49,8 @@ export class ProfileScreen extends React.Component<Props> {
     );
   }
 
-  openSettings = () => {
-    this.props.navigation.navigate('Settings');
-  };
+  openSettings = () => this.props.navigation.navigate('Settings');
+  openLists = () => this.props.navigation.navigate('Lists');
 
   logout = () => {
     session.stopSession();
