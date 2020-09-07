@@ -95,8 +95,9 @@ export const AddButton = observer(({ book, navigation, scrollY }: FixedProps) =>
 
 const ReviewsTabComponent = observer((props: Props) => {
   const [sort, setSort] = React.useState('rating');
-  const type = source.get();
-  const bookId = type === 'Fantlab' ? props.book.id : props.book.lid;
+  const isLiveLib = props.book.id.startsWith('l_');
+  const type = isLiveLib ? 'LiveLib' : source.get();
+  const bookId = isLiveLib || type === 'Fantlab' ? props.book.id : props.book.lid;
   const s = ds[props.mode];
 
   return (

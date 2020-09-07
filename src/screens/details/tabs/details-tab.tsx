@@ -7,6 +7,7 @@ import { formatDate } from 'utils/date';
 import Book from 'store/book';
 import { hasUpdates } from 'utils/has-updates';
 import { BookExtended, ParentBook, Film } from 'types/book-extended';
+import { LiveLibBook } from 'services/api/livelib/book';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { livelib } from 'screens/search/search.screen';
@@ -18,14 +19,15 @@ import {
   ViewLineAction,
 } from '../components/book-details-lines';
 import { withScroll } from './tab';
-import { t } from 'services';
+import { t, database } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
 
 interface Props {
   navigation: NavigationStackProp;
-  book: Book & BookExtended;
+  book: Book & BookExtended & LiveLibBook;
   isExist: boolean;
+  fantlabId: string;
   tab: string;
   mode: string;
 }
@@ -63,9 +65,10 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   render() {
-    const { book, isExist } = this.props;
-    const all = this.props.tab !== 'main';
+    const { book, fantlabId, isExist } = this.props;
     const isLivelib = typeof book.id === 'string' && book.id.startsWith('l_');
+    const all = isLivelib || this.props.tab !== 'main';
+    const notLL = !all && !isLivelib;
     const hasPaper = book.paper;
     const isRead = book.status === BOOK_STATUSES.READ;
     const mode = this.props.mode;
@@ -75,22 +78,22 @@ export class DetailsTab extends React.Component<Props> {
 
     return (
       <View>
-        {all && <ViewLine title='ID' value={book.id} mode={mode} />}
-        {all && <ViewLine title={t('details.type')} value={BOOK_TYPE_NAMES[book.type]} mode={mode} />}
+        {isRead && <ViewLine title={t('details.read-date')} value={this.readDate} mode={mode} />}
+
+        {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} mode={mode} />}
+
+        {notLL && <ViewLine title='ID' value={book.id} mode={mode} />}
+        {notLL && <ViewLine title={t('details.type')} value={BOOK_TYPE_NAMES[book.type]} mode={mode} />}
 
         {!all && !book.thumbnail && !!book.genre && (
           <ViewLine title={t('details.genre')} value={book.genre} mode={mode} />
         )}
 
-        {(all || !book.thumbnail) && !!book.avgRating && (
-          <ViewLine title={t('details.average')} value={book.avgRating} mode={mode} />
-        )}
+        {notLL && !!book.avgRating && <ViewLine title={t('details.average')} value={book.avgRating} mode={mode} />}
 
-        {(all || !book.thumbnail) && !!book.year && <ViewLine title={t('year')} value={book.year} mode={mode} />}
+        {notLL && !!book.year && <ViewLine title={t('year')} value={book.year} mode={mode} />}
 
         {this.renderTranslators()}
-
-        {isRead && <ViewLine title={t('details.read-date')} value={this.readDate} mode={mode} />}
 
         {!!book.editionCount && (
           <ViewLineTouchable
@@ -124,6 +127,11 @@ export class DetailsTab extends React.Component<Props> {
         {!!otherTitles && <ViewLine title={t('details.other-titles')} value={otherTitles} mode={mode} />}
 
         {all && book.classification?.length > 0 && this.renderClassification()}
+
+        {!!book.series && <ViewLine title='Серия' value={book.series} mode={mode} />}
+        {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} mode={mode} />}
+        {!!book.tags && <ViewLine title='Теги' value={book.tags} mode={mode} />}
+        {!!book.cycles?.length && this.renderCycles()}
 
         {all && !!book.description && <BookDescriptionLine description={book.description} mode={mode} />}
 
@@ -229,6 +237,21 @@ export class DetailsTab extends React.Component<Props> {
     return <ViewLine key={film.id} title={film.year} value={value} mode={this.props.mode} />;
   }
 
+  renderCycles() {
+    const mode = this.props.mode;
+    const s = ds[mode];
+
+    return (
+      <View style={s.parentBooks}>
+        <Text style={s.header}>ВХОДИТ В</Text>
+
+        {this.props.book.cycles.map(book => (
+          <ViewLine key={book.id} title={book.type} value={book.title} mode={mode} />
+        ))}
+      </View>
+    );
+  }
+
   openBook(book: Book | ParentBook) {
     this.props.navigation.push('Details', { bookId: String(book.id), initialTab: 'children' });
   }
@@ -279,6 +302,16 @@ export class DetailsTab extends React.Component<Props> {
     const book = this.props.book;
 
     book.setData({ leave: !book.leave });
+  };
+
+  associate = async () => {
+    const book: Book = (await database.collections.get('books').find(this.props.fantlabId)) as any;
+
+    await book.setData({ lid: this.props.book.id.replace('l_', '') });
+
+    ToastAndroid.show('Ассоциировано', ToastAndroid.SHORT);
+
+    this.props.navigation.goBack();
   };
 }
 
