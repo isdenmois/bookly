@@ -19,7 +19,7 @@ export const createApp = nav => {
     return res;
   };
 
-  return createBrowserApp(nav, { history: 'browser' });
+  return createBrowserApp(nav, { history: 'hash' });
 };
 
 export function createStackPersistNavigator(stack, options) {
