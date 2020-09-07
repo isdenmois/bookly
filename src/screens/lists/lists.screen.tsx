@@ -30,7 +30,7 @@ export function ListsScreen({ navigation }) {
         renderItem={({ item }) => (
           <ListItem
             label={item.name}
-            onPress={() => navigation.push('WishList', { listId: item.id })}
+            onPress={() => navigation.push('WishList', { listId: item.id, listName: item.name })}
             onLongPress={() => navigation.navigate('/modal/list-edit', { list: item })}
           />
         )}

@@ -22,13 +22,12 @@ const filterMap = {
   rating: formatRating,
   type: t => BOOK_TYPE_NAMES[t],
   isLiveLib: () => 'LiveLib',
-  minYear() {
-    return t('common.fromy', { year: session.minYear });
-  },
+  minYear: () => t('common.fromy', { year: session.minYear }),
   paper: p => (p === 'y' ? 'common.paper' : 'common.ebook'),
   audio: p => (p === 'y' ? 'common.audiobook' : 'common.no-audio'),
   withoutTranslation: p => (p === 'y' ? 'common.original' : 'common.ru'),
   leave: p => (p === 'y' ? 'stat.leave' : 'stat.keep'),
+  list: p => p.name,
 };
 
 export function BookListFilters({ filters, onChange }: Props) {

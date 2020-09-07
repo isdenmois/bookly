@@ -8,7 +8,7 @@ const defaultFilters = {
   status: BOOK_STATUSES.WISH,
 };
 
-const WISH_LIST_FILTERS = ['title', 'author', 'type', 'paper', 'isLiveLib'];
+const WISH_LIST_FILTERS = ['title', 'author', 'type', 'paper', 'isLiveLib', 'list'];
 
 export const WISH_LIST_SORTS = ['title', 'author', 'id', 'createdAt'];
 
@@ -19,7 +19,7 @@ export class WishListScreen extends ReadList {
     {
       ...defaultFilters,
       status: BOOK_STATUSES.WISH,
-      ...(session.paper ? {} : { paper: 'e' }),
+      ...this.getFilters(),
     },
     session.defaultSort,
   );
@@ -28,4 +28,22 @@ export class WishListScreen extends ReadList {
   filters = WISH_LIST_FILTERS;
   sorts = WISH_LIST_SORTS;
   title = 'nav.wish';
+
+  getFilters() {
+    const filters: any = {};
+    const listId = this.props.navigation.getParam('listId');
+
+    if (session.paper) {
+      filters.paper = 'e';
+    }
+
+    if (listId) {
+      filters.list = {
+        id: listId,
+        name: this.props.navigation.getParam('listName'),
+      };
+    }
+
+    return filters;
+  }
 }

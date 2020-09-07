@@ -15,6 +15,7 @@ import { BookRatingFilter } from './components/book-rating-filter';
 import { BookTitleFilter } from './components/book-title-fitler';
 import { BookIsLiveLibFilter } from './components/book-is-livelib-filter';
 import { BookPaperFilter } from './components/book-paper-filter';
+import { BookInListFilter } from './components/book-in-list-filter';
 import { BookFilters } from './book-filters.service';
 import { t } from 'services';
 
@@ -27,6 +28,7 @@ const FILTER_COMPONENTS_MAP = {
   rating: BookRatingFilter,
   paper: BookPaperFilter,
   isLiveLib: BookIsLiveLibFilter,
+  list: BookInListFilter,
 };
 
 interface Props {

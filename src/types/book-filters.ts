@@ -20,4 +20,5 @@ export interface BookFilters {
   rating: Interval<number>;
   isLiveLib: boolean;
   paper: string;
+  list: string;
 }

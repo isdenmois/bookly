@@ -11,6 +11,9 @@ const ON_FITLERS = {
   author(author) {
     return Q.on('book_authors', 'author_id', author.id);
   },
+  list(list) {
+    return Q.on('list_books', 'list_id', list.id);
+  },
 };
 
 const WHERE_FILTERS = {

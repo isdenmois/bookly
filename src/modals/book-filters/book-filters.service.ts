@@ -14,6 +14,7 @@ export class BookFilters {
   @observable isLiveLib: boolean = null;
   @observable changed: boolean = false;
   @observable paper: string = null;
+  @observable.ref list: any = null;
   status: BOOK_STATUSES = null;
 
   @action setInitial(filters: Partial<IBookFilters>, sort: BookSort) {

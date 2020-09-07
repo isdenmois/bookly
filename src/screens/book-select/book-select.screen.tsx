@@ -25,7 +25,7 @@ interface State {
   filters: Partial<BookFilters>;
 }
 
-const FILTERS_FIELDS = ['type', 'author', 'paper'];
+const FILTERS_FIELDS = ['type', 'author', 'paper', 'list'];
 
 export class BookSelectScreen extends Component<Props> {
   state: State = createQueryState(defaultFilters, { field: 'date', desc: true });
