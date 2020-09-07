@@ -16,46 +16,52 @@ const createNavigator = initialRouteName =>
         screen: LoginScreen,
         path: '/login',
       },
-      App: createStackNavigator(
-        {
-          MainStack: createStackPersistNavigator(MainStack, {
-            initialRouteName: 'Home',
+      App: {
+        screen: createStackNavigator(
+          {
+            MainStack: {
+              screen: createStackPersistNavigator(MainStack, {
+                initialRouteName: 'Home',
+                headerMode: 'none',
+                gestureEnabled: true,
+                defaultNavigationOptions: {
+                  ...TransitionPresets.SlideFromRightIOS,
+                  gestureEnabled: true,
+                  cardStyle: { backgroundColor: null },
+                  cardOverlayEnabled: false,
+                  cardShadowEnabled: false,
+                },
+              } as any),
+              path: '',
+            },
+            ...createModalStack(ModalStack),
+          },
+          {
+            initialRouteName: 'MainStack',
+            mode: 'modal',
             headerMode: 'none',
-            gestureEnabled: true,
+            gestureEnabled: false,
             defaultNavigationOptions: {
-              ...TransitionPresets.SlideFromRightIOS,
-              gestureEnabled: true,
+              gestureEnabled: false,
+              cardStyleInterpolator({ current }) {
+                return {
+                  cardStyle: {
+                    opacity: current.progress,
+                  },
+                };
+              },
+              transitionSpec: {
+                open: modalConfig,
+                close: modalConfig,
+              },
               cardStyle: { backgroundColor: null },
               cardOverlayEnabled: false,
               cardShadowEnabled: false,
             },
-          } as any),
-          ...createModalStack(ModalStack),
-        },
-        {
-          initialRouteName: 'MainStack',
-          mode: 'modal',
-          headerMode: 'none',
-          gestureEnabled: false,
-          defaultNavigationOptions: {
-            gestureEnabled: false,
-            cardStyleInterpolator({ current }) {
-              return {
-                cardStyle: {
-                  opacity: current.progress,
-                },
-              };
-            },
-            transitionSpec: {
-              open: modalConfig,
-              close: modalConfig,
-            },
-            cardStyle: { backgroundColor: null },
-            cardOverlayEnabled: false,
-            cardShadowEnabled: false,
-          },
-        } as any,
-      ),
+          } as any,
+        ),
+        path: '',
+      },
     },
     {
       initialRouteName,

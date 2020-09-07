@@ -8,7 +8,20 @@ const PERSISTENCE_TIME = `${PERSISTENCE_KEY}_TIME`;
 const SESSION_EXPIRE = 30; // Minutes
 let initState = null;
 
-export const createApp = input => createBrowserApp(input, { history: 'hash' });
+export const createApp = nav => {
+  const { getPathAndParamsForState } = nav.router;
+
+  nav.router.getPathAndParamsForState = state => {
+    const res = getPathAndParamsForState(state);
+
+    if (res?.path.startsWith('/modal')) return null;
+
+    return res;
+  };
+
+  return createBrowserApp(nav, { history: 'browser' });
+};
+
 export function createStackPersistNavigator(stack, options) {
   const nav = createStackNavigator(stack, options);
   const { getPathAndParamsForState, getActionForPathAndParams, getStateForAction } = nav.router;

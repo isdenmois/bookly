@@ -26,7 +26,7 @@ import { ListAddModal } from 'modals/list-add.modal';
 import { ListEditModal } from 'modals/list-edit.modal';
 
 export const MainStack = {
-  Home: HomeScreen,
+  Home: { screen: HomeScreen, path: '' },
   Search: SearchScreen,
   ReadList: ReadListScreen,
   WishList: WishListScreen,
