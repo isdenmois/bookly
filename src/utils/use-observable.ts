@@ -20,3 +20,19 @@ export function useObservable<TState, TInputs extends Readonly<any[]>>(
 
   return state;
 }
+
+export function usePromise<TState, TInputs extends Readonly<any[]>>(
+  init: (inputs$: TInputs) => Promise<TState>,
+  initialState: TState,
+  inputs: TInputs,
+): TState {
+  const [state, setState] = useState<TState>(initialState);
+
+  useEffect(() => {
+    init(inputs).then(setState);
+  }, inputs);
+
+  useDebugValue(state);
+
+  return state;
+}

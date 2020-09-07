@@ -1,4 +1,4 @@
-import { Model } from '@nozbe/watermelondb';
+import { Model, Q, Database } from '@nozbe/watermelondb';
 import { immutableRelation } from '@nozbe/watermelondb/decorators';
 import { Associations } from '@nozbe/watermelondb/Model';
 
@@ -13,14 +13,21 @@ export default class ListBook extends Model {
   @immutableRelation('books', 'book_id') book;
 }
 
-export function prepareListBook(database, book) {
+export function prepareListBooks(database, bookId, lists) {
   const listBooks = database.collections.get('list_books');
 
-  return book.lists.map(list =>
+  return lists.map(listId =>
     listBooks.prepareCreate(listBook => {
-      listBook._raw.id = `${list.id}_${book.id}`;
-      listBook.list.id = list.id;
-      listBook.book.id = book.id;
+      listBook._raw.id = `${listId}_${bookId}`;
+      listBook.list.id = listId;
+      listBook.book.id = bookId;
     }),
   );
+}
+
+export async function prepareRemove(database: Database, bookId, ids) {
+  const listBooks = database.collections.get<ListBook>('list_books');
+  const list = await listBooks.query(Q.where('book_id', bookId), Q.where('list_id', Q.oneOf(ids))).fetch();
+
+  return list.map(item => item.prepareMarkAsDeleted());
 }

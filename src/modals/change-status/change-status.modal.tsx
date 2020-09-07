@@ -13,6 +13,9 @@ import { dbAction } from 'services/db';
 import { database } from 'store';
 import { Button, Checkbox, Dialog, DateTimePicker, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+import { Q } from '@nozbe/watermelondb';
+import { AddToList } from './add-to-list';
+import ListBook, { prepareListBooks, prepareRemove } from 'store/list-book';
 
 const PRIMARY_BOOK_FIELDS = ['id', 'title', 'author', 'authors', 'thumbnail', 'type', 'search', 'paper'];
 
@@ -38,6 +41,8 @@ export class ChangeStatusModal extends React.Component<Props> {
     paper: this.props.book.paper,
     statusEditable: true,
     dateEditable: false,
+    initialLists: [],
+    lists: new Set(),
   };
 
   statusMap = {
@@ -85,6 +90,15 @@ export class ChangeStatusModal extends React.Component<Props> {
     }
 
     return false;
+  }
+
+  async componentDidMount() {
+    if (this.isCreation) return null;
+    const listBooks = database.collections.get<ListBook>('list_books');
+    const listModels = await listBooks.query(Q.where('book_id', this.props.book.id)).fetch();
+    const lists = listModels.map(list => list.list.id);
+
+    this.setState({ initialLists: lists, lists: new Set(lists) });
   }
 
   render() {
@@ -191,6 +205,10 @@ export class ChangeStatusModal extends React.Component<Props> {
               )}
             </>
           )}
+
+          {status === BOOK_STATUSES.WISH && (
+            <AddToList bookLists={this.state.lists} onChange={this.setLists} color={color} />
+          )}
         </View>
 
         {status === BOOK_STATUSES.READ && !isWeb && (
@@ -228,6 +246,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   toggleWithoutTranslation = () => this.setState({ withoutTranslation: !this.state.withoutTranslation });
   toggleLeave = () => this.setState({ leave: !this.state.leave });
   togglePaper = () => this.setState({ paper: !this.state.paper });
+  setLists = lists => this.setState({ lists });
 
   fillData(data: Partial<BookData> = {}) {
     const { status, rating, date, withoutTranslation, audio, leave, paper } = this.state;
@@ -244,10 +263,24 @@ export class ChangeStatusModal extends React.Component<Props> {
     return data;
   }
 
-  updateBook() {
-    const data: Partial<BookData> = this.fillData();
+  getLists() {
+    if (this.state.status !== BOOK_STATUSES.WISH) return [];
 
-    return this.props.book.setData(data);
+    return Array.from(this.state.lists);
+  }
+
+  @dbAction async updateBook() {
+    const book = this.props.book;
+    const data: Partial<BookData> = this.fillData();
+    const lists = this.getLists();
+    const toAddLists = _.difference(lists, this.state.initialLists);
+    const toRemoveLists = _.difference(this.state.initialLists, lists);
+
+    return database.batch(
+      book.prepareUpdate(() => Object.assign(book, data)),
+      ...prepareListBooks(database, book.id, toAddLists),
+      ...(await prepareRemove(database, book.id, toRemoveLists)),
+    );
   }
 
   @dbAction createBook() {
@@ -255,7 +288,7 @@ export class ChangeStatusModal extends React.Component<Props> {
 
     this.fillData(book);
 
-    return createBook(database, book);
+    return createBook(database, book, this.getLists());
   }
 
   save = () => {

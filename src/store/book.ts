@@ -5,6 +5,7 @@ import { action, field, date, children, readonly } from '@nozbe/watermelondb/dec
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
+import { prepareListBooks } from './list-book';
 
 const FIELDS = <const>[
   'title',
@@ -30,6 +31,7 @@ export default class Book extends Model {
   static table = 'books';
   static associations: Associations = {
     book_authors: { type: 'has_many', foreignKey: 'book_id' },
+    list_books: { type: 'has_many', foreignKey: 'book_id' },
     reviews: { type: 'has_many', foreignKey: 'book_id' },
   };
 
@@ -50,6 +52,7 @@ export default class Book extends Model {
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;
+  @children('list_books') listBooks;
   @children('reviews') reviews;
 
   @action setData(data: Partial<BookData>) {
@@ -71,9 +74,16 @@ export default class Book extends Model {
       this.thumbnail = thumbnail ? thumbnail.toString() : null;
     });
   }
+
+  async markAsDeleted() {
+    await this.bookAuthors.markAllAsDeleted();
+    await this.listBooks.markAllAsDeleted();
+    await this.reviews.markAllAsDeleted();
+    await super.markAsDeleted();
+  }
 }
 
-export async function createBook(database, data) {
+export async function createBook(database, data, lists) {
   const record = database.collections.get('books').prepareCreate(book => {
     book._raw.id = data.id;
     _.forEach(FIELDS, f => {
@@ -85,6 +95,7 @@ export async function createBook(database, data) {
     record,
     ...(await prepareMissedAuthors(database, data.authors)),
     ...prepareBookAuthors(database, data),
+    ...prepareListBooks(database, data.id, lists),
   );
 
   return record;
