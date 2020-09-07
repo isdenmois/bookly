@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { Subject } from 'rxjs';
 import { Database } from '@nozbe/watermelondb';
 import { patchMethod } from 'utils/patch-method';
+import { debounceTime } from 'rxjs/operators';
 import { adapter } from './adapter';
 import Book from './book';
 import Author from './author';
@@ -21,9 +22,9 @@ const changes = new Subject();
 const isSyncStatusUpdated = model => model.syncStatus && model.syncStatus !== 'synced';
 
 patchMethod(database, 'batch', function () {
-  if (arguments.length && _.some(arguments, isSyncStatusUpdated)) {
+  if (_.flatten(arguments).some(isSyncStatusUpdated)) {
     changes.next();
   }
 });
 
-export const onChanges = changes.asObservable();
+export const onChanges = changes.asObservable().pipe(debounceTime(1000));

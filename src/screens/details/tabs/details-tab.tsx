@@ -18,6 +18,7 @@ import {
   ViewLineModelRemove,
   ViewLineAction,
 } from '../components/book-details-lines';
+import { BookLists } from '../components/book-lists';
 import { withScroll } from './tab';
 import { t, database } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
@@ -138,6 +139,8 @@ export class DetailsTab extends React.Component<Props> {
         {!!book.parent?.length && this.renderParentBooks()}
 
         {!!book.films?.length && this.renderFilms()}
+
+        {all && <BookLists book={book} mode={mode} />}
 
         {all && !isLivelib && (
           <ViewLineAction

@@ -58,7 +58,10 @@ function reviewParse(review) {
 
 function parseListBooks(changes) {
   changes.list_books.created = _.map(changes.book_authors.created, listBook => {
-    const [list_id, book_id] = listBook.id;
+    const [list_id, book_id] = listBook.id
+      .replace(/l_/gi, 'l-')
+      .split('_')
+      .map(i => i.replace('l-', 'l_'));
 
     return { ...listBook, list_id, book_id };
   });

@@ -15,6 +15,7 @@ import { dynamicColor } from 'types/colors';
 import { database } from 'store';
 import { t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { Checkbox } from 'components';
 
 interface Props {
   mode: string;
@@ -66,6 +67,17 @@ export const ViewLine = (props: ViewListProps) => {
       <Text style={s.title}>{props.title}</Text>
       <Text style={s.value}>{props.value}</Text>
     </View>
+  );
+};
+
+export const ViewLineCheckbox = ({ title, mode, value, onToggle }) => {
+  const s = ds[mode];
+
+  return (
+    <TouchableOpacity style={s.checkboxRow} onPress={onToggle}>
+      <Text style={s.value}>{title}</Text>
+      <Checkbox value={value} onValueChange={onToggle} />
+    </TouchableOpacity>
   );
 };
 
@@ -135,6 +147,11 @@ function removeModel(model: any) {
 const ds = new DynamicStyleSheet({
   row: {
     marginBottom: 20,
+  } as ViewStyle,
+  checkboxRow: {
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   } as ViewStyle,
   descriptionRow: {
     marginTop: 10,
