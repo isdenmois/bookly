@@ -5,12 +5,12 @@ import { Setting } from 'services/session';
 
 interface Props {
   title: string;
-  prop: Setting;
+  param: Setting;
 }
 
-export function SessionEditor({ title, prop }: Props) {
-  const [value, setValue] = useState(session[prop].toString());
-  const save = useCallback(() => +value && session.set(prop, +value), [value]);
+export function SessionEditor({ title, param }: Props) {
+  const [value, setValue] = useState(session[param].toString());
+  const save = useCallback(() => +value && session.set(param, +value), [value]);
 
   return (
     <ListItem

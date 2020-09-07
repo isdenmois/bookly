@@ -11,6 +11,7 @@ import { WorkListScreen } from 'screens/work-list/work-list.screen';
 import { TopRateScreen } from 'screens/top-rate/top-rate.screen';
 import { AuthorsScreen } from 'screens/authors/authors.screen';
 import { AuthorSearchScreen } from 'screens/authors/author-search.screen';
+import { SettingsScreen } from 'screens/settings/settings.screen';
 
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
 import { BookSelectModal } from 'modals/book-select/book-select.modal';
@@ -35,6 +36,7 @@ export const MainStack = {
   TopRate: TopRateScreen,
   Authors: AuthorsScreen,
   AuthorSearch: AuthorSearchScreen,
+  Settings: SettingsScreen,
 };
 
 export const ModalStack = {
