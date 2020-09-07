@@ -3,14 +3,16 @@ import { api } from '../base/api';
 
 const response = {
   authors: 'authors',
+  lists: 'lists',
   books: parseBooks,
   book_authors: parseBookAuthors,
   reviews: parseReviews,
+  list_books: parseListBooks,
 };
 
 export default api
   .get<number>('/sync/:userId')
-  .query(sync => ({ sync }))
+  .query(sync => ({ sync, tables: Object.keys(response) }))
   .response(response);
 
 function parseBooks(changes) {
@@ -52,4 +54,14 @@ function reviewParse(review) {
   [review.book_id] = review.id.split('_');
 
   return review;
+}
+
+function parseListBooks(changes) {
+  changes.list_books.created = _.map(changes.book_authors.created, listBook => {
+    const [list_id, book_id] = listBook.id;
+
+    return { ...listBook, list_id, book_id };
+  });
+
+  return changes.list_books;
 }

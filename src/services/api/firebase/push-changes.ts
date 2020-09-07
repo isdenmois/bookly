@@ -27,6 +27,16 @@ function preparePushChanges(changes) {
       updated: _.map(changes.reviews.updated, reviewSerialize),
       deleted: changes.reviews.deleted,
     },
+    lists: {
+      created: changes.lists.created,
+      updated: changes.lists.updated,
+      deleted: changes.lists.deleted,
+    },
+    list_books: {
+      created: _.map(changes.list_books.created, ba => _.omit(ba, ['list_id', 'book_id'])),
+      updated: changes.list_books.updated,
+      deleted: changes.list_books.deleted,
+    },
   };
 }
 
