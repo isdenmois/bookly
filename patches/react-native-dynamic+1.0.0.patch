@@ -1,5 +1,18 @@
+diff --git a/node_modules/react-native-dynamic/dist/dynamic-style-sheet.d.ts b/node_modules/react-native-dynamic/dist/dynamic-style-sheet.d.ts
+index 5620341..c3f4aab 100644
+--- a/node_modules/react-native-dynamic/dist/dynamic-style-sheet.d.ts
++++ b/node_modules/react-native-dynamic/dist/dynamic-style-sheet.d.ts
+@@ -14,7 +14,7 @@ export declare type NormalizeStyles<T extends DynamicStyles<T>> = {
+ export declare type DynamicViewStyle = DynamicStyle<ViewStyle>;
+ export declare type DynamicTextStyle = DynamicStyle<TextStyle>;
+ export declare type DynamicImageStyle = DynamicStyle<ImageStyle>;
+-export declare class DynamicStyleSheet<T extends DynamicStyles<T>> {
++export declare class DynamicStyleSheet<T> {
+     readonly dark: NormalizeStyles<T>;
+     readonly light: NormalizeStyles<T>;
+     constructor(styles: T);
 diff --git a/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js b/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js
-index a6210d8..0f37477 100644
+index a6210d8..42cbdf8 100644
 --- a/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js
 +++ b/node_modules/react-native-dynamic/dist/dynamic-style-sheet.js
 @@ -6,10 +6,12 @@ function parseStylesFor(styles, mode) {
