@@ -27,7 +27,7 @@ import { ListEditModal } from 'modals/list-edit.modal';
 import { ListBookSelectModal } from 'modals/list-book-select.modal';
 
 export const MainStack = {
-  Home: { screen: HomeScreen, path: '' },
+  Home: { screen: HomeScreen, path: '/' },
   Search: SearchScreen,
   ReadList: ReadListScreen,
   WishList: WishListScreen,
