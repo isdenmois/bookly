@@ -6,7 +6,7 @@ index 2e0a1b3..5713869 100644
          updateState(LOADED);
  
          if (onLoad) {
--          onLoad();
+-          onLoad(e);
 +          onLoad({nativeEvent: {width: hiddenImageRef.current.naturalWidth, height: hiddenImageRef.current.naturalHeight}});
          }
  
