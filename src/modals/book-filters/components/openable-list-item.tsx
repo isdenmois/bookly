@@ -29,7 +29,13 @@ export function OpenableListItem({ title, viewValue, children, onClear, onClose 
   const defined = Boolean(viewValue);
 
   return (
-    <ListItem onPress={opened ? null : open} value={viewValue} clearable={defined && !opened} onChange={onClear}>
+    <ListItem
+      onPress={opened ? null : open}
+      opened={opened}
+      value={viewValue}
+      clearable={defined && !opened}
+      onChange={onClear}
+    >
       {!opened && <Text style={s.title}>{t(title)}</Text>}
       {opened && (
         <View style={s.container}>

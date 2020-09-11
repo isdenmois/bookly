@@ -2,6 +2,7 @@ export { AutoSizeImage } from './auto-size-image';
 export { Avatar } from './avatar';
 export { BookItem } from './book-item';
 export { Button } from './button';
+export { Calendar } from './calendar/calendar';
 export { Carousel } from './carousel';
 export { Checkbox } from './checkbox';
 export { Counter } from './counter';

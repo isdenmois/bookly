@@ -1,4 +1,4 @@
-import { dayOfYear, daysAmount } from 'utils/date';
+import { dayOfYear, daysAmount, getMonthNames, getNumberOfDaysInMonth } from 'utils/date';
 import { CURRENT_YEAR, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
 
 export interface MonthRow extends IRow {
@@ -7,23 +7,15 @@ export interface MonthRow extends IRow {
   rating: number;
 }
 
-const MONTHS = [
-  { id: 0, key: 'common.jan', d: 31 },
-  { id: 1, key: 'common.feb', d: 28 },
-  { id: 2, key: 'common.mar', d: 31 },
-  { id: 3, key: 'common.apr', d: 30 },
-  { id: 4, key: 'common.may', d: 31 },
-  { id: 5, key: 'common.jun', d: 30 },
-  { id: 6, key: 'common.jul', d: 31 },
-  { id: 7, key: 'common.aug', d: 31 },
-  { id: 8, key: 'common.sep', d: 30 },
-  { id: 9, key: 'common.oct', d: 31 },
-  { id: 10, key: 'common.nov', d: 30 },
-  { id: 11, key: 'common.dec', d: 31 },
-];
-
-function ByMonthFactory(books: StatBook[], year: number): MonthRow[] {
-  let result: MonthRow[] = MONTHS.map(m => ({ ...m, count: 0, days: 0, rating: 0 }));
+function ByMonthFactory(books: StatBook[], year?: number): MonthRow[] {
+  let result: MonthRow[] = getMonthNames().map((key, id) => ({
+    id,
+    key,
+    d: getNumberOfDaysInMonth(id, year),
+    count: 0,
+    days: 0,
+    rating: 0,
+  }));
   const years = new Set<number>();
 
   if (year) {

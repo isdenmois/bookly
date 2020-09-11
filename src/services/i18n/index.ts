@@ -19,6 +19,9 @@ export const i18n = {
   setLang(lang) {
     i18next.changeLanguage(lang);
   },
+  getLocale() {
+    return i18next.language.split('-')[0] || 'ru';
+  },
 };
 
 export const t = (key: string, options?): string => i18next.t(key, options);

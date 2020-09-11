@@ -12,6 +12,7 @@ interface Props {
   label?: string;
   first?: boolean;
   last?: boolean;
+  opened?: boolean;
   border?: boolean;
   counter?: ReactNode;
   icon?: ReactNode;
@@ -42,9 +43,9 @@ export class ListItem extends React.Component<Props> {
   input: TextInput;
 
   render() {
-    const { style, icon, counter, first, border, selected, label, disabled, children, testID } = this.props;
+    const { style, icon, counter, first, opened, border, selected, label, disabled, children, testID } = this.props;
     const isEditable = Boolean(this.props.onChange);
-    const Container: any = (this.props.onPress || isEditable) && !disabled ? TouchableOpacity : View;
+    const Container: any = (this.props.onPress || isEditable) && !disabled && !opened ? TouchableOpacity : View;
     const s = ds[this.context];
     const cn = classnames(s);
     const color = this.context === 'dark' ? dark : light;

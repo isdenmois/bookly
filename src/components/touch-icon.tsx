@@ -10,7 +10,7 @@ type Props = FontAwesome5IconProps & {
   onPress: () => void;
 };
 
-const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
+const hitSlop: Insets = { top: 5, right: 20, bottom: 5, left: 20 };
 
 export function TouchIcon({
   padding,
@@ -40,7 +40,7 @@ export function TouchIcon({
   }
 
   return (
-    <TouchableOpacity style={style} onPress={onPress} onLongPress={onLongPress} hitSlop={hitSlop}>
+    <TouchableOpacity style={style} onPress={onPress} onLongPress={onLongPress} hitSlop={hitSlop} disabled={!onPress}>
       <Icon {...props} />
     </TouchableOpacity>
   );
