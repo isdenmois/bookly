@@ -47,9 +47,9 @@ export class Session {
   @observable.ref defaultSort = INITIAL_SORT;
   @observable mode: Mode = null;
   @observable authors: boolean = false;
+  @observable searchApp: boolean = false;
   fantlabAuth: string = '';
   minYear: number = INITIAL_YEAR;
-  searchApp: boolean = false;
 
   saving = false;
   needsToSave = false;
