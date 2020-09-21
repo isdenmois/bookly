@@ -10,6 +10,7 @@ import BookAuthor from './book-author';
 import Review from './review';
 import List from './list';
 import ListBook from './list-book';
+import { IS_E2E } from 'services/config';
 
 export const database = new Database({
   adapter,
@@ -27,4 +28,4 @@ patchMethod(database, 'batch', function () {
   }
 });
 
-export const onChanges = changes.asObservable().pipe(debounceTime(1000));
+export const onChanges = IS_E2E ? changes : changes.asObservable().pipe(debounceTime(1000));

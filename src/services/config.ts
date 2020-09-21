@@ -14,3 +14,4 @@ export const FANTLAB_ROOT_URL = rfl;
 export const LIVELIB_URL = Platform.OS === 'web' ? '/api/livelib' : ll;
 export const FIREBASE_DATABASE_URL = fbdb;
 export const LIVELIB_APIKEY = llap;
+export const IS_E2E = false;

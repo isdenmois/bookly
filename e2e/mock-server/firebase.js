@@ -3,32 +3,32 @@ const _ = require('lodash');
 
 const db = require('../stubs/db.json');
 const withCreatedAt = ['books'];
+const defaultTables = ['authors', 'books', 'book_authors', 'reviews'];
 
 router.get('/sync/:userId', (req, res) => {
   const startAt = +req.query.sync || 0;
+  const tables = req.query.tables || defaultTables;
+
   if (req.params.userId !== 'e2e') {
     return res.status(404).send({
       message: "User doesn't exist",
     });
   }
 
-  const [authors, books, book_authors, reviews] = [
-    getSyncData('authors', startAt),
-    getSyncData('books', startAt),
-    getSyncData('book_authors', startAt),
-    getSyncData('reviews', startAt),
-  ];
+  const data = tables.map(table => getSyncData(table, startAt));
+  const result = {};
 
-  res.send({ authors, books, book_authors, reviews });
+  data.forEach(({ table, ...datum }) => {
+    result[table] = datum;
+  });
+
+  res.send(result);
 });
 
 router.post('/sync/:userId', (req, res) => {
-  let u = +req.query.sync || Date.now();
+  const u = +req.query.sync || Date.now();
 
-  updateData(req.body.books, 'books', u);
-  updateData(req.body.authors, 'authors', u);
-  updateData(req.body.book_authors, 'book_authors', u);
-  req.body.reviews && updateData(req.body.reviews, 'reviews', u);
+  _.forEach(req.body, (data, table) => data?.created && updateData(data, table, u));
 
   res.send({ ok: true });
 });
@@ -38,6 +38,7 @@ function getSyncData(table, startAt) {
   const mapFn = withCreatedAt.includes(table) ? mapCreated : omitGet;
 
   return {
+    table,
     created: data.filter(d => d.c > startAt).map(mapFn),
     updated: startAt > 0 ? data.filter(b => b.c && b.c < startAt).map(mapFn) : [],
     deleted: startAt > 0 ? data.filter(b => !b.c).map(d => d.id) : [],
