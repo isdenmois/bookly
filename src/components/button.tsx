@@ -14,6 +14,7 @@ interface Props {
   style?: ViewStyle | ViewStyle[];
   textStyle?: TextStyle;
   testID?: string;
+  textTestID?: string;
   onPress?: () => void;
 }
 
@@ -28,7 +29,9 @@ export function Button(props: Props) {
   return (
     <Component testID={props.testID} onPress={!disabled && props.onPress} style={viewStyles}>
       {!!icon && icon}
-      <TextM style={textStyles}>{label}</TextM>
+      <TextM style={textStyles} testID={props.textTestID}>
+        {label}
+      </TextM>
     </Component>
   );
 }

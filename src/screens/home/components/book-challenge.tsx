@@ -28,7 +28,7 @@ function BookChallengeComponent({ readCount, lastReadDate }: Props) {
   return (
     <TouchableOpacity style={s.row} onPress={showProgress}>
       <Counter label={t('home.challenge.completed')} value={readCount} />
-      <Counter label={t('home.challenge.anticipate')} value={totalBooks} testID='PlannedBooksCount' />
+      <Counter label={t('home.challenge.anticipate')} value={totalBooks} testID='plannedBooksCount' />
       <Counter label={t('home.challenge.ahead')} value={forecast} />
     </TouchableOpacity>
   );

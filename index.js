@@ -5,7 +5,7 @@ import { name as appName } from './app.json';
 if (!global.Proxy) {
   require('proxy-polyfill');
 }
-
+console.disableYellowBox = true;
 AppRegistry.registerComponent(appName, () => require('./config/root/root').default);
 
 // if (__DEV__) {

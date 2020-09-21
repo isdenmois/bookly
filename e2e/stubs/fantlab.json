@@ -11,6 +11,11 @@
       "work_name": "Кэрри",
       "authors": [{ "id": 22, "name": "Стивен Кинг" }],
       "work_year": 1974
+    },
+    "333": {
+      "work_id": 333,
+      "work_name": "Механическая птица",
+      "authors": [{ "id": 48954, "name": "Себастьян де Кастелл" }]
     }
   },
   "similars": {
@@ -61,5 +66,23 @@
       ],
       "total_count": 1
     }
-  }
+  },
+  "search": [
+    {
+      "work_id": 111,
+      "rusname": "Творец Заклинаний",
+      "autor_id": 48954,
+      "autor_rusname": "Себастьян де Кастелл",
+      "name_eng": "novel",
+      "name": "Spellslinger"
+    },
+    {
+      "work_id": 333,
+      "rusname": "Механическая птица",
+      "autor_id": 48954,
+      "autor_rusname": "Себастьян де Кастелл",
+      "name_eng": "novel",
+      "name": "Charmcaster"
+    }
+  ]
 }

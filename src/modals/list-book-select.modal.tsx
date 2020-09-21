@@ -34,11 +34,11 @@ export class ListBookSelectModal extends React.Component<Props, State> {
     const s = ds[this.context];
 
     return (
-      <Dialog testID='BookSelectModal' modalStyle={s.borderRadius}>
+      <Dialog testID='bookSelectModal' modalStyle={s.borderRadius}>
         <BookSelectHeader search={this.state.search} onChange={this.setSearch} />
         <BookList search={search} selected={selected} onSelect={this.selectBook} onUnselect={this.unSelectBook} />
 
-        <TouchableOpacity style={[s.button, s.borderRadius]} onPress={this.setBookSelected} testID='DoSelectBook'>
+        <TouchableOpacity style={[s.button, s.borderRadius]} onPress={this.setBookSelected} testID='doSelectBook'>
           <Text style={s.text}>{t('button.apply')}</Text>
         </TouchableOpacity>
       </Dialog>

@@ -21,7 +21,7 @@ export function NowReadingBook({ book }: Props) {
 
   return (
     <View style={s.container}>
-      <TouchableOpacity style={s.thumbnail} onPress={openBook} testID='CurrentThumbnail'>
+      <TouchableOpacity style={s.thumbnail} onPress={openBook} testID='currentThumbnail'>
         <Thumbnail
           auto='height'
           cache
@@ -35,11 +35,11 @@ export function NowReadingBook({ book }: Props) {
 
       <View style={s.details}>
         <TouchableOpacity onPress={openBook}>
-          <TextXL testID='homeBookTitle' style={ds.title}>
+          <TextXL testID='currentBookTitle' style={ds.title}>
             {book.title}
           </TextXL>
         </TouchableOpacity>
-        <Text testID='homeBookAuthor' style={ds.author}>
+        <Text testID='currentBookAuthor' style={ds.author}>
           {book.author}
         </Text>
         <ReadButton testID='homeReadButton' openChangeStatus={openChangeStatus} book={book} />

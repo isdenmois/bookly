@@ -1,45 +1,45 @@
 Feature: Home
   Scenario: Home screen parts are visible
-    Given I see "Home"
-    Then I should have "CurrentBookTitle" equal "Противостояние"
-    And I should have "CurrentBookAuthor" equal "Стивен Кинг"
-    And I should have "ReadCount" equal "1"
-    And I should have "WishCount" equal "2"
-    And I should have "PlannedBooksCount" equal "10"
+    Given I see home screen
+    Then I should have current book title to equal "Противостояние"
+    And I should have current book author to equal "Стивен Кинг"
+    And I should have read count to be 1
+    And I should have wish count to be 2
+    And I should have planned books count to be 10
 
   Scenario: Mark book as read
     Given Book "293" is "n"
-    And I see "MarkAsRead"
-    But I don't see "BookSelectButton"
+    And I see home-read button
+    But I don't see book-select button
 
-    When I mark current book at 5 stars
+    When I mark current book as 5 stars
 
-    Then I see "BookSelectButton"
-    And I should have "ReadCount" equal "2"
-    And I should have "WishCount" equal "2"
+    Then I see book-select button
+    And I should have read count to be 2
+    And I should have wish count to be 2
     And Book "293" is "r"
     And Book "293" rating is 5
-    But I don't see "MarkAsRead"
+    But I don't see home-read-button
 
   Scenario: Select Book
-    Given I see "BookSelectButton"
+    Given I see book-select button
     And Book "289" is "w"
 
-    When I tap "BookSelectButton"
+    When I tap on book-select button
 
-    Then I see "BookSelectModal"
-    And I see "BookToSelect289"
-    And I see "BookToSelect589"
+    Then I see book-select modal
+    And I see book to select #289
+    And I see book to select #589
 
-    When I tap "BookToSelect289"
-    And I tap "DoSelectBook"
+    When I tap on "BookToSelect289"
+    And I tap on "DoSelectBook"
 
-    Then I should have "CurrentBookTitle" equal "Кэрри"
-    And I should have "ReadCount" equal "2"
-    And I should have "WishCount" equal "1"
+    Then I should have current book title to equal "Кэрри"
+    And I should have read count to be 2
+    And I should have wish count to be 1
     And Book "289" is "n"
 
   Scenario: Open current reading book
-    When I tap "CurrentThumbnail"
-    Then I see "Details289"
+    When I tap on current thumbnail
+    Then I see details #289
     And I go back

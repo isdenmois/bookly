@@ -38,6 +38,7 @@ export class SearchBar extends React.Component<Props> {
             name='chevron-left'
             size={20}
             color={color.PrimaryText}
+            testID='goBackButton'
           />
         )}
         {!onBack && <Icon style={s.searchIcon} name='search' size={20} color={color.SecondaryText} />}
@@ -52,6 +53,7 @@ export class SearchBar extends React.Component<Props> {
           onSubmitEditing={this.toSearch}
           returnKeyType='search'
           ref={this.setInputRef}
+          testID='searchBar'
         />
 
         {!!value && (
@@ -62,6 +64,7 @@ export class SearchBar extends React.Component<Props> {
             name='times'
             size={20}
             color={color.PrimaryText}
+            testID='searchClear'
           />
         )}
         {!value && actionIcon && (

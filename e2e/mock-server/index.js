@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { syncRouter } = require('./firebase');
 const { fantlabRouter } = require('./fantlab');
 const { fbdbRouter } = require('./fbdb');
+const { livelibRouter } = require('./livelib');
 
 class Mockserver {
   constructor(port) {
@@ -20,6 +21,7 @@ class Mockserver {
     this.app.use('/firebase', syncRouter);
     this.app.use('/fantlab', fantlabRouter);
     this.app.use('/fbdb', fbdbRouter);
+    this.app.use('/livelib', livelibRouter);
 
     this.server = this.app.listen(this.port);
     console.log('Mock server listening on port ' + this.port);

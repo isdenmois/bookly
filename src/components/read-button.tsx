@@ -1,13 +1,13 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
+import { ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { light, dark } from 'types/colors';
 import { BookData } from 'store/book';
 import { Button } from 'components/button';
 import { Rating } from 'components/rating';
 import { t } from 'services';
-import { useDynamicValue, DynamicStyleSheet, DynamicValue, useDarkModeContext } from 'react-native-dynamic';
+import { DynamicStyleSheet, DynamicValue, useDarkModeContext } from 'react-native-dynamic';
 
 interface Props {
   openChangeStatus: () => void;

@@ -91,7 +91,7 @@ export class BookList extends React.Component<Props> {
         icon={this.thumbnail(book, s)}
         last={index === lastIndex}
         selected={isSelected && <Icon name='check' size={18} color={this.color} />}
-        testID={`BookToSelect${book.id}`}
+        testID={`bookToSelect${book.id}`}
         onPress={onPress}
       >
         <View style={s.row}>

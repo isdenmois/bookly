@@ -71,13 +71,17 @@ export class BookItem extends React.Component<Props> {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.row} onPress={this.openBook}>
+        <TouchableOpacity style={s.row} onPress={this.openBook} testID={`bookItem${book.id}`}>
           <View style={s.details}>
             <Text style={s.title}>{book.title}</Text>
             <Text style={s.author}>{book.author}</Text>
           </View>
 
-          <TouchableOpacity style={s.status} onPress={this.openChangeStatusModal}>
+          <TouchableOpacity
+            style={s.status}
+            onPress={this.openChangeStatusModal}
+            testID={`changeStatusButton${book.id}`}
+          >
             <View style={s.icon}>
               <Icon name={statusIcon} size={20} color={statusColor} solid={isSolid} />
               {book.status === BOOK_STATUSES.READ && <Text style={s.iconText}>{book.rating}</Text>}

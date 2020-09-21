@@ -2,13 +2,7 @@ const _ = require('lodash');
 const AndroidDriver = require('detox/src/devices/drivers/android/AndroidDriver');
 const MockServer = require('./mock-server');
 
-let driver = new AndroidDriver({});
-
-exports.login = async function login() {
-  await element(by.id('loginField')).typeText('e2e');
-
-  await element(by.id('submitButton')).tap();
-};
+const driver = new AndroidDriver({});
 
 exports.getDevice = async function () {
   const { devices } = await driver.adb.devices();

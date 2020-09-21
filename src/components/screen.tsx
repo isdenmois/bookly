@@ -3,10 +3,14 @@ import { DynamicStyleSheet, useDynamicValue, DynamicValue } from 'react-native-d
 import { color, dark } from 'types/colors';
 import { View } from 'react-native';
 
-export function Screen({ children }) {
+export function Screen({ children, testID }: { children: any; testID?: string }) {
   const s = useDynamicValue(ds);
 
-  return <View style={s.root}>{children}</View>;
+  return (
+    <View style={s.root} testID={testID}>
+      {children}
+    </View>
+  );
 }
 
 const ds = new DynamicStyleSheet({

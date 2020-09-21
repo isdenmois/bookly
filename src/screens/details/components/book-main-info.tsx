@@ -56,7 +56,7 @@ export const BookMainInfo = memo(
         mode={mode}
       >
         <Background bookTitle={bookTitle} book={book} mode={mode}>
-          <View style={s.darkOverlay} testID={`Details${book.id}`}>
+          <View style={s.darkOverlay} testID={`details${book.id}`}>
             <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} mode={mode} />
             <BookAuthor book={book} navigation={navigation} mode={mode} />
             {!book.thumbnail && <SecondaryData book={book} navigation={navigation} mode={mode} />}
@@ -175,7 +175,13 @@ function SecondaryData({ book, navigation, mode }) {
 
   return (
     <View style={s.status}>
-      <ReadButton ratingStyle={s.whiteRating} openChangeStatus={openChangeStatus} book={book} status={book.status} />
+      <ReadButton
+        ratingStyle={s.whiteRating}
+        openChangeStatus={openChangeStatus}
+        book={book}
+        status={book.status}
+        testID='detailsStatusButton'
+      />
     </View>
   );
 }

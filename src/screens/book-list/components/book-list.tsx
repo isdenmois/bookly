@@ -94,7 +94,15 @@ export class BookList extends React.PureComponent<Props> {
     const label = year || date.to.getTime() - date.from.getTime() > YEAR ? 'Еще год' : 'Еще месяц';
     const s = ds[this.props.mode];
 
-    return <Button style={s.moreButton} textStyle={s.buttonText} label={label} onPress={this.increaseDateFilter} />;
+    return (
+      <Button
+        style={s.moreButton}
+        textStyle={s.buttonText}
+        label={label}
+        onPress={this.increaseDateFilter}
+        testID='anotherYearButton'
+      />
+    );
   };
 
   private increaseDateFilter = () => {

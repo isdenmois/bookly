@@ -27,7 +27,7 @@ export const EmptyBook = withWishBooksCount(({ wishBooksCount }: Props) => {
       {!wishBooksCount && <TextM style={s.text}>{t('home.empty.no-books')}</TextM>}
       {!!wishBooksCount && <TextM style={s.text}>{t('home.empty.choose')}</TextM>}
       {!!wishBooksCount && (
-        <Button testID='BookSelectButton' onPress={openBookSelect} style={s.button} label={t('modal.select-book')} />
+        <Button testID='bookSelectButton' onPress={openBookSelect} style={s.button} label={t('modal.select-book')} />
       )}
     </View>
   );

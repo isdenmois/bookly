@@ -34,14 +34,14 @@ export class NavigationLinks extends React.Component<Props> {
           icon={<Icon name='flag' size={20} color={color} />}
           value={t('nav.read')}
           counter={this.props.readCount}
-          testID='ReadCount'
+          testID='readCount'
         />
         <ListItem
           onPress={this.openWishBooks}
           icon={<Icon name='plus' size={20} color={color} />}
           value={t('nav.wish')}
           counter={this.props.wishCount}
-          testID='WishCount'
+          testID='wishCount'
         />
         <ListItem
           onPress={this.openBookSelect}
@@ -65,7 +65,7 @@ export class NavigationLinks extends React.Component<Props> {
           icon={<Icon name='user' size={20} color={color} />}
           value={t('nav.profile')}
           counter={session.userId}
-          testID='ProfileName'
+          testID='profileName'
           last
         />
       </View>

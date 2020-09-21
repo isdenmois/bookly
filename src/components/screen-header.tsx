@@ -47,7 +47,14 @@ export const ScreenHeader = memo((props: Props) => {
 
   return (
     <View style={s.header}>
-      <TouchIcon name='arrow-left' size={24} color={color.PrimaryText} onPress={goBack} onLongPress={goToHome} />
+      <TouchIcon
+        name='arrow-left'
+        size={24}
+        color={color.PrimaryText}
+        onPress={goBack}
+        onLongPress={goToHome}
+        testID='goBackButton'
+      />
       <Text style={s.title} onPress={scroll}>
         {t(props.title)}
       </Text>

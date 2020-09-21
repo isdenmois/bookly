@@ -31,6 +31,8 @@ export const livelib = 'LiveLib';
 export class SearchScreen extends React.Component<Props, State> {
   static contextType = ColorSchemeContext;
 
+  static defaultProps = { source: fantlab };
+
   state: State = {
     q: this.props.query,
     query: this.props.query,
@@ -43,7 +45,7 @@ export class SearchScreen extends React.Component<Props, State> {
     const color = getColor(this.context);
 
     return (
-      <Screen>
+      <Screen testID='searchScreen'>
         <SearchBar
           style={s.header}
           value={this.state.query}
@@ -70,6 +72,8 @@ export class SearchScreen extends React.Component<Props, State> {
             icon={<Icon name='globe' size={18} color={color.PrimaryText} />}
             style={s.button}
             textStyle={s.buttonText}
+            testID='sourceToggler'
+            textTestID='sourceTogglerText'
           />
         </View>
       </Screen>
@@ -95,6 +99,7 @@ export class SearchScreen extends React.Component<Props, State> {
     if (!this.props.forceOpen && data.items.length > 1) return;
     // Изменяли параметры поиска -- выходим
     if (this.props.query !== this.state.q) return;
+    if (this.props.source !== this.state.source) return;
 
     const foundOne = data.items.length === 1;
     const item = data.items.find(i => isEqual(i.title, this.state.q, foundOne));
