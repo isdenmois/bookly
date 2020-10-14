@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
-import { of } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { getColor, dynamicColor } from 'types/colors';
 import { navigation } from 'services';

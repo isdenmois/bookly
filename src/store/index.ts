@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/internal/Subject';
 import { Database } from '@nozbe/watermelondb';
 import { patchMethod } from 'utils/patch-method';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { adapter } from './adapter';
 import Book from './book';
 import Author from './author';

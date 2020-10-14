@@ -1,5 +1,5 @@
 import { useEffect, useState, useDebugValue } from 'react';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 
 export function useObservable<TState, TInputs extends Readonly<any[]>>(
   init: (inputs$: TInputs) => Observable<TState>,

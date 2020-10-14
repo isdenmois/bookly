@@ -7,7 +7,7 @@ import { t } from 'services';
 import { database } from 'store';
 import { Button, ScreenHeader, ListItem, Screen } from 'components';
 import { useObservable } from 'utils/use-observable';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import List from 'store/list';
 
 function getLists(): Observable<List[]> {

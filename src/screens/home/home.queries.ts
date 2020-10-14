@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs/internal/operators/map';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dayOfYear, getStartOfYear, daysAmount } from 'utils/date';
 import { database } from 'store';

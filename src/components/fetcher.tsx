@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription';
 import _ from 'lodash';
 import { ActivityIndicator, Text, View, StyleSheet, TextStyle, ViewStyle, FlatList, SectionList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';

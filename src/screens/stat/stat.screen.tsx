@@ -1,5 +1,5 @@
 import React from 'react';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs/internal/operators/map';
 import withObservables from '@nozbe/with-observables';
 import { Text, View, ActivityIndicator, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import { action, computed, observable } from 'mobx';

@@ -1,8 +1,8 @@
 diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
-index 1a43e22..6db2a2e 100644
+index d991bc9..c246c1d 100644
 --- a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
 +++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
-@@ -6,15 +6,9 @@ Object.defineProperty(exports, "__esModule", {
+@@ -4,15 +4,9 @@ exports.__esModule = true;
  exports.default = void 0;
  
  function createWorker(useWebWorker) {
@@ -21,10 +21,10 @@ index 1a43e22..6db2a2e 100644
  
  var _actionId = 0;
 diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
-index 12038c8..72313b1 100644
+index 47f18e9..8d31929 100644
 --- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
 +++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
-@@ -309,11 +309,11 @@ function encodeQuery(query) {
+@@ -307,11 +307,11 @@ function encodeQuery(query) {
      associations: associations
    } = query; // TODO: implement support for Q.sortBy(), Q.take(), Q.skip() for Loki adapter
  
@@ -38,11 +38,12 @@ index 12038c8..72313b1 100644
      hasJoins: !!joinTables.length
    };
  }
+\ No newline at end of file
 diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
-index 2768cd6..596f411 100644
+index fcc4e7a..5db3127 100644
 --- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
 +++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
-@@ -35,6 +35,12 @@ function executeQuery(query, loki) {
+@@ -33,6 +33,12 @@ function executeQuery(query, loki) {
  
    var collection = loki.getCollection(query.table).chain();
    var results = collection.find(mainQuery); // Step three: execute extra filter, if passed in query
@@ -56,15 +57,59 @@ index 2768cd6..596f411 100644
    if (lokiFilter) {
      return results.where(function (rawRecord) {
 diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
-index 4f2592c..2ec8d6e 100644
+index 72c8e08..2ca8e50 100644
 --- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
 +++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executor.js
-@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
- });
- exports.default = void 0;
+@@ -11,8 +11,6 @@ var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers
+ 
+ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
  
 -var _lokijs = _interopRequireWildcard(require("lokijs"));
 -
  var _rambdax = require("rambdax");
  
  var _common = require("../../../utils/common");
+diff --git a/node_modules/@nozbe/watermelondb/utils/rx/__wmelonRxShim/index.js b/node_modules/@nozbe/watermelondb/utils/rx/__wmelonRxShim/index.js
+index 36e2749..b9ed834 100644
+--- a/node_modules/@nozbe/watermelondb/utils/rx/__wmelonRxShim/index.js
++++ b/node_modules/@nozbe/watermelondb/utils/rx/__wmelonRxShim/index.js
+@@ -1,23 +1,17 @@
+-"use strict";
++export { Observable } from 'rxjs/internal/Observable'
++export { Subject } from 'rxjs/internal/Subject'
++export { ReplaySubject } from 'rxjs/internal/ReplaySubject'
++export { BehaviorSubject } from 'rxjs/internal/BehaviorSubject'
+ 
+-exports.__esModule = true;
+-exports.startWith = exports.throttleTime = exports.switchMap = exports.map = exports.distinctUntilChanged = exports.multicast = exports.defer = exports.merge = exports.of = exports.BehaviorSubject = exports.ReplaySubject = exports.Subject = exports.Observable = void 0;
++// observables
++export { of } from 'rxjs/internal/observable/of'
++export { merge } from 'rxjs/internal/observable/merge'
++export { defer } from 'rxjs/internal/observable/defer'
+ 
+-var _rxjs = require("rxjs");
+-
+-exports.Observable = _rxjs.Observable;
+-exports.Subject = _rxjs.Subject;
+-exports.ReplaySubject = _rxjs.ReplaySubject;
+-exports.BehaviorSubject = _rxjs.BehaviorSubject;
+-exports.of = _rxjs.of;
+-exports.merge = _rxjs.merge;
+-exports.defer = _rxjs.defer;
+-
+-var _operators = require("rxjs/operators");
+-
+-exports.multicast = _operators.multicast;
+-exports.distinctUntilChanged = _operators.distinctUntilChanged;
+-exports.map = _operators.map;
+-exports.switchMap = _operators.switchMap;
+-exports.throttleTime = _operators.throttleTime;
+-exports.startWith = _operators.startWith;
+\ No newline at end of file
++// operators
++export { multicast } from 'rxjs/internal/operators/multicast'
++export { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged'
++export { map } from 'rxjs/internal/operators/map'
++export { switchMap } from 'rxjs/internal/operators/switchMap'
++export { throttleTime } from 'rxjs/internal/operators/throttleTime'
++export { startWith } from 'rxjs/internal/operators/startWith'
