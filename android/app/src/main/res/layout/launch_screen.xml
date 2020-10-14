@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@color/launch_background">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/splash_icon" />
+        android:src="@drawable/splash_icon" />
 </LinearLayout>
