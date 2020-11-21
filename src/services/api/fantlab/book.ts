@@ -30,6 +30,7 @@ const response = {
   films,
   classification,
   avgRating,
+  voters: 'val_voters',
 };
 
 export type Params = { bookId: string };

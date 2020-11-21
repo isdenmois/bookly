@@ -17,6 +17,7 @@ export interface BookExtended extends BookData {
   films: Film[];
   classification: Detail[];
   avgRating: string;
+  voters: number;
 }
 
 export interface ParentBook {

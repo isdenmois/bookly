@@ -5,7 +5,7 @@ import { api } from '../base/api';
 type Params = { bookId: string };
 
 const fields =
-  'author_id,author_name,name,avg_mark,pic_200,id,description,isbn,publishing,year,cycles,series_title,tags';
+  'author_id,author_name,name,avg_mark,count_readers,pic_200,id,description,isbn,publishing,year,cycles,series_title,tags';
 
 export interface LiveLibBook {
   id: string;
@@ -23,6 +23,7 @@ export interface LiveLibBook {
   publishing?: string;
   tags?: string;
   avgRating?: string;
+  voters?: number;
 }
 
 function response(r): LiveLibBook {
@@ -52,6 +53,7 @@ function response(r): LiveLibBook {
       .map(capitalize)
       .join('\n'),
     avgRating: avgRating(r.avg_mark),
+    voters: r.count_readers,
   };
 }
 

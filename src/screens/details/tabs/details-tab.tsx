@@ -23,6 +23,7 @@ import { withScroll } from './tab';
 import { t, database } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
+import { thousandsSeparator } from 'utils/number-format';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -91,7 +92,7 @@ export class DetailsTab extends React.Component<Props> {
           <ViewLine title={t('details.genre')} value={book.genre} mode={mode} />
         )}
 
-        {notLL && !!book.avgRating && <ViewLine title={t('details.average')} value={book.avgRating} mode={mode} />}
+        {!!book.avgRating && this.renderAvgRating()}
 
         {notLL && !!book.year && <ViewLine title={t('year')} value={book.year} mode={mode} />}
 
@@ -173,6 +174,14 @@ export class DetailsTab extends React.Component<Props> {
         {all && isExist && <ViewLineModelRemove model={book} warning={t('details.delete')} mode={mode} />}
       </View>
     );
+  }
+
+  renderAvgRating() {
+    const { book, mode } = this.props;
+    const voters = book.voters;
+    const rating = voters ? `${book.avgRating} (${thousandsSeparator(voters)})` : book.avgRating;
+
+    return <ViewLine title={t('details.average')} value={rating} mode={mode} />;
   }
 
   renderTranslators() {
