@@ -69,7 +69,7 @@ export function dayOfYear() {
 
 export function mapBooks(items: any[]) {
   let minYear = CURRENT_YEAR;
-  items = items.map(b => {
+  const books = items.map(b => {
     const year = b.date.getFullYear();
     const month = b.date.getMonth();
     const authors = b.author ? b.author.split(', ') : [];
@@ -91,7 +91,7 @@ export function mapBooks(items: any[]) {
     };
   });
 
-  return { items, minYear };
+  return { books, minYear };
 }
 
 export function notTotal(row) {
