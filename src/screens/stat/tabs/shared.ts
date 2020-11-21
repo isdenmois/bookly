@@ -95,7 +95,7 @@ export function mapBooks(items: any[]) {
 }
 
 export function notTotal(row) {
-  return row.id !== 'total' && row.id !== 'Итого';
+  return row.id !== 'total';
 }
 
 export function openRead(filters: any, year: number | false) {
@@ -107,3 +107,5 @@ export function openRead(filters: any, year: number | false) {
 
   navigation.push('ReadList', { filters, sort: { field: 'date', desc: false }, readonly: true });
 }
+
+export type Sort = { field: string; asc: boolean };

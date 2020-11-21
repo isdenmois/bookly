@@ -18,6 +18,7 @@ function ByRatingFactory(books: StatBook[]): RatingRow[] {
 
   result.push({
     id: 'total',
+    key: 'total',
     rating: t('total'),
     count: totalCount,
   });

@@ -36,7 +36,7 @@ export const Row = memo(({ row, columns, flexes, type, year }: Props) => {
     <Component style={s.container} onPress={go}>
       {columns.map((c, i) => (
         <Text key={c} style={flexes ? [s.text, { flex: flexes[i] }] : s.text}>
-          {c === 'name' && 'key' in row ? t(row.key) : row[c]}
+          {c === 'name' || row[c] === 'total' ? t(row.key) : row[c]}
         </Text>
       ))}
     </Component>

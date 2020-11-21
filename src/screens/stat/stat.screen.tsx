@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import _ from 'lodash';
 import { useObservable } from 'utils/use-observable';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
@@ -17,7 +18,7 @@ import { ByRating } from './tabs/by-rating.factory';
 import { ByYear } from './tabs/by-year.factory';
 import { ByAuthor } from './tabs/by-author.factory';
 import { ByType } from './tabs/by-type.factory';
-import { CURRENT_YEAR, mapBooks, StatBook, StatTab, TABS, byYear } from './tabs/shared';
+import { CURRENT_YEAR, mapBooks, StatBook, StatTab, TABS, byYear, Sort, IRow } from './tabs/shared';
 
 const STAT_GROUPS: Record<string, StatTab> = {
   MONTH: ByMonth,
@@ -28,9 +29,9 @@ const STAT_GROUPS: Record<string, StatTab> = {
 };
 
 export function StatScreen() {
-  const [type, setType] = useState(TABS.MONTH);
-  const [year, setYear] = useState(CURRENT_YEAR);
-  const { rows, minYear } = useRows(type, year);
+  const { type, year, sort, setType, setYear, setSort } = useStatParams();
+  let { rows, minYear } = useRows(type, year);
+  rows = useSort(rows, sort);
 
   const group = STAT_GROUPS[type];
 
@@ -41,7 +42,7 @@ export function StatScreen() {
       <View>
         <StatGroups type={type} onChange={setType} />
         {!group.allYears && <YearSelection year={year} minYear={minYear} onChange={setYear} />}
-        <HeaderRow columns={group.header} flexes={group.flexes} />
+        <HeaderRow columns={group.header} fields={group.columns} flexes={group.flexes} sort={sort} onSort={setSort} />
       </View>
 
       <FlatList
@@ -68,6 +69,34 @@ function BooksList(): Observable<{ books: StatBook[]; minYear: number }> {
     .pipe(map(mapBooks) as any);
 }
 
+function useStatParams() {
+  const [type, setTypeRaw] = useState(TABS.MONTH);
+  const [year, setYearRaw] = useState(CURRENT_YEAR);
+  const [sort, setSortRaw] = useState<Sort>(null);
+
+  const setType = useCallback(value => {
+    setTypeRaw(value);
+    setSortRaw(null);
+  }, []);
+
+  const setYear = useCallback(value => {
+    setYearRaw(value);
+    setSortRaw(null);
+  }, []);
+
+  const setSort = useCallback(field => {
+    setSortRaw(current => {
+      if (current === null || current.field !== field) {
+        return { field, asc: true };
+      }
+
+      return { field, asc: !current.asc };
+    });
+  }, []);
+
+  return { type, year, sort, setType, setYear, setSort };
+}
+
 function useRows(type, year) {
   const { books, minYear } = useObservable(BooksList, { books: [], minYear: CURRENT_YEAR }, []);
 
@@ -83,6 +112,21 @@ function useRows(type, year) {
   }, [books, type, year]);
 
   return { rows, minYear };
+}
+
+function useSort<T extends IRow>(list: T[], sort: Sort): T[] {
+  if (sort && list && list.length) {
+    let totalRow = [];
+
+    if (list[list.length - 1].id === 'total') {
+      totalRow.push(list[list.length - 1]);
+      list = list.slice(0, -1);
+    }
+
+    return _.orderBy(list, sort.field, sort.asc ? 'asc' : 'desc').concat(totalRow);
+  }
+
+  return list;
 }
 
 const s = StyleSheet.create({
