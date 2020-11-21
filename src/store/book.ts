@@ -49,6 +49,7 @@ export default class Book extends Model {
   @field('audio') audio: boolean;
   @field('leave') leave: boolean;
   @readonly @date('created_at') createdAt: Date;
+  @readonly @date('updated_at') updatedAt: Date;
 
   // @lazy authors = this.collections.get('authors').query(Q.on('book_authors', 'book_id', this.id));
   @children('book_authors') bookAuthors;

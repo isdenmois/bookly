@@ -12,7 +12,9 @@ export function booksReadForecast(read: number, total: number): number {
 }
 
 export function currentBooksQuery() {
-  return database.collections.get('books').query(Q.where('status', BOOK_STATUSES.NOW));
+  return database.collections
+    .get('books')
+    .query(Q.where('status', BOOK_STATUSES.NOW), Q.experimentalSortBy('updated_at', Q.asc));
 }
 
 export function wishBooksQuery() {
