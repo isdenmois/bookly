@@ -12,7 +12,7 @@ import { getCurrentYear } from 'utils/date';
 import { Button, ScreenHeader, Screen } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
-import { session, t } from 'services';
+import { settings, t } from 'services';
 import Book from 'store/book';
 import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
@@ -77,7 +77,7 @@ export class ReadList extends React.Component<Props, State> {
             style={s.button}
             textStyle={s.buttonText}
           />
-          {this.showTopRate && session.topRate && (
+          {this.showTopRate && settings.topRate && (
             <Button
               label={t('common.top').toUpperCase()}
               onPress={this.openTopRated}

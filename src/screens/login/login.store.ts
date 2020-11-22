@@ -1,4 +1,4 @@
-import { session, syncService } from 'services';
+import { settings, syncService } from 'services';
 import { ToastAndroid } from 'react-native';
 import { useState, useCallback } from 'react';
 
@@ -8,13 +8,13 @@ export function useLoginStore(navigation, navigateTo: string) {
   const submit = useCallback(async () => {
     setSubmitting(true);
 
-    session.set('userId', login);
+    settings.set('userId', login);
 
     try {
       await syncService.sync();
     } catch (e) {
       ToastAndroid.show(e?.message || 'Не удалось войти', ToastAndroid.SHORT);
-      session.set('userId', null);
+      settings.set('userId', null);
       throw e;
     } finally {
       setLogin('');

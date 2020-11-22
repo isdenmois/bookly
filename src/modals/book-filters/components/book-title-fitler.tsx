@@ -1,24 +1,18 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { useFormState } from 'utils/form';
 import { ListItem } from 'components';
-import { BookFilters } from '../book-filters.service';
 
-interface Props {
-  filters: BookFilters;
-  onApply: () => void;
-}
-
-export const BookTitleFilter = observer(({ filters, onApply }: Props) => {
-  const setTitle = React.useCallback(value => filters.setFilter('title', value), [filters]);
+export function BookTitleFilter() {
+  const [title, setTitle, { onSubmit }] = useFormState('title', '');
 
   return (
     <ListItem
       label='modal.title'
       keyboardType='default'
-      value={filters.title}
+      value={title}
       onChange={setTitle}
-      onSubmit={onApply}
+      onSubmit={onSubmit}
       clearable
     />
   );
-});
+}

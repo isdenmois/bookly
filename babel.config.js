@@ -1,5 +1,5 @@
 const config = {
-  presets: ['module:metro-react-native-babel-preset', 'mobx'],
+  presets: ['module:metro-react-native-babel-preset'],
   plugins: [
     'module:react-native-dotenv',
     '@babel/plugin-proposal-optional-chaining',

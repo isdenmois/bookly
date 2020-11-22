@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Text, View, ViewStyle, TextStyle } from 'react-native';
-import { navigation, session } from 'services';
+import { navigation, settings } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
@@ -27,7 +27,7 @@ export function LocalReview({ review, book, mode }: Props) {
     <View style={s.container}>
       <View style={s.dataRow}>
         <View style={s.mainInfo}>
-          <Text style={s.user}>{session.userId}</Text>
+          <Text style={s.user}>{settings.userId}</Text>
           <Text style={s.date}>{formatDate(review.date)}</Text>
         </View>
         <TouchIcon style={s.icon} name='times' size={24} color={color.ErrorText} onPress={deleteReview} />

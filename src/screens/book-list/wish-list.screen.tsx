@@ -1,5 +1,5 @@
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { session } from 'services';
+import { settings } from 'services';
 import { withScroll } from 'utils/scroll-to-top';
 import { ReadList } from './read-list.screen';
 import { createQueryState } from './book-list.service';
@@ -21,7 +21,7 @@ export class WishListScreen extends ReadList {
       status: BOOK_STATUSES.WISH,
       ...this.getFilters(),
     },
-    session.defaultSort,
+    settings.defaultSort,
   );
 
   showTopRate = null;
@@ -34,7 +34,7 @@ export class WishListScreen extends ReadList {
     const filters: any = {};
     const listId = this.props.navigation.getParam('listId');
 
-    if (session.paper) {
+    if (settings.paper) {
       filters.paper = 'e';
     }
 

@@ -1,17 +1,15 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar, View, ViewStyle } from 'react-native';
-import { observer } from 'mobx-react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ColorSchemeProvider, ColorSchemeContext } from 'react-native-dynamic';
-import 'mobx-react-lite/batchingForReactDom';
 import { onChanges } from 'store';
 import { i18n } from 'services/i18n';
+import { loadLocalSettings } from 'services/settings-sync';
 
-import { session, syncService, navigation } from 'services';
+import { settings, syncService, navigation } from 'services';
 import { dark, color } from 'types/colors';
 import { create } from '../router';
 
-@observer
 class App extends React.Component<any> {
   state = { isLoaded: false };
   stack: any = null;
@@ -33,7 +31,7 @@ class App extends React.Component<any> {
   constructor(props, context) {
     super(props, context);
 
-    Promise.all([session.loadSession(), i18n.init()])
+    Promise.all([loadLocalSettings(), i18n.init()])
       .then(() => this.setState({ isLoaded: true }))
       .then(this.sync);
   }
@@ -44,11 +42,11 @@ class App extends React.Component<any> {
     }
 
     if (!this.stack) {
-      this.stack = create(session.userId ? 'App' : 'Login');
+      this.stack = create(settings.userId ? 'App' : 'Login');
     }
 
     return (
-      <ColorSchemeProvider mode={session.mode || undefined}>
+      <ColorSchemeProvider mode={settings.mode || undefined}>
         <ColorSchemeContext.Consumer>{this.renderRoot}</ColorSchemeContext.Consumer>
       </ColorSchemeProvider>
     );

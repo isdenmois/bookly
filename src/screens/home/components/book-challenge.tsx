@@ -2,9 +2,8 @@ import _ from 'lodash';
 import React, { useMemo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, ViewStyle, ToastAndroid } from 'react-native';
 import withObservables from '@nozbe/with-observables';
-import { observer } from 'mobx-react';
-import { session } from 'services';
 import { t } from 'services/i18n';
+import { useSetting } from 'services/settings';
 import { Counter } from 'components';
 import { dayOfYear, format, daysAmount } from 'utils/date';
 import { readBooksThisYearQuery, booksReadForecast, lastReadDateObserver } from '../home.queries';
@@ -18,7 +17,7 @@ interface Props {
 }
 
 function BookChallengeComponent({ readCount, lastReadDate }: Props) {
-  const totalBooks = session.totalBooks;
+  const totalBooks = useSetting('totalBooks');
   const forecast = useMemo(() => booksReadForecast(readCount, totalBooks), [readCount, totalBooks]);
   const showProgress = useCallback(
     () => ToastAndroid.show(getChallengeMessage(readCount, totalBooks, new Date(lastReadDate)), ToastAndroid.LONG),
@@ -175,7 +174,7 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
 export const BookChallenge = withObservables(null, () => ({
   readCount: readBooksThisYearQuery().observeCount(),
   lastReadDate: lastReadDateObserver(),
-}))(observer(BookChallengeComponent));
+}))(BookChallengeComponent);
 
 const s = StyleSheet.create({
   row: {

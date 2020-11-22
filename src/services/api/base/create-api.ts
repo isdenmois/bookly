@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { session } from 'services/session';
+import { settings } from 'services/settings';
 import { navigation } from 'services/navigation';
 import { createUrl, getUrlParams } from './create-url';
 import { createFetchParams } from './create-params';
@@ -97,7 +97,7 @@ function sendReq(schema: Schema, body, url) {
 }
 
 function fetchData(url, schema: Schema, body) {
-  if (schema.needAuth && !session.fantlabAuth) {
+  if (schema.needAuth && !settings.fantlabAuth) {
     return auth(url, schema, body);
   }
 

@@ -2,8 +2,6 @@ import React, { useEffect, useMemo, useCallback } from 'react';
 import { Animated, Platform, ViewStyle, View, TextStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { observer } from 'mobx-react';
-import { observable } from 'mobx';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dynamicColor, useSColor } from 'types/colors';
 import Book from 'store/book';
@@ -13,6 +11,7 @@ import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
 import { t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { createState } from 'utils/state';
 
 interface Props {
   book: Book;
@@ -32,8 +31,6 @@ interface SelectReviewSortProps {
 }
 
 const BUTTON_TOP = 60;
-
-const source = observable.box('Fantlab');
 
 function useTransformStyle(scrollY, s) {
   return useMemo(
@@ -55,15 +52,21 @@ function useTransformStyle(scrollY, s) {
   );
 }
 
-export const AddButton = observer(({ book, navigation, scrollY }: FixedProps) => {
+const [source, useValue] = createState({ type: 'Fantlab' });
+
+export const AddButton = ({ book, navigation, scrollY }: FixedProps) => {
   const hasRead = book.status === BOOK_STATUSES.READ;
   const { s, color } = useSColor(ds);
   const style = useTransformStyle(scrollY, s);
+  const type = useValue('type');
 
   const openReviewWriteModal = useCallback(() => navigation.navigate('/modal/review-write', { book }), [book]);
-  const toggleSearchSource = useCallback(() => source.set(source.get() === 'Fantlab' ? 'Livelib' : 'Fantlab'), []);
+  const toggleSearchSource = useCallback(
+    () => source.set('type', source.type === 'Fantlab' ? 'Livelib' : 'Fantlab'),
+    [],
+  );
 
-  useEffect(() => () => source.set('Fantlab'), []);
+  useEffect(() => () => source.set('type', 'Fantlab'), []);
 
   if (!hasRead && !book.lid) {
     return null;
@@ -82,7 +85,7 @@ export const AddButton = observer(({ book, navigation, scrollY }: FixedProps) =>
       )}
       {!!book.lid && (
         <Button
-          label={source.get()}
+          label={type}
           onPress={toggleSearchSource}
           icon={<Icon name='globe' size={18} color={color.PrimaryText} />}
           style={s.button}
@@ -91,12 +94,13 @@ export const AddButton = observer(({ book, navigation, scrollY }: FixedProps) =>
       )}
     </Animated.View>
   );
-});
+};
 
-const ReviewsTabComponent = observer((props: Props) => {
+const ReviewsTabComponent = (props: Props) => {
   const [sort, setSort] = React.useState('rating');
   const isLiveLib = props.book.id.startsWith('l_');
-  const type = isLiveLib ? 'LiveLib' : source.get();
+  const typeRaw = useValue('type');
+  const type = isLiveLib ? 'LiveLib' : typeRaw;
   const bookId = isLiveLib || type === 'Fantlab' ? props.book.id : props.book.lid;
   const s = ds[props.mode];
 
@@ -114,7 +118,7 @@ const ReviewsTabComponent = observer((props: Props) => {
       <FantlabReviewList bookId={bookId} type={type} sort={sort} mode={props.mode} />
     </>
   );
-});
+};
 
 export const ReviewsTab = withScroll(ReviewsTabComponent, true);
 

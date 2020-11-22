@@ -1,12 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
-import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
+import { ScrollView, StyleSheet, ViewStyle } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { observer } from 'mobx-react';
 import { withNavigationProps } from 'utils/with-navigation-props';
+import { FormBookListSort } from './components/book-list-sort';
 import { BookFilters as IBookFilters, BookSort } from 'types/book-filters';
-import { Dialog, Button } from 'components';
-import { BookListSort } from './components/book-list-sort';
 import { BookYearFilter } from './components/book-year-filter';
 import { BookAuthorFilter } from './components/book-author-filter';
 import { BookTypeFilter } from './components/book-type-filter';
@@ -16,8 +14,8 @@ import { BookTitleFilter } from './components/book-title-fitler';
 import { BookIsLiveLibFilter } from './components/book-is-livelib-filter';
 import { BookPaperFilter } from './components/book-paper-filter';
 import { BookInListFilter } from './components/book-in-list-filter';
-import { BookFilters } from './book-filters.service';
 import { t } from 'services';
+import { Form, SubmitButton, FormDialog } from 'utils/form';
 
 const FILTER_COMPONENTS_MAP = {
   title: BookTitleFilter,
@@ -41,52 +39,54 @@ interface Props {
 }
 
 @withNavigationProps()
-@observer
 export class BookFiltersModal extends React.Component<Props> {
-  service = new BookFilters();
-
-  constructor(props) {
-    super(props);
-    this.service.setInitial(props.filters, props.sort);
-  }
+  initial = Object.assign({}, this.props.filters, { sort: this.props.sort });
 
   render() {
     const { filterFields, sortFields } = this.props;
-    const changed = this.service.changed;
 
     return (
-      <Dialog style={s.modalStyle} title='modal.filters' onApply={changed && this.save}>
-        <ScrollView style={s.scroll} contentContainerStyle={s.filters}>
-          {!!sortFields && <BookListSort fields={sortFields} value={this.service.sort} onChange={this.setSort} />}
+      <Form defaultValues={this.initial} onSubmit={this.save}>
+        <FormDialog style={s.modalStyle} title='modal.filters'>
+          <ScrollView style={s.scroll} contentContainerStyle={s.filters}>
+            {!!sortFields && <FormBookListSort fields={sortFields} />}
 
-          {_.map(filterFields, this.renderFilter)}
-        </ScrollView>
+            {_.map(filterFields, this.renderFilter)}
+          </ScrollView>
 
-        {changed && (
-          <View style={s.buttonRow}>
-            <Button label={t('button.apply')} onPress={this.save} />
-          </View>
-        )}
-      </Dialog>
+          <SubmitButton style={s.buttonRow} label={t('button.apply')} />
+        </FormDialog>
+      </Form>
     );
   }
 
   renderFilter = (field: keyof IBookFilters) => {
     const Component = FILTER_COMPONENTS_MAP[field];
 
-    return <Component key={field} filters={this.service} status={this.props.filters.status} onApply={this.save} />;
+    return <Component key={field} status={this.props.filters.status} onApply={this.save} />;
   };
 
-  setSort = (sort: BookSort) => this.service.setSort(sort);
-
   close = () => this.props.navigation.goBack();
-  save = () => {
+  save = form => {
     const fields = this.props.filterFields;
 
-    this.props.setFilters(this.service.getFilters(fields), this.service.sort);
+    this.props.setFilters(getFilters(form, fields), form.sort);
 
     this.close();
   };
+}
+
+function getFilters(form, fields: Array<keyof IBookFilters>): Partial<IBookFilters> {
+  const filters: Partial<IBookFilters> = _.pick(form, fields.concat('status'));
+
+  if (filters.title) {
+    filters.title = filters.title.trim();
+  }
+
+  return _.omitBy(filters, isEmpty);
+}
+function isEmpty(value) {
+  return value === null || value === '';
 }
 
 const s = StyleSheet.create({

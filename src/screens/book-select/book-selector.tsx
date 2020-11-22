@@ -7,7 +7,7 @@ import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native';
 import { dynamicColor, boldText, lightText } from 'types/colors';
-import { navigation, t, session } from 'services';
+import { navigation, t, settings } from 'services';
 import { database } from 'store';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 
@@ -20,7 +20,7 @@ interface Props {
 export function openInTelegram(text) {
   const action = Platform.OS === 'web' ? 'msg' : 'share';
 
-  if (session.searchApp) {
+  if (settings.searchApp) {
     Linking.openURL(`booksearch://${text}`);
   } else {
     Linking.openURL(`tg://${action}?text=${text}`);

@@ -1,20 +1,8 @@
-import React from 'react';
-import { observer } from 'mobx-react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { formatDate } from 'utils/date';
 import { Calendar } from 'components';
 import { OpenableListItem } from './openable-list-item';
-import { BookFilters } from '../book-filters.service';
-
-interface Props {
-  filters: BookFilters;
-  onApply: () => void;
-}
-
-interface State {
-  opened: boolean;
-  startDate: Date;
-  endDate: Date;
-}
+import { useForm } from 'utils/form';
 
 export function formatPeriod(period) {
   const value: any = period || {};
@@ -23,41 +11,39 @@ export function formatPeriod(period) {
   return from && to ? `${formatDate(from)} - ${formatDate(to)}` : '';
 }
 
-@observer
-export class BookDateFilter extends React.PureComponent<Props, State> {
-  state: State = { opened: false, startDate: this.props.filters.date?.from, endDate: this.props.filters.date?.to };
+export function BookDateFilter() {
+  const { form, useValue } = useForm();
+  const date = formatPeriod(useValue('date'));
+  const today = useMemo(() => new Date(), []);
 
-  today = new Date();
-  calendar: any;
+  const [startDate, setStartDate] = useState<Date>(form.date?.from);
+  const [endDate, setEndDate] = useState<Date>(form.date?.to);
 
-  render() {
-    const date = formatPeriod(this.props.filters.date);
+  const setDate = useCallback((from: Date, to: Date) => {
+    form.set('date', { from, to });
+    form.set('year', null);
+  }, []);
+  const onChange = useCallback(
+    ({ startDate, endDate }) => {
+      setStartDate(startDate);
+      setEndDate(startDate);
 
-    return (
-      <OpenableListItem title='modal.date' viewValue={date} onClear={this.clear} onClose={this.resetState}>
-        <Calendar
-          startDate={this.state.startDate}
-          endDate={this.state.endDate}
-          maxDate={this.today}
-          onChange={this.onChange}
-        />
-      </OpenableListItem>
-    );
-  }
+      if (endDate) {
+        setDate(startDate, endDate);
+      }
+    },
+    [startDate],
+  );
 
-  onChange = ({ startDate, endDate }) => {
-    this.setState({ startDate, endDate });
+  const clear = useCallback(() => form.set('date', null), []);
+  const resetState = useCallback(() => {
+    setStartDate(null);
+    setEndDate(null);
+  }, []);
 
-    if (endDate) {
-      this.setDate(startDate, endDate);
-    }
-  };
-
-  setDate = (from: Date, to: Date) => {
-    this.props.filters.setFilter('date', { from, to });
-    this.props.filters.setFilter('year', null);
-  };
-
-  clear = () => this.props.filters.setFilter('date', null);
-  resetState = () => this.setState({ startDate: null, endDate: null });
+  return (
+    <OpenableListItem title='modal.date' viewValue={date} onClear={clear} onClose={resetState}>
+      <Calendar startDate={startDate} endDate={endDate} maxDate={today} onChange={onChange} />
+    </OpenableListItem>
+  );
 }

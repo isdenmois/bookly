@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { useFormState } from 'utils/form';
 import { EditableListItem } from './editable-list-item';
 
 const fields = [
@@ -8,17 +8,17 @@ const fields = [
   { id: 'e', key: 'common.ebook' },
 ];
 
-export const BookPaperFilter = observer(({ filters }) => {
-  const setType = React.useCallback(value => filters.setFilter('paper', value), [filters]);
+export function BookPaperFilter() {
+  const [paper, setPaper] = useFormState('paper');
 
   return (
     <EditableListItem
       title='modal.format'
       fields={fields}
       labelKey='name'
-      value={filters.paper}
-      onChange={setType}
+      value={paper}
+      onChange={setPaper}
       clearable
     />
   );
-});
+}

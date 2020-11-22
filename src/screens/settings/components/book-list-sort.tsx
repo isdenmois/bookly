@@ -1,21 +1,12 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import { session } from 'services';
 import { BookListSort as BookListSortListItem } from 'modals/book-filters/components/book-list-sort';
 import { WISH_LIST_SORTS } from 'screens/book-list/wish-list.screen';
+import { useSettingState } from 'services/settings';
 
-@observer
-export class BookListSort extends React.Component {
-  render() {
-    return (
-      <BookListSortListItem
-        title='Сортировка по-умолчанию'
-        fields={WISH_LIST_SORTS}
-        value={session.defaultSort}
-        onChange={this.setSort}
-      />
-    );
-  }
+export function BookListSort() {
+  const [value, onChange] = useSettingState('defaultSort');
 
-  setSort = sort => session.set('defaultSort', sort);
+  return (
+    <BookListSortListItem title='Сортировка по-умолчанию' fields={WISH_LIST_SORTS} value={value} onChange={onChange} />
+  );
 }

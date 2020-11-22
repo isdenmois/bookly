@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { session } from 'services/session';
+import { settings } from 'services/settings';
 import { queryParams } from './create-url';
 import { Schema } from './api';
 
@@ -13,8 +13,8 @@ export function createFetchParams(schema: Schema, body) {
     params.headers['User-Agent'] = 'LiveLib/4.0.5/15040005 (SM-G965F; Android 8.0.0; API 26)';
   }
 
-  if (schema.needAuth || (schema.passiveAuth && session.fantlabAuth)) {
-    params.headers.Cookie = `fl_s=${session.fantlabAuth}`;
+  if (schema.needAuth || (schema.passiveAuth && settings.fantlabAuth)) {
+    params.headers.Cookie = `fl_s=${settings.fantlabAuth}`;
   }
 
   if (schema.redirect) {

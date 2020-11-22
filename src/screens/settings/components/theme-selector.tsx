@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { observer } from 'mobx-react';
-import { session } from 'services';
+import { useSetting } from 'services/settings';
+import { settings } from 'services';
 import { EditableListItem } from 'modals/book-filters/components/editable-list-item';
 
 const ITEMS: any = {
@@ -9,8 +9,9 @@ const ITEMS: any = {
   light: 'Светлая',
 };
 
-export const ThemeSelector = observer(() => {
-  const setField = useCallback(mode => session.set('mode', mode === 'auto' ? null : mode), []);
+export function ThemeSelector() {
+  const value = useSetting('mode') || 'auto';
+  const setField = useCallback(mode => settings.set('mode', mode === 'auto' ? null : mode), []);
 
-  return <EditableListItem title='Тема' fields={ITEMS} value={session.mode || 'auto'} onChange={setField} />;
-});
+  return <EditableListItem title='Тема' fields={ITEMS} value={value} onChange={setField} />;
+}

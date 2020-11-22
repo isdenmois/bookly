@@ -1,22 +1,18 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { observer } from 'mobx-react';
 import { ListItem, Checkbox } from 'components';
-import { BookFilters } from '../book-filters.service';
+import { useFormState } from 'utils/form';
 
-interface Props {
-  filters: BookFilters;
-}
-
-export const BookIsLiveLibFilter = observer(({ filters }: Props) => {
-  const toggle = useCallback(() => filters.setFilter('isLiveLib', filters.isLiveLib ? null : true), [filters]);
+export function BookIsLiveLibFilter() {
+  const [isLiveLib, setFilter, { form }] = useFormState('isLiveLib');
+  const toggle = useCallback(() => setFilter(form.isLiveLib ? null : true), []);
 
   return (
     <ListItem rowStyle={s.row} label='common.fromll' onPress={toggle}>
-      <Checkbox value={filters.isLiveLib} onValueChange={toggle} />
+      <Checkbox value={isLiveLib} onValueChange={toggle} />
     </ListItem>
   );
-});
+}
 
 const s = StyleSheet.create({
   row: {

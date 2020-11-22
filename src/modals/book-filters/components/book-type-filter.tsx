@@ -1,18 +1,12 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { useFormState } from 'utils/form';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
 import { EditableListItem } from './editable-list-item';
 
-export const BookTypeFilter = observer(({ filters }) => {
-  const setType = React.useCallback(value => filters.setFilter('type', value), [filters]);
+export function BookTypeFilter() {
+  const [type, setType] = useFormState('type');
 
   return (
-    <EditableListItem
-      title='details.type'
-      fields={BOOK_TYPE_NAMES as any}
-      value={filters.type}
-      onChange={setType}
-      clearable
-    />
+    <EditableListItem title='details.type' fields={BOOK_TYPE_NAMES as any} value={type} onChange={setType} clearable />
   );
-});
+}

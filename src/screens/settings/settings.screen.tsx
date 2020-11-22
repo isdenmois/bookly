@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { ViewStyle, StyleSheet, Platform, ScrollView } from 'react-native';
 import { saveSettings } from 'services/settings-sync';
-import { Setting } from 'services/session';
+import { Setting } from 'services/settings';
 import { ScreenHeader, Screen } from 'components';
-import { SessionEditor } from './components/session-param-editor';
-import { SessionParamToggler } from './components/session-param-toggler';
+import { SettingsEditor } from './components/settings-param-editor';
+import { SettingsParamToggler } from './components/settings-param-toggler';
 import { BookListSort } from './components/book-list-sort';
 import { ThemeSelector } from './components/theme-selector';
 import { LanguageSelector } from './components/language-selector';
@@ -22,8 +22,8 @@ type SettingLine = {
 };
 
 const COMPONENTS: Record<SettingType, any> = {
-  [SettingType.Editor]: SessionEditor,
-  [SettingType.Toggler]: SessionParamToggler,
+  [SettingType.Editor]: SettingsEditor,
+  [SettingType.Toggler]: SettingsParamToggler,
 };
 
 const LINES: SettingLine[] = [

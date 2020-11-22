@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { BookFilters, BookSort, Interval } from 'types/book-filters';
 import { sanitizeLike } from 'utils/sanitize';
-import { session } from 'services';
+import { settings } from 'services';
 
 const HALF_DAY = 12 * 60 * 60 * 1000;
 
@@ -45,7 +45,7 @@ const WHERE_FILTERS = {
     return Q.where('id', Q.like('l_%'));
   },
   minYear() {
-    const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
+    const min = new Date(settings.minYear, 0, 1, 0, 0, 0).getTime();
 
     return Q.where('date', Q.gte(min));
   },

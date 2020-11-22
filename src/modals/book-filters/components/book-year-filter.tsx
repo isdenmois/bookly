@@ -1,31 +1,27 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { useForm } from 'utils/form';
 import { ListItem } from 'components';
-import { BookFilters } from '../book-filters.service';
 
-interface Props {
-  filters: BookFilters;
-  onApply: () => void;
-}
-
-export const BookYearFilter = observer(({ filters, onApply }: Props) => {
-  const onChange = React.useCallback(value => setYear(filters, value), [filters]);
+export function BookYearFilter() {
+  const { form, submit, useValue } = useForm();
+  const onChange = React.useCallback(value => setYear(form, value), []);
+  const year = useValue('year');
 
   return (
     <ListItem
       label='year'
       keyboardType='numeric'
-      value={filters.year && filters.year.toString()}
+      value={year && String(year)}
       onChange={onChange}
-      onSubmit={onApply}
+      onSubmit={submit}
       clearable
     />
   );
-});
+}
 
-function setYear(filters: BookFilters, value: string) {
+function setYear(form, value: string) {
   if (!value || +value) {
-    filters.setFilter('year', +value || null);
-    filters.setFilter('date', null);
+    form.set('year', +value || null);
+    form.set('date', null);
   }
 }

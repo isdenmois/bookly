@@ -1,25 +1,22 @@
-import { observable } from 'mobx';
 import { synchronize } from '@nozbe/watermelondb/sync';
 import { getLastPulledAt } from '@nozbe/watermelondb/sync/impl';
 import { database } from 'store';
-import { Session } from './session';
+import { settings } from './settings';
 import { API } from './api';
 import { loadSettings } from './settings-sync';
 
 export class SyncService {
   database = database;
-  session: Session;
   api: API;
 
-  constructor(session: Session, api: API) {
-    this.session = session;
+  constructor(api: API) {
     this.api = api;
   }
 
-  @observable lastPulledAt: number = 0;
+  lastPulledAt: number = 0;
 
   async sync() {
-    if (!this.session.userId) {
+    if (!settings.userId) {
       return null;
     }
 

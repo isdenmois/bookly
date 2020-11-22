@@ -7,7 +7,7 @@ import { Text, View, StyleSheet, ViewStyle, FlatList } from 'react-native';
 import { HeaderRow } from './components/header-row';
 import { ScreenHeader, Screen } from 'components';
 import { Row } from './components/row';
-import { session, t } from 'services';
+import { settings, t } from 'services';
 import { Q } from '@nozbe/watermelondb';
 import { database } from 'store';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
@@ -60,7 +60,7 @@ export function StatScreen() {
 }
 
 function BooksList(): Observable<{ books: StatBook[]; minYear: number }> {
-  const min = new Date(session.minYear, 0, 1, 0, 0, 0).getTime();
+  const min = new Date(settings.minYear, 0, 1, 0, 0, 0).getTime();
 
   return database.collections
     .get('books')

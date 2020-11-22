@@ -4,10 +4,11 @@ import { View, ViewStyle, TextStyle, Platform, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { dynamicColor, getColor } from 'types/colors';
-import { session } from 'services';
+import { settings } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { database } from 'store';
 import { Button, ScreenHeader, ListItem, Screen } from 'components';
+import { resetSettings } from 'services/settings';
 import { RemoveDeleted } from './components/remove-deleted';
 
 interface Props {
@@ -24,7 +25,7 @@ export class ProfileScreen extends React.Component<Props> {
 
     return (
       <Screen>
-        <ScreenHeader title={session.userId} />
+        <ScreenHeader title={settings.userId} />
 
         <ScrollView contentContainerStyle={s.content}>
           <ListItem label='Настройки' onPress={this.openSettings} />
@@ -53,7 +54,7 @@ export class ProfileScreen extends React.Component<Props> {
   openLists = () => this.props.navigation.navigate('Lists');
 
   logout = () => {
-    session.stopSession();
+    resetSettings();
     this.props.navigation.navigate('Login');
     database.action(() => database.unsafeResetDatabase());
   };

@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, View, ViewStyle, TextStyle, Platform } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { api, session, t } from 'services';
+import { api, settings, t } from 'services';
 import { dynamicColor, getColor, boldText } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
@@ -73,7 +73,7 @@ export class ChangeStatusModal extends React.Component<Props> {
       return book.date;
     }
 
-    if (session.saveDateInChangeStatus) {
+    if (settings.saveDateInChangeStatus) {
       return defaultDate || new Date();
     }
 
@@ -160,7 +160,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                 <RatingSelect value={this.state.rating} onChange={this.setRating} />
               </ListItem>
 
-              {session.audio && (
+              {settings.audio && (
                 <ListItem
                   rowStyle={s.row}
                   label={t('common.audiobook')}
@@ -171,7 +171,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                 </ListItem>
               )}
 
-              {session.withoutTranslation && (
+              {settings.withoutTranslation && (
                 <ListItem
                   rowStyle={s.row}
                   label={t('common.original')}
@@ -182,7 +182,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                 </ListItem>
               )}
 
-              {session.paper && !book.paper && (
+              {settings.paper && !book.paper && (
                 <ListItem
                   rowStyle={s.row}
                   label={t('details.has-paper')}
@@ -193,7 +193,7 @@ export class ChangeStatusModal extends React.Component<Props> {
                 </ListItem>
               )}
 
-              {session.paper && (book.paper || this.state.paper) && (
+              {settings.paper && (book.paper || this.state.paper) && (
                 <ListItem
                   rowStyle={s.row}
                   label={t('details.leave')}
@@ -301,7 +301,7 @@ export class ChangeStatusModal extends React.Component<Props> {
       this.updateBook();
     }
 
-    if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && session.withFantlab) {
+    if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && settings.withFantlab) {
       api.markWork(this.props.book.id, this.state.rating);
     }
   };

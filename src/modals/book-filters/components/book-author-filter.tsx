@@ -1,89 +1,66 @@
-import React from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import _ from 'lodash';
 import { TextInput, TextStyle } from 'react-native';
-import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
-import { sortBy, prop } from 'rambdax';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 import { Q } from '@nozbe/watermelondb';
-import withObservables from '@nozbe/with-observables';
-import { observer } from 'mobx-react';
+import { useFormState } from 'utils/form';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { dynamicColor } from 'types/colors';
+import { dynamicColor, useSColor } from 'types/colors';
 import Author from 'store/author';
 import { database } from 'store';
 import { t } from 'services';
+import { useObservable } from 'utils/use-observable';
 import { EditableListItem } from './editable-list-item';
-import { BookFilters } from '../book-filters.service';
 
 interface Props {
-  authors?: Author[];
   status: BOOK_STATUSES;
-  filters: BookFilters;
 }
 
-interface State {
-  name: string;
-}
-
-const withAuthors: Function = withObservables(null, (props: Props) => {
+function getAuthorList([status]) {
   const queries = [
     Q.experimentalNestedJoin('book_authors', 'books'),
-    Q.on('book_authors', Q.on('books', 'status', props.status)),
+    Q.on('book_authors', Q.on('books', 'status', status)),
+    Q.experimentalSortBy('name'),
   ];
-  const authors = database.collections.get('authors');
+  const authors = database.collections.get<Author>('authors');
 
-  return { authors: authors.query(...queries) };
-});
+  return authors.query(...queries).observe();
+}
 
-@withAuthors
-@observer
-export class BookAuthorFilter extends React.PureComponent<Props, State> {
-  static contextType = ColorSchemeContext;
-  state: State = { name: '' };
+export const BookAuthorFilter = memo(({ status }: Props) => {
+  let authors = useObservable(getAuthorList, [], [status]);
+  const [name, setName] = useState('');
+  const [author, setFilter] = useFormState('author');
 
-  sortAuthors = sortBy(prop('name'));
+  const setAuthor = useCallback(
+    id => {
+      const author = _.find(authors, { id }) || null;
 
-  render() {
-    if (!this.props.authors) return null;
-    let authors = this.props.authors;
-    const name = this.state.name.toLowerCase();
-    const author = this.props.filters.author;
+      setFilter(author && _.pick(author, ['id', 'name']));
+      setName('');
+    },
+    [author, authors],
+  );
 
-    if (this.state.name) {
-      authors = authors.filter(a => a.name.toLowerCase().indexOf(name) >= 0);
-    }
-
-    const s = ds[this.context];
-    const placeholderTextColor = dynamicColor.SecondaryText[this.context];
-
-    return (
-      <EditableListItem
-        title='author'
-        fields={this.sortAuthors(authors)}
-        labelKey='name'
-        value={author?.id}
-        onChange={this.setAuthor}
-        clearable
-      >
-        <TextInput
-          style={s.input}
-          placeholderTextColor={placeholderTextColor}
-          onChangeText={this.setName}
-          value={this.state.name}
-          placeholder={t('common.search').toLowerCase()}
-        />
-      </EditableListItem>
-    );
+  if (name) {
+    authors = authors.filter(a => a.name.toLowerCase().indexOf(name) >= 0);
   }
 
-  setName = name => this.setState({ name });
+  const { s, color } = useSColor(ds);
+  const placeholderTextColor = color.SecondaryText;
 
-  setAuthor = id => {
-    const author = _.find(this.props.authors, { id }) || null;
-
-    this.props.filters.setFilter('author', author && _.pick(author, ['id', 'name']));
-    this.setState({ name: '' });
-  };
-}
+  return (
+    <EditableListItem title='author' fields={authors} labelKey='name' value={author?.id} onChange={setAuthor} clearable>
+      <TextInput
+        style={s.input}
+        placeholderTextColor={placeholderTextColor}
+        onChangeText={setName}
+        value={name}
+        placeholder={t('common.search').toLowerCase()}
+      />
+    </EditableListItem>
+  );
+});
 
 const ds = new DynamicStyleSheet({
   input: {

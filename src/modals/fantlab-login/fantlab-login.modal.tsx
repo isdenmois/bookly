@@ -4,7 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { dynamicColor } from 'types/colors';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import { api, session } from 'services';
+import { api, settings } from 'services';
 import { FantlabLoginRequest } from 'services/api/fantlab/login';
 import { Button, Dialog, ListItem } from 'components';
 
@@ -20,7 +20,7 @@ export class FantlabLoginModal extends React.Component<Props> {
 
   state = {
     isLoading: false,
-    login: session.userId,
+    login: settings.userId,
     password: '',
     error: null,
   };
@@ -100,7 +100,7 @@ export class FantlabLoginModal extends React.Component<Props> {
       return this.setState({ isLoading: false, error: error || result.error_msg || 'Не удалось залогиниться' });
     }
 
-    session.set('fantlabAuth', result['X-Session']);
+    settings.set('fantlabAuth', result['X-Session']);
     this.props.navigation.goBack();
     this.props.onSuccess();
   };

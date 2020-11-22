@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { session } from 'services/session';
+import { settings } from 'services/settings';
 
 const PARAMS_REGEX = /:[{]?([\w]+)[}]?/g;
 const DELIMITERS = /[:{}]+/g;
@@ -9,7 +9,7 @@ const DELIMITERS = /[:{}]+/g;
  */
 export function createUrl(url: string, params) {
   if (url.includes(':userId')) {
-    url = url.replace(':userId', session.userId);
+    url = url.replace(':userId', settings.userId);
   }
 
   [url, params] = replaceUrlParams(url, params);

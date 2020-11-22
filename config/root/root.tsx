@@ -1,17 +1,16 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar, View, ViewStyle } from 'react-native';
-import { observer } from 'mobx-react';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { ColorSchemeProvider, ColorSchemeContext } from 'react-native-dynamic';
 import { onChanges } from 'store';
 import { i18n } from 'services/i18n';
+import { loadLocalSettings } from 'services/settings-sync';
 
-import { session, syncService, navigation } from 'services';
+import { syncService, navigation, settings } from 'services';
 import { dark, color } from 'types/colors';
 
-@observer
 class App extends React.Component<any> {
   state = { isLoaded: false };
   RootStack: any = null;
@@ -35,7 +34,7 @@ class App extends React.Component<any> {
   constructor(props, context) {
     super(props, context);
 
-    Promise.all([session.loadSession(), i18n.init()])
+    Promise.all([loadLocalSettings(), i18n.init()])
       .then(() => this.setState({ isLoaded: true }))
       .then(this.sync);
   }
@@ -48,7 +47,7 @@ class App extends React.Component<any> {
     if (!this.RootStack) {
       const routes = require('../router');
 
-      this.RootStack = routes.create(session.userId ? 'App' : 'Login');
+      this.RootStack = routes.create(settings.userId ? 'App' : 'Login');
       SplashScreen.hide();
 
       if (__DEV__) {
@@ -58,7 +57,7 @@ class App extends React.Component<any> {
     }
 
     return (
-      <ColorSchemeProvider mode={session.mode || undefined}>
+      <ColorSchemeProvider mode={settings.mode || undefined}>
         <ColorSchemeContext.Consumer>{this.renderRoot}</ColorSchemeContext.Consumer>
       </ColorSchemeProvider>
     );

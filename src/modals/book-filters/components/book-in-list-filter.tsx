@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { observer } from 'mobx-react';
+import { useFormState } from 'utils/form';
 import { EditableListItem } from './editable-list-item';
 import { usePromise } from 'utils/use-observable';
 import { database } from 'store';
@@ -11,21 +11,12 @@ function getAllLists() {
   return lists.query().fetch();
 }
 
-export const BookInListFilter = observer(({ filters }) => {
+export function BookInListFilter() {
   const lists = usePromise(getAllLists, [], []);
-  const setList = useCallback(value => filters.setFilter('list', lists.find(i => i.id === value) || null), [
-    filters,
-    lists,
-  ]);
+  const [list, setFilter] = useFormState('list');
+  const setList = useCallback(value => setFilter(lists.find(i => i.id === value) || null), [lists]);
 
   return (
-    <EditableListItem
-      title='modal.list'
-      fields={lists}
-      labelKey='name'
-      value={filters.list?.id}
-      onChange={setList}
-      clearable
-    />
+    <EditableListItem title='modal.list' fields={lists} labelKey='name' value={list?.id} onChange={setList} clearable />
   );
-});
+}

@@ -1,10 +1,11 @@
-import React from 'react';
-import { getColor } from 'types/colors';
+import React, { useCallback, useMemo } from 'react';
+import _ from 'lodash';
+import { useColor } from 'types/colors';
 import { TouchIcon } from 'components';
 import { EditableListItem } from './editable-list-item';
-import { ColorSchemeContext } from 'react-native-dynamic';
+import { useFormState } from 'utils/form';
 
-const fields = [
+const FIELDS = [
   { id: 'date', key: 'modal.date' },
   { id: 'title', key: 'modal.title' },
   { id: 'rating', key: 'modal.rating' },
@@ -20,42 +21,38 @@ interface Props {
   onChange: (params: any) => void;
 }
 
-export class BookListSort extends React.PureComponent<Props> {
-  static contextType = ColorSchemeContext;
+export function BookListSort({ title, fields, value, onChange }: Props) {
+  const color = useColor();
 
-  render() {
-    const title = this.props.title || 'modal.sort';
-    const color = getColor(this.context);
+  const toggleDesc = useCallback(() => {
+    onChange({ field: value.field, desc: !value.desc });
+  }, [value]);
 
-    return (
-      <EditableListItem
-        title={title}
-        fields={fields}
-        value={this.props.value.field}
-        labelKey='name'
-        onChange={this.setField}
-      >
-        <TouchIcon
-          name={this.props.value.desc ? 'sort-alpha-up' : 'sort-alpha-down'}
-          paddingVertical={15}
-          paddingLeft={15}
-          size={18}
-          color={color.PrimaryText}
-          onPress={this.toggleDesc}
-        />
-      </EditableListItem>
-    );
-  }
+  const setField = useCallback(field => onChange({ field, desc: value.desc }), [value.desc]);
+  const listFields: any = useMemo(() => _.pickBy(FIELDS, f => fields.includes(f.id)), [fields]);
 
-  toggleDesc = () => {
-    const prev = this.props.value;
+  return (
+    <EditableListItem
+      title={title || 'modal.sort'}
+      fields={listFields}
+      value={value.field}
+      labelKey='name'
+      onChange={setField}
+    >
+      <TouchIcon
+        name={value.desc ? 'sort-alpha-up' : 'sort-alpha-down'}
+        paddingVertical={15}
+        paddingLeft={15}
+        size={18}
+        color={color.PrimaryText}
+        onPress={toggleDesc}
+      />
+    </EditableListItem>
+  );
+}
 
-    this.props.onChange({ field: prev.field, desc: !prev.desc });
-  };
+export function FormBookListSort({ fields }) {
+  const [value, onChange] = useFormState('sort');
 
-  setField = field => {
-    const desc = this.props.value.desc;
-
-    this.props.onChange({ field, desc });
-  };
+  return <BookListSort fields={fields} value={value} onChange={onChange} />;
 }
