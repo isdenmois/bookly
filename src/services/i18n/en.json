@@ -96,7 +96,8 @@
     "by-date": "Newest",
     "by-mark": "By mark",
     "thumbnail": "Thumbnail",
-    "livelib": "LiveLib"
+    "livelib": "LiveLib",
+    "reread": "Reread"
   },
   "stat": {
     "by-month": "Monthly",

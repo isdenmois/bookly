@@ -21,4 +21,5 @@ export interface BookFilters {
   isLiveLib: boolean;
   paper: string;
   list: string;
+  reads: string[];
 }

@@ -1,5 +1,16 @@
 import _ from 'lodash';
-import { CURRENT_YEAR, dayOfYear, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
+import {
+  CURRENT_YEAR,
+  dayOfYear,
+  round,
+  IRow,
+  StatTab,
+  TabTransition,
+  notTotal,
+  openRead,
+  StatBook,
+  withReads,
+} from './shared';
 import { daysAmount } from 'utils/date';
 
 interface YearRow extends IRow {
@@ -8,7 +19,7 @@ interface YearRow extends IRow {
 }
 
 function ByYearFactory(books: StatBook[]): YearRow[] {
-  const result: YearRow[] = [{ id: CURRENT_YEAR, count: 0, rating: 0, days: 0, d: dayOfYear() }];
+  let result: YearRow[] = [{ id: CURRENT_YEAR, count: 0, rating: 0, days: 0, d: dayOfYear(), items: [] }];
   let totalCount = 0;
   let totalRating = 0;
   let totalD = result[0].d;
@@ -19,7 +30,7 @@ function ByYearFactory(books: StatBook[]): YearRow[] {
     const amount = daysAmount(year);
 
     if (!result[i]) {
-      result[i] = { id: year, count: 0, rating: 0, days: 0, d: amount };
+      result[i] = { id: year, count: 0, rating: 0, days: 0, d: amount, items: [] };
       totalD += amount;
     }
 
@@ -27,9 +38,10 @@ function ByYearFactory(books: StatBook[]): YearRow[] {
     totalRating += book.rating;
     result[i].count++;
     result[i].rating += book.rating;
+    result[i].items.push(book);
   });
 
-  books = books.filter(_.identity);
+  result = result.filter(_.identity);
 
   result.push({
     id: 'total',
@@ -51,7 +63,7 @@ function ByYearFactory(books: StatBook[]): YearRow[] {
 export const transition: TabTransition = {
   enabled: notTotal,
   go(row) {
-    openRead({ year: row.id }, false);
+    openRead(withReads(row, { year: row.id }), false);
   },
 };
 

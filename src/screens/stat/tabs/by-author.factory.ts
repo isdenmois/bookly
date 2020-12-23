@@ -1,4 +1,4 @@
-import { round, IRow, StatTab, TabTransition, openRead, StatBook } from './shared';
+import { round, IRow, StatTab, TabTransition, openRead, StatBook, withReads } from './shared';
 import _ from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 import { ToastAndroid } from 'react-native';
@@ -18,8 +18,9 @@ function ByAuthorFactory(books: StatBook[]): AuthorRow[] {
         const row = authors.get(author);
         ++row.count;
         row.rating += book.rating;
+        row.items.push(book);
       } else {
-        authors.set(author, { id: author, count: 1, rating: book.rating });
+        authors.set(author, { id: author, count: 1, rating: book.rating, items: [book] });
       }
     });
   });
@@ -28,6 +29,7 @@ function ByAuthorFactory(books: StatBook[]): AuthorRow[] {
 
   result.forEach(row => {
     row.rating = round(row.rating / row.count);
+    row.items = _.uniqBy(row.items, 'id');
   });
 
   return _.orderBy(result, ['count', 'id'], ['desc', 'asc']);
@@ -48,7 +50,7 @@ export const transition: TabTransition = {
 
     filters.author = _.pick(authors[0], ['id', 'name']);
 
-    openRead(filters, year);
+    openRead(withReads(row, filters), year);
   },
 };
 

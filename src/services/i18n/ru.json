@@ -96,7 +96,8 @@
     "by-date": "По дате",
     "by-mark": "По оценке",
     "thumbnail": "Обложка",
-    "livelib": "LiveLib"
+    "livelib": "LiveLib",
+    "reread": "Перечитала"
   },
   "stat": {
     "by-month": "По месяцам",

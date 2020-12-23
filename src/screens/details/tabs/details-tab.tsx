@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { dynamicColor } from 'types/colors';
 import { formatDate } from 'utils/date';
-import Book from 'store/book';
+import Book, { Read } from 'store/book';
 import { hasUpdates } from 'utils/has-updates';
 import { BookExtended, ParentBook, Film } from 'types/book-extended';
 import { LiveLibBook } from 'services/api/livelib/book';
@@ -52,18 +52,10 @@ export class DetailsTab extends React.Component<Props> {
     return hasUpdates(this, props, state, paths);
   }
 
-  get readDate() {
+  get allReads() {
     const book = this.props.book;
-    const parts = [
-      formatDate(book.date),
-      book.audio && t('common.audiobook'),
-      book.withoutTranslation && t('common.original'),
-    ];
 
-    return parts
-      .filter(p => p)
-      .join(', ')
-      .toLowerCase();
+    return [book as Read].concat(this.props.book.reads).map(formatReadDate).join('\n');
   }
 
   render() {
@@ -81,7 +73,7 @@ export class DetailsTab extends React.Component<Props> {
 
     return (
       <View>
-        {isRead && <ViewLine title={t('details.read-date')} value={this.readDate} mode={mode} />}
+        {isRead && <ViewLine title={t('details.read-date')} value={this.allReads} mode={mode} />}
 
         {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} mode={mode} />}
 
@@ -326,6 +318,20 @@ export class DetailsTab extends React.Component<Props> {
 
     this.props.navigation.goBack();
   };
+}
+
+function formatReadDate(read: Read) {
+  const parts = [
+    formatDate(read.date),
+    'status' in read ? null : `${read.rating} / 10`,
+    read.audio && t('common.audiobook'),
+    read.withoutTranslation && t('common.original'),
+  ];
+
+  return parts
+    .filter(p => p)
+    .join(', ')
+    .toLowerCase();
 }
 
 const ds = new DynamicStyleSheet({

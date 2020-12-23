@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import { getCurrentYear } from 'utils/date';
 import { navigation } from 'services';
+import { Read } from 'store/book';
 
 export const TABS = {
   MONTH: 'MONTH',
@@ -23,6 +25,7 @@ export interface TabTransition {
 }
 
 export interface StatBook {
+  id: string;
   year: number;
   month: number;
   date: Date;
@@ -32,6 +35,7 @@ export interface StatBook {
   withoutTranslation: boolean;
   leave: boolean;
   authors: string[];
+  isRead: boolean;
 }
 
 export interface BookItems {
@@ -44,6 +48,7 @@ export interface IRow {
   count: number;
   d?: number;
   key?: string;
+  items?: StatBook[];
 }
 
 export const CURRENT_YEAR = getCurrentYear();
@@ -69,7 +74,11 @@ export function dayOfYear() {
 
 export function mapBooks(items: any[]) {
   let minYear = CURRENT_YEAR;
-  const books = items.map(b => {
+  const reads = _.flatMap(items, item =>
+    item.reads.map(read => ({ ..._.pick(item, ['date', 'id', 'author']), ...read, isRead: true })),
+  );
+
+  const books = items.concat(reads).map(b => {
     const year = b.date.getFullYear();
     const month = b.date.getMonth();
     const authors = b.author ? b.author.split(', ') : [];
@@ -82,12 +91,14 @@ export function mapBooks(items: any[]) {
       year,
       month,
       authors,
+      id: b.id,
       rating: b.rating,
       date: b.date,
       paper: b.paper,
       audio: b.audio,
       withoutTranslation: b.withoutTranslation,
       leave: b.leave,
+      isRead: b.isRead,
     };
   });
 
@@ -109,3 +120,13 @@ export function openRead(filters: any, year: number | false) {
 }
 
 export type Sort = { field: string; asc: boolean };
+
+export function withReads(row: IRow, filters: Record<string, any>) {
+  const reads = row.items.filter(book => book.isRead).map(book => book.id);
+
+  if (reads.length) {
+    filters.reads = reads;
+  }
+
+  return filters;
+}

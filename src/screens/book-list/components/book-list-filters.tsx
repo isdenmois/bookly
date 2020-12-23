@@ -28,6 +28,7 @@ const filterMap = {
   withoutTranslation: p => (p === 'y' ? 'common.original' : 'common.ru'),
   leave: p => (p === 'y' ? 'stat.leave' : 'stat.keep'),
   list: p => p.name,
+  reads: () => 'details.reread',
 };
 
 export function BookListFilters({ filters, onChange }: Props) {

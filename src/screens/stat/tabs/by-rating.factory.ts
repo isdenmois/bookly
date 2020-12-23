@@ -1,18 +1,19 @@
 import _ from 'lodash';
 import { t } from 'services';
-import { IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
+import { IRow, StatTab, TabTransition, notTotal, openRead, StatBook, withReads } from './shared';
 
 export interface RatingRow extends IRow {
   rating: number | string;
 }
 
 function ByRatingFactory(books: StatBook[]): RatingRow[] {
-  const result: RatingRow[] = _.times(10, i => ({ id: 10 - i, rating: 10 - i, count: 0 }));
+  const result: RatingRow[] = _.times(10, i => ({ id: 10 - i, rating: 10 - i, count: 0, items: [] }));
 
   let totalCount = 0;
 
   books.forEach(book => {
     result[10 - book.rating].count++;
+    result[10 - book.rating].items.push(book);
     totalCount++;
   });
 
@@ -29,11 +30,9 @@ function ByRatingFactory(books: StatBook[]): RatingRow[] {
 export const transition: TabTransition = {
   enabled: notTotal,
   go(row, year) {
-    const filters: any = {};
+    const filters: any = { rating: { from: row.id, to: row.id } };
 
-    filters.rating = { from: row.id, to: row.id };
-
-    openRead(filters, year);
+    openRead(withReads(row, filters), year);
   },
 };
 

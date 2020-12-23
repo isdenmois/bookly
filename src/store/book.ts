@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
-import { action, field, date, children, readonly } from '@nozbe/watermelondb/decorators';
+import { action, field, date, children, readonly, json } from '@nozbe/watermelondb/decorators';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
@@ -21,11 +21,18 @@ const FIELDS = <const>[
   'withoutTranslation',
   'audio',
   'leave',
+  'reads',
 ];
+
+export const READ_FIELDS = <const>['date', 'audio', 'withoutTranslation', 'paper', 'leave', 'rating'];
 
 type BookFields = typeof FIELDS[number];
 
+export type Read = Pick<Book, typeof READ_FIELDS[number]>;
+
 export type BookData = Pick<Book, BookFields>;
+
+const sanitizeReads = raw => (Array.isArray(raw) ? raw.map(row => ({ ...row, date: new Date(row.date) })) : []);
 
 export default class Book extends Model {
   static table = 'books';
@@ -48,6 +55,8 @@ export default class Book extends Model {
   @field('without_translation') withoutTranslation: boolean;
   @field('audio') audio: boolean;
   @field('leave') leave: boolean;
+  @json('reads', sanitizeReads) reads: Read[];
+
   @readonly @date('created_at') createdAt: Date;
   @readonly @date('updated_at') updatedAt: Date;
 

@@ -1,5 +1,5 @@
 import { dayOfYear, daysAmount, getMonthNames, getNumberOfDaysInMonth } from 'utils/date';
-import { CURRENT_YEAR, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook } from './shared';
+import { CURRENT_YEAR, round, IRow, StatTab, TabTransition, notTotal, openRead, StatBook, withReads } from './shared';
 
 export interface MonthRow extends IRow {
   key: string;
@@ -15,6 +15,7 @@ function ByMonthFactory(books: StatBook[], year?: number): MonthRow[] {
     count: 0,
     days: 0,
     rating: 0,
+    items: [],
   }));
   const years = new Set<number>();
 
@@ -32,6 +33,7 @@ function ByMonthFactory(books: StatBook[], year?: number): MonthRow[] {
     totalRating += book.rating;
     result[month].count++;
     result[month].rating += book.rating;
+    result[month].items.push(book);
     years.add(book.year);
   });
 
@@ -91,7 +93,7 @@ export const transition: TabTransition = {
       to: new Date(year, <number>row.id + 1, 0, 13, 0, 0),
     };
 
-    openRead({ date }, false);
+    openRead(withReads(row, { date }), false);
   },
 };
 

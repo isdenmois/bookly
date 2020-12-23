@@ -7,7 +7,7 @@ import { api, settings, t } from 'services';
 import { dynamicColor, getColor, boldText } from 'types/colors';
 import { formatDate } from 'utils/date';
 import { withNavigationProps } from 'utils/with-navigation-props';
-import Book, { BookData, createBook } from 'store/book';
+import Book, { BookData, createBook, READ_FIELDS } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { database } from 'store';
@@ -43,6 +43,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     dateEditable: false,
     initialLists: [],
     lists: new Set(),
+    reread: false,
   };
 
   statusMap = {
@@ -107,6 +108,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     const isWeb = Platform.OS === 'web';
     const s = ds[this.context];
     const color = getColor(this.context);
+    const hasRead = !this.isCreation && book.status === BOOK_STATUSES.READ;
 
     return (
       <Dialog testID='changeStatusModal' style={s.dialog}>
@@ -203,6 +205,17 @@ export class ChangeStatusModal extends React.Component<Props> {
                   <Checkbox value={this.state.leave} onValueChange={this.toggleLeave} />
                 </ListItem>
               )}
+
+              {hasRead && (
+                <ListItem
+                  rowStyle={s.row}
+                  label={t('details.reread')}
+                  icon={<Icon name='redo' style={s.icon} size={20} color={color.PrimaryText} />}
+                  onPress={this.toggleReread}
+                >
+                  <Checkbox value={this.state.reread} onValueChange={this.toggleReread} />
+                </ListItem>
+              )}
             </>
           )}
 
@@ -246,6 +259,11 @@ export class ChangeStatusModal extends React.Component<Props> {
   toggleWithoutTranslation = () => this.setState({ withoutTranslation: !this.state.withoutTranslation });
   toggleLeave = () => this.setState({ leave: !this.state.leave });
   togglePaper = () => this.setState({ paper: !this.state.paper });
+  toggleReread = () => {
+    const reread = !this.state.reread;
+
+    this.setState({ reread, date: reread ? new Date() : this.defaultDate });
+  };
   setLists = lists => this.setState({ lists });
 
   fillData(data: Partial<BookData> = {}) {
@@ -275,6 +293,10 @@ export class ChangeStatusModal extends React.Component<Props> {
     const lists = this.getLists();
     const toAddLists = _.difference(lists, this.state.initialLists);
     const toRemoveLists = _.difference(this.state.initialLists, lists);
+
+    if (this.state.reread) {
+      data.reads = [_.pick(book, READ_FIELDS)].concat(book.reads);
+    }
 
     return database.batch(
       book.prepareUpdate(() => Object.assign(book, data)),
