@@ -29,7 +29,7 @@ export function Form<T>({ defaultValues, onSubmit, children }: FormProps<T>) {
     return { state, form: state, useValue, submit };
   }, []);
 
-  return <FormContext.Provider value={form}> {children} </FormContext.Provider>;
+  return <FormContext.Provider value={form}>{children}</FormContext.Provider>;
 }
 
 export function useFormValue(field, defaultValue) {
