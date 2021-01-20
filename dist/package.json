@@ -1,0 +1,10 @@
+{
+  "name": "dist",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^9.4.2",
+    "lodash": "^4.17.20"
+  }
+}

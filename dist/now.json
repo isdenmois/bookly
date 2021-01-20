@@ -1,4 +1,4 @@
 {
   "name": "bookly",
-  "routes": [{ "src": "/api/livelib/(.*)", "dest": "/api/livelib.js" }]
+  "redirects": [{ "source": "/.env", "destination": "/" }]
 }

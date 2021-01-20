@@ -64,4 +64,6 @@ RELEASE_NOTES.md
 dist/*
 !dist/now.json
 !dist/api
+!dist/lib
+!dist/package.json
 coverage
