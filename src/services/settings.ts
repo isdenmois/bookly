@@ -20,7 +20,6 @@ const INITIAL_SETTINGS = <const>{
   defaultSort: INITIAL_SORT,
   mode: null,
   authors: false,
-  searchApp: false,
   fantlabAuth: '',
   minYear: INITIAL_YEAR,
 };

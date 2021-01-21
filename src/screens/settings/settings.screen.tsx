@@ -36,7 +36,6 @@ const LINES: SettingLine[] = [
   { type: SettingType.Toggler, title: 'Типы книг: бумага', param: 'paper' },
   { type: SettingType.Toggler, title: 'Топ книг', param: 'topRate' },
   { type: SettingType.Toggler, title: 'Интересные авторы', param: 'authors' },
-  { type: SettingType.Toggler, title: 'Искать в BookUploader', param: 'searchApp', isWeb: false },
   { type: SettingType.Toggler, title: 'Сохранять состояние приложения', param: 'persistState', isWeb: true },
 ];
 

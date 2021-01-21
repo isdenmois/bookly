@@ -7,7 +7,8 @@ import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { Button, Thumbnail } from 'components';
 import { TouchableOpacity } from 'react-native';
 import { dynamicColor, boldText, lightText } from 'types/colors';
-import { navigation, t, settings } from 'services';
+import { BOOK_UPLOADER_URL } from 'services/config';
+import { navigation, t } from 'services';
 import { database } from 'store';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 
@@ -18,12 +19,10 @@ interface Props {
 }
 
 export function openInTelegram(text) {
-  const action = Platform.OS === 'web' ? 'msg' : 'share';
-
-  if (settings.searchApp) {
-    Linking.openURL(`booksearch://${text}`);
+  if (Platform.OS === 'web') {
+    Linking.openURL(`${BOOK_UPLOADER_URL}?q=${text}`);
   } else {
-    Linking.openURL(`tg://${action}?text=${text}`);
+    Linking.openURL(`booksearch://${text}`);
   }
 }
 
@@ -73,7 +72,7 @@ function BookSelectorComponent({ books, openFilters }: Props) {
       </View>
 
       <View style={s.buttons}>
-        <Button label={t('button.tg-search')} onPress={openTelegram} />
+        <Button label={t('button.book-search')} onPress={openTelegram} />
         <Button style={s.more} label={t('button.more')} onPress={more} />
       </View>
     </View>

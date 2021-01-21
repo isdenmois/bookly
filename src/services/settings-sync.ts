@@ -5,7 +5,7 @@ import { serialize, settings } from './settings';
 
 let saving = false;
 let needsToSave = false;
-const omitFields = ['userId', 'fantlabAuth', 'persistState', 'mode', 'searchApp'];
+const omitFields = ['userId', 'fantlabAuth', 'persistState', 'mode'];
 const SETTINGS_KEY = 'SESSION_KEY';
 
 export async function saveSettings() {
