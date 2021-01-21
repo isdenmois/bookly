@@ -1,4 +1,5 @@
 {
   "name": "bookly",
-  "redirects": [{ "source": "/.env", "destination": "/" }]
+  "redirects": [{ "source": "/.env", "destination": "/" }],
+  "rewrites": [{ "source": "/api/livelib/(.*)", "destination": "/api/livelib.js" }]
 }
