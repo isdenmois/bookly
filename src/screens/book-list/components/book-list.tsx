@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { FlatList, Text, ViewStyle, TextStyle } from 'react-native';
+import { Text, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
@@ -10,6 +10,7 @@ import { database } from 'store';
 import Book from 'store/book';
 import { BookItem, Button } from 'components';
 import { EmptyResult } from 'components/fetcher';
+import { RecyclerList } from 'components/recycler-list';
 import { BookListFilters } from './book-list-filters';
 import { t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
@@ -32,7 +33,6 @@ const withBooks: Function = withObservables(['query', 'sort'], ({ query, sort }:
 }));
 
 const ITEM_HEIGHT = 116;
-const HEADER_HEIGHT = 33;
 
 @withBooks
 export class BookList extends React.PureComponent<Props> {
@@ -47,22 +47,15 @@ export class BookList extends React.PureComponent<Props> {
     const books = _.orderBy(this.props.books, this.props.sort.field, order);
 
     return (
-      <FlatList
-        contentContainerStyle={ds.dark.scrollContainer}
+      <RecyclerList
         data={books}
-        initialNumToRender={24}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
+        rowRenderer={this.rowRenderer}
+        itemHeight={ITEM_HEIGHT}
+        contentContainerStyle={ds.dark.scrollContainer}
         ListHeaderComponent={this.renderHeader()}
         ListFooterComponent={this.renderFooter()}
-        getItemLayout={this.getItemLayout}
-        ref={this.context.setScroll}
       />
     );
-  }
-
-  private getItemLayout(data, index) {
-    return { length: ITEM_HEIGHT, offset: HEADER_HEIGHT + ITEM_HEIGHT * index, index };
   }
 
   private renderHeader() {
@@ -78,8 +71,8 @@ export class BookList extends React.PureComponent<Props> {
     );
   }
 
-  private renderItem = ({ item }) => {
-    return <BookItem key={item.id} book={item} cacheThumbnail />;
+  private rowRenderer = (type, book) => {
+    return <BookItem book={book} cacheThumbnail />;
   };
 
   private renderFooter = () => {
@@ -125,8 +118,6 @@ export class BookList extends React.PureComponent<Props> {
 
     this.props.onChange(filters);
   };
-
-  private keyExtractor = book => book.id;
 }
 
 const ds = new DynamicStyleSheet({
