@@ -11,17 +11,3 @@ index 2e0a1b3..5713869 100644
          }
  
          if (onLoadEnd) {
-diff --git a/node_modules/react-native-web/dist/exports/Linking/index.js b/node_modules/react-native-web/dist/exports/Linking/index.js
-index d0f7ce3..efece07 100644
---- a/node_modules/react-native-web/dist/exports/Linking/index.js
-+++ b/node_modules/react-native-web/dist/exports/Linking/index.js
-@@ -35,7 +35,8 @@ var Linking = {
- 
- var open = function open(url) {
-   if (canUseDOM) {
--    window.location = new URL(url, window.location).toString();
-+    const urlToOpen = new URL(url, window.location).toString();
-+    window.open(urlToOpen, '_blank');
-   }
- };
- 
