@@ -141,7 +141,7 @@
     "**/isarray": "1.0.0",
     "**/is-arrayish": "0.3.2",
     "**/color-name": "1.1.4",
-    "**/lodash": "4.17.20"
+    "**/lodash": "4.17.21"
   },
   "detox": {
     "configurations": {
