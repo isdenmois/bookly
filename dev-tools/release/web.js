@@ -16,5 +16,5 @@ function deploy() {
   const cwd = path.join(__dirname, '../../dist');
   console.log('Start deploy web');
 
-  execSync('now --prod', { cwd, stdio: 'inherit' });
+  execSync('vercel deploy --prod', { cwd, stdio: 'inherit' });
 }
