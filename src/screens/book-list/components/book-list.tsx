@@ -54,6 +54,7 @@ export class BookList extends React.PureComponent<Props> {
         contentContainerStyle={ds.dark.scrollContainer}
         ListHeaderComponent={this.renderHeader()}
         ListFooterComponent={this.renderFooter()}
+        ref={this.context.setScroll}
       />
     );
   }
