@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
+import { Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle, Platform } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { of } from 'rxjs/internal/observable/of';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -65,13 +65,18 @@ export class BookItem extends React.Component<Props> {
 
     return (
       <View style={s.container}>
-        <TouchableOpacity style={s.thumbnailView} onPress={this.openBook}>
+        <TouchableOpacity style={s.thumbnailView} onPress={this.openBook} onLongPress={this.openBookActions}>
           <View style={s.thumbnail}>
             <Thumbnail cache={cache} style={s.image} width={65} height={100} title={book.title} url={book.thumbnail} />
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.row} onPress={this.openBook} testID={`bookItem${book.id}`}>
+        <TouchableOpacity
+          style={s.row}
+          onPress={this.openBook}
+          onLongPress={this.openBookActions}
+          testID={`bookItem${book.id}`}
+        >
           <View style={s.details}>
             <Text style={s.title}>{book.title}</Text>
             <Text style={s.author}>{book.author}</Text>
@@ -97,6 +102,10 @@ export class BookItem extends React.Component<Props> {
     const { book, fantlabId, extra } = this.props;
 
     navigation.push('Details', { bookId: book.id, fantlabId, extra });
+  };
+
+  openBookActions = () => {
+    navigation.navigate('/modal/book-actions', { bookId: this.props.book.id });
   };
 
   openChangeStatusModal = () => {

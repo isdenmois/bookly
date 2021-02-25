@@ -23,6 +23,8 @@ const OMIT_FIELDS = [
   'sort',
   'setScrollTop',
   'observeColumns',
+  'onLoad',
+  'onModelUpdated',
 ];
 
 type ListItemRender = (item: any, index?: number) => ReactNode;
@@ -44,6 +46,7 @@ type Props<P = {}> = {
   useFlatlist?: boolean;
   contentContainerStyle?: any;
   onLoad?: (data: any, append: boolean) => boolean;
+  onModelUpdated?: (data: any) => void;
   selected?: any;
   collection?: 'books' | 'authors' | 'reviews';
   sort?: string;
@@ -261,6 +264,7 @@ export class Fetcher<Params> extends React.PureComponent<Props<Params>> {
       return model || i._orig || i;
     });
 
+    this.props.onModelUpdated?.(data);
     this.setState({ isLoading: false, data });
   };
 

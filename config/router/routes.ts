@@ -25,6 +25,8 @@ import { ScanIsbnModal } from 'modals/scan-isbn/scan-isbn.modal';
 import { ListAddModal } from 'modals/list-add.modal';
 import { ListEditModal } from 'modals/list-edit.modal';
 import { ListBookSelectModal } from 'modals/list-book-select.modal';
+import { BookActionsModal } from 'modals/book-actions';
+import { BookEditorModal } from 'modals/book-editor/book-editor.modal';
 
 export const MainStack = {
   Home: { screen: HomeScreen, path: '/' },
@@ -56,4 +58,6 @@ export const ModalStack = {
   ListAdd: ListAddModal,
   ListEdit: ListEditModal,
   ListBookSelect: ListBookSelectModal,
+  BookActions: BookActionsModal,
+  BookEditor: BookEditorModal,
 };
