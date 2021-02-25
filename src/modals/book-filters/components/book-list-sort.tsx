@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { useColor } from 'types/colors';
 import { TouchIcon } from 'components';
 import { EditableListItem } from './editable-list-item';
-import { useFormState } from 'utils/form';
+import { useFormState } from '../book-filters.form';
 
 const FIELDS = [
   { id: 'date', key: 'modal.date' },

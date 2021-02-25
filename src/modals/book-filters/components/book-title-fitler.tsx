@@ -1,9 +1,9 @@
 import React from 'react';
-import { useFormState } from 'utils/form';
 import { ListItem } from 'components';
+import { useFormState } from '../book-filters.form';
 
 export function BookTitleFilter() {
-  const [title, setTitle, { onSubmit }] = useFormState('title', '');
+  const [title, setTitle, { submit }] = useFormState('title', '');
 
   return (
     <ListItem
@@ -11,7 +11,7 @@ export function BookTitleFilter() {
       keyboardType='default'
       value={title}
       onChange={setTitle}
-      onSubmit={onSubmit}
+      onSubmit={submit}
       clearable
     />
   );

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useFormState } from 'utils/form';
 import { BOOK_TYPE_NAMES } from 'types/book-types';
+import { useFormState } from '../book-filters.form';
 import { EditableListItem } from './editable-list-item';
 
 export function BookTypeFilter() {

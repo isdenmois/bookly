@@ -1,10 +1,20 @@
 import _ from 'lodash';
 import { useState, useEffect } from 'react';
 
-export function createState<T>(initialState: T) {
-  const watchers = {};
+export type State<T> = T & {
+  getState(): T;
+  set<K extends keyof T>(field: K, value: T[K]): void;
+  multiSet(value: Partial<T>): void;
+  watchAll(callback: WatchAllCallback<T>): void;
+};
+
+type WatchAllCallback<T> = (field?: keyof T, value?: T[typeof field]) => void;
+export type UseValue<T, K extends keyof T> = (field: K, defaultValue?: T[K]) => T[K];
+
+export function createState<T>(initialState: T): [State<T>, UseValue<T, any>] {
+  const watchers: Record<keyof T, Function[]> = {} as any;
   let all = [];
-  const obj = Object.assign({}, initialState, { set, multiSet, watchAll, getState });
+  const obj: State<T> = Object.assign({}, initialState, { set, multiSet, watchAll, getState });
 
   function watch(field, callback) {
     watchers[field] = watchers[field] || [];
@@ -23,7 +33,7 @@ export function createState<T>(initialState: T) {
     };
   }
 
-  function set(field, value) {
+  function set(field: keyof T, value: any) {
     obj[field] = value;
     watchers[field]?.forEach(c => c(value));
     all.forEach(c => c(field, value));
@@ -33,7 +43,7 @@ export function createState<T>(initialState: T) {
     return _.omit(obj, ['set', 'multiSet', 'watchAll', 'getState']) as any;
   }
 
-  function multiSet(value) {
+  function multiSet(value: Partial<T>) {
     Object.assign(obj, value);
 
     for (let field in value) {
@@ -41,8 +51,8 @@ export function createState<T>(initialState: T) {
     }
   }
 
-  function useValue(field) {
-    const [value, setValue] = useState(obj[field]);
+  function useValue(field, defaultValue) {
+    const [value, setValue] = useState(obj[field] ?? defaultValue);
 
     useEffect(() => {
       return watch(field, setValue);
@@ -51,5 +61,5 @@ export function createState<T>(initialState: T) {
     return value;
   }
 
-  return <const>[obj, useValue];
+  return [obj, useValue];
 }

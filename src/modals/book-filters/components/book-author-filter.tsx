@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { TextInput, TextStyle } from 'react-native';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { Q } from '@nozbe/watermelondb';
-import { useFormState } from 'utils/form';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dynamicColor, useSColor } from 'types/colors';
 import Author from 'store/author';
@@ -11,6 +10,7 @@ import { database } from 'store';
 import { t } from 'services';
 import { useObservable } from 'utils/use-observable';
 import { EditableListItem } from './editable-list-item';
+import { useFormState } from '../book-filters.form';
 
 interface Props {
   status: BOOK_STATUSES;

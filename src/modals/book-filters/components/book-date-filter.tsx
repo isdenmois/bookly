@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { formatDate } from 'utils/date';
 import { Calendar } from 'components';
 import { OpenableListItem } from './openable-list-item';
-import { useForm } from 'utils/form';
+import { useForm } from '../book-filters.form';
 
 export function formatPeriod(period) {
   const value: any = period || {};

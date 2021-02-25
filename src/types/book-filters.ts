@@ -1,4 +1,6 @@
-import { BOOK_STATUSES } from 'types/book-statuses.enum';
+import type Author from 'store/author';
+import type List from 'store/list';
+import type { BOOK_STATUSES } from 'types/book-statuses.enum';
 
 export interface BookSort {
   field: string;
@@ -14,12 +16,12 @@ export interface BookFilters {
   status: BOOK_STATUSES;
   title: string;
   year: number;
-  author: string;
+  author: Pick<Author, 'name' | 'id'>;
   type: string;
   date: Interval<Date>;
   rating: Interval<number>;
   isLiveLib: boolean;
   paper: string;
-  list: string;
+  list: List;
   reads: string[];
 }

@@ -3,7 +3,7 @@ import { StyleSheet, ViewStyle, View } from 'react-native';
 import { formatRating } from 'components/rating';
 import { SwipeRating } from 'components';
 import { OpenableListItem } from './openable-list-item';
-import { useFormState } from 'utils/form';
+import { useFormState } from '../book-filters.form';
 
 export function BookRatingFilter() {
   const [rating, setRating] = useFormState('rating');

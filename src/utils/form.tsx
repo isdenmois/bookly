@@ -11,7 +11,7 @@ import React, {
   useState,
 } from 'react';
 import { View } from 'react-native';
-import { createState } from './state';
+import { createState, State, UseValue } from './state';
 
 const FormContext = createContext(null);
 
@@ -19,6 +19,13 @@ interface FormProps<T> {
   defaultValues: T;
   onSubmit(form: T);
   children: ReactNode;
+}
+
+interface IFormContext<T> {
+  state: State<T>;
+  form: State<T>;
+  useValue<K extends keyof T>(field: K, defaultValue?: T[K]): T[K];
+  submit();
 }
 
 export function Form<T>({ defaultValues, onSubmit, children }: FormProps<T>) {
@@ -32,23 +39,37 @@ export function Form<T>({ defaultValues, onSubmit, children }: FormProps<T>) {
   return <FormContext.Provider value={form}>{children}</FormContext.Provider>;
 }
 
-export function useFormValue(field, defaultValue) {
-  const { useValue } = useContext(FormContext);
-
-  return useValue(field) || defaultValue;
+export function getForm<T>() {
+  return {
+    useFormValue<K extends keyof T>(field: K, defaultValue?: T[K]) {
+      return useFormValue<T, K>(field, defaultValue);
+    },
+    useFormState<K extends keyof T>(field: K, defaultValue?: T[K]) {
+      return useFormState<T, K>(field, defaultValue);
+    },
+    useForm() {
+      return useForm<T>();
+    },
+  };
 }
 
-export function useFormState(field, defaultValue?) {
-  const form = useContext(FormContext);
+export function useFormValue<T, K extends keyof T>(field: K, defaultValue?: T[K]) {
+  const { useValue } = useForm<T>();
+
+  return useValue(field, defaultValue);
+}
+
+export function useFormState<T, K extends keyof T>(field: K, defaultValue?: T[K]) {
+  const form = useForm<T>();
   const { useValue, state } = form;
 
-  const value = useValue(field, defaultValue);
-  const setValue = useCallback(newValue => state.set(field, newValue), []);
+  const value = useValue<K>(field, defaultValue);
+  const setValue = useCallback((newValue: T[K]) => state.set(field, newValue), []);
 
   return [value, setValue, form] as const;
 }
 
-export function useForm() {
+export function useForm<T = {}>(): IFormContext<T> {
   return useContext(FormContext);
 }
 
