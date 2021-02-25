@@ -223,6 +223,12 @@ module.exports = {
           proxyReq.setHeader('user-agent', 'LiveLib/4.0.5/15040005 (SM-G965F; Android 8.0.0; API 26)');
         },
       },
+      '/api/sync': {
+        target: process.env.FIREBASE_URL,
+        changeOrigin: true,
+        pathRewrite: { '^/api/sync': '/sync' },
+        secure: false,
+      },
     },
   },
 };
