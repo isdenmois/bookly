@@ -34,10 +34,6 @@ export class WishListScreen extends ReadList {
     const filters: any = {};
     const listId = this.props.navigation.getParam('listId');
 
-    if (settings.paper) {
-      filters.paper = 'e';
-    }
-
     if (listId) {
       filters.list = {
         id: listId,
