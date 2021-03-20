@@ -2,9 +2,9 @@ import React, { useEffect, useMemo } from 'react';
 import { Animated, View, Text, TouchableWithoutFeedback, TouchableOpacity, Platform } from 'react-native';
 import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, light } from 'types/colors';
-import { navigation, t } from 'services';
+import { getNavigation, t } from 'services';
 import { confirm } from 'screens/details/components/book-details-lines';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/core';
 
 export interface Action {
   id: string;
@@ -20,6 +20,7 @@ type Props = {
 const paddingBottom = Platform.OS === 'web' ? 50 : 0;
 
 export function ActionSheet({ actions, onSelect }: Props) {
+  const navigation = useNavigation();
   const s = useDynamicStyleSheet(ds);
   const value = useMemo(() => new Animated.Value(0), []);
   const sheetStyle = useMemo(
@@ -41,6 +42,8 @@ export function ActionSheet({ actions, onSelect }: Props) {
     }).start();
   }, []);
 
+  const onBack = () => navigation.goBack();
+
   return (
     <View style={s.modal}>
       <TouchableWithoutFeedback onPress={onBack}>
@@ -49,7 +52,7 @@ export function ActionSheet({ actions, onSelect }: Props) {
 
       <Animated.View style={[s.container, { paddingBottom }, sheetStyle]}>
         {actions.map(action => (
-          <TouchableOpacity key={action.id} style={s.item} onPress={() => select(action, onSelect)}>
+          <TouchableOpacity key={action.id} style={s.item} onPress={() => select(action, onSelect, onBack)}>
             <Text style={[s.text, action.dangerous && s.dangerous]}>{t(action.label)}</Text>
           </TouchableOpacity>
         ))}
@@ -58,11 +61,7 @@ export function ActionSheet({ actions, onSelect }: Props) {
   );
 }
 
-function onBack() {
-  return navigation.pop();
-}
-
-function select(action: Action, onSelect) {
+function select(action: Action, onSelect, onBack) {
   onBack();
 
   if (action.dangerous) {

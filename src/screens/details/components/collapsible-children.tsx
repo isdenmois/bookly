@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, TextStyle, ViewStyle } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack';
+import { NavigationStackProp } from '@react-navigation/stack';
 import { ChildBook } from 'types/book-extended';
 import { dynamicColor, getColor } from 'types/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchIcon } from 'components';
 import { DynamicStyleSheet } from 'react-native-dynamic';
+import { MainRoutes } from 'navigation/routes';
 
 interface Props {
   book: ChildBook;
@@ -15,7 +16,7 @@ interface Props {
 
 export function CollapsibleChildren({ book, navigation, mode }: Props) {
   const [collapsed, setCollapsed] = useState(true);
-  const openBook = useCallback(() => navigation.push('Details', { bookId: String(book.id) }), []);
+  const openBook = useCallback(() => navigation.push(MainRoutes.Details, { bookId: String(book.id) }), []);
   const toggleCollapse = useCallback(() => setCollapsed(!collapsed), [collapsed, setCollapsed]);
   const Touch: any = book.id ? TouchableOpacity : View;
   const s = ds[mode];

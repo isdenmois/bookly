@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, ViewStyle, TextStyle, Linking, ToastAndroid, Clipboard, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
-import { NavigationStackProp } from 'react-navigation-stack';
 import { dynamicColor } from 'types/colors';
 import { formatDate } from 'utils/date';
 import Book, { Read } from 'store/book';
@@ -20,19 +19,19 @@ import {
 } from '../components/book-details-lines';
 import { BookLists } from '../components/book-lists';
 import { withScroll } from './tab';
-import { t, database } from 'services';
+import { t, database, openModal } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
 import { thousandsSeparator } from 'utils/number-format';
+import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationStackProp;
+type Props = MainScreenProps<MainRoutes.Details> & {
   book: Book & BookExtended & LiveLibBook;
   isExist: boolean;
   fantlabId: string;
   tab: string;
   mode: string;
-}
+};
 
 const TITLE_SEPARATOR = /\s*;\s*/g;
 const paths = [
@@ -258,13 +257,13 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   openBook(book: Book | ParentBook) {
-    this.props.navigation.push('Details', { bookId: String(book.id), initialTab: 'children' });
+    this.props.navigation.push(MainRoutes.Details, { bookId: String(book.id), initialTab: 'children' });
   }
 
   openEditions = () => {
     const { editionIds, editionTranslators } = this.props.book;
 
-    this.props.navigation.push('Editions', { editionIds, translators: editionTranslators });
+    this.props.navigation.push(MainRoutes.Editions, { editionIds, translators: editionTranslators });
   };
 
   openTelegram = () => openInTelegram(this.props.book.originalTitle);
@@ -281,11 +280,11 @@ export class DetailsTab extends React.Component<Props> {
       return ToastAndroid.show(t('details.should-add'), ToastAndroid.SHORT);
     }
 
-    this.props.navigation.push('/modal/thumbnail-select', { book: this.props.book });
+    openModal(ModalRoutes.ThumbnailSelect, { book: this.props.book });
   };
 
   openEditModal = () => {
-    this.props.navigation.push('/modal/book-title-edit', { book: this.props.book });
+    openModal(ModalRoutes.BookTitleEdit, { book: this.props.book });
   };
 
   searchInLivelib = () => this.searchInLivelibAction(false);
@@ -294,7 +293,12 @@ export class DetailsTab extends React.Component<Props> {
   searchInLivelibAction(forceOpen?: boolean) {
     const book = this.props.book;
 
-    this.props.navigation.push('Search', { query: book.title, source: livelib, forceOpen, fantlabId: book.id });
+    this.props.navigation.push(MainRoutes.Search, {
+      query: book.title,
+      source: livelib,
+      forceOpen,
+      fantlabId: book.id,
+    });
   }
 
   togglePaper = () => {

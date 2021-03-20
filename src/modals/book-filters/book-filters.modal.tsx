@@ -1,10 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import { ScrollView, StyleSheet, ViewStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
-import { withNavigationProps } from 'utils/with-navigation-props';
 import { FormBookListSort } from './components/book-list-sort';
-import { BookFilters as IBookFilters, BookSort } from 'types/book-filters';
+import { BookFilters as IBookFilters } from 'types/book-filters';
 import { BookYearFilter } from './components/book-year-filter';
 import { BookAuthorFilter } from './components/book-author-filter';
 import { BookTypeFilter } from './components/book-type-filter';
@@ -16,6 +14,7 @@ import { BookPaperFilter } from './components/book-paper-filter';
 import { BookInListFilter } from './components/book-in-list-filter';
 import { t } from 'services';
 import { Form, SubmitButton, FormDialog } from 'utils/form';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
 const FILTER_COMPONENTS_MAP = {
   title: BookTitleFilter,
@@ -29,21 +28,13 @@ const FILTER_COMPONENTS_MAP = {
   list: BookInListFilter,
 };
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-  filterFields: Array<keyof IBookFilters>;
-  sortFields: string[];
-  filters: Partial<IBookFilters>;
-  sort: BookSort;
-  setFilters: (filters: Partial<IBookFilters>, sort: BookSort) => void;
-}
+type Props = ModalScreenProps<ModalRoutes.BookFilters>;
 
-@withNavigationProps()
 export class BookFiltersModal extends React.Component<Props> {
-  initial = Object.assign({}, this.props.filters, { sort: this.props.sort });
+  initial = Object.assign({}, this.props.route.params.filters, { sort: this.props.route.params.sort });
 
   render() {
-    const { filterFields, sortFields } = this.props;
+    const { filterFields, sortFields } = this.props.route.params;
 
     return (
       <Form defaultValues={this.initial} onSubmit={this.save}>
@@ -63,14 +54,14 @@ export class BookFiltersModal extends React.Component<Props> {
   renderFilter = (field: keyof IBookFilters) => {
     const Component = FILTER_COMPONENTS_MAP[field];
 
-    return <Component key={field} status={this.props.filters.status} onApply={this.save} />;
+    return <Component key={field} status={this.props.route.params.filters.status} onApply={this.save} />;
   };
 
   close = () => this.props.navigation.goBack();
   save = form => {
-    const fields = this.props.filterFields;
+    const fields = this.props.route.params.filterFields;
 
-    this.props.setFilters(getFilters(form, fields), form.sort);
+    this.props.route.params.setFilters(getFilters(form, fields), form.sort);
 
     this.close();
   };

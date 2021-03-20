@@ -1,6 +1,5 @@
 import React from 'react';
 import { ActivityIndicator, View, Button, KeyboardAvoidingView, ViewStyle, TextStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
 import { TextL, ListItem } from 'components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { dynamicColor, useSColor } from 'types/colors';
@@ -9,14 +8,8 @@ import { LoginTriangles } from './login-triangles';
 import { useLoginStore } from './login.store';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-  location: any;
-}
-
-export function LoginScreen({ navigation, location }: Props) {
-  const navigateTo = location?.state.from?.pathname || 'Home';
-  const { login, setLogin, submit, submitting } = useLoginStore(navigation, navigateTo);
+export function LoginScreen() {
+  const { login, setLogin, submit, submitting } = useLoginStore();
   const { s, color } = useSColor(ds);
 
   return (

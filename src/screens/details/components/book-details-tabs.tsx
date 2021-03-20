@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { NavigationStackProp } from 'react-navigation-stack';
+import { NavigationStackProp } from '@react-navigation/stack';
 import { Animated, Dimensions, ViewStyle, TextStyle } from 'react-native';
 import { TabView, TabBar, Route } from 'react-native-tab-view';
 import { Scene } from 'react-native-tab-view/src/types';

@@ -1,16 +1,14 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { Dialog } from 'components';
-import { NavigationStackProp } from 'react-navigation-stack';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationStackProp;
-}
+type Props = ModalScreenProps<ModalRoutes.ScanIsbn>;
 
-export function ScanIsbnModal({ navigation }: Props) {
+export function ScanIsbnModal({ navigation, route }: Props) {
   const onScan = useCallback(({ data }) => {
-    const emit = navigation.getParam('onScan');
+    const emit = route.params.onScan;
     if (!data || emit.e) return;
 
     emit.e = true;

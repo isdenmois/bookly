@@ -1,25 +1,19 @@
 import React from 'react';
-import { NavigationScreenProp } from 'react-navigation';
-import { withNavigationProps } from 'utils/with-navigation-props';
-import Book from 'store/book';
 import { Dialog } from 'components';
 import { ThumbnailEdit } from 'modals/book-editor/components/thumbnail-edit';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
-interface Props {
-  book: Book;
-  navigation: NavigationScreenProp<any>;
-}
+type Props = ModalScreenProps<ModalRoutes.ThumbnailSelect>;
 
 interface State {
   selected: string;
 }
 
-@withNavigationProps()
 export class ThumbnailSelectModal extends React.Component<Props, State> {
-  state: State = { selected: this.props.book.thumbnail };
+  state: State = { selected: this.props.route.params.book.thumbnail };
 
   render() {
-    const book = this.props.book;
+    const book = this.props.route.params.book;
     const changed = book.thumbnail !== this.state.selected;
 
     return (
@@ -38,6 +32,6 @@ export class ThumbnailSelectModal extends React.Component<Props, State> {
   };
 
   updateBook() {
-    return this.props.book.setThumbnail(this.state.selected);
+    return this.props.route.params.book.setThumbnail(this.state.selected);
   }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
-import { NavigationStackProp } from 'react-navigation-stack';
-import { withNavigationProps } from 'utils/with-navigation-props';
+
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 import { api, t } from 'services';
 import { Fetcher, Screen } from 'components';
-import Book, { BookData } from 'store/book';
+import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
 import { BookDetailsTabs } from './components/book-details-tabs';
@@ -13,13 +13,7 @@ import { ReviewsTab } from './tabs/reviews-tab';
 import { SimilarTab } from './tabs/similar-tab';
 import { DetailsTab } from './tabs/details-tab';
 
-interface Props {
-  bookId: string;
-  navigation: NavigationStackProp;
-  extra?: Partial<BookData>;
-  fantlabId?: string;
-  initialTab?: string;
-}
+type Props = MainScreenProps<MainRoutes.Details>;
 
 const SHOW_SIMILARS_ON = [BOOK_TYPES.novel, BOOK_TYPES.story, BOOK_TYPES.shortstory];
 
@@ -32,10 +26,9 @@ const TABS = {
   LIVELIB: { key: 'livelib', title: 'details.details', component: DetailsTab },
 };
 
-@withNavigationProps()
 export class DetailsScreen extends React.Component<Props> {
   get isLiveLib() {
-    return this.props.bookId.startsWith('l_');
+    return this.props.route.params.bookId.startsWith('l_');
   }
 
   showChildren(book: BookExtended) {
@@ -51,7 +44,7 @@ export class DetailsScreen extends React.Component<Props> {
   render() {
     return (
       <Screen>
-        <Fetcher api={this.isLiveLib ? api.lBook : api.book} bookId={this.props.bookId} collection='books'>
+        <Fetcher api={this.isLiveLib ? api.lBook : api.book} bookId={this.props.route.params.bookId} collection='books'>
           {this.renderResult}
         </Fetcher>
       </Screen>
@@ -60,9 +53,10 @@ export class DetailsScreen extends React.Component<Props> {
 
   renderResult = (book: Book & BookExtended) => {
     const isExist = book && !!book.status;
+    const params = this.props.route.params;
 
-    if (this.props.extra && !isExist) {
-      Object.assign(book, this.props.extra);
+    if (params.extra && !isExist) {
+      Object.assign(book, params.extra);
     }
 
     this.tabs =
@@ -74,14 +68,14 @@ export class DetailsScreen extends React.Component<Props> {
         ...(this.showSimilar(book) ? [TABS.SIMILAR] : []),
         ...(this.isLiveLib ? [] : [TABS.DETAILS]),
       ].map(tab => Object.assign(tab, { title: t(tab.title) }));
-    let initialTab = this.props.initialTab ? this.tabs.findIndex(tab => tab.key === this.props.initialTab) : 0;
+    let initialTab = params.initialTab ? this.tabs.findIndex(tab => tab.key === params.initialTab) : 0;
     initialTab = initialTab < 0 ? 0 : initialTab;
 
     return (
       <BookDetailsTabs
         book={book}
         isExist={isExist}
-        fantlabId={this.props.fantlabId}
+        fantlabId={params.fantlabId}
         navigation={this.props.navigation}
         tabs={this.tabs}
         initialTab={initialTab}

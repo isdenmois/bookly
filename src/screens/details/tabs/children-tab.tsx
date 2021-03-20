@@ -1,15 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack';
 import { BookExtended } from 'types/book-extended';
 import { withScroll } from './tab';
 import { CollapsibleChildren } from '../components/collapsible-children';
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
-interface Props {
+type Props = MainScreenProps<MainRoutes.Details> & {
   book: BookExtended;
-  navigation: NavigationStackProp;
   mode: string;
-}
+};
 
 export const ChildrenTab = withScroll((props: Props) => {
   return (

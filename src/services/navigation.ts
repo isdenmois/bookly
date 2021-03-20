@@ -1,23 +1,12 @@
-import { NavigationActions, StackActions, NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { createRef } from 'react';
+import { MainNavigationProp, MainRoutes, ModalParamList, ModalRoutes, RootRoutes } from 'navigation/routes';
 
-export class Navigation {
-  navigator: NavigationScreenProp<any>;
+const navigationRef = createRef<any>();
 
-  setRef = ref => (this.navigator = ref);
-
-  navigate(routeName: string, params?: NavigationParams) {
-    return this.navigator.dispatch(NavigationActions.navigate({ routeName, params }));
-  }
-
-  pop = (n?: number, immediate?: boolean) => this.navigator.dispatch(StackActions.pop({ n, immediate }));
-
-  popToTop() {
-    this.navigator.dispatch(StackActions.popToTop());
-  }
-
-  push(routeName: string, params?: NavigationParams) {
-    return this.navigator.dispatch(StackActions.push({ routeName, params }));
-  }
+export function setNavigation(navigation) {
+  navigationRef.current = navigation;
 }
 
-export const navigation: Navigation = new Navigation();
+export const getNavigation = () => navigationRef.current as MainNavigationProp<MainRoutes.Home>;
+export const openModal = <RouteName extends ModalRoutes>(screen: RouteName, params?: ModalParamList[RouteName]) =>
+  navigationRef.current.push(RootRoutes.Modal, { screen, params });

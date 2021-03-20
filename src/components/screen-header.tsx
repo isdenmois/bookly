@@ -2,7 +2,7 @@ import React, { memo, useContext, useState, useCallback, useEffect } from 'react
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { useSColor, dynamicColor } from 'types/colors';
-import { navigation, t } from 'services';
+import { getNavigation, t } from 'services';
 import { ScrollToTopContext } from 'utils/scroll-to-top';
 import { TouchIcon } from './touch-icon';
 import { SearchBar } from './search-bar';
@@ -14,6 +14,16 @@ interface Props {
   onRight?: () => void;
   onSearch?: (value: string) => void;
 }
+
+export function headerRightButton(name, onPress) {
+  return ({ tintColor }) => (
+    <TouchIcon name={name} size={18} color={tintColor} onPress={onPress} paddingHorizontal={16} />
+  );
+}
+
+export const headerBackImage = ({ tintColor }) => (
+  <TouchIcon name='arrow-left' size={18} color={tintColor} onPress={goBack} onLongPress={goToHome} />
+);
 
 export const ScreenHeader = memo((props: Props) => {
   const { scroll } = useContext(ScrollToTopContext);
@@ -49,7 +59,7 @@ export const ScreenHeader = memo((props: Props) => {
     <View style={s.header}>
       <TouchIcon
         name='arrow-left'
-        size={24}
+        size={18}
         color={color.PrimaryText}
         onPress={goBack}
         onLongPress={goToHome}
@@ -66,11 +76,11 @@ export const ScreenHeader = memo((props: Props) => {
 });
 
 function goBack() {
-  navigation.pop();
+  getNavigation().pop();
 }
 
 function goToHome() {
-  navigation.popToTop();
+  getNavigation().popToTop();
 }
 
 const ds = new DynamicStyleSheet({

@@ -1,44 +1,39 @@
 import _ from 'lodash';
 import React from 'react';
 import { Text, View, ViewStyle, TextStyle, Platform } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Q } from '@nozbe/watermelondb';
+import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 import { api, settings, t } from 'services';
 import { dynamicColor, getColor, boldText } from 'types/colors';
 import { formatDate } from 'utils/date';
-import { withNavigationProps } from 'utils/with-navigation-props';
 import Book, { BookData, createBook, READ_FIELDS } from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dbAction } from 'services/db';
 import { database } from 'store';
 import { Button, Checkbox, Dialog, DateTimePicker, ListItem, RatingSelect, Switcher, TouchIcon } from 'components';
-import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
-import { Q } from '@nozbe/watermelondb';
-import { AddToList } from './add-to-list';
 import ListBook, { prepareListBooks, prepareRemove } from 'store/list-book';
+import { AddToList } from './add-to-list';
 
 const PRIMARY_BOOK_FIELDS = ['id', 'title', 'author', 'authors', 'thumbnail', 'type', 'search', 'paper'];
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-  book: any;
-  status: BOOK_STATUSES;
-}
+type Props = ModalScreenProps<ModalRoutes.ChangeStatus>;
 
 let defaultDate: Date;
 
-@withNavigationProps()
 export class ChangeStatusModal extends React.Component<Props> {
   static contextType = ColorSchemeContext;
 
   state = {
     date: this.defaultDate,
-    rating: this.props.book.rating || 0,
+    rating: this.props.route.params.book.rating || 0,
     status: this.defaultStatus,
-    audio: this.props.book.audio,
-    withoutTranslation: this.props.book.withoutTranslation,
-    leave: this.props.book.leave,
-    paper: this.props.book.paper,
+    audio: this.props.route.params.book.audio,
+    withoutTranslation: this.props.route.params.book.withoutTranslation,
+    leave: this.props.route.params.book.leave,
+    paper: this.props.route.params.book.paper,
     statusEditable: true,
     dateEditable: false,
     initialLists: [],
@@ -58,17 +53,17 @@ export class ChangeStatusModal extends React.Component<Props> {
   ];
 
   get isFantlab() {
-    return !this.props.book.id.startsWith('l_');
+    return !this.props.route.params.book.id.startsWith('l_');
   }
 
   get isCreation() {
-    const book = this.props.book;
+    const book = this.props.route.params.book;
 
     return !book.collection;
   }
 
   get defaultDate() {
-    const book: Book = this.props.book;
+    const book: Book = this.props.route.params.book;
 
     if (book.status === BOOK_STATUSES.READ) {
       return book.date;
@@ -82,7 +77,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   get defaultStatus() {
-    return this.props.status || this.props.book.status || BOOK_STATUSES.WISH;
+    return this.props.route.params.status || this.props.route.params.book.status || BOOK_STATUSES.WISH;
   }
 
   get disabled() {
@@ -96,14 +91,14 @@ export class ChangeStatusModal extends React.Component<Props> {
   async componentDidMount() {
     if (this.isCreation) return null;
     const listBooks = database.collections.get<ListBook>('list_books');
-    const listModels = await listBooks.query(Q.where('book_id', this.props.book.id)).fetch();
+    const listModels = await listBooks.query(Q.where('book_id', this.props.route.params.book.id)).fetch();
     const lists = listModels.map(list => list.list.id);
 
     this.setState({ initialLists: lists, lists: new Set(lists) });
   }
 
   render() {
-    const { book } = this.props;
+    const { book } = this.props.route.params;
     const { status, statusEditable } = this.state;
     const isWeb = Platform.OS === 'web';
     const s = ds[this.context];
@@ -288,7 +283,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   @dbAction async updateBook() {
-    const book = this.props.book;
+    const book = this.props.route.params.book;
     const data: Partial<BookData> = this.fillData();
     const lists = this.getLists();
     const toAddLists = _.difference(lists, this.state.initialLists);
@@ -306,7 +301,7 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   @dbAction createBook() {
-    const book: Partial<BookData> = _.pick(this.props.book, PRIMARY_BOOK_FIELDS);
+    const book: Partial<BookData> = _.pick(this.props.route.params.book, PRIMARY_BOOK_FIELDS);
 
     this.fillData(book);
 
@@ -324,7 +319,7 @@ export class ChangeStatusModal extends React.Component<Props> {
     }
 
     if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && settings.withFantlab) {
-      api.markWork(this.props.book.id, this.state.rating);
+      api.markWork(this.props.route.params.book.id, this.state.rating);
     }
   };
 }

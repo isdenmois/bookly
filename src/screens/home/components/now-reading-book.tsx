@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, ViewStyle, ImageStyle, TouchableOpacity } from 
 import Book from 'store/book';
 import { color, dark } from 'types/colors';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { navigation } from 'services';
 import { ReadButton, TextXL, Thumbnail } from 'components';
 import { DynamicStyleSheet, DynamicValue, useDynamicValue } from 'react-native-dynamic';
+import { MainRoutes, ModalRoutes } from 'navigation/routes';
+import { getNavigation, openModal } from 'services';
 
 interface Props {
   book: Book;
@@ -14,10 +15,10 @@ interface Props {
 export function NowReadingBook({ book }: Props) {
   const ds = useDynamicValue(dynamicStyles);
   const openChangeStatus = useCallback(
-    () => navigation.navigate('/modal/change-status', { book, status: BOOK_STATUSES.READ }),
+    () => openModal(ModalRoutes.ChangeStatus, { book, status: BOOK_STATUSES.READ }),
     [],
   );
-  const openBook = useCallback(() => navigation.push('Details', { bookId: book.id }), []);
+  const openBook = useCallback(() => getNavigation().push(MainRoutes.Details, { bookId: book.id }), []);
 
   return (
     <View style={s.container}>

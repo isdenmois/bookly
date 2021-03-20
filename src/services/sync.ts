@@ -20,7 +20,8 @@ export class SyncService {
       return null;
     }
 
-    await Promise.all([synchronize(this as any), loadSettings()]);
+    await synchronize(this as any);
+    await loadSettings();
 
     this.lastPulledAt = await getLastPulledAt(database);
   }

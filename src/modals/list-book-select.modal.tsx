@@ -1,6 +1,7 @@
 import React from 'react';
+import _ from 'lodash';
 import { Text, TouchableOpacity, ViewStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { Q } from '@nozbe/watermelondb';
 
 import { dynamicColor, boldText } from 'types/colors';
 import { Dialog } from 'components';
@@ -10,13 +11,10 @@ import { BookList } from './book-select/components/book-list';
 import { t, database } from 'services';
 import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 import ListBook, { prepareAddBooks, prepareRemoveBooks } from 'store/list-book';
-import { Q } from '@nozbe/watermelondb';
-import _ from 'lodash';
 import { dbAction } from 'services/db';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
+type Props = ModalScreenProps<ModalRoutes.ListBookSelect>;
 
 interface State {
   search: string;
@@ -46,7 +44,7 @@ export class ListBookSelectModal extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const listId = this.props.navigation.getParam('listId');
+    const listId = this.props.route.params.listId;
     const listBooks = database.collections.get<ListBook>('list_books');
 
     const models = await listBooks.query(Q.where('list_id', listId)).fetch();
@@ -68,7 +66,7 @@ export class ListBookSelectModal extends React.Component<Props, State> {
   };
 
   @dbAction async updateBooks() {
-    const listId = this.props.navigation.getParam('listId');
+    const listId = this.props.route.params.listId;
     const selected = Array.from(this.state.selected);
     const toAdd = _.difference(selected, this.state.initialSelected);
     const toRemove = _.difference(this.state.initialSelected, selected);

@@ -1,20 +1,18 @@
 import React from 'react';
 import { Text, TouchableOpacity, ViewStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dynamicColor, boldText } from 'types/colors';
 import Book from 'store/book';
+import { t } from 'services';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 import { Dialog } from 'components';
 
 import { BookSelectHeader } from './components/header';
 import { BookList } from './components/book-list';
-import { t } from 'services';
-import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
+type Props = ModalScreenProps<ModalRoutes.BookSelect>;
 
 interface State {
   search: string;

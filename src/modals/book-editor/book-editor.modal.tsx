@@ -1,23 +1,21 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, FC } from 'react';
 import _ from 'lodash';
 import { ViewStyle, StyleSheet, View, ScrollView } from 'react-native';
-import { withNavigationProps } from 'utils/with-navigation-props';
+
 import { Dialog, Button, Fetcher } from 'components';
 import Book from 'store/book';
-import { NavigationStackProp } from 'react-navigation-stack';
 import { BookExtended } from 'types/book-extended';
 import { api, t } from 'services';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 import { TitleEdit } from './components/title-edit';
 import { ThumbnailEdit } from './components/thumbnail-edit';
 
-interface Props {
-  bookId: string;
-  navigation: NavigationStackProp;
-}
+type Props = ModalScreenProps<ModalRoutes.BookEditor>;
 
 const TITLE_SEPARATOR = /\s*;\s*/g;
 
-export const BookEditorModal = withNavigationProps()(({ bookId, navigation }: Props) => {
+export const BookEditorModal: FC<Props> = ({ route, navigation }: Props) => {
+  const bookId = route.params.bookId;
   const book = useRef<Book & BookExtended>(null);
 
   const [title, setTitle] = useState('');
@@ -48,9 +46,9 @@ export const BookEditorModal = withNavigationProps()(({ bookId, navigation }: Pr
       <Button style={s.button} label={t('button.apply')} disabled={!enabled} onPress={onPress} />
     </Dialog>
   );
-});
+};
 
-function updateBook(navigation: NavigationStackProp, book: Book, title: string, thumbnail: string) {
+function updateBook(navigation, book: Book, title: string, thumbnail: string) {
   const search = _.uniq((book.search || '').split(TITLE_SEPARATOR).concat(title)).join(';');
 
   book.setData({ title, search, thumbnail });

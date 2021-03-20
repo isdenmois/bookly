@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { ScreenHeader, Screen } from 'components';
-import { color } from 'types/colors';
-import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
+
+import { Screen } from 'components';
+import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { createQueryState } from 'screens/book-list/book-list.service';
-import { NavigationStackProp } from 'react-navigation-stack';
-import { t } from 'services/i18n';
-import { BookSelector } from './book-selector';
 import { BookListFilters } from 'screens/book-list/components/book-list-filters';
+import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
+import { openModal } from 'services';
+import { headerRightButton } from 'components/screen-header';
+import { BookSelector } from './book-selector';
 
-interface Props {
-  navigation: NavigationStackProp;
-}
+type Props = MainScreenProps<MainRoutes.BookSelect>;
 
 const defaultFilters = {
   status: BOOK_STATUSES.WISH,
@@ -30,11 +29,15 @@ const FILTERS_FIELDS = ['type', 'author', 'paper', 'list'];
 export class BookSelectScreen extends Component<Props> {
   state: State = createQueryState(defaultFilters, { field: 'date', desc: true });
 
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      headerRight: headerRightButton('sliders-h', this.openFilters),
+    });
+  }
+
   render() {
     return (
       <Screen>
-        <ScreenHeader title='headers.book-select' right='sliders-h' onRight={this.openFilters} />
-
         <View style={s.filters}>
           <BookListFilters filters={this.state.filters} onChange={this.setFilters} />
         </View>
@@ -47,7 +50,7 @@ export class BookSelectScreen extends Component<Props> {
   setFilters = filters => this.setState(createQueryState(filters, this.state.sort));
 
   openFilters = () =>
-    this.props.navigation.navigate('/modal/book-filters', {
+    openModal(ModalRoutes.BookFilters, {
       setFilters: this.setFilters,
       filterFields: FILTERS_FIELDS,
       filters: this.state.filters,

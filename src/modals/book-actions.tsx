@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Action, ActionSheet } from 'components/action-sheet';
 import { database } from 'store';
 import Book from 'store/book';
+import { openModal } from 'services';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
 const ACTIONS: Action[] = [
   { id: 'edit' as const, label: 'modal.edit' },
@@ -13,20 +15,19 @@ const HANDLERS = {
   delete: deleteBook,
 };
 
-export function BookActionsModal({ navigation }) {
-  const onSelect = actionId => HANDLERS[actionId](navigation);
+type Props = ModalScreenProps<ModalRoutes.BookActions>;
+
+export const BookActionsModal: FC<Props> = ({ route }) => {
+  const onSelect = actionId => HANDLERS[actionId](route.params.bookId);
 
   return <ActionSheet actions={ACTIONS} onSelect={onSelect} />;
+};
+
+function openBookEditor(bookId) {
+  openModal(ModalRoutes.BookEditor, { bookId });
 }
 
-function openBookEditor(navigation) {
-  const bookId = navigation.getParam('bookId');
-
-  navigation.navigate('/modal/book-editor', { bookId });
-}
-
-async function deleteBook(navigation) {
-  const bookId = navigation.getParam('bookId');
+async function deleteBook(bookId) {
   const book = await database.collections.get<Book>('books').find(bookId);
 
   await database.action(() => book.markAsDeleted());

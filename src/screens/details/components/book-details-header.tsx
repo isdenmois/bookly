@@ -1,13 +1,13 @@
 import React from 'react';
 import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack';
+import { MainNavigationProp, MainRoutes } from 'navigation/routes';
 import { color } from 'types/colors';
 import { TouchIcon } from 'components';
 
-interface Props {
+type Props = {
+  navigation: MainNavigationProp<MainRoutes.Details>;
   bookId: string;
-  navigation: NavigationStackProp<any>;
-}
+};
 
 export class BookDetailsHeader extends React.PureComponent<Props> {
   get url() {

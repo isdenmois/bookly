@@ -18,7 +18,7 @@ export const YearSelection = memo(({ minYear, year, onChange }: Props) => {
   const cn = classnames(s);
 
   return (
-    <ScrollView horizontal style={s.container} contentContainerStyle={s.scroll}>
+    <ScrollView horizontal style={s.container} contentContainerStyle={s.scroll} showsHorizontalScrollIndicator={false}>
       <Text style={s.label}>{t('year')}:</Text>
 
       {years.map(y => (

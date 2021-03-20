@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavigationScreenProp } from 'react-navigation';
 import { View, ViewStyle, TextStyle, Platform, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
@@ -7,16 +6,19 @@ import { dynamicColor, getColor } from 'types/colors';
 import { settings } from 'services';
 import { clearCache } from 'services/api/base/create-api';
 import { database } from 'store';
-import { Button, ScreenHeader, ListItem, Screen } from 'components';
+import { Button, ListItem, Screen } from 'components';
 import { resetSettings } from 'services/settings';
 import { RemoveDeleted } from './components/remove-deleted';
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
+type Props = MainScreenProps<MainRoutes.Profile>;
 
 export class ProfileScreen extends React.Component<Props> {
   static contextType = ColorSchemeContext;
+
+  componentDidMount() {
+    this.props.navigation.setOptions({ headerTitle: settings.userId });
+  }
 
   render() {
     const isWeb = Platform.OS === 'web';
@@ -25,8 +27,6 @@ export class ProfileScreen extends React.Component<Props> {
 
     return (
       <Screen>
-        <ScreenHeader title={settings.userId} />
-
         <ScrollView contentContainerStyle={s.content}>
           <ListItem label='Настройки' onPress={this.openSettings} />
           <ListItem label='Списки книг' onPress={this.openLists} />
@@ -50,13 +50,12 @@ export class ProfileScreen extends React.Component<Props> {
     );
   }
 
-  openSettings = () => this.props.navigation.navigate('Settings');
-  openLists = () => this.props.navigation.navigate('Lists');
+  openSettings = () => this.props.navigation.navigate(MainRoutes.Settings);
+  openLists = () => this.props.navigation.navigate(MainRoutes.Lists);
 
   logout = () => {
     resetSettings();
-    this.props.navigation.navigate('Login');
-    database.action(() => database.unsafeResetDatabase());
+    setTimeout(() => database.action(() => database.unsafeResetDatabase()), 500);
   };
 }
 

@@ -46,8 +46,6 @@ export function SettingsScreen() {
 
   return (
     <Screen>
-      <ScreenHeader title='Настройки' />
-
       <ScrollView contentContainerStyle={s.content}>
         {LINES.map(line => {
           if (line.isWeb !== undefined && line.isWeb !== isWeb) return null;

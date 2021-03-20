@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { StyleSheet, ViewStyle, FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
-import { NavigationStackProp } from 'react-navigation-stack';
+import { ColorSchemeContext } from 'react-native-dynamic';
+
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 import { t, database } from 'services';
 import Author from 'store/author';
 import { Screen, SearchBar } from 'components';
-import { ColorSchemeContext } from 'react-native-dynamic';
-import { AuthorItem } from './components/author-item';
 import { EmptyResult } from 'components/fetcher';
+import { AuthorItem } from './components/author-item';
 
-interface Props {
-  navigation: NavigationStackProp;
+type Props = MainScreenProps<MainRoutes.Authors> & {
   authors: Author[];
-}
+};
 
 interface State {
   query: string;
@@ -62,7 +62,7 @@ export class AuthorsScreen extends Component<Props, State> {
   }
   setQuery = query => this.setState({ query });
   search = () => {
-    this.props.navigation.push('AuthorSearch', { query: this.state.query });
+    this.props.navigation.push(MainRoutes.AuthorSearch, { query: this.state.query });
     this.setState({ query: '' });
   };
   goBack = () => this.props.navigation.goBack();

@@ -1,38 +1,30 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { api } from 'services';
-import { Fetcher, ScreenHeader, Screen } from 'components';
-import { withNavigationProps } from 'utils/with-navigation-props';
+import { Fetcher, Screen } from 'components';
 import { ColorSchemeContext } from 'react-native-dynamic';
 import { withScroll } from 'utils/scroll-to-top';
-import { EditionTranslators } from 'types/book-extended';
 import { Edition } from 'services/api/fantlab/editions';
 import { EditionsSort } from './components/editions-sort';
 import { EditionCard } from './components/edition-card';
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
-interface Props {
-  editionIds: number[];
-  translators: EditionTranslators;
-}
+type Props = MainScreenProps<MainRoutes.Editions>;
 
-@withNavigationProps()
 @withScroll
 export class EditionsListScreen extends React.Component<Props> {
   static contextType = ColorSchemeContext;
 
   state = { sort: '-year' };
-  e = this.props.editionIds.join(',');
+  e = this.props.route.params.editionIds.join(',');
 
   render() {
-    const count = this.props.editionIds.length;
+    const count = this.props.route.params.editionIds.length;
     groupBy.mode = this.context;
 
     return (
       <Screen>
-        <View style={s.container}>
-          <ScreenHeader title='headers.editions' />
-          {count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}
-        </View>
+        <View style={s.container}>{count > 1 && <EditionsSort sort={this.state.sort} onChange={this.setSort} />}</View>
 
         <Fetcher
           contentContainerStyle={s.scroll}
@@ -55,7 +47,7 @@ export class EditionsListScreen extends React.Component<Props> {
       <EditionCard
         key={edition.id}
         edition={edition}
-        translators={this.props.translators[edition.id]}
+        translators={this.props.route.params.translators[edition.id]}
         mode={this.context}
       />
     );

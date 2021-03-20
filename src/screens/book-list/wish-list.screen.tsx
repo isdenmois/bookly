@@ -32,12 +32,12 @@ export class WishListScreen extends ReadList {
 
   getFilters() {
     const filters: any = {};
-    const listId = this.props.navigation.getParam('listId');
+    const listId = this.props.route.params?.listId;
 
     if (listId) {
       filters.list = {
         id: listId,
-        name: this.props.navigation.getParam('listName'),
+        name: this.props.route.params?.listName,
       };
     }
 

@@ -3,7 +3,7 @@ import { SyncService } from './sync';
 
 export { database } from 'store';
 export { settings } from './settings';
-export { navigation } from './navigation';
+export { getNavigation, openModal } from './navigation';
 export { api } from './api';
 export { t } from './i18n';
 

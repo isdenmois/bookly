@@ -1,6 +1,6 @@
 import { AppRegistry, ToastAndroid } from 'react-native';
 import { name as appName } from '../app.json';
-import App from '../config/root/root';
+import App from '../src/app';
 import { Workbox, messageSW } from 'workbox-window';
 
 if ('serviceWorker' in navigator) {

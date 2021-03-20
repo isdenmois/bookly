@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack';
-import { withNavigationProps } from 'utils/with-navigation-props';
-import { t } from 'services';
 import { ColorSchemeContext } from 'react-native-dynamic';
+
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
+import { api, t } from 'services';
 import Author from 'store/author';
 import { Screen, SearchBar, Fetcher } from 'components';
 import { AuthorItem } from './components/author-item';
-import { api } from 'services';
 
-interface Props {
-  navigation: NavigationStackProp;
-  query: string;
-}
+type Props = MainScreenProps<MainRoutes.AuthorSearch>;
 
 interface State {
   query: string;
   q: string;
 }
 
-@withNavigationProps()
 export class AuthorSearchScreen extends Component<Props, State> {
   static contextType = ColorSchemeContext;
 
-  state: State = { query: this.props.query, q: this.props.query };
+  state: State = { query: this.props.route.params.query, q: this.props.route.params.query };
 
   observeColumns = ['fav'];
 

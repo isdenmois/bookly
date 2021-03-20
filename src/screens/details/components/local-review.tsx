@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Text, View, ViewStyle, TextStyle } from 'react-native';
-import { navigation, settings } from 'services';
+import { navigation, openModal, settings } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
@@ -8,6 +8,7 @@ import { dynamicColor, getColor, boldText } from 'types/colors';
 import { ExpandableText, TouchIcon } from 'components';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { confirmRemoveModel } from './book-details-lines';
+import { ModalRoutes } from 'navigation/routes';
 
 interface Props {
   book: BookData;
@@ -15,7 +16,7 @@ interface Props {
   mode: string;
 }
 
-const navigate = (review, book) => navigation.navigate('/modal/review-write', { review, book });
+const navigate = (review, book) => openModal(ModalRoutes.ReviewWrite, { review, book });
 
 export function LocalReview({ review, book, mode }: Props) {
   const openEditReview = useCallback(() => navigate(review, book), []);

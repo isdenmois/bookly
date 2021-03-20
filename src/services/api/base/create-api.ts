@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import { ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+
+import { ModalRoutes } from 'navigation/routes';
 import { settings } from 'services/settings';
-import { navigation } from 'services/navigation';
+import { openModal } from 'services/navigation';
 import { createUrl, getUrlParams } from './create-url';
 import { createFetchParams } from './create-params';
 import { parseResult } from './parse-result';
@@ -125,6 +127,6 @@ function auth(url, schema: Schema, body) {
   return new Promise((resolve, onClose) => {
     const onSuccess = () => fetchData(url, schema, body).then(resolve);
 
-    navigation.navigate('/modal/fantlab-login', { onSuccess, onClose });
+    openModal(ModalRoutes.FantlabLogin, { onSuccess, onClose });
   });
 }

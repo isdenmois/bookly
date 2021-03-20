@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack';
+import { NavigationStackProp } from '@react-navigation/stack';
 import { dynamicColor, lightText } from 'types/colors';
 import { api } from 'services';
 import { Fetcher, Thumbnail } from 'components';
@@ -10,6 +10,7 @@ import Book from 'store/book';
 import { hasUpdates } from 'utils/has-updates';
 import { withScroll } from './tab';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+import { MainRoutes } from 'navigation/routes';
 
 interface Props {
   book: Book & BookExtended;
@@ -49,7 +50,7 @@ export class SimilarTab extends React.Component<Props> {
   };
 
   openBook(book: BookSimilar) {
-    this.props.navigation.push('Details', { bookId: String(book.id) });
+    this.props.navigation.push(MainRoutes.Details, { bookId: String(book.id) });
   }
 }
 

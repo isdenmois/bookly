@@ -11,7 +11,6 @@ import {
   ToastAndroid,
   Clipboard,
 } from 'react-native';
-import { NavigationStackProp } from 'react-navigation-stack';
 import { dynamicColor, boldText, lightText } from 'types/colors';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
@@ -22,21 +21,21 @@ import { withBook } from 'components/book-item';
 import { LiveLibBook } from 'services/api/livelib/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookDetailsHeader } from './book-details-header';
-import { t } from 'services';
+import { openModal, t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
+import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
 
-interface Props {
+type Props = MainScreenProps<MainRoutes.Details> & {
   book: Book & BookExtended & LiveLibBook;
   scrollY: Animated.Value;
   headerHeight: number;
   onLayout: Function;
   scrollHeight: number;
   children?: React.ReactNode;
-  navigation: NavigationStackProp;
   status?: BOOK_STATUSES;
   mode: string;
-}
+};
 
 const MARGIN = 30;
 
@@ -59,11 +58,11 @@ export const BookMainInfo = memo(
           <View style={s.darkOverlay} testID={`details${book.id}`}>
             <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} mode={mode} />
             <BookAuthor book={book} navigation={navigation} mode={mode} />
-            {!book.thumbnail && <SecondaryData book={book} navigation={navigation} mode={mode} />}
+            {!book.thumbnail && <SecondaryData book={book} mode={mode} />}
           </View>
         </Background>
 
-        {!!book.thumbnail && <SecondaryWithThumbnailData book={book} navigation={navigation} mode={mode} />}
+        {!!book.thumbnail && <SecondaryWithThumbnailData book={book} mode={mode} />}
       </Collapsible>
     );
   }),
@@ -155,7 +154,10 @@ function Header({ bookTitle, navigation, bookId, mode }) {
 
 function BookAuthor({ book, navigation, mode }) {
   const s = ds[mode];
-  const searchAuthor = React.useCallback(() => navigation.push('Search', { query: book.author }), [book, navigation]);
+  const searchAuthor = React.useCallback(() => navigation.push(MainRoutes.Search, { query: book.author }), [
+    book,
+    navigation,
+  ]);
 
   return (
     <View style={book.thumbnail ? s.thumbnailPlaceholder : null}>
@@ -166,12 +168,9 @@ function BookAuthor({ book, navigation, mode }) {
   );
 }
 
-function SecondaryData({ book, navigation, mode }) {
+function SecondaryData({ book, mode }) {
   const s = ds[mode];
-  const openChangeStatus = React.useCallback(() => navigation.navigate('/modal/change-status', { book }), [
-    book,
-    navigation,
-  ]);
+  const openChangeStatus = React.useCallback(() => openModal(ModalRoutes.ChangeStatus, { book }), [book]);
 
   return (
     <View style={s.status}>
@@ -186,12 +185,9 @@ function SecondaryData({ book, navigation, mode }) {
   );
 }
 
-function SecondaryWithThumbnailData({ book, navigation, mode }) {
+function SecondaryWithThumbnailData({ book, mode }) {
   const s = ds[mode];
-  const openChangeStatus = React.useCallback(() => navigation.navigate('/modal/change-status', { book }), [
-    book,
-    navigation,
-  ]);
+  const openChangeStatus = React.useCallback(() => openModal(ModalRoutes.ChangeStatus, { book }), [book]);
   const openChangeThumbnail = React.useCallback(() => {
     if (book.id.startsWith('l_')) {
       return ToastAndroid.show('Возможность доступна только для FantLab книг', ToastAndroid.SHORT);
@@ -205,8 +201,8 @@ function SecondaryWithThumbnailData({ book, navigation, mode }) {
       return ToastAndroid.show('Недостаточно изданий для выбора', ToastAndroid.SHORT);
     }
 
-    navigation.navigate('/modal/thumbnail-select', { book });
-  }, [book, navigation]);
+    openModal(ModalRoutes.ThumbnailSelect, { book });
+  }, [book]);
 
   return (
     <View style={s.mainInformationContainer}>

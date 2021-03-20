@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { Platform, View, ViewStyle, TextStyle } from 'react-native';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { NavigationScreenProp } from 'react-navigation';
 import { getColor, dynamicColor } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
@@ -12,17 +11,16 @@ import { getCurrentYear } from 'utils/date';
 import { Button, ScreenHeader, Screen } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
-import { settings, t } from 'services';
+import { openModal, settings, t } from 'services';
 import Book from 'store/book';
 import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
+import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
 
 const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'paper', 'isLiveLib'];
 
 const READ_LIST_SORTS = ['date', 'title', 'rating', 'author', 'id'];
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
+type Props = MainScreenProps<MainRoutes.ReadList>;
 
 interface State {
   query: Where[];
@@ -36,12 +34,12 @@ export class ReadList extends React.Component<Props, State> {
   state: State = createQueryState(
     {
       status: BOOK_STATUSES.READ,
-      ...this.props.navigation.getParam('filters', { year: getCurrentYear() }),
+      ...(this.props.route.params?.filters || { year: getCurrentYear() }),
     },
-    this.props.navigation.getParam('sort', { field: 'date', desc: true }),
+    this.props.route.params?.sort || { field: 'date', desc: true },
   );
 
-  readonly = this.props.navigation.getParam('readonly');
+  readonly = this.props.route.params?.readonly;
   bookListRef = createRef<any>();
 
   showTopRate = true;
@@ -55,7 +53,7 @@ export class ReadList extends React.Component<Props, State> {
     const readonly = this.readonly;
     const s = ds[this.context];
     const color = getColor(this.context);
-    const listId = this.props.navigation.getParam('listId', null);
+    const listId = this.props.route.params?.listId;
 
     return (
       <Screen>
@@ -108,7 +106,7 @@ export class ReadList extends React.Component<Props, State> {
   }
 
   openFiltersModal = () =>
-    this.props.navigation.navigate('/modal/book-filters', {
+    openModal(ModalRoutes.BookFilters, {
       setFilters: this.setFilters,
       filterFields: this.filters,
       sortFields: this.sorts,
@@ -125,13 +123,13 @@ export class ReadList extends React.Component<Props, State> {
       date: b.date.getTime(),
     }));
 
-    this.props.navigation.navigate('TopRate', { books });
+    this.props.navigation.push(MainRoutes.TopRate, { books });
   };
 
   openListBookSelect = () => {
-    const listId = this.props.navigation.getParam('listId', null);
+    const listId = this.props.route.params.listId;
 
-    this.props.navigation.navigate('/modal/list-book-select', { listId });
+    openModal(ModalRoutes.ListBookSelect, { listId });
   };
 }
 

@@ -13,14 +13,13 @@ import {
 } from 'react-native';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
 import { Thumbnail, ScreenHeader, Screen } from 'components';
-import { navigation, t } from 'services';
+import { getNavigation, t } from 'services';
 import Book from 'store/book';
 import { dynamicColor, boldText, lightText } from 'types/colors';
 import { merge } from './top-rate-sort';
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: any;
-}
+type Props = MainScreenProps<MainRoutes.TopRate>;
 
 interface State {
   result: Book[];
@@ -28,7 +27,7 @@ interface State {
   pollEnabled: boolean;
 }
 
-export class TopRateScreen extends Component<Props> {
+export class TopRateScreen extends Component<Props, State> {
   static contextType = ColorSchemeContext;
 
   state = {
@@ -51,7 +50,7 @@ export class TopRateScreen extends Component<Props> {
   };
 
   async componentDidMount() {
-    const books = this.props.navigation.getParam('books');
+    const books = this.props.route.params.books;
 
     if (books.length > 1) {
       const result = await merge(_.shuffle(books), this.compare);
@@ -69,8 +68,6 @@ export class TopRateScreen extends Component<Props> {
     if (!result) {
       return (
         <Screen>
-          <ScreenHeader title='top.compare' />
-
           {pair && (
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
               <BookMatch book={pair[0]} onSelect={pollEnabled && this.matchA} mode={mode} />
@@ -170,7 +167,7 @@ function BookMatch({ book, mode, onSelect }) {
 function BookItem({ book, width, height, mode, fontSize, n = null, openable = false }) {
   const s = ds[mode];
   const Cmp: any = openable ? TouchableOpacity : View;
-  const onPress = openable ? () => navigation.push('Details', { bookId: book.id }) : null;
+  const onPress = openable ? () => getNavigation().push(MainRoutes.Details, { bookId: book.id }) : null;
 
   return (
     <Cmp style={[s.book, { width }]} onPress={onPress}>

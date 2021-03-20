@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
+import { View, ViewStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDarkModeContext, DynamicStyleSheet } from 'react-native-dynamic';
 import { getColor, dynamicColor } from 'types/colors';
-import { navigation, t } from 'services';
+import { openModal, t } from 'services';
 import { Button, TextM } from 'components';
 import { wishBooksQuery } from '../home.queries';
+import { ModalRoutes } from 'navigation/routes';
 
 interface Props {
   wishBooksCount?: number;
@@ -17,7 +18,7 @@ const withWishBooksCount: Function = withObservables(null, () => ({
 }));
 
 export const EmptyBook = withWishBooksCount(({ wishBooksCount }: Props) => {
-  const openBookSelect = () => navigation.navigate('/modal/book-select');
+  const openBookSelect = () => openModal(ModalRoutes.BookSelect);
   const mode = useDarkModeContext();
   const s = ds[mode];
 

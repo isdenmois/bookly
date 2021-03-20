@@ -1,15 +1,16 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle, Platform } from 'react-native';
+import { Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { of } from 'rxjs/internal/observable/of';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { getColor, dynamicColor } from 'types/colors';
-import { navigation } from 'services';
+import { getNavigation, openModal } from 'services';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book, { BookData } from 'store/book';
 import { formatDate } from 'utils/date';
 import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
+import { MainRoutes, ModalRoutes } from 'navigation/routes';
 
 const NEXT_STATUSES = {
   [BOOK_STATUSES.WISH]: BOOK_STATUSES.NOW,
@@ -101,18 +102,18 @@ export class BookItem extends React.Component<Props> {
   openBook = () => {
     const { book, fantlabId, extra } = this.props;
 
-    navigation.push('Details', { bookId: book.id, fantlabId, extra });
+    getNavigation().push(MainRoutes.Details, { bookId: book.id, fantlabId, extra });
   };
 
   openBookActions = () => {
-    navigation.navigate('/modal/book-actions', { bookId: this.props.book.id });
+    openModal(ModalRoutes.BookActions, { bookId: this.props.book.id });
   };
 
   openChangeStatusModal = () => {
     const book = this.props.book;
     const status = this.nextStatus;
 
-    navigation.navigate('/modal/change-status', { book, status });
+    openModal(ModalRoutes.ChangeStatus, { book, status });
   };
 }
 const ds = new DynamicStyleSheet({

@@ -4,7 +4,8 @@ import Author, { createAuthor } from 'store/author';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor } from 'types/colors';
 import { Thumbnail, TouchIcon } from 'components';
-import { navigation, database } from 'services';
+import { getNavigation, database } from 'services';
+import { MainRoutes } from 'navigation/routes';
 
 interface Props {
   author: Author;
@@ -18,7 +19,7 @@ export function AuthorItem({ author, mode }: Props) {
   const icon = author.fav ? 'times' : 'plus';
   const color = (author.fav ? dynamicColor.ErrorText : dynamicColor.Stars)[mode];
   const toggle = () => toggleAuthorFav(author);
-  const search = author.fav ? () => navigation.push('Search', { query: author.name }) : null;
+  const search = author.fav ? () => getNavigation().push(MainRoutes.Search, { query: author.name }) : null;
   const CMP: any = author.fav ? TouchableOpacity : View;
 
   return (

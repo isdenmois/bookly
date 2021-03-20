@@ -1,22 +1,14 @@
 import React from 'react';
-import { NavigationStackProp } from 'react-navigation-stack';
 import { View, ViewStyle, TextStyle, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { dynamicColor, getColor } from 'types/colors';
-import { withNavigationProps } from 'utils/with-navigation-props';
 import { api } from 'services';
 import Book from 'store/book';
 import { BookItem, Button, Fetcher, SearchBar, Screen } from 'components';
 import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationStackProp;
-  query: string;
-  source?: string;
-  forceOpen?: boolean;
-  fantlabId?: string;
-  paper?: boolean;
-}
+type Props = MainScreenProps<MainRoutes.Search>;
 
 interface State {
   q: string;
@@ -27,16 +19,15 @@ interface State {
 export const fantlab = 'FantLab';
 export const livelib = 'LiveLib';
 
-@withNavigationProps()
 export class SearchScreen extends React.Component<Props, State> {
   static contextType = ColorSchemeContext;
 
   static defaultProps = { source: fantlab };
 
   state: State = {
-    q: this.props.query,
-    query: this.props.query,
-    source: this.props.source || fantlab,
+    q: this.props.route.params.query,
+    query: this.props.route.params.query,
+    source: this.props.route.params.source || fantlab,
   };
 
   render() {
@@ -82,12 +73,12 @@ export class SearchScreen extends React.Component<Props, State> {
 
   renderResult = (book: Book) => {
     let extra;
-    if (this.props.paper && !book.status) {
+    if (this.props.route.params.paper && !book.status) {
       book.paper = true;
       extra = { paper: true };
     }
 
-    return <BookItem key={book.id} book={book} fantlabId={this.props.fantlabId} extra={extra} />;
+    return <BookItem key={book.id} book={book} fantlabId={this.props.route.params.fantlabId} extra={extra} />;
   };
 
   toggleSearchSource = () => this.setState({ source: this.state.source === fantlab ? livelib : fantlab });
@@ -96,16 +87,19 @@ export class SearchScreen extends React.Component<Props, State> {
     // Ничего не найдено -- выходим
     if (append || !data?.items?.length) return;
     // Найдено больше 1 -- выходим
-    if (!this.props.forceOpen && data.items.length > 1) return;
+    if (!this.props.route.params.forceOpen && data.items.length > 1) return;
     // Изменяли параметры поиска -- выходим
-    if (this.props.query !== this.state.q) return;
-    if (this.props.source !== this.state.source) return;
+    if (this.props.route.params.query !== this.state.q) return;
+    if (this.props.route.params.source !== this.state.source) return;
 
     const foundOne = data.items.length === 1;
     const item = data.items.find(i => isEqual(i.title, this.state.q, foundOne));
 
     if (item) {
-      this.props.navigation.replace('Details', { bookId: item.id, fantlabId: this.props.fantlabId });
+      this.props.navigation.replace(MainRoutes.Details, {
+        bookId: item.id,
+        fantlabId: this.props.route.params.fantlabId,
+      });
       return true;
     }
   };

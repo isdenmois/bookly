@@ -26,7 +26,7 @@ export const StatGroups = memo(({ type, onChange }: Props) => {
   const cn = classnames(s);
 
   return (
-    <ScrollView style={s.container} contentContainerStyle={s.scroll} horizontal>
+    <ScrollView style={s.container} contentContainerStyle={s.scroll} horizontal showsHorizontalScrollIndicator={false}>
       {groups.map((group, i) => (
         <TouchableOpacity
           key={group.id}

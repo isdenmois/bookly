@@ -37,8 +37,6 @@ export function StatScreen() {
 
   return (
     <Screen>
-      <ScreenHeader title='nav.stat' />
-
       <View>
         <StatGroups type={type} onChange={setType} />
         {!group.allYears && <YearSelection year={year} minYear={minYear} onChange={setYear} />}

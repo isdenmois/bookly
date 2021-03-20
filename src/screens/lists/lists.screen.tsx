@@ -3,12 +3,13 @@ import { View, ViewStyle, TextStyle, Platform, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, useSColor } from 'types/colors';
-import { t } from 'services';
+import { openModal, t } from 'services';
 import { database } from 'store';
 import { Button, ScreenHeader, ListItem, Screen } from 'components';
 import { useObservable } from 'utils/use-observable';
 import { Observable } from 'rxjs/internal/Observable';
 import List from 'store/list';
+import { MainRoutes, ModalRoutes } from 'navigation/routes';
 
 function getLists(): Observable<List[]> {
   return database.collections.get('lists').query().observeWithColumns(['name']) as any;
@@ -17,12 +18,10 @@ function getLists(): Observable<List[]> {
 export function ListsScreen({ navigation }) {
   const { s, color } = useSColor(ds);
   const lists = useObservable(getLists, [], []);
-  const addList = () => navigation.navigate('/modal/list-add');
+  const addList = () => openModal(ModalRoutes.ListAdd);
 
   return (
     <Screen>
-      <ScreenHeader title='headers.lists' />
-
       <FlatList
         contentContainerStyle={s.content}
         data={lists}
@@ -30,8 +29,8 @@ export function ListsScreen({ navigation }) {
         renderItem={({ item }) => (
           <ListItem
             label={item.name}
-            onPress={() => navigation.push('WishList', { listId: item.id, listName: item.name })}
-            onLongPress={() => navigation.navigate('/modal/list-edit', { list: item })}
+            onPress={() => navigation.push(MainRoutes.WishList, { listId: item.id, listName: item.name })}
+            onLongPress={() => openModal(ModalRoutes.ListEdit, { list: item })}
           />
         )}
       />

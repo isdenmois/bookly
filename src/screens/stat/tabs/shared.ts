@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { getCurrentYear } from 'utils/date';
-import { navigation } from 'services';
-import { Read } from 'store/book';
+import { getNavigation } from 'services';
+import { MainRoutes } from 'navigation/routes';
 
 export const TABS = {
   MONTH: 'MONTH',
@@ -116,7 +116,7 @@ export function openRead(filters: any, year: number | false) {
     filters.minYear = true;
   }
 
-  navigation.push('ReadList', { filters, sort: { field: 'date', desc: false }, readonly: true });
+  getNavigation().push(MainRoutes.ReadList, { filters, sort: { field: 'date', desc: false }, readonly: true });
 }
 
 export type Sort = { field: string; asc: boolean };

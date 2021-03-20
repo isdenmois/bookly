@@ -2,8 +2,9 @@ import React, { ReactNode, useCallback } from 'react';
 import { Text, View, TouchableWithoutFeedback, TextStyle, ViewStyle, Platform } from 'react-native';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, light, useSColor } from 'types/colors';
-import { navigation, t } from 'services';
+import { t } from 'services';
 import { TouchIcon } from 'components/touch-icon';
+import { useNavigation } from '@react-navigation/core';
 
 interface Props {
   style?: ViewStyle;
@@ -17,9 +18,11 @@ interface Props {
 }
 
 export const Dialog = (props: Props) => {
+  const navigation = useNavigation();
+
   const { s, color } = useSColor(ds);
   const back = useCallback(() => {
-    onBack();
+    navigation.goBack();
     props.onClose?.();
   }, [props.onClose]);
 
@@ -53,10 +56,6 @@ function renderDialogHeader(title: string, back, rightIcon, onApply, s, color) {
   );
 }
 
-function onBack() {
-  return navigation.pop();
-}
-
 const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
@@ -68,9 +67,8 @@ const ds = new DynamicStyleSheet({
     left: 0,
     right: 0,
     bottom: 0,
-    opacity: 0.5,
+    opacity: 0,
     position: 'absolute',
-    backgroundColor: light.Black,
   } as ViewStyle,
   modal: {
     marginTop: 50,

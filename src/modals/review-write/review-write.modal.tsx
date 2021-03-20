@@ -1,21 +1,16 @@
 import React from 'react';
 import { ScrollView, TextInput, ViewStyle, TextStyle, ToastAndroid } from 'react-native';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
-import { NavigationScreenProp } from 'react-navigation';
-import { withNavigationProps } from 'utils/with-navigation-props';
+
 import { dynamicColor } from 'types/colors';
-import Book from 'store/book';
-import Review, { createReview } from 'store/review';
+import { createReview } from 'store/review';
 import { dbAction } from 'services/db';
 import { database } from 'store';
-import { Button, Dialog } from 'components';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 import { t } from 'services';
+import { Button, Dialog } from 'components';
 
-interface Props {
-  navigation: NavigationScreenProp<any>;
-  book: Book;
-  review?: Review;
-}
+type Props = ModalScreenProps<ModalRoutes.ReviewWrite>;
 
 interface State {
   changed: boolean;
@@ -24,20 +19,19 @@ interface State {
 
 const NUMBER_OF_LINES = 10;
 
-@withNavigationProps()
 export class ReviewWriteModal extends React.Component<Props, State> {
   static contextType = ColorSchemeContext;
 
-  state = { changed: false, body: this.props.review ? this.props.review.body : '' };
+  state = { changed: false, body: this.props.route.params.review ? this.props.route.params.review.body : '' };
 
-  buttonTitle = t(this.props.review ? 'button.update' : 'button.add');
+  buttonTitle = t(this.props.route.params.review ? 'button.update' : 'button.add');
 
   render() {
     const changed = this.state.changed && Boolean(this.state.body);
     const s = ds[this.context];
 
     return (
-      <Dialog style={s.dialog} title={this.props.book.title} onApply={changed && this.save}>
+      <Dialog style={s.dialog} title={this.props.route.params.book.title} onApply={changed && this.save}>
         <ScrollView style={s.scroll}>
           <TextInput
             style={s.text}
@@ -63,7 +57,7 @@ export class ReviewWriteModal extends React.Component<Props, State> {
   setBody = body => this.setState({ body, changed: true });
 
   save = () => {
-    if (this.props.review) {
+    if (this.props.route.params.review) {
       this.updateReview();
     } else {
       this.createReview();
@@ -73,13 +67,13 @@ export class ReviewWriteModal extends React.Component<Props, State> {
   };
 
   async updateReview() {
-    await this.props.review.setBody(this.state.body);
+    await this.props.route.params.review.setBody(this.state.body);
 
     ToastAndroid.show(t('modal.review-updated'), ToastAndroid.SHORT);
   }
 
   @dbAction async createReview() {
-    const record = await createReview(database, this.props.book, this.state.body);
+    const record = await createReview(database, this.props.route.params.book, this.state.body);
 
     ToastAndroid.show(t('modal.review-added'), ToastAndroid.SHORT);
 

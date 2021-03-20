@@ -35,5 +35,5 @@ export function lastReadDateObserver() {
     .get('books')
     .query(Q.where('status', BOOK_STATUSES.READ), Q.experimentalSortBy('date', Q.desc), Q.experimentalTake(1))
     .observeWithColumns(['date'])
-    .pipe(map(rows => rows[0].date));
+    .pipe(map(rows => rows[0]?.date));
 }

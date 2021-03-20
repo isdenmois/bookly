@@ -1,16 +1,17 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import _ from 'lodash';
-import { Text, View, ViewStyle, ImageStyle, TextStyle, Linking, Platform } from 'react-native';
-import Book from 'store/book';
+import { TouchableOpacity, Text, View, ViewStyle, ImageStyle, TextStyle, Linking, Platform } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { Where } from '@nozbe/watermelondb/QueryDescription';
+import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
+
+import { MainRoutes } from 'navigation/routes';
+import Book from 'store/book';
 import { Button, Thumbnail } from 'components';
-import { TouchableOpacity } from 'react-native';
 import { dynamicColor, boldText, lightText } from 'types/colors';
 import { BOOK_UPLOADER_URL } from 'services/config';
-import { navigation, t } from 'services';
+import { getNavigation, t } from 'services';
 import { database } from 'store';
-import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 
 interface Props {
   query: Where[];
@@ -32,7 +33,10 @@ function BookSelectorComponent({ books, openFilters }: Props) {
   const list = useMemo(() => generate(books), [books]);
   const more = useCallback(() => setIndex(index < list.length - 1 ? index + 1 : 0), [index, list]);
   const openTelegram = useCallback(() => openInTelegram(list[index].title), [list, index]);
-  const openBook = useCallback(() => navigation.push('Details', { bookId: list[index].id }), [list, index]);
+  const openBook = useCallback(() => getNavigation().push(MainRoutes.Details, { bookId: list[index].id }), [
+    list,
+    index,
+  ]);
   const s = useDynamicValue(ds);
 
   if (!list || !list[index]) {

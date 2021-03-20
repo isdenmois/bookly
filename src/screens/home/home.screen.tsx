@@ -1,25 +1,24 @@
 import React from 'react';
 import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
 import { syncService } from 'services';
 import { Screen } from 'components/screen';
 import { HomeHeader } from './components/header';
 import { CurrentBook } from './components/current-book';
 import { BookChallenge } from './components/book-challenge';
 import { NavigationLinks } from './components/navigation-links';
-
-interface Props {
-  navigation: NavigationScreenProp<any>;
-}
+import { setNavigation } from 'services/navigation';
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
 interface State {
   refreshing: boolean;
 }
 
-export class HomeScreen extends React.Component<Props, State> {
+export class HomeScreen extends React.Component<MainScreenProps<MainRoutes.Home>, State> {
   state: State = { refreshing: false };
 
   render() {
+    setNavigation(this.props.navigation);
+
     return (
       <Screen>
         <ScrollView testID='homeScreen' contentContainerStyle={s.container} refreshControl={this.renderRefresh()}>

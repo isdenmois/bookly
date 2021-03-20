@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useColor } from 'types/colors';
-import { settings, navigation, t } from 'services';
+import { getNavigation, settings, t } from 'services';
 import { ListItem } from 'components';
 import { readBooksQuery, wishBooksQuery } from '../home.queries';
 import { useSetting } from 'services/settings';
 import { useObservable } from 'utils/use-observable';
+import { MainRoutes } from 'navigation/routes';
 
 const getReadCount = () => readBooksQuery().observeCount();
 const getWishBooks = () => wishBooksQuery().observeCount();
@@ -17,12 +18,12 @@ export function NavigationLinks() {
   const readCount = useObservable(getReadCount, 0, []);
   const wishCount = useObservable(getWishBooks, 0, []);
 
-  const openReadBooks = () => navigation.push('ReadList');
-  const openWishBooks = () => navigation.push('WishList');
-  const openBookSelect = () => navigation.push('BookSelect');
-  const openStat = () => navigation.push('Stat');
-  const openAuthors = () => navigation.push('Authors');
-  const openProfile = () => navigation.push('Profile');
+  const openReadBooks = () => getNavigation().push(MainRoutes.ReadList);
+  const openWishBooks = () => getNavigation().push(MainRoutes.WishList);
+  const openBookSelect = () => getNavigation().push(MainRoutes.BookSelect);
+  const openStat = () => getNavigation().push(MainRoutes.Stat);
+  const openAuthors = () => getNavigation().push(MainRoutes.Authors);
+  const openProfile = () => getNavigation().push(MainRoutes.Profile);
 
   return (
     <View style={s.container}>

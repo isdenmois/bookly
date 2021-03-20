@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { TextInput, TextStyle, ViewStyle } from 'react-native';
 import { Dialog, Button, TouchIcon } from 'components';
-import { NavigationStackProp } from 'react-navigation-stack';
 import { dynamicColor, useSColor } from 'types/colors';
 import { t, database } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
-import List from 'store/list';
-import { withNavigationProps } from 'utils/with-navigation-props';
 import { confirm } from 'screens/details/components/book-details-lines';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationStackProp;
-  list: List;
-}
+type Props = ModalScreenProps<ModalRoutes.ListEdit>;
 
-export const ListEditModal = withNavigationProps()(({ navigation, list }: Props) => {
+export const ListEditModal: FC<Props> = ({ navigation, route }) => {
+  const list = route.params.list;
   const [name, setName] = useState(list.name);
   const update = () => {
     list.setName(name);
@@ -44,7 +40,7 @@ export const ListEditModal = withNavigationProps()(({ navigation, list }: Props)
       <Button style={s.button} label={t('button.apply')} disabled={!name} onPress={onPress} />
     </Dialog>
   );
-});
+};
 
 const ds = new DynamicStyleSheet({
   dialog: {

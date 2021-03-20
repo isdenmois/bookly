@@ -13,8 +13,14 @@ export type UseValue<T, K extends keyof T> = (field: K, defaultValue?: T[K]) => 
 
 export function createState<T>(initialState: T): [State<T>, UseValue<T, any>] {
   const watchers: Record<keyof T, Function[]> = {} as any;
+  let watchersEnabled = true;
   let all = [];
-  const obj: State<T> = Object.assign({}, initialState, { set, multiSet, watchAll, getState });
+  const obj: State<T> = Object.assign({}, initialState, {
+    set,
+    multiSet,
+    watchAll,
+    getState,
+  });
 
   function watch(field, callback) {
     watchers[field] = watchers[field] || [];
@@ -35,8 +41,11 @@ export function createState<T>(initialState: T): [State<T>, UseValue<T, any>] {
 
   function set(field: keyof T, value: any) {
     obj[field] = value;
-    watchers[field]?.forEach(c => c(value));
-    all.forEach(c => c(field, value));
+
+    if (watchersEnabled) {
+      watchers[field]?.forEach(c => c(value));
+      all.forEach(c => c(field, value));
+    }
   }
 
   function getState(): T {
@@ -46,8 +55,10 @@ export function createState<T>(initialState: T): [State<T>, UseValue<T, any>] {
   function multiSet(value: Partial<T>) {
     Object.assign(obj, value);
 
-    for (let field in value) {
-      watchers[field]?.forEach(c => c(value[field]));
+    if (watchersEnabled) {
+      for (let field in value) {
+        watchers[field]?.forEach(c => c(value[field]));
+      }
     }
   }
 

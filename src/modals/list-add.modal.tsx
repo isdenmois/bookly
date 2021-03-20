@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { TextInput, TextStyle, ViewStyle } from 'react-native';
 import { Dialog, Button } from 'components';
-import { NavigationStackProp } from 'react-navigation-stack';
 import { dynamicColor } from 'types/colors';
 import { t, database } from 'services';
 import { DynamicStyleSheet, useDarkModeContext } from 'react-native-dynamic';
 import { createList } from 'store/list';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationStackProp;
-}
+type Props = ModalScreenProps<ModalRoutes.ListAdd>;
 
 export const ListAddModal = ({ navigation }: Props) => {
   const [name, setName] = useState('');

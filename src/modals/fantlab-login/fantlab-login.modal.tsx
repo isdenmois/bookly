@@ -1,20 +1,15 @@
 import React from 'react';
 import { View, Text, TextInput, TextStyle, ViewStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
 import { DynamicStyleSheet, ColorSchemeContext } from 'react-native-dynamic';
+
 import { dynamicColor } from 'types/colors';
-import { withNavigationProps } from 'utils/with-navigation-props';
 import { api, settings } from 'services';
 import { FantlabLoginRequest } from 'services/api/fantlab/login';
 import { Button, Dialog, ListItem } from 'components';
+import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
-interface Props {
-  navigation: NavigationScreenProp<void>;
-  onSuccess: () => void;
-  onClose: () => void;
-}
+type Props = ModalScreenProps<ModalRoutes.FantlabLogin>;
 
-@withNavigationProps()
 export class FantlabLoginModal extends React.Component<Props> {
   static contextType = ColorSchemeContext;
 
@@ -35,7 +30,7 @@ export class FantlabLoginModal extends React.Component<Props> {
     const s = ds[this.context];
 
     return (
-      <Dialog style={s.container} title='Fantlab логин' onClose={this.props.onClose}>
+      <Dialog style={s.container} title='Fantlab логин' onClose={this.props.route.params.onClose}>
         {this.state.error && <Text style={s.error}>{this.state.error.toString()}</Text>}
 
         <ListItem rowStyle={s.list}>
@@ -102,7 +97,7 @@ export class FantlabLoginModal extends React.Component<Props> {
 
     settings.set('fantlabAuth', result['X-Session']);
     this.props.navigation.goBack();
-    this.props.onSuccess();
+    this.props.route.params.onSuccess();
   };
 }
 

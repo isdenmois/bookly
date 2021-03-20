@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { Animated, Platform, ViewStyle, View, TextStyle } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dynamicColor, useSColor } from 'types/colors';
@@ -9,15 +8,15 @@ import { Button, Tag } from 'components';
 import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
 import { withScroll } from './tab';
-import { t } from 'services';
+import { openModal, t } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { createState } from 'utils/state';
+import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
 
-interface Props {
+type Props = MainScreenProps<MainRoutes.Details> & {
   book: Book;
-  navigation: NavigationScreenProp<any>;
   mode: string;
-}
+};
 
 interface FixedProps extends Props {
   scrollY: Animated.Value;
@@ -54,13 +53,13 @@ function useTransformStyle(scrollY, s) {
 
 const [source, useValue] = createState({ type: 'Fantlab' });
 
-export const AddButton = ({ book, navigation, scrollY }: FixedProps) => {
+export const AddButton = ({ book, scrollY }: FixedProps) => {
   const hasRead = book.status === BOOK_STATUSES.READ;
   const { s, color } = useSColor(ds);
   const style = useTransformStyle(scrollY, s);
   const type = useValue('type');
 
-  const openReviewWriteModal = useCallback(() => navigation.navigate('/modal/review-write', { book }), [book]);
+  const openReviewWriteModal = useCallback(() => openModal(ModalRoutes.ReviewWrite, { book }), [book]);
   const toggleSearchSource = useCallback(
     () => source.set('type', source.type === 'Fantlab' ? 'Livelib' : 'Fantlab'),
     [],
