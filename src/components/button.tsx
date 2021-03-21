@@ -1,9 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, View, ViewStyle, TextStyle, Platform } from 'react-native';
+import { TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import { DynamicStyleSheet, useDynamicValue } from 'react-native-dynamic';
 import classnames from 'rn-classnames';
 import { dynamicColor, boldText } from 'types/colors';
 import { TextM } from 'components/text';
+import { theme } from './theme';
 
 interface Props {
   label: string;
@@ -53,8 +54,8 @@ const ds = new DynamicStyleSheet({
     marginLeft: 6,
   } as ViewStyle,
   thin: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: theme.spacing[1],
+    paddingHorizontal: theme.spacing[3],
     borderRadius: 15,
   } as ViewStyle,
   disabled: {

@@ -4,6 +4,19 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dayOfYear, getStartOfYear, daysAmount } from 'utils/date';
 import { database } from 'store';
 import Book from 'store/book';
+import List from 'store/list';
+import { settings } from 'services';
+import _ from 'lodash';
+
+const INITIAL_SORT = { field: 'title', desc: false };
+const getDefaultSort = () => {
+  const sort = settings.defaultSort || INITIAL_SORT;
+  const field = _.snakeCase(sort.field);
+
+  console.log('sort', sort, field);
+
+  return Q.experimentalSortBy(field, sort.desc ? Q.desc : Q.asc);
+};
 
 export function booksReadForecast(read: number, total: number): number {
   const yearProgress = dayOfYear() / daysAmount();
@@ -19,7 +32,7 @@ export function currentBooksQuery() {
 }
 
 export function wishBooksQuery() {
-  return database.collections.get('books').query(Q.where('status', BOOK_STATUSES.WISH));
+  return database.collections.get<Book>('books').query(Q.where('status', BOOK_STATUSES.WISH), getDefaultSort());
 }
 
 export function readBooksThisYearQuery() {
@@ -28,7 +41,9 @@ export function readBooksThisYearQuery() {
 }
 
 export function readBooksQuery() {
-  return database.collections.get<Book>('books').query(Q.where('status', BOOK_STATUSES.READ));
+  return database.collections
+    .get<Book>('books')
+    .query(Q.where('status', BOOK_STATUSES.READ), Q.experimentalSortBy('date', Q.desc));
 }
 
 export function lastReadDateObserver() {
@@ -37,4 +52,12 @@ export function lastReadDateObserver() {
     .query(Q.where('status', BOOK_STATUSES.READ), Q.experimentalSortBy('date', Q.desc), Q.experimentalTake(1))
     .observeWithColumns(['date'])
     .pipe(map(rows => rows[0]?.date));
+}
+
+export function allListsObserver() {
+  return database.collections.get<List>('lists').query().observeWithColumns(['name']);
+}
+
+export function listBooksQuery(listId: string) {
+  return database.collections.get<Book>('books').query(Q.on('list_books', 'list_id', listId), getDefaultSort());
 }

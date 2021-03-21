@@ -45,7 +45,7 @@ type MainParamList = {
     paper?: boolean;
   };
   [MainRoutes.ReadList]: { filters?; sort?; readonly?: boolean; listId?: string; listName?: string };
-  [MainRoutes.WishList]: null;
+  [MainRoutes.WishList]: { listId?: string; listName?: string };
   [MainRoutes.Details]: { bookId: string; extra?: Partial<BookData>; fantlabId?: string; initialTab?: string };
   [MainRoutes.Editions]: { editionIds: number[]; translators: EditionTranslators };
   [MainRoutes.BookSelect]: null;

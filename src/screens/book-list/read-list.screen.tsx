@@ -7,7 +7,6 @@ import { getColor, dynamicColor } from 'types/colors';
 import { BookSort, BookFilters } from 'types/book-filters';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { withScroll } from 'utils/scroll-to-top';
-import { getCurrentYear } from 'utils/date';
 import { Button, ScreenHeader, Screen } from 'components';
 import { BookList } from './components/book-list';
 import { createQueryState } from './book-list.service';
@@ -34,7 +33,7 @@ export class ReadList extends React.Component<Props, State> {
   state: State = createQueryState(
     {
       status: BOOK_STATUSES.READ,
-      ...(this.props.route.params?.filters || { year: getCurrentYear() }),
+      ...(this.props.route.params?.filters || {}),
     },
     this.props.route.params?.sort || { field: 'date', desc: true },
   );

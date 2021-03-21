@@ -5,7 +5,7 @@ import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { Button, Thumbnail } from 'components';
 import { MainRoutes, ModalRoutes } from 'navigation/routes';
 import { getNavigation, openModal, t } from 'services';
-import { Box, Text, theme } from 'components/theme';
+import { Box, Text } from 'components/theme';
 
 interface Props {
   book: Book;
@@ -19,7 +19,7 @@ export function NowReadingBook({ book }: Props) {
   const openBook = useCallback(() => getNavigation().push(MainRoutes.Details, { bookId: book.id }), []);
 
   return (
-    <Box alignItems='center' maxWidth='100%' pt={3}>
+    <Box alignItems='center' py={1}>
       <TouchableOpacity style={s.thumbnail} onPress={openBook} testID='currentThumbnail'>
         <Thumbnail cache style={s.image} width={200} height={300} title={book.title} url={book.thumbnail} />
       </TouchableOpacity>
@@ -30,21 +30,18 @@ export function NowReadingBook({ book }: Props) {
         </Text>
       </TouchableOpacity>
 
-      <Button label={t('button.ive-finished')} thin onPress={openChangeStatus} style={s.button} />
+      <Box mt={1}>
+        <Button label={t('button.ive-finished')} thin onPress={openChangeStatus} />
+      </Box>
     </Box>
   );
 }
 
 const s = StyleSheet.create({
   thumbnail: {
-    marginRight: 15,
-    borderRadius: 5,
+    borderRadius: 20,
   } as ImageStyle,
   image: {
-    borderRadius: 5,
+    borderRadius: 20,
   } as ImageStyle,
-  button: {
-    marginTop: theme.spacing[1],
-    paddingHorizontal: theme.spacing[3],
-  },
 });

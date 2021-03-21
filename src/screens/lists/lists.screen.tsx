@@ -5,7 +5,7 @@ import { DynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, useSColor } from 'types/colors';
 import { openModal, t } from 'services';
 import { database } from 'store';
-import { Button, ScreenHeader, ListItem, Screen } from 'components';
+import { Button, ListItem, Screen } from 'components';
 import { useObservable } from 'utils/use-observable';
 import { Observable } from 'rxjs/internal/Observable';
 import List from 'store/list';

@@ -6,7 +6,7 @@ import { EmptyBook } from './empty-book';
 import { Dimensions } from 'react-native';
 import { useObservable } from 'utils/use-observable';
 
-const PADDINGS = 48;
+const PADDINGS = 32;
 
 function getCurrentBooks() {
   return currentBooksQuery().observeWithColumns(['thumbnail']);
