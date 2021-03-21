@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from 'screens/home/home.screen';
 import { ReadListScreen } from 'screens/book-list/read-list.screen';
 import { WishListScreen } from 'screens/book-list/wish-list.screen';
-import { ProfileScreen } from 'screens/profile/profile.screen';
 import { SearchScreen } from 'screens/search/search.screen';
 import { DetailsScreen } from 'screens/details/details.screen';
 import { EditionsListScreen } from 'screens/editions/editions.screen';
@@ -42,7 +41,6 @@ export function MainNavigator() {
       }}
     >
       <Stack.Screen name={MainRoutes.Home} component={HomeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={MainRoutes.Profile} component={ProfileScreen} />
       <Stack.Screen name={MainRoutes.Search} component={SearchScreen} options={{ headerShown: false }} />
       <Stack.Screen name={MainRoutes.ReadList} component={ReadListScreen} options={{ headerShown: false }} />
       <Stack.Screen name={MainRoutes.WishList} component={WishListScreen} options={{ headerShown: false }} />

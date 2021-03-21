@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useColor } from 'types/colors';
-import { getNavigation, settings, t } from 'services';
+import { getNavigation, t } from 'services';
 import { ListItem } from 'components';
 import { readBooksQuery, wishBooksQuery } from '../home.queries';
 import { useSetting } from 'services/settings';
@@ -23,7 +23,6 @@ export function NavigationLinks() {
   const openBookSelect = () => getNavigation().push(MainRoutes.BookSelect);
   const openStat = () => getNavigation().push(MainRoutes.Stat);
   const openAuthors = () => getNavigation().push(MainRoutes.Authors);
-  const openProfile = () => getNavigation().push(MainRoutes.Profile);
 
   return (
     <View style={s.container}>
@@ -50,14 +49,6 @@ export function NavigationLinks() {
           value={t('nav.authors')}
         />
       )}
-      <ListItem
-        onPress={openProfile}
-        icon={<Icon name='user' size={20} color={color} />}
-        value={t('nav.profile')}
-        counter={settings.userId}
-        testID='profileName'
-        last
-      />
     </View>
   );
 }

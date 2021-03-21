@@ -23,7 +23,6 @@ export enum MainRoutes {
   Search = 'search',
   ReadList = 'read-list',
   WishList = 'wish-list',
-  Profile = 'profile',
   Details = 'details',
   Editions = 'editions',
   BookSelect = 'book-select',
@@ -41,7 +40,6 @@ type MainParamList = {
   [MainRoutes.Search]: { query: string; source?: string; forceOpen?: boolean; fantlabId?: string; paper?: boolean };
   [MainRoutes.ReadList]: { filters?; sort?; readonly?: boolean; listId?: string; listName?: string };
   [MainRoutes.WishList]: null;
-  [MainRoutes.Profile]: null;
   [MainRoutes.Details]: { bookId: string; extra?: Partial<BookData>; fantlabId?: string; initialTab?: string };
   [MainRoutes.Editions]: { editionIds: number[]; translators: EditionTranslators };
   [MainRoutes.BookSelect]: null;
