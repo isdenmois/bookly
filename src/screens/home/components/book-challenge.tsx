@@ -1,12 +1,14 @@
 import _ from 'lodash';
 import React, { useMemo, useCallback } from 'react';
-import { StyleSheet, TouchableOpacity, ViewStyle, Alert, Platform } from 'react-native';
+import { TouchableOpacity, Alert, Platform } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { t } from 'services/i18n';
 import { useSetting } from 'services/settings';
 import { dayOfYear, format, daysAmount } from 'utils/date';
 import { readBooksThisYearQuery, booksReadForecast, lastReadDateObserver } from '../home.queries';
 import { Box, Text } from 'components/theme';
+import { getNavigation } from 'services';
+import { MainRoutes } from 'navigation/routes';
 
 const DATE_FORMAT = 'DD.MM';
 const formatDate = date => format(date, DATE_FORMAT);
@@ -26,27 +28,36 @@ function BookChallengeComponent({ readCount, lastReadDate }: Props) {
     () => showAlert(getChallengeMessage(readCount, totalBooks, new Date(lastReadDate))),
     [readCount, totalBooks, lastReadDate],
   );
+  const openStat = () => getNavigation().push(MainRoutes.Stat);
 
   return (
     <TouchableOpacity onPress={showProgress}>
       <Box mt={4} alignItems='center'>
         <Text variant='title'>{t('home.challenge.title')}</Text>
 
-        <Box mt={2} backgroundColor='LightBackground' height={12} width='100%' borderRadius={6}>
-          <Box
-            position='absolute'
-            backgroundColor='Primary'
-            top={0}
-            bottom={0}
-            left={1}
-            borderRadius={6}
-            width={`${percent}%`}
-          />
+        <Box mt={2} px={2} alignSelf='stretch'>
+          <TouchableOpacity onPress={openStat}>
+            <Box backgroundColor='LightBackground' height={12} width='100%' borderRadius={6}>
+              <Box
+                position='absolute'
+                backgroundColor='Primary'
+                top={0}
+                bottom={0}
+                left={1}
+                borderRadius={6}
+                width={`${percent}%`}
+              />
+            </Box>
+
+            <Box alignItems='center'>
+              <Text mt={1} variant='body'>
+                {t('home.challenge.progress', { readCount, totalBooks })}
+              </Text>
+            </Box>
+          </TouchableOpacity>
         </Box>
 
         <Box mt={1} alignItems='center'>
-          <Text variant='body'>{t('home.challenge.progress', { readCount, totalBooks })}</Text>
-
           {forecast > 0 && (
             <Text variant='small' color='Green' mt={1}>
               {t('home.challenge.youare-ahead', { count: forecast, postProcess: 'rp' })}
@@ -206,12 +217,3 @@ export const BookChallenge = withObservables(null, () => ({
   readCount: readBooksThisYearQuery().observeCount(),
   lastReadDate: lastReadDateObserver(),
 }))(BookChallengeComponent);
-
-const s = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginTop: 20,
-  } as ViewStyle,
-});

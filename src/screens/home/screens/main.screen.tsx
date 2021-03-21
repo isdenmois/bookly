@@ -22,8 +22,6 @@ export const MainScreen: FC = () => {
 
 const s = StyleSheet.create({
   container: {
-    paddingTop: 10,
-    paddingHorizontal: 24,
-    flex: 1,
+    padding: 16,
   } as ViewStyle,
 });
