@@ -46,14 +46,8 @@ module.exports = {
   entry: './web/index.js',
   output: {
     path: path.resolve(rootDir, 'dist'),
-    filename: 'app-[hash].bundle.js',
+    filename: 'app-[chunkhash].bundle.js',
     globalObject: 'this',
-  },
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    crypto: 'empty',
   },
   devtool: !isProd && 'eval-source-map',
   optimization: isProd
@@ -62,9 +56,7 @@ module.exports = {
         minimize: true,
         minimizer: [
           new TerserPlugin({
-            cache: true,
             parallel: true,
-            sourceMap: true,
             terserOptions: {
               output: {
                 comments: false,
@@ -79,7 +71,7 @@ module.exports = {
               minChunks: 2,
               reuseExistingChunk: true,
             },
-            vendor: {
+            defaultVendors: {
               test: /node_modules/,
               chunks: 'initial',
               name: 'vendor',
@@ -167,7 +159,6 @@ module.exports = {
       },
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env.VERSION': JSON.stringify(require('./package.json').version),
       __DEV__: webpackEnv === 'development',
     }),
@@ -176,6 +167,7 @@ module.exports = {
       patterns: [
         { from: path.resolve(rootDir, 'web/apple-launch-750x1334.png'), to: 'assets' },
         { from: path.resolve(rootDir, 'android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png'), to: 'assets' },
+        { from: path.resolve(rootDir, 'web/manifest.json'), to: '' },
       ],
     }),
     ...(isProd
@@ -203,10 +195,16 @@ module.exports = {
       : []),
   ],
   resolve: {
-    extensions: ['.web.tsx', '.web.ts', '.tsx', '.ts', '.web.jsx', '.web.js', '.jsx', '.js'], // read files in fillowing order
+    extensions: ['.web.tsx', '.web.ts', '.tsx', '.ts', '.web.jsx', '.web.js', '.jsx', '.js'],
     alias: Object.assign({
       'react-native$': 'react-native-web',
     }),
+    fallback: {
+      fs: false,
+      net: false,
+      tls: false,
+      crypto: false,
+    },
   },
   devServer: {
     port: 3000,

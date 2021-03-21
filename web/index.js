@@ -1,7 +1,9 @@
+import 'setimmediate';
 import { AppRegistry, ToastAndroid } from 'react-native';
-import { name as appName } from '../app.json';
 import App from '../src/app';
 import { Workbox, messageSW } from 'workbox-window';
+
+const appName = 'bookly';
 
 if ('serviceWorker' in navigator) {
   const wb = new Workbox('/sw.js');
