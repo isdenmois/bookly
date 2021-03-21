@@ -3,6 +3,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dayOfYear, getStartOfYear, daysAmount } from 'utils/date';
 import { database } from 'store';
+import Book from 'store/book';
 
 export function booksReadForecast(read: number, total: number): number {
   const yearProgress = dayOfYear() / daysAmount();
@@ -13,7 +14,7 @@ export function booksReadForecast(read: number, total: number): number {
 
 export function currentBooksQuery() {
   return database.collections
-    .get('books')
+    .get<Book>('books')
     .query(Q.where('status', BOOK_STATUSES.NOW), Q.experimentalSortBy('updated_at', Q.asc));
 }
 
@@ -23,16 +24,16 @@ export function wishBooksQuery() {
 
 export function readBooksThisYearQuery() {
   const queries = [Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(getStartOfYear().getTime()))];
-  return database.collections.get('books').query(Q.and(...queries));
+  return database.collections.get<Book>('books').query(Q.and(...queries), Q.experimentalSortBy('date', Q.desc));
 }
 
 export function readBooksQuery() {
-  return database.collections.get('books').query(Q.where('status', BOOK_STATUSES.READ));
+  return database.collections.get<Book>('books').query(Q.where('status', BOOK_STATUSES.READ));
 }
 
 export function lastReadDateObserver() {
   return database.collections
-    .get('books')
+    .get<Book>('books')
     .query(Q.where('status', BOOK_STATUSES.READ), Q.experimentalSortBy('date', Q.desc), Q.experimentalTake(1))
     .observeWithColumns(['date'])
     .pipe(map(rows => rows[0]?.date));

@@ -29,7 +29,7 @@ const s = StyleSheet.create({
     fontSize: 21,
   },
   xl: {
-    fontSize: 24,
+    fontSize: 20,
   },
 });
 

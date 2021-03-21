@@ -1,56 +1,29 @@
-import React from 'react';
-import { StyleSheet, ScrollView, RefreshControl, ViewStyle } from 'react-native';
-import { syncService } from 'services';
-import { Screen } from 'components/screen';
-import { HomeHeader } from './components/header';
-import { CurrentBook } from './components/current-book';
-import { BookChallenge } from './components/book-challenge';
-import { NavigationLinks } from './components/navigation-links';
+import React, { FC } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 import { setNavigation } from 'services/navigation';
 import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
-interface State {
-  refreshing: boolean;
-}
+import { MainScreen } from './screens/main.screen';
+import { BookshelvesScreen } from './screens/bookshelves.screen';
+import { ProfileScreen } from './screens/profile.screen';
 
-export class HomeScreen extends React.Component<MainScreenProps<MainRoutes.Home>, State> {
-  state: State = { refreshing: false };
+const Tab = createBottomTabNavigator();
 
-  render() {
-    setNavigation(this.props.navigation);
+type Props = MainScreenProps<MainRoutes.Home>;
 
-    return (
-      <Screen>
-        <ScrollView testID='homeScreen' contentContainerStyle={s.container} refreshControl={this.renderRefresh()}>
-          <HomeHeader />
+export const HomeScreen: FC<Props> = ({ navigation }) => {
+  setNavigation(navigation);
 
-          <CurrentBook />
+  return (
+    <Tab.Navigator tabBarOptions={{ showLabel: false }}>
+      <Tab.Screen name='main' component={MainScreen} options={{ tabBarIcon: icon('home') }} />
+      <Tab.Screen name='bookshelves' component={BookshelvesScreen} options={{ tabBarIcon: icon('book') }} />
+      <Tab.Screen name='search' component={BookshelvesScreen} options={{ tabBarIcon: icon('search') }} />
+      <Tab.Screen name='profile' component={ProfileScreen} options={{ tabBarIcon: icon('user') }} />
+    </Tab.Navigator>
+  );
+};
 
-          <BookChallenge />
-
-          <NavigationLinks />
-        </ScrollView>
-      </Screen>
-    );
-  }
-
-  renderRefresh() {
-    return <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />;
-  }
-
-  refresh = async () => {
-    this.setState({ refreshing: true });
-
-    await syncService.sync();
-
-    this.setState({ refreshing: false });
-  };
-}
-
-const s = StyleSheet.create({
-  container: {
-    paddingTop: 10,
-    paddingHorizontal: 24,
-    flex: 1,
-  } as ViewStyle,
-});
+const icon = name => ({ color, size }) => <Icon name={name} color={color} size={size} />;

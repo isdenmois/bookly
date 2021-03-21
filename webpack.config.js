@@ -170,6 +170,9 @@ module.exports = {
         { from: path.resolve(rootDir, 'web/manifest.json'), to: '' },
       ],
     }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     ...(isProd
       ? [
           new WorkboxPlugin.GenerateSW({

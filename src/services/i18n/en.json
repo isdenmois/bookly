@@ -29,11 +29,13 @@
       "select": "Select a book"
     },
     "challenge": {
-      "anticipate": "Anticipate",
-      "completed": "Completed",
-      "ahead": "Ahead",
+      "title": "Reading challenge",
+      "progress": "{{readCount}} of {{totalBooks}}",
+
       "youve-completed": "You have completed the challenge!",
-      "progress": "Read a book before {{date}} to manage to complete the challenge",
+      "youare-ahead": "You're {{count}} $r(book-count) ahead of plan",
+      "youare-behind": "You're {{count}} $r(book-count) behind of plan",
+      "advice": "Read a book before {{date}} to manage to complete the challenge",
       "progress-rate": "Read a book before {{date}} (once per {{rate}} $t(day, {\"count\": {{rate}}})) to complete the challenge",
       "zerocast": "Read a book before {{date}} (once per {{rate}} $t(day, {\"count\": {{rate}}})) to reach 0 before {{zero}}",
       "forecast": "Read a book before {{date}} to keep the rate and read {{count}} $t(book-count, {\"count\": {{count}}})",
@@ -49,7 +51,8 @@
     "wish": "Want to read",
     "update": "Update",
     "book-search": "Search in App",
-    "more": "More"
+    "more": "More",
+    "ive-finished": "I've finished"
   },
   "nav": {
     "read": "Read books",

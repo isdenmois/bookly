@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 export const color = {
   Black: '#000',
   Red: '#F44336',
+  Green: '#1B976D',
 
   PrimaryText: '#000',
   PrimaryTextInverse: '#FFF',
@@ -32,6 +33,7 @@ export const light = color;
 
 export const dark = {
   Red: '#F44336',
+  Green: '#1B976D',
 
   PrimaryText: '#FAFAFB',
   PrimaryTextInverse: '#FAFAFB',

@@ -29,11 +29,13 @@
       "select": "Выбрать книгу"
     },
     "challenge": {
-      "anticipate": "Запланировано",
-      "completed": "Прочитано",
-      "ahead": "Опережение",
+      "title": "Книжный вызов",
+      "progress": "{{readCount}} из {{totalBooks}}",
+
       "youve-completed": "Вы завершили книжный вызов!",
-      "progress": "Прочитайте книгу до {{date}}, чтобы успеть выполнить вызов",
+      "youare-ahead": "Вы на {{count}} $r(book-count) опережаете план",
+      "youare-behind": "Вы на {{count}} $r(book-count) отстаете от плана",
+      "advice": "Прочитайте книгу до {{date}}, чтобы успеть выполнить вызов",
       "progress-rate": "Прочитайте книгу до {{date}} (раз в {{rate}} $r(day, rate)), чтобы успеть выполнить вызов",
       "zerocast": "Прочитайте книгу до {{date}} (раз в {{rate}} $r(day, rate)), чтобы выйти в 0 до {{zero}}",
       "forecast": "Прочитайте книгу до {{date}} (раз в {{rate}} $r(day, rate)), чтобы сохранить темп и прочитать {{count}} $r(book-count) за год",
@@ -49,7 +51,8 @@
     "wish": "Хочу прочитать",
     "update": "Обновить",
     "book-search": "Найти во Flibusta",
-    "more": "Еще"
+    "more": "Еще",
+    "ive-finished": "Прочитала"
   },
   "nav": {
     "read": "Прочитанные",

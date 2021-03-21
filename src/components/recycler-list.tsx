@@ -6,11 +6,14 @@ interface Props<T> {
   data: T[];
   rowRenderer: (type: string | number, data: any, index: number, extendedState?: object) => ReactElement;
   itemHeight: number;
+  itemWidth?: number;
   style?: any;
   contentContainerStyle?: StyleProp<ViewStyle>;
   ListEmptyComponent?: any;
   ListHeaderComponent?: any;
   ListFooterComponent?: any;
+  isHorizontal?: boolean;
+  showsHorizontalScrollIndicator?: boolean;
 }
 
 class ExtendedScrollView extends BaseScrollView {
@@ -33,11 +36,11 @@ class ExtendedScrollView extends BaseScrollView {
 }
 
 function RecyclerListComponent<T>(
-  { data, itemHeight, ListEmptyComponent, ListFooterComponent, ...props }: Props<T>,
+  { data, itemHeight, itemWidth, ListEmptyComponent, ListFooterComponent, ...props }: Props<T>,
   ref,
 ) {
   const provider = useDataProvider(data);
-  const layoutProvider = useLayoutProvider(itemHeight);
+  const layoutProvider = useLayoutProvider(itemHeight, itemWidth);
 
   if (!data?.length) {
     return ListEmptyComponent || null;
@@ -67,7 +70,7 @@ function useDataProvider<T>(data: T[]) {
   return provider;
 }
 
-function useLayoutProvider(itemHeight: number) {
+function useLayoutProvider(itemHeight: number, itemWidth?: number) {
   const { width } = useWindowDimensions();
 
   return useMemo(
@@ -75,11 +78,11 @@ function useLayoutProvider(itemHeight: number) {
       new LayoutProvider(
         () => 0,
         (_, dim) => {
-          dim.width = width;
+          dim.width = itemWidth || width;
           dim.height = itemHeight;
         },
       ),
-    [width, itemHeight],
+    [width, itemHeight, itemWidth],
   );
 }
 

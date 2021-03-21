@@ -3,7 +3,7 @@ import { ScrollView, View, StyleSheet, ViewStyle } from 'react-native';
 import { color, dark } from 'types/colors';
 import { DynamicStyleSheet, DynamicValue, useDynamicValue } from 'react-native-dynamic';
 
-const BUBLE_SIZE = 10;
+const BUBLE_SIZE = 5;
 
 interface Props {
   children: any;
@@ -64,16 +64,16 @@ const dynamicStyles = new DynamicStyleSheet({
     width: BUBLE_SIZE,
     height: BUBLE_SIZE,
     backgroundColor: new DynamicValue(color.Border, dark.Border),
-    borderRadius: 15,
+    borderRadius: BUBLE_SIZE,
     alignSelf: 'center',
-    marginLeft: 1,
+    marginLeft: 3,
   },
   filled: {
     width: BUBLE_SIZE,
     height: BUBLE_SIZE,
     backgroundColor: new DynamicValue(color.Primary, dark.Primary),
-    borderRadius: 15,
+    borderRadius: BUBLE_SIZE,
     alignSelf: 'center',
-    marginLeft: 1,
+    marginLeft: 3,
   },
 });

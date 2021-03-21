@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import React, { useMemo, useCallback } from 'react';
-import { StyleSheet, TouchableOpacity, ViewStyle, ToastAndroid } from 'react-native';
+import { StyleSheet, TouchableOpacity, ViewStyle, Alert, Platform } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { t } from 'services/i18n';
 import { useSetting } from 'services/settings';
-import { Counter } from 'components';
 import { dayOfYear, format, daysAmount } from 'utils/date';
 import { readBooksThisYearQuery, booksReadForecast, lastReadDateObserver } from '../home.queries';
+import { Box, Text } from 'components/theme';
 
 const DATE_FORMAT = 'DD.MM';
 const formatDate = date => format(date, DATE_FORMAT);
@@ -16,19 +16,50 @@ interface Props {
   lastReadDate?: Date;
 }
 
+const showAlert = text => (Platform.OS === 'web' ? window.alert(text) : Alert.alert('', text));
+
 function BookChallengeComponent({ readCount, lastReadDate }: Props) {
   const totalBooks = useSetting('totalBooks');
   const forecast = useMemo(() => booksReadForecast(readCount, totalBooks), [readCount, totalBooks]);
+  const percent = Math.round(100 * (readCount / totalBooks));
   const showProgress = useCallback(
-    () => ToastAndroid.show(getChallengeMessage(readCount, totalBooks, new Date(lastReadDate)), ToastAndroid.LONG),
+    () => showAlert(getChallengeMessage(readCount, totalBooks, new Date(lastReadDate))),
     [readCount, totalBooks, lastReadDate],
   );
 
   return (
-    <TouchableOpacity style={s.row} onPress={showProgress}>
-      <Counter label={t('home.challenge.completed')} value={readCount} />
-      <Counter label={t('home.challenge.anticipate')} value={totalBooks} testID='plannedBooksCount' />
-      <Counter label={t('home.challenge.ahead')} value={forecast} />
+    <TouchableOpacity onPress={showProgress}>
+      <Box mt={4} alignItems='center'>
+        <Text variant='title'>{t('home.challenge.title')}</Text>
+
+        <Box mt={2} backgroundColor='LightBackground' height={12} width='100%' borderRadius={6}>
+          <Box
+            position='absolute'
+            backgroundColor='Primary'
+            top={0}
+            bottom={0}
+            left={1}
+            borderRadius={6}
+            width={`${percent}%`}
+          />
+        </Box>
+
+        <Box mt={1} alignItems='center'>
+          <Text variant='body'>{t('home.challenge.progress', { readCount, totalBooks })}</Text>
+
+          {forecast > 0 && (
+            <Text variant='small' color='Green' mt={1}>
+              {t('home.challenge.youare-ahead', { count: forecast, postProcess: 'rp' })}
+            </Text>
+          )}
+
+          {forecast < 0 && (
+            <Text variant='small' color='Red' mt={1}>
+              {t('home.challenge.youare-behind', { count: -forecast, postProcess: 'rp' })}
+            </Text>
+          )}
+        </Box>
+      </Box>
     </TouchableOpacity>
   );
 }
@@ -51,7 +82,7 @@ export function getChallengeMessage(readCount: number, totalBooks: number, lastR
     getForecastMessage(readCount, totalBooks, lastRead),
   ]
     .filter(_.identity)
-    .join('\n\n');
+    .join('\n');
 }
 
 export function getProgressMessage(readCount: number, totalBooks: number): string {
@@ -68,7 +99,7 @@ export function getProgressMessage(readCount: number, totalBooks: number): strin
 
   date.setMonth(0, dueDate);
 
-  return t('home.challenge.progress', {
+  return t('home.challenge.advice', {
     date: formatDate(date),
   });
 }

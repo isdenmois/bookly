@@ -1,50 +1,39 @@
 import React from 'react';
-import { View, ViewStyle, TextStyle } from 'react-native';
-import withObservables from '@nozbe/with-observables';
+import { useObservable } from 'utils/use-observable';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useDarkModeContext, DynamicStyleSheet } from 'react-native-dynamic';
-import { getColor, dynamicColor } from 'types/colors';
+
 import { openModal, t } from 'services';
-import { Button, TextM } from 'components';
-import { wishBooksQuery } from '../home.queries';
+import { Button } from 'components';
 import { ModalRoutes } from 'navigation/routes';
+import { Box, Text, useTheme } from 'components/theme';
+import { wishBooksQuery } from '../home.queries';
 
-interface Props {
-  wishBooksCount?: number;
-}
+const getWishBooksCount = () => wishBooksQuery().observeCount();
 
-const withWishBooksCount: Function = withObservables(null, () => ({
-  wishBooksCount: wishBooksQuery().observeCount(),
-}));
-
-export const EmptyBook = withWishBooksCount(({ wishBooksCount }: Props) => {
+export const EmptyBook = () => {
+  const wishBooksCount = useObservable(getWishBooksCount, 1, []);
   const openBookSelect = () => openModal(ModalRoutes.BookSelect);
-  const mode = useDarkModeContext();
-  const s = ds[mode];
+  const { colors } = useTheme();
 
   return (
-    <View style={s.container}>
-      <Icon name='bookmark' size={36} color={getColor(mode).Empty} />
-      {!wishBooksCount && <TextM style={s.text}>{t('home.empty.no-books')}</TextM>}
-      {!!wishBooksCount && <TextM style={s.text}>{t('home.empty.choose')}</TextM>}
-      {!!wishBooksCount && (
-        <Button testID='bookSelectButton' onPress={openBookSelect} style={s.button} label={t('modal.select-book')} />
-      )}
-    </View>
-  );
-});
+    <Box height={400} alignItems='center' justifyContent='center'>
+      <Icon name='bookmark' size={36} color={colors.Empty} />
 
-const ds = new DynamicStyleSheet({
-  container: {
-    alignItems: 'center',
-    marginTop: 35,
-  } as ViewStyle,
-  text: {
-    color: dynamicColor.Empty,
-    marginTop: 25,
-    textAlign: 'center',
-  } as TextStyle,
-  button: {
-    marginTop: 25,
-  } as ViewStyle,
-});
+      {!wishBooksCount && (
+        <Text variant='empty' mt={3} textAlign='center'>
+          {t('home.empty.no-books')}
+        </Text>
+      )}
+      {!!wishBooksCount && (
+        <Text variant='empty' mt={3} textAlign='center'>
+          {t('home.empty.choose')}
+        </Text>
+      )}
+      {!!wishBooksCount && (
+        <Box mt={3}>
+          <Button testID='bookSelectButton' onPress={openBookSelect} label={t('modal.select-book')} />
+        </Box>
+      )}
+    </Box>
+  );
+};
