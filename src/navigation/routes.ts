@@ -37,7 +37,13 @@ export enum MainRoutes {
 
 type MainParamList = {
   [MainRoutes.Home]: null;
-  [MainRoutes.Search]: { query: string; source?: string; forceOpen?: boolean; fantlabId?: string; paper?: boolean };
+  [MainRoutes.Search]: {
+    query: string;
+    source?: 'FantLab' | 'LiveLib';
+    forceOpen?: boolean;
+    fantlabId?: string;
+    paper?: boolean;
+  };
   [MainRoutes.ReadList]: { filters?; sort?; readonly?: boolean; listId?: string; listName?: string };
   [MainRoutes.WishList]: null;
   [MainRoutes.Details]: { bookId: string; extra?: Partial<BookData>; fantlabId?: string; initialTab?: string };

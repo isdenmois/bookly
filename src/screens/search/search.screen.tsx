@@ -13,7 +13,7 @@ type Props = MainScreenProps<MainRoutes.Search>;
 interface State {
   q: string;
   query: string;
-  source: string;
+  source: 'FantLab' | 'LiveLib';
 }
 
 export const fantlab = 'FantLab';
@@ -21,8 +21,6 @@ export const livelib = 'LiveLib';
 
 export class SearchScreen extends React.Component<Props, State> {
   static contextType = ColorSchemeContext;
-
-  static defaultProps = { source: fantlab };
 
   state: State = {
     q: this.props.route.params.query,

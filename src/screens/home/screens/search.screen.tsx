@@ -1,44 +1,57 @@
 import _ from 'lodash';
 import React from 'react';
 import { getNavigation, openModal, api } from 'services';
-import { SearchBar } from 'components';
-import { ActivityIndicator } from 'react-native';
+import { SearchBar, Tag } from 'components';
 import { t } from 'services/i18n';
 import { livelib } from 'screens/search/search.screen';
 import { MainRoutes, ModalRoutes } from 'navigation/routes';
+import { ActivityIndicator } from 'components/activity-indicator';
+import { Box } from 'components/theme';
 
 interface State {
   query: string;
   fetching: boolean;
+  source: 'FantLab' | 'LiveLib';
 }
 
-export class HomeHeader extends React.Component<any, State> {
-  state: State = { query: '', fetching: false };
+export class HomeSearchScreen extends React.Component<any, State> {
+  state: State = { query: '', fetching: false, source: 'FantLab' };
 
   render() {
-    const { fetching, query } = this.state;
+    const { fetching, query, source } = this.state;
 
     if (fetching) {
       return <ActivityIndicator />;
     }
 
     return (
-      <SearchBar
-        placeholder={t('home.search')}
-        value={query}
-        actionIcon='barcode'
-        onChange={this.queryChange}
-        onSearch={this.onSearch}
-        onAction={this.scan}
-      />
+      <Box px={2} pt={2}>
+        <SearchBar
+          placeholder={t('home.search')}
+          value={query}
+          actionIcon='barcode'
+          autoFocus
+          onChange={this.queryChange}
+          onSearch={this.onSearch}
+          onAction={this.scan}
+        />
+
+        <Box flexDirection='row' mt={2}>
+          <Tag title='FantLab' selected={source === 'FantLab'} onPress={this.setFantLab} outline />
+          <Tag title='LiveLib' selected={source === 'LiveLib'} onPress={this.setLiveLib} outline />
+        </Box>
+      </Box>
     );
   }
 
   queryChange = query => this.setState({ query });
 
+  setFantLab = () => this.setState({ source: 'FantLab' });
+  setLiveLib = () => this.setState({ source: 'LiveLib' });
+
   onSearch = async () => {
     let screen = MainRoutes.Search;
-    let params: any = { query: this.state.query.trim() };
+    let params: any = { query: this.state.query.trim(), source: this.state.source };
 
     if (isISBN(params.query)) {
       this.setState({ fetching: true });
@@ -49,7 +62,10 @@ export class HomeHeader extends React.Component<any, State> {
     }
 
     getNavigation().push(screen, params);
-    this.setState({ query: '' });
+
+    setTimeout(() => {
+      this.props.navigation.jumpTo('main');
+    }, 500);
   };
 
   async isbnSearch(query): Promise<[MainRoutes, any]> {
