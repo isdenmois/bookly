@@ -20,7 +20,7 @@ export const HeaderRow = memo(({ columns, fields, flexes, sort, onSort }: Props)
   return (
     <View style={s.container}>
       {columns.map((c, i) => (
-        <TouchableOpacity style={flexes && { flex: flexes[i] }} onPress={() => onSort(fields[i])}>
+        <TouchableOpacity key={c} style={flexes && { flex: flexes[i] }} onPress={() => onSort(fields[i])}>
           <Text key={c} style={s.text}>
             {t(c)}
             {!!sort && sort.field === fields[i] && (

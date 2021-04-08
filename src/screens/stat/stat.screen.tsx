@@ -47,7 +47,6 @@ export function StatScreen() {
         style={s.body}
         contentContainerStyle={s.bodyContainer}
         data={rows}
-        keyExtractor={i => String(i.id)}
         renderItem={({ item }) => (
           <Row row={item} columns={group.columns} flexes={group.flexes} type={type} year={year} />
         )}
