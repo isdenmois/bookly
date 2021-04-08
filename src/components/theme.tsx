@@ -15,6 +15,8 @@ export const theme = createTheme({
     2: 16,
     3: 24,
     4: 32,
+    5: 40,
+    6: 48,
   },
   colors: light,
   breakpoints: {},

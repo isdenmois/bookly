@@ -25,12 +25,12 @@ export const BookshelvesScreen: FC = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
       <BookList title='Read books' query={readBooksQuery} onViewAllPress={openReadList} />
-      <BookList mt={4} title='Want to read' query={wishBooksQuery} onViewAllPress={openWishList} />
+      <BookList mt={6} title='Want to read' query={wishBooksQuery} onViewAllPress={openWishList} />
 
       {lists.map(list => (
         <BookList
           key={list.id}
-          mt={4}
+          mt={6}
           title={list.name}
           query={() => listBooksQuery(list.id)}
           onViewAllPress={openList(list)}
