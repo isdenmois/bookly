@@ -6,7 +6,7 @@ export default {
   process(value: string, key, options) {
     if (!value.includes(';')) return value;
 
-    return pluralize(options.count % 1 !== 0 ? 2 : options.count, ...value.split(';'));
+    return pluralize(options.count % 1 !== 0 ? 2 : Math.abs(options.count), ...value.split(';'));
   },
 } as any;
 

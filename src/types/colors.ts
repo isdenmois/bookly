@@ -6,7 +6,7 @@ export const color = {
   Red: '#F44336',
   Green: '#1B976D',
 
-  PrimaryText: '#000',
+  PrimaryText: '#051033',
   PrimaryTextInverse: '#FFF',
   SecondaryText: '#757575',
   ErrorText: '#F44336',
@@ -19,14 +19,22 @@ export const color = {
   LightBackground: '#EEE',
   BookItem: '#FFF',
 
-  Primary: '#009688',
+  Primary: '#57B5AC',
   Secondary: '#F57C00',
   Empty: '#90A4AE',
   Stars: '#FF9032',
-  Border: '#E0E0E0',
+  Border: '#CCD5EA',
   BlueIcon: '#0D47A1',
   Review: '#454754',
   ReadMore: '#4E342E',
+
+  grey10: '#EEEFF8',
+  grey70: '#6B6E8D',
+  notBlack: '#474B6D',
+  carouselTitle: '#FBFCF9',
+  homeBlock: '#F6F5F2',
+  tile: '#FBFCF9',
+  empty: '#EEEFF8',
 };
 
 export const light = color;
@@ -57,6 +65,14 @@ export const dark = {
   BlueIcon: '#357AE9',
   Review: '#F4EDEA',
   ReadMore: '#8E8E98',
+
+  grey10: '#292932',
+  grey70: '#13131A',
+  notBlack: '#FAFAFB',
+  carouselTitle: '#FAFAFB',
+  homeBlock: '#22222F',
+  tile: '#3F434A',
+  empty: '#F0F0F0',
 };
 
 type Color = typeof color | typeof dark;

@@ -17,8 +17,8 @@ export const EmptyBook = () => {
   const { colors } = useTheme();
 
   return (
-    <Box height={390} alignItems='center' justifyContent='center'>
-      <Icon name='bookmark' size={36} color={colors.Empty} />
+    <Box height={310} alignItems='center' justifyContent='center'>
+      <Icon name='bookmark' size={36} color={colors.empty} />
 
       {!wishBooksCount && (
         <Text variant='empty' mt={3} textAlign='center'>

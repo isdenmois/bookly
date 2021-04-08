@@ -5,27 +5,30 @@ import { Thumbnail } from 'components';
 import { RecyclerList } from 'components/recycler-list';
 import { Box, Text } from 'components/theme';
 import { MainRoutes } from 'navigation/routes';
-import { getNavigation } from 'services';
+import { getNavigation, t } from 'services';
 import Book from 'store/book';
 import { formatDate } from 'utils/date';
-import { useObservable } from 'utils/use-observable';
-import { readBooksThisYearQuery } from '../home.queries';
+import { Tile } from './tile';
 
-const getBooks = () => readBooksThisYearQuery().observe();
+type Props = {
+  books: Book[];
+};
 
-export function ReadBooks() {
-  const books = useObservable(getBooks, [], []);
-
+export function ReadBooks({ books }: Props) {
   return (
-    <Box mt={2} height={144}>
-      <RecyclerList
-        data={books}
-        itemHeight={144}
-        itemWidth={96}
-        rowRenderer={renderBook}
-        isHorizontal
-        showsHorizontalScrollIndicator={false}
-      />
+    <Box flexDirection='row'>
+      <Tile title={t('home.read-this-year')}>
+        <Box mt={2} height={144}>
+          <RecyclerList
+            data={books}
+            itemHeight={144}
+            itemWidth={96}
+            rowRenderer={renderBook}
+            isHorizontal
+            showsHorizontalScrollIndicator={false}
+          />
+        </Box>
+      </Tile>
     </Box>
   );
 }

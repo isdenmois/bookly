@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, ImageStyle, TouchableOpacity } from 'react-native';
+import { StyleSheet, ImageStyle, TouchableOpacity, Platform } from 'react-native';
 import Book from 'store/book';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
-import { Button, Thumbnail } from 'components';
+import { Button2, Thumbnail } from 'components';
 import { MainRoutes, ModalRoutes } from 'navigation/routes';
 import { getNavigation, openModal, t } from 'services';
-import { Box, Text } from 'components/theme';
+import { Box } from 'components/theme';
+import { BookEdge } from './book-edge';
 
 interface Props {
   book: Book;
@@ -19,29 +20,33 @@ export function NowReadingBook({ book }: Props) {
   const openBook = useCallback(() => getNavigation().push(MainRoutes.Details, { bookId: book.id }), []);
 
   return (
-    <Box alignItems='center' py={1}>
+    <Box alignItems='center' mt={3}>
       <TouchableOpacity style={s.thumbnail} onPress={openBook} testID='currentThumbnail'>
-        <Thumbnail cache style={s.image} width={200} height={300} title={book.title} url={book.thumbnail} />
+        <Thumbnail cache style={s.image} width={150} height={225} title={book.title} url={book.thumbnail} />
+
+        <BookEdge />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={openBook}>
-        <Text variant='title' pt={1} textAlign='center' testID='currentBookTitle'>
-          {book.title}
-        </Text>
-      </TouchableOpacity>
-
-      <Box mt={1}>
-        <Button label={t('button.ive-finished')} thin onPress={openChangeStatus} />
-      </Box>
+      <Button2 mt={2} label={t('button.ive-finished')} variant='inverted' onPress={openChangeStatus} />
     </Box>
   );
 }
 
 const s = StyleSheet.create({
   thumbnail: {
-    borderRadius: 20,
+    flexDirection: 'row',
+    width: 166,
   } as ImageStyle,
   image: {
     borderRadius: 20,
+    zIndex: 2,
+    ...Platform.select({
+      android: {
+        elevation: 2,
+      },
+      web: {
+        boxShadow: 'rgb(0 0 0 / 25%) 1px 2px 2px',
+      },
+    }),
   } as ImageStyle,
 });

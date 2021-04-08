@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useColorScheme } from 'react-native';
+import { Platform, TouchableOpacity, TouchableOpacityProps, useColorScheme } from 'react-native';
 import {
   ThemeProvider as ReThemeProvider,
   createBox,
@@ -8,14 +8,6 @@ import {
   useTheme as useThemeRN,
 } from '@shopify/restyle';
 import { dark, light } from 'types/colors';
-
-export const palette = {
-  purple: '#5A31F4',
-  white: '#FFF',
-  black: '#111',
-  darkGray: '#333',
-  lightGray: '#EEE',
-};
 
 export const theme = createTheme({
   spacing: {
@@ -27,38 +19,64 @@ export const theme = createTheme({
   colors: light,
   breakpoints: {},
   textVariants: {
+    defaults: {
+      color: 'PrimaryText',
+    },
     title: {
       fontSize: 20,
       lineHeight: 24,
-      color: 'PrimaryText',
     },
     body: {
       fontSize: 16,
-      color: 'PrimaryText',
     },
     empty: {
       fontSize: 16,
-      color: 'Empty',
+      color: 'empty',
     },
     small: {
       fontSize: 12,
       lineHeight: 16,
-      color: 'SecondaryText',
+    },
+    medium: {
+      ...Platform.select({
+        web: {
+          fontWeight: 600,
+        },
+        default: {
+          fontFamily: 'sans-serif-medium',
+        },
+      }),
+    },
+    tile: {
+      fontSize: 18,
+      lineHeight: 18,
+      color: 'notBlack',
+    },
+
+    button_primary: {},
+    button_outlined: {},
+    button_inverted: {
+      fontSize: 16,
+      color: 'PrimaryText',
     },
   },
-  cardVariants: {
-    primary: {
-      backgroundColor: 'primaryCardBackground',
-      shadowOpacity: 0.3,
+  buttonVariants: {
+    defaults: {
+      borderRadius: 5,
+      px: 2,
+      py: 1,
     },
-    secondary: {
-      backgroundColor: 'secondaryCardBackground',
-      shadowOpacity: 0.1,
+    primary: {
+      backgroundColor: 'Primary',
+    },
+    outlined: {},
+    inverted: {
+      backgroundColor: 'grey10',
     },
   },
 });
 
-type Theme = typeof theme;
+export type Theme = typeof theme;
 
 const darkTheme: Theme = {
   ...theme,
@@ -69,6 +87,7 @@ const darkTheme: Theme = {
 };
 
 export const Box = createBox<Theme>();
+export const TouchableBox = createBox<Theme, TouchableOpacityProps>(TouchableOpacity);
 export const Text = createText<Theme>();
 
 export const ThemeProvider: FC = ({ children }) => {

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { TouchableOpacity, Alert, Platform } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { t } from 'services/i18n';
@@ -9,6 +9,8 @@ import { readBooksThisYearQuery, booksReadForecast, lastReadDateObserver } from 
 import { Box, Text } from 'components/theme';
 import { getNavigation } from 'services';
 import { MainRoutes } from 'navigation/routes';
+import { Tile } from './tile';
+import { ReadingProgress } from './reading-progress';
 
 const DATE_FORMAT = 'DD.MM';
 const formatDate = date => format(date, DATE_FORMAT);
@@ -21,57 +23,49 @@ interface Props {
 const showAlert = text => (Platform.OS === 'web' ? window.alert(text) : Alert.alert('', text));
 
 function BookChallengeComponent({ readCount, lastReadDate }: Props) {
+  const [showDate, setShowDate] = useState(false);
   const totalBooks = useSetting('totalBooks');
   const forecast = useMemo(() => booksReadForecast(readCount, totalBooks), [readCount, totalBooks]);
-  const percent = Math.round(100 * (readCount / totalBooks));
   const showProgress = useCallback(
     () => showAlert(getChallengeMessage(readCount, totalBooks, new Date(lastReadDate))),
     [readCount, totalBooks, lastReadDate],
   );
-  const openStat = () => getNavigation().push(MainRoutes.Stat);
+  const progressDate = useMemo(
+    () =>
+      getProgressDate(readCount, totalBooks) || getNegativeProgressDate(readCount, totalBooks, new Date(lastReadDate)),
+    [readCount, totalBooks],
+  );
+  const openSettings = () => getNavigation().push(MainRoutes.Settings);
+  const toggleShowDate = () => setShowDate(!showDate);
 
   return (
-    <TouchableOpacity onPress={showProgress}>
-      <Box mt={4} alignItems='center'>
-        <Text variant='title'>{t('home.challenge.title')}</Text>
-
-        <Box mt={2} px={2} alignSelf='stretch'>
-          <TouchableOpacity onPress={openStat}>
-            <Box backgroundColor='LightBackground' height={12} width='100%' borderRadius={6}>
-              <Box
-                position='absolute'
-                backgroundColor='Primary'
-                top={0}
-                bottom={0}
-                left={1}
-                borderRadius={6}
-                width={`${percent}%`}
-              />
-            </Box>
-
-            <Box alignItems='center'>
-              <Text mt={1} variant='body'>
-                {t('home.challenge.progress', { readCount, totalBooks })}
-              </Text>
-            </Box>
-          </TouchableOpacity>
+    <Box flexDirection='row'>
+      <Tile title={t('home.challenge.title')} onPress={showProgress} onLongPress={openSettings}>
+        <Box pt={2}>
+          <ReadingProgress readCount={readCount} totalBooks={totalBooks} />
         </Box>
+      </Tile>
 
-        <Box mt={1} alignItems='center'>
-          {forecast > 0 && (
-            <Text variant='small' color='Green' mt={1}>
-              {t('home.challenge.youare-ahead', { count: forecast, postProcess: 'rp' })}
+      <Tile title={t('home.challenge.plan')} onPress={toggleShowDate} onLongPress={showProgress}>
+        <Box mt={1} alignItems='center' justifyContent='center' flex={1}>
+          {showDate && (
+            <Text fontSize={24} lineHeight={24}>
+              {progressDate}
             </Text>
           )}
 
-          {forecast < 0 && (
-            <Text variant='small' color='Red' mt={1}>
-              {t('home.challenge.youare-behind', { count: -forecast, postProcess: 'rp' })}
+          {!showDate && (
+            <Text fontSize={52} lineHeight={52}>
+              {forecast}
             </Text>
           )}
+
+          <Text variant='small' mt={1}>
+            {showDate ? t('home.challenge.read-before') : t('home.challenge.ahead')}
+          </Text>
         </Box>
-      </Box>
-    </TouchableOpacity>
+      </Tile>
+    </Box>
   );
 }
 
@@ -93,10 +87,10 @@ export function getChallengeMessage(readCount: number, totalBooks: number, lastR
     getForecastMessage(readCount, totalBooks, lastRead),
   ]
     .filter(_.identity)
-    .join('\n');
+    .join('\n\n');
 }
 
-export function getProgressMessage(readCount: number, totalBooks: number): string {
+function getProgressDate(readCount: number, totalBooks: number): string {
   const today = dayOfYear();
   const amount = daysAmount();
   const needToRead = Math.floor((today / amount) * totalBooks);
@@ -110,9 +104,37 @@ export function getProgressMessage(readCount: number, totalBooks: number): strin
 
   date.setMonth(0, dueDate);
 
-  return t('home.challenge.advice', {
-    date: formatDate(date),
-  });
+  return formatDate(date);
+}
+
+export function getProgressMessage(readCount: number, totalBooks: number): string {
+  const date = getProgressDate(readCount, totalBooks);
+
+  return date && t('home.challenge.advice', { date });
+}
+
+function getNegativeProgressDate(readCount: number, totalBooks: number, lastRead: Date) {
+  const today = dayOfYear();
+  const amount = daysAmount();
+  const needToRead = Math.floor((today / amount) * totalBooks);
+
+  if (readCount >= needToRead) return null;
+
+  const remainDays = amount - today;
+  const toRead = totalBooks - readCount;
+  let speed = remainDays / toRead;
+
+  let last = dayOfYear(lastRead) + speed;
+
+  while (today > last) {
+    last += speed;
+    speed = (amount - last) / toRead;
+  }
+
+  lastRead = new Date(lastRead);
+  lastRead.setMonth(0, last);
+
+  return formatDate(lastRead);
 }
 
 export function getNegativeProgress(readCount: number, totalBooks: number, lastRead: Date) {

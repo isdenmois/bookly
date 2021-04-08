@@ -8,12 +8,23 @@ const BUBLE_SIZE = 5;
 interface Props {
   children: any;
   width?: number;
+  onIndexChange?: (index: number) => void;
 }
 
-export function Carousel({ children, width }: Props) {
-  const [offset, setOffset] = useState(0);
+export function Carousel({ children, width, onIndexChange }: Props) {
+  const [currentSlide, setSlide] = useState(0);
   const style: ViewStyle = useMemo(() => ({ width, overflow: 'hidden' }), [width]);
-  const onScroll = useCallback(e => setOffset(e.nativeEvent.contentOffset.x), []);
+  const onScroll = useCallback(
+    e => {
+      const index = Math.round(e.nativeEvent.contentOffset.x / width);
+
+      if (index !== currentSlide) {
+        setSlide(index);
+        onIndexChange?.(index);
+      }
+    },
+    [currentSlide, width, children.length],
+  );
   const ds = useDynamicValue(dynamicStyles);
 
   if (children?.length < 2) {
@@ -40,15 +51,11 @@ export function Carousel({ children, width }: Props) {
 
       <View style={s.bubbles}>
         {children.map((c, i) => (
-          <View key={i} style={isFilled(width, offset, i) ? ds.filled : ds.empty} />
+          <View key={i} style={i === currentSlide ? ds.filled : ds.empty} />
         ))}
       </View>
     </View>
   );
-}
-
-function isFilled(width, offset, i) {
-  return Math.round(offset / width) === i;
 }
 
 const s = StyleSheet.create({
