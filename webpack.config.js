@@ -227,7 +227,6 @@ module.exports = {
       '/api/sync': {
         target: process.env.FIREBASE_URL,
         changeOrigin: true,
-        followRedirects: true,
         pathRewrite: { '^/api/sync': '/sync' },
         secure: false,
       },
