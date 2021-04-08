@@ -7,13 +7,15 @@ import { RemoveDeleted } from 'screens/home/components/remove-deleted';
 import { clearCache } from 'services/api/base/create-api';
 import { database, settings } from 'services';
 import { Box, Text } from 'components/theme';
-import { resetSettings } from 'services/settings';
+import { resetSettings, useSetting } from 'services/settings';
 
 type Props = MainScreenProps<MainRoutes.Home>;
 
 export const ProfileScreen: FC<Props> = ({ navigation }) => {
+  const authorsEnabled = useSetting('authors');
   const openSettings = () => navigation.push(MainRoutes.Settings);
   const openLists = () => navigation.push(MainRoutes.Lists);
+  const openAuthors = () => navigation.push(MainRoutes.Authors);
   const logout = () => {
     resetSettings();
     setTimeout(() => database.action(() => database.unsafeResetDatabase()), 500);
@@ -30,6 +32,7 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
       <ScrollView contentContainerStyle={s.content}>
         <ListItem label='Настройки' onPress={openSettings} />
         <ListItem label='Списки книг' onPress={openLists} />
+        {authorsEnabled && <ListItem label='Интересные авторы' onPress={openAuthors} />}
 
         <RemoveDeleted />
 
