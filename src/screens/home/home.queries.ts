@@ -13,8 +13,6 @@ const getDefaultSort = () => {
   const sort = settings.defaultSort || INITIAL_SORT;
   const field = _.snakeCase(sort.field);
 
-  console.log('sort', sort, field);
-
   return Q.experimentalSortBy(field, sort.desc ? Q.desc : Q.asc);
 };
 
