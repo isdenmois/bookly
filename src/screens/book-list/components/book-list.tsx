@@ -54,6 +54,7 @@ export class BookList extends React.PureComponent<Props> {
         contentContainerStyle={ds.dark.scrollContainer}
         ListHeaderComponent={this.renderHeader()}
         ListFooterComponent={this.renderFooter()}
+        paddingHorizontal={16}
         ref={this.context.setScroll}
       />
     );
@@ -125,7 +126,7 @@ const ds = new DynamicStyleSheet({
   scrollContainer: {
     paddingTop: 10,
     paddingBottom: 60,
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
   } as ViewStyle,
   found: {
     fontSize: 18,

@@ -1,6 +1,14 @@
 import React, { createRef, forwardRef, ReactElement, useEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleProp, useWindowDimensions, ViewStyle } from 'react-native';
-import { BaseScrollView, DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
+import { ScrollView, StyleProp, StyleSheet, useWindowDimensions, ViewStyle } from 'react-native';
+import {
+  BaseScrollView,
+  DataProvider,
+  Dimension,
+  LayoutManager,
+  LayoutProvider,
+  RecyclerListView,
+  WrapGridLayoutManager,
+} from 'recyclerlistview';
 
 interface Props<T> {
   data: T[];
@@ -14,6 +22,7 @@ interface Props<T> {
   ListFooterComponent?: any;
   isHorizontal?: boolean;
   showsHorizontalScrollIndicator?: boolean;
+  paddingHorizontal?: number;
 }
 
 class ExtendedScrollView extends BaseScrollView {
@@ -36,11 +45,11 @@ class ExtendedScrollView extends BaseScrollView {
 }
 
 function RecyclerListComponent<T>(
-  { data, itemHeight, itemWidth, ListEmptyComponent, ListFooterComponent, ...props }: Props<T>,
+  { data, itemHeight, itemWidth, paddingHorizontal, ListEmptyComponent, ListFooterComponent, ...props }: Props<T>,
   ref,
 ) {
   const provider = useDataProvider(data);
-  const layoutProvider = useLayoutProvider(itemHeight, itemWidth);
+  const layoutProvider = useLayoutProvider(itemHeight, itemWidth, paddingHorizontal);
 
   if (!data?.length) {
     return ListEmptyComponent || null;
@@ -54,6 +63,7 @@ function RecyclerListComponent<T>(
       renderAheadOffset={RecyclerListView.defaultProps.renderAheadOffset + itemHeight}
       externalScrollView={ExtendedScrollView}
       renderFooter={ListFooterComponent ? () => ListFooterComponent : null}
+      styleOverrides={{ overflow: 'visible' }}
       {...props}
     />
   );
@@ -70,20 +80,41 @@ function useDataProvider<T>(data: T[]) {
   return provider;
 }
 
-function useLayoutProvider(itemHeight: number, itemWidth?: number) {
+function useLayoutProvider(itemHeight: number, itemWidth?: number, paddingHorizontal?: number = 0) {
   const { width } = useWindowDimensions();
 
   return useMemo(
     () =>
-      new LayoutProvider(
+      new VisibleLayoutProvider(
         () => 0,
         (_, dim) => {
-          dim.width = itemWidth || width;
+          dim.width = itemWidth || width - paddingHorizontal * 2;
           dim.height = itemHeight;
         },
       ),
     [width, itemHeight, itemWidth],
   );
 }
+
+class VisibleLayoutProvider extends LayoutProvider {
+  newLayoutManager(renderWindowSize: Dimension, isHorizontal?: boolean, cachedLayouts?: Layout[]) {
+    const lm = ((this as any)._lastLayoutManager = new VisibleLayoutManager(
+      this,
+      renderWindowSize,
+      isHorizontal,
+      cachedLayouts,
+    ));
+
+    return lm;
+  }
+}
+
+class VisibleLayoutManager extends WrapGridLayoutManager {
+  getStyleOverridesForIndex() {
+    return style;
+  }
+}
+
+const style = { overflow: 'visible' };
 
 export const RecyclerList = forwardRef(RecyclerListComponent);
