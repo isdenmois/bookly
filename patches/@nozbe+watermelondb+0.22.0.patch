@@ -1,0 +1,69 @@
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
+index f3d72e8..b7884c4 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/WorkerBridge.js
+@@ -4,15 +4,9 @@ exports.__esModule = true;
+ exports.default = void 0;
+ 
+ function createWorker(useWebWorker) {
+-  if (useWebWorker) {
+-    var LokiWebWorker = require('./worker/index.worker');
++  var LokiWebWorker = require('./worker/index.worker').default;
+ 
+-    return new LokiWebWorker();
+-  }
+-
+-  var WebWorkerMock = require('./worker/workerMock').default;
+-
+-  return new WebWorkerMock();
++  return new LokiWebWorker();
+ }
+ 
+ var _actionId = 0;
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
+index 47f18e9..8d31929 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/encodeQuery/index.js
+@@ -307,11 +307,11 @@ function encodeQuery(query) {
+     associations: associations
+   } = query; // TODO: implement support for Q.sortBy(), Q.take(), Q.skip() for Loki adapter
+ 
+-  (0, _invariant.default)(!sortBy.length, '[WatermelonDB][Loki] Q.sortBy() not yet supported');
+-  (0, _invariant.default)(!take, '[WatermelonDB][Loki] Q.take() not yet supported');
+   return {
+     table: table,
+     query: encodeRootConditions(associations, where),
++    sortBy: sortBy.length ? [sortBy[0].sortColumn, {desc: sortBy[0].sortOrder === 'desc'}] : null,
++    take: take,
+     hasJoins: !!joinTables.length
+   };
+ }
+\ No newline at end of file
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
+index cbf5892..7e4ddec 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/worker/executeQuery.js
+@@ -29,7 +29,22 @@ function executeFind(query, loki) {
+   }); // Step two: fetch all records matching query
+ 
+   var collection = loki.getCollection(query.table).chain();
+-  return collection.find(mainQuery);
++  var results = collection.find(mainQuery);
++
++  if (lokiQuery.sortBy) {
++    var field = lokiQuery.sortBy[0]
++    var desc = lokiQuery.sortBy[1].desc ? -1 : 1
++    results = results.sort(function(obj1, obj2) {
++           if (obj1[field] === obj2[field]) return 0;
++           if (obj1[field] > obj2[field]) return desc;
++           if (obj1[field] < obj2[field]) return -desc;
++    })
++  }
++  if (lokiQuery.take) {
++    results = results.limit(lokiQuery.take)
++  }
++
++  return results
+ }
+ 
+ function executeQuery(query, loki) {

@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 require('dotenv').config();
 
 const babelConfig = {
@@ -12,7 +12,7 @@ const babelConfig = {
     [
       '@babel/preset-env',
       {
-        targets: 'ios 13.2',
+        targets: 'ios 14',
       },
     ],
     '@babel/preset-react',
@@ -55,14 +55,9 @@ module.exports = {
         usedExports: true,
         minimize: true,
         minimizer: [
-          new TerserPlugin({
-            parallel: true,
-            terserOptions: {
-              output: {
-                comments: false,
-              },
-            },
-            extractComments: false,
+          new ESBuildMinifyPlugin({
+            target: 'es2020',
+            legalComments: 'none',
           }),
         ],
         splitChunks: {
@@ -86,15 +81,13 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            babelrc: false,
-            configFile: false,
-            presets: babelConfig.presets,
-            plugins: ['@babel/plugin-syntax-flow', '@babel/plugin-transform-flow-strip-types', ...babelConfig.plugins],
+        use: [
+          {
+            loader: 'esbuild-loader',
+            options: { loader: 'jsx', target: 'es2020' },
           },
-        },
+          'remove-flow-types-loader',
+        ],
       },
       {
         test: /\.tsx$/,
@@ -179,11 +172,12 @@ module.exports = {
             // Exclude images from the precache
             exclude: [/.(?:png|jpg|jpeg|svg)$/],
             swDest: 'sw.js',
-
+            mode: 'production',
+            skipWaiting: true,
+            clientsClaim: true,
             runtimeCaching: [
               {
                 urlPattern: /.(?:png|jpg|jpeg|svg)$/,
-
                 handler: 'CacheFirst',
                 options: {
                   cacheName: 'images',

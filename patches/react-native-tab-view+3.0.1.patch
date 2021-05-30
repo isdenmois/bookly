@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-tab-view/lib/module/TabBar.js b/node_modules/react-native-tab-view/lib/module/TabBar.js
-index afd8e4c..5652443 100644
+index e0178ee..285e364 100644
 --- a/node_modules/react-native-tab-view/lib/module/TabBar.js
 +++ b/node_modules/react-native-tab-view/lib/module/TabBar.js
-@@ -300,7 +300,7 @@ export default class TabBar extends React.Component {
+@@ -270,7 +270,7 @@ export default class TabBar extends React.Component {
          inactiveColor: inactiveColor,
          pressColor: pressColor,
          pressOpacity: pressOpacity,
