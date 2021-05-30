@@ -57,5 +57,7 @@ export function allListsObserver() {
 }
 
 export function listBooksQuery(listId: string) {
-  return database.collections.get<Book>('books').query(Q.on('list_books', 'list_id', listId), getDefaultSort());
+  return database.collections
+    .get<Book>('books')
+    .query(Q.where('status', BOOK_STATUSES.WISH), Q.on('list_books', 'list_id', listId), getDefaultSort());
 }
