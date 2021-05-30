@@ -5,7 +5,7 @@ import { Button, ListItem, Screen } from 'components';
 import { MainRoutes, MainScreenProps } from 'navigation/routes';
 import { RemoveDeleted } from 'screens/home/components/remove-deleted';
 import { clearCache } from 'services/api/base/create-api';
-import { database, settings } from 'services';
+import { database, settings, t } from 'services';
 import { Box, Text } from 'components/theme';
 import { resetSettings, useSetting } from 'services/settings';
 
@@ -30,9 +30,9 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
       </Box>
 
       <ScrollView contentContainerStyle={s.content}>
-        <ListItem label='Настройки' onPress={openSettings} />
-        <ListItem label='Списки книг' onPress={openLists} />
-        {authorsEnabled && <ListItem label='Интересные авторы' onPress={openAuthors} />}
+        <ListItem label='nav.settings' onPress={openSettings} />
+        <ListItem label='headers.lists' onPress={openLists} />
+        {authorsEnabled && <ListItem label='nav.authors' onPress={openAuthors} />}
 
         <RemoveDeleted />
 
@@ -41,7 +41,7 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
       </ScrollView>
 
       <Box position='absolute' bottom={24} left={0} right={0} alignItems='center'>
-        <Button label='Выйти' onPress={logout} />
+        <Button label={t('button.apply')} onPress={logout} />
       </Box>
     </Screen>
   );

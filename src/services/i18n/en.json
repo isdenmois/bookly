@@ -62,7 +62,8 @@
     "pick": "Pick a book",
     "stat": "Reading stats",
     "profile": "Profile",
-    "authors": "Favorite authors"
+    "authors": "Favorite authors",
+    "settings": "Settings"
   },
   "headers": {
     "book-select": "Book selecting",
@@ -126,6 +127,19 @@
     "compare": "Compare",
     "best": "The best book",
     "empty": "Not enough data for comparison"
+  },
+  "settings": {
+    "totalBooks": "Reading challenge",
+    "minYear": "Stats min year",
+    "withFantlab": "Sync with FantLab",
+    "saveDateInChangeStatus": "Save date in change status dialog",
+    "audio": "Book type: audio",
+    "withoutTranslation": "Book type: english",
+    "paper": "Book type: paper",
+    "topRate": "Book top chart",
+    "authors": "Interesting authors",
+    "mode": "Theme",
+    "defaultSort": "Default sort"
   },
   "modal": {
     "edit": "Edit the title",

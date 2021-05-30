@@ -13,5 +13,5 @@ export function ThemeSelector() {
   const value = useSetting('mode') || 'auto';
   const setField = useCallback(mode => settings.set('mode', mode === 'auto' ? null : mode), []);
 
-  return <EditableListItem title='Тема' fields={ITEMS} value={value} onChange={setField} />;
+  return <EditableListItem title='settings.mode' fields={ITEMS} value={value} onChange={setField} />;
 }

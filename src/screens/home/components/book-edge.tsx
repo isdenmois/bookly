@@ -1,11 +1,8 @@
 import React, { FC } from 'react';
 import { Svg, Path } from 'react-native-svg';
-import { useTheme } from 'components/theme';
 import { Platform, StyleSheet } from 'react-native';
 
 export const BookEdge: FC = () => {
-  const { colors } = useTheme();
-
   return (
     <Svg height={224} width={38} style={s.svg}>
       <Path

@@ -7,6 +7,6 @@ export function BookListSort() {
   const [value, onChange] = useSettingState('defaultSort');
 
   return (
-    <BookListSortListItem title='Сортировка по-умолчанию' fields={WISH_LIST_SORTS} value={value} onChange={onChange} />
+    <BookListSortListItem title='settings.defaultSort' fields={WISH_LIST_SORTS} value={value} onChange={onChange} />
   );
 }
