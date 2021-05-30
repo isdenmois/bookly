@@ -72,7 +72,7 @@ function updateData(data, table, userId, u) {
 }
 
 function omitInput(data, u) {
-  return _.assign({}, _.omit(data, ['id', '_status', '_changed', 'created_at']), u);
+  return _.assign({}, _.omit(data, ['id', '_status', '_changed', 'created_at', 'updated_at']), u);
 }
 
 async function getSyncData(table, userId, startAt) {
