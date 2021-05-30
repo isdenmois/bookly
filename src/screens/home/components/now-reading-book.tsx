@@ -27,7 +27,13 @@ export function NowReadingBook({ book }: Props) {
         <BookEdge />
       </TouchableOpacity>
 
-      <Button2 mt={2} label={t('button.ive-finished')} variant='inverted' onPress={openChangeStatus} />
+      <Button2
+        mt={2}
+        label={t('button.ive-finished')}
+        variant='inverted'
+        onPress={openChangeStatus}
+        testID='iFinishedButton'
+      />
     </Box>
   );
 }

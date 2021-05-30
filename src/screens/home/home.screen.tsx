@@ -20,16 +20,23 @@ export const HomeScreen: FC<Props> = ({ navigation }) => {
 
   return (
     <Tab.Navigator tabBarOptions={{ showLabel: false, safeAreaInsets: Platform.OS === 'web' ? { bottom: 24 } : null }}>
-      <Tab.Screen name='main' component={MainScreen} options={{ tabBarIcon: icon('home') }} />
-      <Tab.Screen name='bookshelves' component={BookshelvesScreen} options={{ tabBarIcon: icon('book') }} />
+      <Tab.Screen name='main' component={MainScreen} options={{ tabBarIcon: icon('home'), tabBarTestID: 'homeTab' }} />
+      <Tab.Screen
+        name='bookshelves'
+        component={BookshelvesScreen}
+        options={{ tabBarIcon: icon('book'), tabBarTestID: 'shelvesTab' }}
+      />
       <Tab.Screen
         name='home-search'
         component={HomeSearchScreen}
-        options={{ tabBarIcon: icon('search'), unmountOnBlur: true }}
+        options={{ tabBarIcon: icon('search'), unmountOnBlur: true, tabBarTestID: 'searchTab' }}
       />
       <Tab.Screen name='profile' component={ProfileScreen} options={{ tabBarIcon: icon('user') }} />
     </Tab.Navigator>
   );
 };
 
-const icon = name => ({ color, size }) => <Icon name={name} color={color} size={size} />;
+const icon =
+  name =>
+  ({ color, size }) =>
+    <Icon name={name} color={color} size={size} />;

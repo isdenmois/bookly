@@ -8,7 +8,7 @@ Given('Book {string} is {string}', (id, status) => assert.strictEqual(db.books[i
 Given('Book {string} rating is {int}', (id, rating) => assert.strictEqual(db.books[id].rating, rating));
 
 When('I mark current book as {int} stars', async rating => {
-  await element(by.id('homeReadButton')).tap();
+  await element(by.id('iFinishedButton')).tap();
 
   await expect(element(by.id('changeStatusModal'))).toBeVisible();
 

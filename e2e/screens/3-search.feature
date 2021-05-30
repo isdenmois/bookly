@@ -2,7 +2,9 @@ Feature: Search
   Scenario: Should search book
     Given I see home screen
 
-    When I enter Spellslinger to search bar
+    When I tap on search tab
+    And I enter Spellslinger to search bar
+
     Then I see book item #111
     And I don't see book item #222
     And I don't see book item #333

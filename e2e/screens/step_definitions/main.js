@@ -12,6 +12,7 @@ Then(/I should have (.+) to equal "(.+)"/, (id, text) => expect(getElement(id)).
 Then(/I should have (.+) to be (.+)/, (id, text) => expect(getElement(id)).toHaveText(text));
 Then(/I type (.+) to (.+)/, (text, id) => getElement(id).typeText(text));
 Then(/I enter (.+) to (.+)/, (text, id) => getElement(id).typeText(text + '\n'));
+Then(/I scroll to (.+) of (.+)/, (edge, id) => getElement(id).scrollTo(edge));
 
 function getElement(id) {
   return element(by.id(_.camelCase(id)));

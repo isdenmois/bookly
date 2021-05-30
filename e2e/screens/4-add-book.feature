@@ -1,20 +1,26 @@
 Feature: Add book
   Scenario: Add book from search list
     Given I see home screen
-    And I should have wish count to be 1
+    When I tap on shelves tab
+    Then I should have wish count to be View all (1)
 
-    Then I enter Spellslinger to search bar
-    And I see book item #111
+    Then I tap on search tab
+
+    When I enter Spellslinger to search bar
+    Then I see book item #111
 
     When I tap on change-status button #111
     And I tap on applyButton
     And I go back
 
-    Then I should have wish count to be 2
+    When I tap on shelves tab
+    Then I should have wish count to be View all (2)
 
   Scenario: Add book from details
-    Given I see home screen
-    And I should have wish count to be 2
+    Given I see shelves screen
+    And I should have wish count to be View all (2)
+
+    Then I tap on search tab
 
     Then I enter Charmcaster to search bar
     And I tap on book item #333
@@ -24,5 +30,6 @@ Feature: Add book
     And I tap on applyButton
     And I go back
     And I go back
+    And I tap on shelves tab
 
-    Then I should have wish count to be 3
+    Then I should have wish count to be View all (3)

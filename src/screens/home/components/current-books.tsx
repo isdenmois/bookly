@@ -27,7 +27,14 @@ export const CurrentBook: FC = () => {
   return (
     <Box padding={2}>
       <Box mt={1} flexDirection='row' justifyContent='space-between' alignItems='center'>
-        <Text variant='medium' color='carouselTitle' fontSize={18} lineHeight={24} numberOfLines={1}>
+        <Text
+          variant='medium'
+          color='carouselTitle'
+          fontSize={18}
+          lineHeight={24}
+          numberOfLines={1}
+          testID='currentBookTitle'
+        >
           {books[index]?.title}
         </Text>
 

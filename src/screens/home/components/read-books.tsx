@@ -35,7 +35,10 @@ export function ReadBooks({ books }: Props) {
 
 function renderBook(type, book: Book) {
   return (
-    <TouchableOpacity onPress={() => getNavigation().push(MainRoutes.Details, { bookId: book.id })}>
+    <TouchableOpacity
+      onPress={() => getNavigation().push(MainRoutes.Details, { bookId: book.id })}
+      testID={'readBook' + book.id}
+    >
       <Thumbnail cache style={{ borderRadius: 10 }} width={80} height={120} title={book.title} url={book.thumbnail} />
 
       <Box mr={2} mt={1} alignItems='center'>

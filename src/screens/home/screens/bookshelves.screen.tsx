@@ -23,9 +23,15 @@ export const BookshelvesScreen: FC = () => {
   const lists = useObservable(allListsObserver, [], []);
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <BookList title='Read books' query={readBooksQuery} onViewAllPress={openReadList} />
-      <BookList mt={6} title='Want to read' query={wishBooksQuery} onViewAllPress={openWishList} />
+    <ScrollView contentContainerStyle={{ padding: 16 }} testID='shelvesScreen'>
+      <BookList title='Read books' query={readBooksQuery} onViewAllPress={openReadList} counterTestId='readCount' />
+      <BookList
+        mt={6}
+        title='Want to read'
+        query={wishBooksQuery}
+        onViewAllPress={openWishList}
+        counterTestId='wishCount'
+      />
 
       {lists.map(list => (
         <BookList
@@ -40,8 +46,8 @@ export const BookshelvesScreen: FC = () => {
   );
 };
 
-type ListProps = { mt?: number; query(): Query<Book>; title?: string; onViewAllPress?() };
-function BookList({ mt, title, query, onViewAllPress }: ListProps) {
+type ListProps = { mt?: number; query(): Query<Book>; title?: string; onViewAllPress?(); counterTestId?: string };
+function BookList({ mt, title, counterTestId, query, onViewAllPress }: ListProps) {
   const books = useObservable(() => query().extend(Q.experimentalTake(LIMIT)).observe(), [], []);
   const totalCount = useObservable(() => query().observeCount(), 0, []);
 
@@ -52,7 +58,7 @@ function BookList({ mt, title, query, onViewAllPress }: ListProps) {
           <Text variant='body'>{title}</Text>
 
           <TouchableOpacity onPress={onViewAllPress}>
-            <Text variant='body'>
+            <Text variant='body' testID={counterTestId}>
               {'View all'}
               {totalCount > 0 ? ` (${totalCount})` : ''}
             </Text>
