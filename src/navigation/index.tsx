@@ -6,17 +6,15 @@ import { DynamicValue, useDynamicValue } from 'react-native-dynamic';
 
 import { light, dark } from 'types/colors';
 import { useSetting } from 'services/settings';
-import { LoginScreen } from 'screens/login/login.screen';
 import { onChanges } from 'store';
 import { syncService } from 'services';
 
-import { RootRoutes } from './routes';
 import { MainNavigator, mainScreens } from './main-navigator';
-import { ModalNavigator } from './modal-navigator';
+import { AuthNavigator } from './auth-navigator';
 
 const Stack = createStackNavigator();
 
-const linking: LinkingOptions = {
+const linking: LinkingOptions<any> = {
   prefixes: [],
   config: {
     screens: {
@@ -29,16 +27,6 @@ const linking: LinkingOptions = {
   },
 };
 
-const AuthStack = createStackNavigator();
-export const AuthNavigator = () => {
-  return (
-    <AuthStack.Navigator headerMode='none'>
-      <AuthStack.Screen name='login' component={LoginScreen} />
-    </AuthStack.Navigator>
-  );
-};
-
-const RootStack = createStackNavigator();
 const AppNavigator: FC = () => {
   useEffect(() => {
     const subscription = onChanges.subscribe(() => syncService.sync());
@@ -47,35 +35,8 @@ const AppNavigator: FC = () => {
       subscription.unsubscribe();
     };
   }, []);
-  return (
-    <RootStack.Navigator
-      headerMode='none'
-      screenOptions={{
-        animationEnabled: true,
-        cardStyle: { backgroundColor: 'transparent' },
-        cardOverlayEnabled: true,
-        cardStyleInterpolator: ({ current: { progress } }) => ({
-          cardStyle: {
-            opacity: progress.interpolate({
-              inputRange: [0, 0.5, 0.9, 1],
-              outputRange: [0, 0.25, 0.7, 1],
-            }),
-          },
-          overlayStyle: {
-            opacity: progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 0.5],
-              extrapolate: 'clamp',
-            }),
-          },
-        }),
-      }}
-      mode='modal'
-    >
-      <RootStack.Screen name={RootRoutes.Main} component={MainNavigator} />
-      <RootStack.Screen name={RootRoutes.Modal} component={ModalNavigator} />
-    </RootStack.Navigator>
-  );
+
+  return <MainNavigator />;
 };
 
 export const Root = () => {
@@ -89,8 +50,8 @@ export const Root = () => {
   return (
     <NavigationContainer linking={linking} theme={theme}>
       <Stack.Navigator
-        headerMode='none'
         screenOptions={{
+          headerShown: false,
           cardOverlayEnabled: false,
           gestureEnabled: false,
           animationTypeForReplace: userId ? 'push' : 'pop',

@@ -1,9 +1,9 @@
 diff --git a/node_modules/react-native-camera/src/RNCamera.web.js b/node_modules/react-native-camera/src/RNCamera.web.js
 new file mode 100644
-index 0000000..4e36fc0
+index 0000000..7cd0083
 --- /dev/null
 +++ b/node_modules/react-native-camera/src/RNCamera.web.js
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,42 @@
 +import React, { useRef, useCallback, useEffect } from 'react';
 +import Quagga from 'quagga'
 +
@@ -39,6 +39,10 @@ index 0000000..4e36fc0
 +  return <div id="interactive" className='viewport' ref={ref}/>
 +};
 +
-+RNCamera.Constants = {Type: {}}
++RNCamera.Constants = { Type: {} }
++
++export function hasTorch() {
++  return false;
++}
 +
 +export default RNCamera;

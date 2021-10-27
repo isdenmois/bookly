@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { ToastAndroid } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ModalRoutes } from 'navigation/routes';
 import { settings } from 'services/settings';

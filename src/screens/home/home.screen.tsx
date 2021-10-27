@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Platform } from 'react-native';
 
 import { setNavigation } from 'services/navigation';
 import { MainRoutes, MainScreenProps } from 'navigation/routes';
@@ -9,7 +10,6 @@ import { MainScreen } from './screens/main.screen';
 import { BookshelvesScreen } from './screens/bookshelves.screen';
 import { HomeSearchScreen } from './screens/search.screen';
 import { ProfileScreen } from './screens/profile.screen';
-import { Platform } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +19,7 @@ export const HomeScreen: FC<Props> = ({ navigation }) => {
   setNavigation(navigation);
 
   return (
-    <Tab.Navigator tabBarOptions={{ showLabel: false, safeAreaInsets: Platform.OS === 'web' ? { bottom: 24 } : null }}>
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle }}>
       <Tab.Screen name='main' component={MainScreen} options={{ tabBarIcon: icon('home'), tabBarTestID: 'homeTab' }} />
       <Tab.Screen
         name='bookshelves'
@@ -40,3 +40,5 @@ const icon =
   name =>
   ({ color, size }) =>
     <Icon name={name} color={color} size={size} />;
+
+const tabBarStyle = Platform.OS === 'web' ? { marginBottom: 24 } : null;

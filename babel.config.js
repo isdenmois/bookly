@@ -15,6 +15,8 @@ const config = {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.android.js', '.android.tsx', '.ios.js', '.ios.tsx'],
       },
     ],
+    // Reanimated plugin has to be listed last.
+    'react-native-reanimated/plugin',
   ],
 };
 

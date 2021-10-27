@@ -1,5 +1,5 @@
-import { Model, Q } from '@nozbe/watermelondb';
-import { field, lazy, action, children } from '@nozbe/watermelondb/decorators';
+import { Model } from '@nozbe/watermelondb';
+import { field, action, children } from '@nozbe/watermelondb/decorators';
 
 type ListFields = 'id' | 'name';
 
@@ -12,7 +12,7 @@ export default class List extends Model {
   };
 
   @field('name') name: string;
-  @lazy books = this.collections.get('books').query(Q.on('list_books', 'list_id', this.id));
+  // @lazy books = this.collections.get('books').query(Q.on('list_books', 'list_id', this.id));
   @children('list_books') lists;
 
   @action setName(name: string) {

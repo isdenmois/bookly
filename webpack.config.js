@@ -5,37 +5,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const VirtualModulesPlugin = require('webpack-virtual-modules');
 require('dotenv').config();
-
-const babelConfig = {
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        targets: 'ios 14',
-      },
-    ],
-    '@babel/preset-react',
-  ],
-  plugins: [
-    'module:react-native-dotenv',
-    ['@babel/plugin-proposal-decorators', { legacy: true }],
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    [
-      'module-resolver',
-      {
-        root: ['./src'],
-        alias: Object.assign({
-          api: './src/services/api',
-          'react-native': 'react-native-web',
-        }),
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.web.js', '.web.tsx'],
-      },
-    ],
-    ['babel-plugin-jsx-remove-data-test-id', { attributes: 'testID' }],
-    'lodash',
-  ],
-};
 
 const rootDir = path.join(__dirname, '.');
 const webpackEnv = process.env.NODE_ENV || 'development';
@@ -56,7 +27,7 @@ module.exports = {
         minimize: true,
         minimizer: [
           new ESBuildMinifyPlugin({
-            target: 'es2020',
+            target: 'es2021',
             legalComments: 'none',
           }),
         ],
@@ -84,7 +55,7 @@ module.exports = {
         use: [
           {
             loader: 'esbuild-loader',
-            options: { loader: 'jsx', target: 'es2020' },
+            options: { loader: 'jsx', target: 'es2021' },
           },
           'remove-flow-types-loader',
         ],
@@ -92,31 +63,15 @@ module.exports = {
       {
         test: /\.tsx$/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            babelrc: false,
-            configFile: false,
-            presets: babelConfig.presets,
-            plugins: [
-              ['@babel/plugin-transform-typescript', { isTSX: true, allowDeclareFields: true, allExtensions: true }],
-              ...babelConfig.plugins,
-            ],
-          },
+          loader: 'esbuild-loader',
+          options: { loader: 'tsx', target: 'es2021' },
         },
       },
       {
         test: /\.ts$/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            babelrc: false,
-            configFile: false,
-            presets: babelConfig.presets,
-            plugins: [
-              ['@babel/plugin-transform-typescript', { isTSX: false, allowDeclareFields: true, allExtensions: true }],
-              ...babelConfig.plugins,
-            ],
-          },
+          loader: 'esbuild-loader',
+          options: { loader: 'ts', target: 'es2021' },
         },
       },
       {
@@ -190,12 +145,24 @@ module.exports = {
           }),
         ]
       : []),
+    new VirtualModulesPlugin({
+      'node_modules/@env.js': `module.exports = ${JSON.stringify({
+        FANTLAB_URL: process.env.FANTLAB_URL,
+        FIREBASE_URL: process.env.FIREBASE_URL,
+        FANTLAB_ROOT_URL: process.env.FANTLAB_ROOT_URL,
+        LIVELIB_URL: process.env.LIVELIB_URL,
+        FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL,
+        LIVELIB_APIKEY: process.env.LIVELIB_APIKEY,
+        BOOK_UPLOADER_URL: process.env.BOOK_UPLOADER_URL,
+      })};`,
+    }),
   ],
   resolve: {
     extensions: ['.web.tsx', '.web.ts', '.tsx', '.ts', '.web.jsx', '.web.js', '.jsx', '.js'],
     alias: Object.assign({
       'react-native$': 'react-native-web',
     }),
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     fallback: {
       fs: false,
       net: false,
@@ -206,7 +173,6 @@ module.exports = {
   devServer: {
     port: 3000,
     historyApiFallback: true,
-    inline: true,
     hot: true,
     proxy: {
       '/api/livelib': {
@@ -225,5 +191,8 @@ module.exports = {
         secure: false,
       },
     },
+  },
+  stats: {
+    warningsFilter: ['./node_modules/react-native-fast-image/dist/index.js'],
   },
 };

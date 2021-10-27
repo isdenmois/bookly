@@ -158,6 +158,7 @@ const ds = new DynamicStyleSheet({
   } as ViewStyle,
   label: {
     fontSize: 18,
+    textTransform: 'none',
   } as TextStyle,
   tabBar: {
     paddingVertical: 5,

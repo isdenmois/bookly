@@ -63,7 +63,7 @@ export type MainNavigationProp<RouteName extends MainRoutes> = StackNavigationPr
 
 export enum ModalRoutes {
   ChangeStatus = 'change-status',
-  BookSelect = 'book-select',
+  BookSelect = 'book-select-modal',
   BookFilters = 'book-filters',
   ThumbnailSelect = 'thumbnail-select',
   ReviewWrite = 'review-write',
