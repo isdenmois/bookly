@@ -1,7 +1,11 @@
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
 const blacklist = require('metro-config/src/defaults/exclusionList');
+const { makeMetroConfig } = require('@rnx-kit/metro-config');
+const { MetroSerializer, esbuildTransformerConfig } = require('@rnx-kit/metro-serializer-esbuild');
 
-module.exports = {
+const inProduction = process.env.NODE_ENV === 'production';
+
+const config = {
   transformer: {
     minifierPath: 'metro-minify-terser',
     getTransformOptions: async () => ({
@@ -26,3 +30,14 @@ module.exports = {
     ]),
   },
 };
+
+module.exports = inProduction
+  ? makeMetroConfig({
+      ...config,
+      projectRoot: __dirname,
+      serializer: {
+        customSerializer: MetroSerializer(),
+      },
+      transformer: esbuildTransformerConfig,
+    })
+  : config;
