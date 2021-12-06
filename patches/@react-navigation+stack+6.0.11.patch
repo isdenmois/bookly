@@ -1,0 +1,10 @@
+diff --git a/node_modules/@react-navigation/stack/src/views/GestureHandlerNative.tsx b/node_modules/@react-navigation/stack/src/views/GestureHandlerNative.tsx
+index ddc9535..7f2b7c5 100644
+--- a/node_modules/@react-navigation/stack/src/views/GestureHandlerNative.tsx
++++ b/node_modules/@react-navigation/stack/src/views/GestureHandlerNative.tsx
+@@ -19,5 +19,4 @@ export function PanGestureHandler(props: PanGestureHandlerProperties) {
+ export {
+   GestureHandlerRootView,
+   State as GestureState,
+-  PanGestureHandlerGestureEvent,
+ } from 'react-native-gesture-handler';
