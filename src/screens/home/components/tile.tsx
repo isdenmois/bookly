@@ -6,14 +6,15 @@ type Props = {
   title: string;
   onPress?: () => void;
   onLongPress?: () => void;
+  onTitlePress?: () => void;
 };
 
-export const Tile: FC<Props> = ({ title, onPress, onLongPress, children }) => {
+export const Tile: FC<Props> = ({ title, onPress, onLongPress, onTitlePress, children }) => {
   const Wrapper = onPress ? TouchableBox : Box;
 
   return (
     <Wrapper backgroundColor='tile' mx={1} mt={2} p={2} style={s.box} onPress={onPress} onLongPress={onLongPress}>
-      <Text variant='tile' style={s.title}>
+      <Text variant='tile' style={s.title} onPress={onTitlePress}>
         {title}
       </Text>
       {children}

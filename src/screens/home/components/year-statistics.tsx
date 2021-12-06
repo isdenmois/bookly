@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { Box, Text } from 'components/theme';
+import { Box, Text, TouchableBox } from 'components/theme';
 import { MainRoutes } from 'navigation/routes';
 import { getNavigation, t } from 'services';
 import { i18n } from 'services/i18n';
@@ -43,9 +43,10 @@ export function YearStatistics({ books }: Props) {
 
     return map;
   }, [books]);
-  const max = useMemo(() => [...monthsCounts.values()].reduce((prev, count) => Math.max(prev, count), 1), [
-    monthsCounts,
-  ]);
+  const max = useMemo(
+    () => [...monthsCounts.values()].reduce((prev, count) => Math.max(prev, count), 1),
+    [monthsCounts],
+  );
 
   const months: Month[] = [];
 
@@ -59,9 +60,11 @@ export function YearStatistics({ books }: Props) {
 
   return (
     <Box flexDirection='row'>
-      <Tile title={t('home.statistics')} onPress={openStat}>
+      <Tile title={t('home.statistics')} onTitlePress={openStat}>
         <ScrollView horizontal contentContainerStyle={s.scroll}>
-          {months.map(m => renderMonth(m, max))}
+          <TouchableBox onPress={openStat} flexDirection='row'>
+            {months.map(m => renderMonth(m, max))}
+          </TouchableBox>
         </ScrollView>
       </Tile>
     </Box>
@@ -114,5 +117,7 @@ const s = StyleSheet.create({
     paddingTop: 16,
     flexGrow: 1,
     justifyContent: 'center',
+    paddingBottom: 8,
+    zIndex: 2,
   },
 });
