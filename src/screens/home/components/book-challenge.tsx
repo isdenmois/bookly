@@ -1,13 +1,12 @@
 import _ from 'lodash';
 import React, { useMemo, useCallback, useState } from 'react';
-import { TouchableOpacity, Alert, Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import withObservables from '@nozbe/with-observables';
 import { t } from 'services/i18n';
-import { useSetting } from 'services/settings';
-import { dayOfYear, format, daysAmount } from 'utils/date';
+import { useSetting, getNavigation } from 'services';
+import { dayOfYear, format, daysAmount, getCurrentYear, getStartOfYear } from 'utils/date';
 import { readBooksThisYearQuery, booksReadForecast, lastReadDateObserver } from '../home.queries';
 import { Box, Text } from 'components/theme';
-import { getNavigation } from 'services';
 import { MainRoutes } from 'navigation/routes';
 import { Tile } from './tile';
 import { ReadingProgress } from './reading-progress';
@@ -142,6 +141,10 @@ export function getNegativeProgress(readCount: number, totalBooks: number, lastR
   const amount = daysAmount();
   const needToRead = Math.floor((today / amount) * totalBooks);
 
+  if (lastRead.getFullYear() !== getCurrentYear()) {
+    lastRead = getStartOfYear();
+  }
+
   if (readCount >= needToRead) return null;
 
   const remainDays = amount - today;
@@ -210,6 +213,10 @@ export function getZerocastMessage(readCount: number, totalBooks: number, lastRe
 }
 
 export function getForecastMessage(readCount: number, totalBooks: number, lastRead: Date): string {
+  if (readCount === 0) {
+    return null;
+  }
+
   const date = new Date();
   const today = dayOfYear();
   const total = daysAmount();

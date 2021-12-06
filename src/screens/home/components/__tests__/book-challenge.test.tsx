@@ -9,6 +9,28 @@ describe('Book challenge', () => {
   });
 
   describe('Challenge messages', () => {
+    it('should work on the start of the year', () => {
+      let lastRead = new Date('2021-12-15');
+      mockdate.set(new Date('2022-01-03'));
+
+      expect(getProgressMessage(0, 70)).toBe('Прочитайте книгу до 05.01, чтобы успеть выполнить вызов');
+      expect(getForecastMessage(0, 70, lastRead)).toBeNull();
+      expect(getZerocastMessage(0, 70, lastRead)).toBeNull();
+      expect(getNegativeProgress(54, 90, lastRead)).toBeNull();
+    });
+
+    it('should work on the start of the year even when we have negative forecast', () => {
+      let lastRead = new Date('2021-12-15');
+      mockdate.set(new Date('2022-01-23'));
+
+      expect(getProgressMessage(0, 70)).toBeNull();
+      expect(getForecastMessage(0, 70, lastRead)).toBeNull();
+      expect(getZerocastMessage(0, 70, lastRead)).toBeNull();
+      expect(getNegativeProgress(0, 70, lastRead)).toBe(
+        'Прочитайте книгу до 25.01 (раз в 4.8 дня), чтобы успеть выполнить вызов',
+      );
+    });
+
     it('parts should return correct messages', () => {
       let lastRead = new Date('2020-07-01');
       mockdate.set(lastRead);
