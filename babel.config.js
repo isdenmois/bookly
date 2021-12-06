@@ -1,4 +1,4 @@
-const inProduction = process.env.ODE_ENV === 'production';
+const inProduction = process.env.NODE_ENV === 'production';
 
 module.exports = api => {
   api.cache.using(() => process.env.NODE_ENV);
@@ -7,6 +7,7 @@ module.exports = api => {
     presets: [
       !inProduction && 'module:metro-react-native-babel-preset',
       inProduction && ['@rnx-kit/babel-preset-metro-react-native', { unstable_transformProfile: 'esbuild' }],
+      process.env.NODE_ENV === 'test' && ['@babel/preset-env', { targets: { node: 'current' } }],
     ].filter(preset => preset),
 
     plugins: [
@@ -24,12 +25,10 @@ module.exports = api => {
           extensions: ['.js', '.jsx', '.ts', '.tsx', '.android.js', '.android.tsx', '.ios.js', '.ios.tsx'],
         },
       ],
-      // Reanimated plugin has to be listed last.
-      'react-native-reanimated/plugin',
     ],
   };
 
-  if (process.env.NODE_ENV === 'production' && !process.env.RN_SRC_EXT?.includes('e2e')) {
+  if (inProduction && !process.env.RN_SRC_EXT?.includes('e2e')) {
     config.plugins.push([
       'babel-plugin-jsx-remove-data-test-id',
       {
@@ -37,6 +36,9 @@ module.exports = api => {
       },
     ]);
   }
+
+  // Reanimated plugin has to be listed last.
+  config.plugins.push('react-native-reanimated/plugin');
 
   return config;
 };

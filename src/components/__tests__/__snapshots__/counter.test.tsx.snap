@@ -14,10 +14,10 @@ exports[`Counter 1`] = `
     style={
       Array [
         Object {
-          "fontSize": 24,
+          "fontSize": 20,
         },
         Object {
-          "color": "#000",
+          "color": "#051033",
           "fontWeight": "bold",
           "marginBottom": 5,
           "textAlign": "center",
@@ -30,7 +30,7 @@ exports[`Counter 1`] = `
   <Text
     style={
       Object {
-        "color": "#000",
+        "color": "#051033",
         "fontSize": 14,
       }
     }

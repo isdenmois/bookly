@@ -9,7 +9,7 @@ describe('date utils', () => {
   it('should formats date with custom mask', () => {
     const date = new Date('2012-01-27T18:30:00Z');
 
-    expect(util.format(date, 'YYYY(YY)-MM-DD HH:mm')).toBe('2012(12)-01-27 18:30');
+    expect(util.format(date, 'YYYY(YY)-MM-DD HH:mm')).toBe('2012(12)-01-27 22:30');
   });
 
   it('should formats dates as DD.MM.YYYY', () => {

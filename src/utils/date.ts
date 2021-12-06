@@ -37,12 +37,15 @@ export function getCurrentYear() {
 }
 
 export function getStartOfYear(date = new Date()) {
-  return new Date(date.getFullYear(), 0, 1, 0);
+  date = new Date(date.getFullYear(), 0, 1, 0);
+  date.setMinutes(-date.getTimezoneOffset());
+
+  return date;
 }
 
 export function dayOfYear(date = new Date()): number {
   const start = getStartOfYear(date);
-  const diff = date.getTime() - start.getTime() + (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
+  const diff = date.getTime() - start.getTime() - date.getTimezoneOffset() * 60 * 1000;
 
   return Math.floor(diff / ONE_DAY) + 1;
 }

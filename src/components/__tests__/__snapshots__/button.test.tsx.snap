@@ -3,7 +3,9 @@
 exports[`Button renders button 1`] = `
 <View
   accessible={true}
+  collapsable={false}
   focusable={false}
+  nativeID="animatedComponent"
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -14,7 +16,7 @@ exports[`Button renders button 1`] = `
   style={
     Object {
       "alignItems": "center",
-      "backgroundColor": "#009688",
+      "backgroundColor": "#57B5AC",
       "borderRadius": 20,
       "flexDirection": "row",
       "justifyContent": "center",
@@ -54,7 +56,7 @@ exports[`Button renders disabled 1`] = `
     Array [
       Object {
         "alignItems": "center",
-        "backgroundColor": "#009688",
+        "backgroundColor": "#57B5AC",
         "borderRadius": 20,
         "flexDirection": "row",
         "justifyContent": "center",
@@ -94,7 +96,9 @@ exports[`Button renders disabled 1`] = `
 exports[`Button renders icon 1`] = `
 <View
   accessible={true}
+  collapsable={false}
   focusable={false}
+  nativeID="animatedComponent"
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -105,7 +109,7 @@ exports[`Button renders icon 1`] = `
   style={
     Object {
       "alignItems": "center",
-      "backgroundColor": "#009688",
+      "backgroundColor": "#57B5AC",
       "borderRadius": 20,
       "flexDirection": "row",
       "justifyContent": "center",

@@ -8,7 +8,7 @@ describe('Text', () => {
     ['S', TextS, 12],
     ['M', TextM, 16],
     ['L', TextL, 21],
-    ['XL', TextXL, 24],
+    ['XL', TextXL, 20],
   ])('renders %s size', (title, Component, expected) => {
     const style = render(<Component testID='text' />).getByTestId('text').props.style;
 
