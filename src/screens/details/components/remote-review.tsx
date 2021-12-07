@@ -1,8 +1,7 @@
 import React, { createRef } from 'react';
-import { Text, View, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid, Linking, Platform } from 'react-native';
+import { Text, View, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid, Linking } from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { TabScrollContext, HEADER_HEIGHT } from 'screens/details/tabs/tab';
 import { RemoteReview as IRemoteReview } from 'services/api/fantlab/review-list';
 import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
@@ -21,9 +20,6 @@ const FANTLAB_USER_URL = 'https://fantlab.ru/user';
 const LIVELIB_USER_URL = 'https://www.livelib.ru/reader/';
 
 export class RemoteReview extends React.PureComponent<Props> {
-  static contextType = TabScrollContext;
-  declare context: React.ContextType<typeof TabScrollContext>;
-
   state = { likes: this.props.review.likes, isLiked: false };
 
   rootRef = createRef<View>();
@@ -75,14 +71,15 @@ export class RemoteReview extends React.PureComponent<Props> {
   }
 
   scrollToElement = () => {
-    this.rootRef.current.measureLayout(
-      this.context.rootId,
-      (left, top) => {
-        if (Platform.OS === 'web') top = (this.rootRef.current as any).offsetTop;
-        this.context.scrollTo(Math.floor(top) - HEADER_HEIGHT - 15, true);
-      },
-      _.noop,
-    );
+    // FIXME: scroll to top of the element
+    // this.rootRef.current.measureLayout(
+    //   this.context.rootId,
+    //   (left, top) => {
+    //     if (Platform.OS === 'web') top = (this.rootRef.current as any).offsetTop;
+    //     this.context.scrollTo(Math.floor(top) - HEADER_HEIGHT - 15, true);
+    //   },
+    //   _.noop,
+    // );
   };
 
   vote = async () => {

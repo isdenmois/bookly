@@ -9,7 +9,7 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --quiet",
     "lint:fix": "yarn lint --fix",
     "clean": "android/gradlew -p android clean",
-    "build": "NODE_ENV=production node dev-tools/release",
+    "build": "NODE_ENV=production node dev-tools/release --skip-version --web=false",
     "release": "NODE_ENV=production node dev-tools/release --clean --upload",
     "cucumber": "cross-env NODE_ENV=test cucumber-js e2e/screens --format=progress-bar --exit",
     "e2e": "yarn e2e:build && yarn e2e:run",
@@ -28,7 +28,8 @@
     "dev-bundle": "react-native bundle --dev true --platform android --entry-file index.js --bundle-output ./dist/bundle.js"
   },
   "dependencies": {
-    "@nanostores/react": "^0.1.5",
+    "@gorhom/portal": "1.0.11",
+    "@nanostores/react": "0.1.5",
     "@nozbe/watermelondb": "0.22.0",
     "@nozbe/with-observables": "1.4.0",
     "@react-native-async-storage/async-storage": "1.15.14",
@@ -42,7 +43,7 @@
     "i18next": "20.3.1",
     "i18next-react-native-language-detector": "1.0.2",
     "lodash": "4.17.21",
-    "nanostores": "^0.5.7",
+    "nanostores": "0.5.7",
     "pluralize-ru": "1.0.1",
     "quagga": "0.12.1",
     "rambdax": "3.7.0",

@@ -1,46 +1,44 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { Linking, StyleSheet, View, TextStyle, ViewStyle } from 'react-native';
-import { MainNavigationProp, MainRoutes } from 'navigation/routes';
+
 import { color } from 'types/colors';
+import { getNavigation } from 'services';
 import { TouchIcon } from 'components';
 
 type Props = {
-  navigation: MainNavigationProp<MainRoutes.Details>;
   bookId: string;
 };
 
-export class BookDetailsHeader extends React.PureComponent<Props> {
-  get url() {
-    const { bookId } = this.props;
+export const BookDetailsHeader = memo<Props>(({ bookId, children }) => {
+  const url = useMemo(
+    () =>
+      bookId && bookId.startsWith('l_')
+        ? `https://livelib.ru/book/${bookId.replace('l_', '')}`
+        : `https://fantlab.ru/work${bookId}`,
+    [bookId],
+  );
 
-    return bookId && bookId.startsWith('l_')
-      ? `https://livelib.ru/book/${this.props.bookId.replace('l_', '')}`
-      : `https://fantlab.ru/work${this.props.bookId}`;
-  }
+  const openWeb = () => Linking.openURL(url);
+  const goBack = () => getNavigation().goBack();
+  const goToHome = () => getNavigation().popToTop();
 
-  render() {
-    return (
-      <View style={s.container}>
-        <TouchIcon
-          style={s.icon}
-          paddingHorizontal={15}
-          name='arrow-left'
-          size={24}
-          color='white'
-          onPress={this.goBack}
-          onLongPress={this.goToHome}
-          testID='goBackButton'
-        />
-        {this.props.children}
-        <TouchIcon style={s.icon} paddingHorizontal={15} name='globe' size={24} color='white' onPress={this.openWeb} />
-      </View>
-    );
-  }
-
-  openWeb = () => Linking.openURL(this.url);
-  goBack = () => this.props.navigation.goBack();
-  goToHome = () => this.props.navigation.popToTop();
-}
+  return (
+    <View style={s.container}>
+      <TouchIcon
+        style={s.icon}
+        paddingHorizontal={15}
+        name='arrow-left'
+        size={24}
+        color='white'
+        onPress={goBack}
+        onLongPress={goToHome}
+        testID='goBackButton'
+      />
+      {children}
+      <TouchIcon style={s.icon} paddingHorizontal={15} name='globe' size={24} color='white' onPress={openWeb} />
+    </View>
+  );
+});
 
 const s = StyleSheet.create({
   container: {

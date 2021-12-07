@@ -18,9 +18,8 @@ import {
   ViewLineAction,
 } from '../components/book-details-lines';
 import { BookLists } from '../components/book-lists';
-import { withScroll } from './tab';
 import { t, database, openModal } from 'services';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import { DarkModeContext, DynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
 import { thousandsSeparator } from 'utils/number-format';
 import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
@@ -30,7 +29,6 @@ type Props = MainScreenProps<MainRoutes.Details> & {
   isExist: boolean;
   fantlabId: string;
   tab: string;
-  mode: string;
 };
 
 const TITLE_SEPARATOR = /\s*;\s*/g;
@@ -42,11 +40,10 @@ const paths = [
   'book.leave',
   'book.audio',
   'book.withoutTranslation',
-  'mode',
 ];
 
-@withScroll
 export class DetailsTab extends React.Component<Props> {
+  static contextType = DarkModeContext;
   shouldComponentUpdate(props, state) {
     return hasUpdates(this, props, state, paths);
   }
@@ -64,14 +61,14 @@ export class DetailsTab extends React.Component<Props> {
     const notLL = !all && !isLivelib;
     const hasPaper = book.paper;
     const isRead = book.status === BOOK_STATUSES.READ;
-    const mode = this.props.mode;
+    const mode = this.context;
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
       .join('\n');
     const showLists = isExist && book.status === BOOK_STATUSES.WISH;
 
     return (
-      <View>
+      <View style={ds.dark.container}>
         {isRead && <ViewLine title={t('details.read-date')} value={this.allReads} mode={mode} />}
 
         {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} mode={mode} />}
@@ -168,11 +165,11 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   renderAvgRating() {
-    const { book, mode } = this.props;
+    const { book } = this.props;
     const voters = book.voters;
     const rating = voters ? `${book.avgRating} (${thousandsSeparator(voters)})` : book.avgRating;
 
-    return <ViewLine title={t('details.average')} value={rating} mode={mode} />;
+    return <ViewLine title={t('details.average')} value={rating} mode={this.context} />;
   }
 
   renderTranslators() {
@@ -184,11 +181,11 @@ export class DetailsTab extends React.Component<Props> {
 
     const title = t(translators.length > 1 ? 'details.translators' : 'details.translator');
 
-    return <ViewLine title={title} value={translators.join('\n')} mode={this.props.mode} />;
+    return <ViewLine title={title} value={translators.join('\n')} mode={this.context} />;
   }
 
   renderClassification() {
-    const s = ds[this.props.mode];
+    const s = ds[this.context];
 
     return _.map(this.props.book.classification, detail => (
       <View key={detail.id} style={s.classification}>
@@ -204,7 +201,7 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   renderParentBooks() {
-    const s = ds[this.props.mode];
+    const s = ds[this.context];
 
     return (
       <View style={s.parentBooks}>
@@ -216,7 +213,7 @@ export class DetailsTab extends React.Component<Props> {
             onPress={() => this.openBook(book)}
             title={book.type}
             value={book.title}
-            mode={this.props.mode}
+            mode={this.context}
           />
         ))}
       </View>
@@ -224,7 +221,7 @@ export class DetailsTab extends React.Component<Props> {
   }
 
   renderFilms() {
-    const s = ds[this.props.mode];
+    const s = ds[this.context];
 
     return (
       <View style={s.parentBooks}>
@@ -238,11 +235,11 @@ export class DetailsTab extends React.Component<Props> {
   renderFilm(film: Film) {
     const value = film.country ? `${film.title} (${film.country})` : film.title;
 
-    return <ViewLine key={film.id} title={film.year} value={value} mode={this.props.mode} />;
+    return <ViewLine key={film.id} title={film.year} value={value} mode={this.context} />;
   }
 
   renderCycles() {
-    const mode = this.props.mode;
+    const mode = this.context;
     const s = ds[mode];
 
     return (
@@ -339,6 +336,9 @@ function formatReadDate(read: Read) {
 }
 
 const ds = new DynamicStyleSheet({
+  container: {
+    padding: 16,
+  },
   header: {
     color: dynamicColor.SecondaryText,
     fontSize: 14,

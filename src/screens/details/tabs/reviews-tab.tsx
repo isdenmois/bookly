@@ -1,26 +1,24 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { Animated, Platform, ViewStyle, View, TextStyle } from 'react-native';
+import { Platform, ViewStyle, View, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Animated from 'react-native-reanimated';
+
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dynamicColor, useSColor } from 'types/colors';
 import Book from 'store/book';
 import { Button, Tag } from 'components';
 import { LocalReviewList } from '../components/local-review-list';
 import { FantlabReviewList } from '../components/fantlab-review-list';
-import { withScroll } from './tab';
 import { openModal, t } from 'services';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { createState } from 'utils/state';
 import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
+import { useCoordinator } from 'components/coordinator/coordinator-context';
+import { Portal } from '@gorhom/portal';
 
 type Props = MainScreenProps<MainRoutes.Details> & {
   book: Book;
-  mode: string;
 };
-
-interface FixedProps extends Props {
-  scrollY: Animated.Value;
-}
 
 interface SelectReviewSortProps {
   sort: string;
@@ -53,7 +51,8 @@ function useTransformStyle(scrollY, s) {
 
 const [source, useValue] = createState({ type: 'Fantlab' });
 
-export const AddButton = ({ book, scrollY }: FixedProps) => {
+export const AddButton = ({ book }) => {
+  const { scrollY } = useCoordinator();
   const hasRead = book.status === BOOK_STATUSES.READ;
   const { s, color } = useSColor(ds);
   const style = useTransformStyle(scrollY, s);
@@ -95,16 +94,16 @@ export const AddButton = ({ book, scrollY }: FixedProps) => {
   );
 };
 
-const ReviewsTabComponent = (props: Props) => {
+export const ReviewsTab = (props: Props) => {
+  const s = useDynamicStyleSheet(ds);
   const [sort, setSort] = React.useState('rating');
   const isLiveLib = props.book.id.startsWith('l_');
   const typeRaw = useValue('type');
   const type = isLiveLib ? 'LiveLib' : typeRaw;
   const bookId = isLiveLib || type === 'Fantlab' ? props.book.id : props.book.lid;
-  const s = ds[props.mode];
 
   return (
-    <>
+    <View style={ds.dark.container}>
       {type === 'Fantlab' && (
         <View style={s.sortList}>
           <SelectReviewSort sort='rating' selected={sort} setSort={setSort} title={t('details.by-rating')} />
@@ -113,15 +112,15 @@ const ReviewsTabComponent = (props: Props) => {
         </View>
       )}
 
-      <LocalReviewList book={props.book} mode={props.mode} />
-      <FantlabReviewList bookId={bookId} type={type} sort={sort} mode={props.mode} />
-    </>
+      <LocalReviewList book={props.book} />
+      <FantlabReviewList bookId={bookId} type={type} sort={sort} />
+
+      <Portal hostName='fixed'>
+        <AddButton book={props.book} />
+      </Portal>
+    </View>
   );
 };
-
-export const ReviewsTab = withScroll(ReviewsTabComponent, true);
-
-(ReviewsTabComponent as any).Fixed = AddButton;
 
 function SelectReviewSort(props: SelectReviewSortProps) {
   const { setSort, sort } = props;
@@ -132,6 +131,9 @@ function SelectReviewSort(props: SelectReviewSortProps) {
 }
 
 const ds = new DynamicStyleSheet({
+  container: {
+    padding: 16,
+  },
   buttonContainer: {
     position: 'absolute',
     bottom: 10,

@@ -1,6 +1,5 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import {
-  Animated,
   ImageBackground,
   Text,
   TouchableOpacity,
@@ -19,114 +18,58 @@ import { getThumbnailUrl } from 'components/thumbnail';
 import { getAvatarBgColor } from 'components/avatar';
 import { withBook } from 'components/book-item';
 import { LiveLibBook } from 'services/api/livelib/book';
-import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { BookDetailsHeader } from './book-details-header';
-import { openModal, t } from 'services';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import { getNavigation, openModal, t } from 'services';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
 import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
+import { CoordinatorPinned } from 'components/coordinator/coordinator-header';
 
 type Props = MainScreenProps<MainRoutes.Details> & {
   book: Book & BookExtended & LiveLibBook;
-  scrollY: Animated.Value;
-  headerHeight: number;
-  onLayout: Function;
-  scrollHeight: number;
-  children?: React.ReactNode;
-  status?: BOOK_STATUSES;
-  mode: string;
 };
 
 const MARGIN = 30;
 
-export const BookMainInfo = memo(
-  withBook(function ({ book, navigation, scrollY, headerHeight, scrollHeight, children, onLayout, mode }: Props) {
+export const BookMainInfo = memo<any>(
+  withBook(({ book }: Props) => {
     const Background: any = book.thumbnail ? ThumbnailBackground : AvatarBackground;
     const bookTitle = book.title || book.originalTitle;
-    const s = ds[mode];
+
+    const s = useDynamicStyleSheet(ds); // eslint-disable-line react-hooks/rules-of-hooks
 
     return (
-      <Collapsible
-        tabbar={children}
-        headerHeight={headerHeight}
-        scrollY={scrollY}
-        onLayout={onLayout}
-        scrollHeight={scrollHeight}
-        mode={mode}
-      >
-        <Background bookTitle={bookTitle} book={book} mode={mode}>
+      <>
+        <Background bookTitle={bookTitle} book={book}>
           <View style={s.darkOverlay} testID={`details${book.id}`}>
-            <Header bookTitle={bookTitle} bookId={book.id} navigation={navigation} mode={mode} />
-            <BookAuthor book={book} navigation={navigation} mode={mode} />
-            {!book.thumbnail && <SecondaryData book={book} mode={mode} />}
+            <Header bookTitle={bookTitle} bookId={book.id} />
+            <BookAuthor book={book} />
+            {!book.thumbnail && <SecondaryData book={book} />}
           </View>
         </Background>
 
-        {!!book.thumbnail && <SecondaryWithThumbnailData book={book} mode={mode} />}
-      </Collapsible>
+        {!!book.thumbnail && <SecondaryWithThumbnailData book={book} />}
+
+        <CoordinatorPinned>
+          <Background bookTitle={bookTitle} book={book}>
+            <View style={s.darkOverlay} testID={`details${book.id}`}>
+              <Header bookTitle={bookTitle} bookId={book.id} />
+            </View>
+          </Background>
+        </CoordinatorPinned>
+      </>
     );
   }),
 );
 
-function Collapsible({ tabbar, children, headerHeight, scrollY, onLayout, scrollHeight, mode }) {
-  const s = ds[mode];
-  const headerStyle = React.useMemo(
-    () =>
-      headerHeight
-        ? [
-            s.header,
-            {
-              transform: [
-                {
-                  translateY: scrollY.interpolate({
-                    inputRange: [0, headerHeight - scrollHeight],
-                    outputRange: [0, -headerHeight + scrollHeight],
-                    extrapolate: 'clamp',
-                  }),
-                },
-              ],
-            },
-          ]
-        : null,
-    [headerHeight, scrollY, scrollHeight],
-  );
-  const childrenStyle = React.useMemo(
-    () =>
-      headerHeight
-        ? {
-            transform: [
-              {
-                translateY: scrollY.interpolate({
-                  inputRange: [0, headerHeight - scrollHeight],
-                  outputRange: [0, headerHeight - scrollHeight],
-                  extrapolate: 'clamp',
-                }),
-              },
-            ],
-          }
-        : null,
-    [headerHeight, scrollY, scrollHeight],
-  );
-
-  return (
-    <Animated.View style={headerStyle} onLayout={onLayout}>
-      <View style={s.collapsible}>
-        <Animated.View style={childrenStyle}>{children}</Animated.View>
-
-        {tabbar && <View style={s.tabbar}>{tabbar}</View>}
-      </View>
-    </Animated.View>
-  );
-}
-
 function AvatarBackground({ children, bookTitle }) {
-  const style = React.useMemo(() => ({ backgroundColor: getAvatarBgColor(bookTitle) }), [bookTitle]);
+  const style = useMemo(() => ({ backgroundColor: getAvatarBgColor(bookTitle) }), [bookTitle]);
 
   return <View style={style}>{children}</View>;
 }
 
-function ThumbnailBackground({ children, book, mode }) {
-  const s = ds[mode];
+function ThumbnailBackground({ children, book }) {
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <ImageBackground style={s.imageBackground} blurRadius={1.5} source={{ uri: getThumbnailUrl(book.thumbnail) }}>
@@ -135,16 +78,16 @@ function ThumbnailBackground({ children, book, mode }) {
   );
 }
 
-function Header({ bookTitle, navigation, bookId, mode }) {
-  const s = ds[mode];
-  const copyBookTitle = React.useCallback(() => {
+function Header({ bookTitle, bookId }) {
+  const s = useDynamicStyleSheet(ds);
+  const copyBookTitle = () => {
     Clipboard.setString(bookTitle);
     ToastAndroid.show(t('details.copied'), ToastAndroid.SHORT);
-  }, [bookTitle]);
-  const openTelegram = React.useCallback(() => openInTelegram(bookTitle), [bookTitle]);
+  };
+  const openTelegram = () => openInTelegram(bookTitle);
 
   return (
-    <BookDetailsHeader bookId={bookId} navigation={navigation}>
+    <BookDetailsHeader bookId={bookId}>
       <TouchableOpacity style={s.titleWrapper} onPress={openTelegram} onLongPress={copyBookTitle}>
         <Text style={s.title}>{bookTitle}</Text>
       </TouchableOpacity>
@@ -152,12 +95,9 @@ function Header({ bookTitle, navigation, bookId, mode }) {
   );
 }
 
-function BookAuthor({ book, navigation, mode }) {
-  const s = ds[mode];
-  const searchAuthor = React.useCallback(() => navigation.push(MainRoutes.Search, { query: book.author }), [
-    book,
-    navigation,
-  ]);
+function BookAuthor({ book }) {
+  const s = useDynamicStyleSheet(ds);
+  const searchAuthor = () => getNavigation().push(MainRoutes.Search, { query: book.author });
 
   return (
     <View style={book.thumbnail ? s.thumbnailPlaceholder : null}>
@@ -168,9 +108,9 @@ function BookAuthor({ book, navigation, mode }) {
   );
 }
 
-function SecondaryData({ book, mode }) {
-  const s = ds[mode];
-  const openChangeStatus = React.useCallback(() => openModal(ModalRoutes.ChangeStatus, { book }), [book]);
+function SecondaryData({ book }) {
+  const s = useDynamicStyleSheet(ds);
+  const openChangeStatus = () => openModal(ModalRoutes.ChangeStatus, { book });
 
   return (
     <View style={s.status}>
@@ -185,10 +125,10 @@ function SecondaryData({ book, mode }) {
   );
 }
 
-function SecondaryWithThumbnailData({ book, mode }) {
-  const s = ds[mode];
-  const openChangeStatus = React.useCallback(() => openModal(ModalRoutes.ChangeStatus, { book }), [book]);
-  const openChangeThumbnail = React.useCallback(() => {
+function SecondaryWithThumbnailData({ book }) {
+  const s = useDynamicStyleSheet(ds);
+  const openChangeStatus = () => openModal(ModalRoutes.ChangeStatus, { book });
+  const openChangeThumbnail = () => {
     if (book.id.startsWith('l_')) {
       return ToastAndroid.show('Возможность доступна только для FantLab книг', ToastAndroid.SHORT);
     }
@@ -202,7 +142,7 @@ function SecondaryWithThumbnailData({ book, mode }) {
     }
 
     openModal(ModalRoutes.ThumbnailSelect, { book });
-  }, [book]);
+  };
 
   return (
     <View style={s.mainInformationContainer}>

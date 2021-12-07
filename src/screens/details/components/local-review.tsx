@@ -1,24 +1,24 @@
 import React, { useCallback } from 'react';
 import { Text, View, ViewStyle, TextStyle } from 'react-native';
-import { navigation, openModal, settings } from 'services';
+import { openModal, settings } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
 import { dynamicColor, getColor, boldText } from 'types/colors';
 import { ExpandableText, TouchIcon } from 'components';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import { DynamicStyleSheet, useDarkModeContext } from 'react-native-dynamic';
 import { confirmRemoveModel } from './book-details-lines';
 import { ModalRoutes } from 'navigation/routes';
 
 interface Props {
   book: BookData;
   review: Review;
-  mode: string;
 }
 
 const navigate = (review, book) => openModal(ModalRoutes.ReviewWrite, { review, book });
 
-export function LocalReview({ review, book, mode }: Props) {
+export function LocalReview({ review, book }: Props) {
+  const mode = useDarkModeContext();
   const openEditReview = useCallback(() => navigate(review, book), []);
   const deleteReview = useCallback(() => confirmRemoveModel(review, 'удалить отзыв'), []);
   const color = getColor(mode);

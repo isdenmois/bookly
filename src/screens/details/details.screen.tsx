@@ -7,11 +7,12 @@ import { Fetcher, Screen } from 'components';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
 import { BOOK_TYPES } from 'types/book-types';
-import { BookDetailsTabs } from './components/book-details-tabs';
 import { ChildrenTab } from './tabs/children-tab';
 import { ReviewsTab } from './tabs/reviews-tab';
 import { SimilarTab } from './tabs/similar-tab';
 import { DetailsTab } from './tabs/details-tab';
+import { BookMainInfo } from './components/book-main-info';
+import { CoordinatorTabs, CoordinatorHeader, CoordinatorLayout } from 'components/coordinator';
 
 type Props = MainScreenProps<MainRoutes.Details>;
 
@@ -72,14 +73,17 @@ export class DetailsScreen extends React.Component<Props> {
     initialTab = initialTab < 0 ? 0 : initialTab;
 
     return (
-      <BookDetailsTabs
-        book={book}
-        isExist={isExist}
-        fantlabId={params.fantlabId}
-        navigation={this.props.navigation}
-        tabs={this.tabs}
-        initialTab={initialTab}
-      />
+      <CoordinatorLayout>
+        <CoordinatorHeader>
+          <BookMainInfo book={book} />
+        </CoordinatorHeader>
+
+        <CoordinatorTabs
+          tabs={this.tabs}
+          initialTab={initialTab}
+          extraProps={{ book, isExist, fantlabId: params.fantlabId, navigation: this.props.navigation }}
+        />
+      </CoordinatorLayout>
     );
   };
 
