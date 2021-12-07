@@ -33,17 +33,19 @@ function useTransformStyle(scrollY, s) {
   return useMemo(
     () => [
       s.buttonContainer,
-      {
-        transform: [
-          {
-            translateY: scrollY.interpolate({
-              inputRange: [0, 2 * BUTTON_TOP],
-              outputRange: [0, BUTTON_TOP],
-              extrapolate: 'clamp',
-            }),
+      Platform.OS === 'web'
+        ? { position: 'fixed', bottom: 32 }
+        : {
+            transform: [
+              {
+                translateY: scrollY?.interpolate({
+                  inputRange: [0, 2 * BUTTON_TOP],
+                  outputRange: [0, BUTTON_TOP],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ],
           },
-        ],
-      },
     ],
     [scrollY, s.buttonContainer],
   );
@@ -52,7 +54,7 @@ function useTransformStyle(scrollY, s) {
 const [source, useValue] = createState({ type: 'Fantlab' });
 
 export const AddButton = ({ book }) => {
-  const { scrollY } = useCoordinator();
+  const { scrollY } = useCoordinator() ?? {};
   const hasRead = book.status === BOOK_STATUSES.READ;
   const { s, color } = useSColor(ds);
   const style = useTransformStyle(scrollY, s);
@@ -131,9 +133,15 @@ function SelectReviewSort(props: SelectReviewSortProps) {
 }
 
 const ds = new DynamicStyleSheet({
-  container: {
-    padding: 16,
-  },
+  container: Platform.select({
+    web: {
+      padding: 16,
+      paddingBottom: 64,
+    },
+    android: {
+      padding: 16,
+    },
+  }),
   buttonContainer: {
     position: 'absolute',
     bottom: 10,

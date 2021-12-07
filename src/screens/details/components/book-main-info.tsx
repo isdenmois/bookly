@@ -9,6 +9,7 @@ import {
   ImageStyle,
   ToastAndroid,
   Clipboard,
+  Platform,
 } from 'react-native';
 import { dynamicColor, boldText, lightText } from 'types/colors';
 import Book from 'store/book';
@@ -50,13 +51,15 @@ export const BookMainInfo = memo<any>(
 
         {!!book.thumbnail && <SecondaryWithThumbnailData book={book} />}
 
-        <CoordinatorPinned>
-          <Background bookTitle={bookTitle} book={book}>
-            <View style={s.darkOverlay} testID={`details${book.id}`}>
-              <Header bookTitle={bookTitle} bookId={book.id} />
-            </View>
-          </Background>
-        </CoordinatorPinned>
+        {Platform.OS !== 'web' && (
+          <CoordinatorPinned>
+            <Background bookTitle={bookTitle} book={book}>
+              <View style={s.darkOverlay} testID={`details${book.id}`}>
+                <Header bookTitle={bookTitle} bookId={book.id} />
+              </View>
+            </Background>
+          </CoordinatorPinned>
+        )}
       </>
     );
   }),
