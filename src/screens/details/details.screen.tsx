@@ -78,7 +78,6 @@ export class DetailsScreen extends React.Component<Props> {
         book={book}
         isExist={isExist}
         fantlabId={params.fantlabId}
-        navigation={this.props.navigation}
       />
     );
   };

@@ -3,7 +3,7 @@ import { Animated, View, Text, TouchableWithoutFeedback, TouchableOpacity, Platf
 import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { dynamicColor, light } from 'types/colors';
 import { getNavigation, t } from 'services';
-import { confirm } from 'screens/details/components/book-details-lines';
+import { confirm } from 'screens/details/tabs/details-tab/book-details-lines';
 import { useNavigation } from '@react-navigation/core';
 
 export interface Action {

@@ -4,7 +4,7 @@ import { Dialog, Button, TouchIcon } from 'components';
 import { dynamicColor, useSColor } from 'types/colors';
 import { t, database } from 'services';
 import { DynamicStyleSheet } from 'react-native-dynamic';
-import { confirm } from 'screens/details/components/book-details-lines';
+import { confirm } from 'screens/details/tabs/details-tab/book-details-lines';
 import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 
 type Props = ModalScreenProps<ModalRoutes.ListEdit>;

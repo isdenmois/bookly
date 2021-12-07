@@ -8,12 +8,11 @@ import ListBook, { prepareListBooks } from 'store/list-book';
 import { Q } from '@nozbe/watermelondb';
 import { ViewLineCheckbox } from './book-details-lines';
 import { dynamicColor } from 'types/colors';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { t } from 'services';
 
 interface Props {
   book: Book;
-  mode: any;
 }
 
 function getAllLists() {
@@ -24,11 +23,12 @@ function getBookLists([bookId]) {
   return database.collections.get<ListBook>('list_books').query(Q.where('book_id', bookId)).observe();
 }
 
-export function BookLists({ book, mode }: Props): any {
+export function BookLists({ book }: Props): any {
+  const s = useDynamicStyleSheet(ds);
+
   const lists = usePromise(getAllLists, [], []);
   const bookLists = useObservable(getBookLists, [], [book.id]);
   const set = useMemo(() => new Set(bookLists.map(l => l.list.id)), [bookLists]);
-  const s = ds[mode];
 
   return (
     <>
@@ -45,7 +45,7 @@ export function BookLists({ book, mode }: Props): any {
             return database.batch(prepareListBooks(database, book.id, [list.id]));
           });
 
-        return <ViewLineCheckbox key={list.id} mode={mode} title={list.name} value={value} onToggle={toggle} />;
+        return <ViewLineCheckbox key={list.id} title={list.name} value={value} onToggle={toggle} />;
       })}
     </>
   );

@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from 'react';
+import { Route } from 'react-native-tab-view';
 
 import { CoordinatorHeader, CoordinatorLayout, CoordinatorTabs } from 'components/coordinator';
 import Book from 'store/book';
@@ -8,15 +9,14 @@ import { BookMainInfo } from './components/book-main-info';
 
 interface Props {
   initialTab: number;
-  tabs: any[];
+  tabs: Route[];
   book: Book & BookExtended;
   isExist: boolean;
   fantlabId?: string;
-  navigation: any;
 }
 
-export const BookDetails: FC<Props> = ({ tabs, book, initialTab, isExist, fantlabId, navigation }) => {
-  const extraProps = useMemo(() => ({ book, isExist, fantlabId, navigation }), [book, fantlabId, isExist]);
+export const BookDetails: FC<Props> = ({ tabs, book, initialTab, isExist, fantlabId }) => {
+  const extraProps = useMemo(() => ({ book, isExist, fantlabId }), [book, fantlabId, isExist]);
 
   return (
     <CoordinatorLayout>

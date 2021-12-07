@@ -1,20 +1,21 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, TextStyle, Insets } from 'react-native';
+import { View, Text, TouchableOpacity, TextStyle, Insets, ViewStyle } from 'react-native';
 import { dynamicColor } from 'types/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { t } from 'services';
 
 interface Props {
   numberOfLines?: number;
   children: React.ReactNode;
-  mode: string;
   onShrink?: () => void;
 }
 
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export function ExpandableText(props: Props) {
+  const s = useDynamicStyleSheet(ds);
+
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = useCallback(() => {
     if (expanded && props.onShrink) {
@@ -24,7 +25,6 @@ export function ExpandableText(props: Props) {
   }, [expanded]);
   const lines = expanded ? null : props.numberOfLines;
   const onTextPress = expanded ? null : toggleExpanded;
-  const s = ds[props.mode];
 
   return (
     <View style={s.container}>
@@ -54,7 +54,7 @@ ExpandableText.defaultProps = {
 const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
-  },
+  } as ViewStyle,
   up: {
     width: 20,
     marginLeft: 10,
@@ -63,7 +63,7 @@ const ds = new DynamicStyleSheet({
     alignItems: 'flex-end',
     justifyContent: 'center',
     paddingBottom: 7,
-  },
+  } as ViewStyle,
   body: {
     color: dynamicColor.Review,
     marginTop: 10,

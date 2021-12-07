@@ -11,7 +11,7 @@ import { TABS_HEIGHT, useCoordinator } from './coordinator-context';
 
 interface Props {
   initialTab: number;
-  tabs: any[];
+  tabs: Route[];
   extraProps: any;
   top?: number;
 }

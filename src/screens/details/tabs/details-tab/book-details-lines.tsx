@@ -14,17 +14,15 @@ import { Model } from '@nozbe/watermelondb';
 import { dynamicColor } from 'types/colors';
 import { database } from 'store';
 import { t } from 'services';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { Checkbox } from 'components';
 
 interface Props {
-  mode: string;
   description: string;
 }
 
 interface ViewListProps {
   title: string | number;
-  mode: string;
   value?: any;
 }
 
@@ -34,13 +32,11 @@ interface ViewListTouchableProps extends ViewListProps {
 }
 
 interface ViewLineModelRemoveProps {
-  mode: string;
   warning: string;
   model: Model;
 }
 
 interface ViewLineActionProps {
-  mode: string;
   title: string;
   onPress?: () => void;
   onLongPress?: () => void;
@@ -49,7 +45,7 @@ interface ViewLineActionProps {
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export const BookDescriptionLine = (props: Props) => {
-  const s = ds[props.mode];
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <View style={s.descriptionRow}>
@@ -60,7 +56,7 @@ export const BookDescriptionLine = (props: Props) => {
 };
 
 export const ViewLine = (props: ViewListProps) => {
-  const s = ds[props.mode];
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <View style={s.row}>
@@ -70,8 +66,8 @@ export const ViewLine = (props: ViewListProps) => {
   );
 };
 
-export const ViewLineCheckbox = ({ title, mode, value, onToggle }) => {
-  const s = ds[mode];
+export const ViewLineCheckbox = ({ title, value, onToggle }) => {
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <TouchableOpacity style={s.checkboxRow} onPress={onToggle}>
@@ -82,7 +78,7 @@ export const ViewLineCheckbox = ({ title, mode, value, onToggle }) => {
 };
 
 export const ViewLineTouchable = (props: ViewListTouchableProps) => {
-  const s = ds[props.mode];
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <View style={s.row}>
@@ -95,8 +91,8 @@ export const ViewLineTouchable = (props: ViewListTouchableProps) => {
 };
 
 export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
-  const onPress = React.useCallback(() => confirmRemoveModel(props.model, props.warning), [props.model, props.warning]);
-  const s = ds[props.mode];
+  const s = useDynamicStyleSheet(ds);
+  const onPress = () => confirmRemoveModel(props.model, props.warning);
 
   return (
     <View style={s.row}>
@@ -107,8 +103,8 @@ export function ViewLineModelRemove(props: ViewLineModelRemoveProps) {
   );
 }
 
-export function ViewLineAction({ title, mode, onPress, onLongPress }: ViewLineActionProps) {
-  const s = ds[mode];
+export function ViewLineAction({ title, onPress, onLongPress }: ViewLineActionProps) {
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <View style={s.row}>

@@ -1,13 +1,15 @@
 import React, { useCallback } from 'react';
 import { Text, View, ViewStyle, TextStyle } from 'react-native';
+import { DynamicStyleSheet } from 'react-native-dynamic';
+
 import { openModal, settings } from 'services';
 import { BookData } from 'store/book';
 import Review from 'store/review';
 import { formatDate } from 'utils/date';
-import { dynamicColor, getColor, boldText } from 'types/colors';
+import { dynamicColor, boldText, useSColor } from 'types/colors';
 import { ExpandableText, TouchIcon } from 'components';
-import { DynamicStyleSheet, useDarkModeContext } from 'react-native-dynamic';
-import { confirmRemoveModel } from './book-details-lines';
+
+import { confirmRemoveModel } from '../../details-tab/book-details-lines';
 import { ModalRoutes } from 'navigation/routes';
 
 interface Props {
@@ -18,11 +20,9 @@ interface Props {
 const navigate = (review, book) => openModal(ModalRoutes.ReviewWrite, { review, book });
 
 export function LocalReview({ review, book }: Props) {
-  const mode = useDarkModeContext();
+  const { s, color } = useSColor(ds);
   const openEditReview = useCallback(() => navigate(review, book), []);
   const deleteReview = useCallback(() => confirmRemoveModel(review, 'удалить отзыв'), []);
-  const color = getColor(mode);
-  const s = ds[mode];
 
   return (
     <View style={s.container}>
@@ -35,7 +35,7 @@ export function LocalReview({ review, book }: Props) {
         <TouchIcon style={s.icon} name='pen' size={16} color={color.PrimaryText} onPress={openEditReview} />
       </View>
 
-      <ExpandableText mode={mode}>{review.body}</ExpandableText>
+      <ExpandableText>{review.body}</ExpandableText>
     </View>
   );
 }

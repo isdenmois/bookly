@@ -1,21 +1,20 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, TextStyle, ViewStyle } from 'react-native';
-import { NavigationStackProp } from '@react-navigation/stack';
 import { ChildBook } from 'types/book-extended';
 import { dynamicColor, getColor, useSColor } from 'types/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchIcon } from 'components';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import { MainRoutes } from 'navigation/routes';
+import { getNavigation } from 'services';
 
 interface Props {
   book: ChildBook;
-  navigation: NavigationStackProp;
 }
 
-export function CollapsibleChildren({ book, navigation }: Props) {
+export const CollapsibleChildren = memo<Props>(({ book }) => {
   const [collapsed, setCollapsed] = useState(true);
-  const openBook = useCallback(() => navigation.push(MainRoutes.Details, { bookId: String(book.id) }), []);
+  const openBook = useCallback(() => getNavigation().push(MainRoutes.Details, { bookId: String(book.id) }), []);
   const toggleCollapse = useCallback(() => setCollapsed(!collapsed), [collapsed, setCollapsed]);
   const Touch: any = book.id ? TouchableOpacity : View;
   const { s, color } = useSColor(ds);
@@ -45,15 +44,15 @@ export function CollapsibleChildren({ book, navigation }: Props) {
       {!collapsed && (
         <View style={s.children}>
           {book.children.map(c => (
-            <CollapsibleChildren key={c.id || c.title} book={c} navigation={navigation} />
+            <CollapsibleChildren key={c.id || c.title} book={c} />
           ))}
         </View>
       )}
     </>
   );
-}
+});
 
-function getChildBookTitle(book) {
+function getChildBookTitle(book: ChildBook) {
   if (book.year) {
     return `${book.title} (${book.year})`;
   }

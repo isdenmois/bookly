@@ -7,6 +7,7 @@ module.exports = {
     'jsx-quotes': ['error', 'prefer-single'],
     'react-hooks/exhaustive-deps': ['warn'],
     curly: 0,
+    'no-unused-vars': 0,
   },
   overrides: [
     {

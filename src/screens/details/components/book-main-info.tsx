@@ -18,21 +18,20 @@ import { ReadButton, Thumbnail } from 'components';
 import { getThumbnailUrl } from 'components/thumbnail';
 import { getAvatarBgColor } from 'components/avatar';
 import { withBook } from 'components/book-item';
-import { LiveLibBook } from 'services/api/livelib/book';
 import { BookDetailsHeader } from './book-details-header';
 import { getNavigation, openModal, t } from 'services';
 import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
-import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
+import { MainRoutes, ModalRoutes } from 'navigation/routes';
 import { CoordinatorPinned } from 'components/coordinator/coordinator-header';
 
-type Props = MainScreenProps<MainRoutes.Details> & {
-  book: Book & BookExtended & LiveLibBook;
-};
+interface Props {
+  book: Book & BookExtended;
+}
 
 const MARGIN = 30;
 
-export const BookMainInfo = memo<any>(
+export const BookMainInfo = memo<Props>(
   withBook(({ book }: Props) => {
     const Background: any = book.thumbnail ? ThumbnailBackground : AvatarBackground;
     const bookTitle = book.title || book.originalTitle;

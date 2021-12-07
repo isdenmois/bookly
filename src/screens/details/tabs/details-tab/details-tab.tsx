@@ -16,20 +16,20 @@ import {
   ViewLineTouchable,
   ViewLineModelRemove,
   ViewLineAction,
-} from '../components/book-details-lines';
-import { BookLists } from '../components/book-lists';
-import { t, database, openModal } from 'services';
+} from './book-details-lines';
+import { BookLists } from './book-lists';
+import { t, database, openModal, getNavigation } from 'services';
 import { DarkModeContext, DynamicStyleSheet } from 'react-native-dynamic';
 import { openInTelegram } from 'screens/book-select/book-selector';
 import { thousandsSeparator } from 'utils/number-format';
-import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
+import { MainRoutes, ModalRoutes } from 'navigation/routes';
 
-type Props = MainScreenProps<MainRoutes.Details> & {
+interface Props {
   book: Book & BookExtended & LiveLibBook;
   isExist: boolean;
   fantlabId: string;
   tab: string;
-};
+}
 
 const TITLE_SEPARATOR = /\s*;\s*/g;
 const paths = [
@@ -61,7 +61,6 @@ export class DetailsTab extends React.Component<Props> {
     const notLL = !all && !isLivelib;
     const hasPaper = book.paper;
     const isRead = book.status === BOOK_STATUSES.READ;
-    const mode = this.context;
     const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
       .filter(t => t !== book.title)
       .join('\n');
@@ -69,20 +68,18 @@ export class DetailsTab extends React.Component<Props> {
 
     return (
       <View style={ds.dark.container}>
-        {isRead && <ViewLine title={t('details.read-date')} value={this.allReads} mode={mode} />}
+        {isRead && <ViewLine title={t('details.read-date')} value={this.allReads} />}
 
-        {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} mode={mode} />}
+        {!isExist && fantlabId && <ViewLineAction title='Ассоциировать книгу' onPress={this.associate} />}
 
-        {notLL && <ViewLine title='ID' value={book.id} mode={mode} />}
-        {notLL && <ViewLine title={t('details.type')} value={BOOK_TYPE_NAMES[book.type]} mode={mode} />}
+        {notLL && <ViewLine title='ID' value={book.id} />}
+        {notLL && <ViewLine title={t('details.type')} value={BOOK_TYPE_NAMES[book.type]} />}
 
-        {!all && !book.thumbnail && !!book.genre && (
-          <ViewLine title={t('details.genre')} value={book.genre} mode={mode} />
-        )}
+        {!all && !book.thumbnail && !!book.genre && <ViewLine title={t('details.genre')} value={book.genre} />}
 
         {!!book.avgRating && this.renderAvgRating()}
 
-        {notLL && !!book.year && <ViewLine title={t('year')} value={book.year} mode={mode} />}
+        {notLL && !!book.year && <ViewLine title={t('year')} value={book.year} />}
 
         {this.renderTranslators()}
 
@@ -90,7 +87,6 @@ export class DetailsTab extends React.Component<Props> {
           <ViewLineTouchable
             title={t('details.editions')}
             value={book.editionCount}
-            mode={mode}
             onPress={this.openEditions}
             onLongPress={this.openChangeThumbnail}
           />
@@ -99,67 +95,59 @@ export class DetailsTab extends React.Component<Props> {
           <ViewLineTouchable
             title={t('details.thumbnail')}
             value={t('details.livelib')}
-            mode={mode}
             onPress={this.openChangeThumbnail}
           />
         )}
 
-        {!!book.language && <ViewLine title={t('details.language')} value={book.language} mode={mode} />}
+        {!!book.language && <ViewLine title={t('details.language')} value={book.language} />}
         {!!book.title && !!book.originalTitle && (
           <ViewLineTouchable
             title={t('details.original-title')}
             value={book.originalTitle}
-            mode={mode}
             onPress={this.openTelegram}
             onLongPress={this.copyBookOriginalTitle}
           />
         )}
 
-        {!!otherTitles && <ViewLine title={t('details.other-titles')} value={otherTitles} mode={mode} />}
+        {!!otherTitles && <ViewLine title={t('details.other-titles')} value={otherTitles} />}
 
         {all && book.classification?.length > 0 && this.renderClassification()}
 
-        {!!book.series && <ViewLine title='Серия' value={book.series} mode={mode} />}
-        {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} mode={mode} />}
-        {!!book.tags && <ViewLine title='Теги' value={book.tags} mode={mode} />}
+        {!!book.series && <ViewLine title='Серия' value={book.series} />}
+        {!!book.isbn && <ViewLine title='ISBN' value={book.isbn} />}
+        {!!book.tags && <ViewLine title='Теги' value={book.tags} />}
         {!!book.cycles?.length && this.renderCycles()}
 
-        {all && !!book.description && <BookDescriptionLine description={book.description} mode={mode} />}
+        {all && !!book.description && <BookDescriptionLine description={book.description} />}
 
         {!!book.parent?.length && this.renderParentBooks()}
 
         {!!book.films?.length && this.renderFilms()}
 
-        {showLists && <BookLists book={book} mode={mode} />}
+        {showLists && <BookLists book={book} />}
 
         {all && !isLivelib && (
           <ViewLineAction
             title={t('details.find-ll')}
-            mode={mode}
             onPress={this.forceSearchInLivelib}
             onLongPress={this.searchInLivelib}
           />
         )}
 
-        {all && isExist && <ViewLineAction title={t('details.edit')} onPress={this.openEditModal} mode={mode} />}
+        {all && isExist && <ViewLineAction title={t('details.edit')} onPress={this.openEditModal} />}
 
         {all && isExist && (
           <ViewLineAction
-            mode={mode}
             title={t(hasPaper ? 'details.has-paper' : 'details.has-no-paper')}
             onPress={this.togglePaper}
           />
         )}
 
         {all && isExist && isRead && hasPaper && (
-          <ViewLineAction
-            title={t(book.leave ? 'details.leave' : 'details.keep')}
-            onPress={this.toggleLeave}
-            mode={mode}
-          />
+          <ViewLineAction title={t(book.leave ? 'details.leave' : 'details.keep')} onPress={this.toggleLeave} />
         )}
 
-        {all && isExist && <ViewLineModelRemove model={book} warning={t('details.delete')} mode={mode} />}
+        {all && isExist && <ViewLineModelRemove model={book} warning={t('details.delete')} />}
       </View>
     );
   }
@@ -169,7 +157,7 @@ export class DetailsTab extends React.Component<Props> {
     const voters = book.voters;
     const rating = voters ? `${book.avgRating} (${thousandsSeparator(voters)})` : book.avgRating;
 
-    return <ViewLine title={t('details.average')} value={rating} mode={this.context} />;
+    return <ViewLine title={t('details.average')} value={rating} />;
   }
 
   renderTranslators() {
@@ -181,7 +169,7 @@ export class DetailsTab extends React.Component<Props> {
 
     const title = t(translators.length > 1 ? 'details.translators' : 'details.translator');
 
-    return <ViewLine title={title} value={translators.join('\n')} mode={this.context} />;
+    return <ViewLine title={title} value={translators.join('\n')} />;
   }
 
   renderClassification() {
@@ -208,13 +196,7 @@ export class DetailsTab extends React.Component<Props> {
         <Text style={s.header}>{t('details.series')}</Text>
 
         {this.props.book.parent.map(book => (
-          <ViewLineTouchable
-            key={book.id}
-            onPress={() => this.openBook(book)}
-            title={book.type}
-            value={book.title}
-            mode={this.context}
-          />
+          <ViewLineTouchable key={book.id} onPress={() => this.openBook(book)} title={book.type} value={book.title} />
         ))}
       </View>
     );
@@ -235,7 +217,7 @@ export class DetailsTab extends React.Component<Props> {
   renderFilm(film: Film) {
     const value = film.country ? `${film.title} (${film.country})` : film.title;
 
-    return <ViewLine key={film.id} title={film.year} value={value} mode={this.context} />;
+    return <ViewLine key={film.id} title={film.year} value={value} />;
   }
 
   renderCycles() {
@@ -247,20 +229,20 @@ export class DetailsTab extends React.Component<Props> {
         <Text style={s.header}>ВХОДИТ В</Text>
 
         {this.props.book.cycles.map(book => (
-          <ViewLine key={book.id} title={book.type} value={book.title} mode={mode} />
+          <ViewLine key={book.id} title={book.type} value={book.title} />
         ))}
       </View>
     );
   }
 
   openBook(book: Book | ParentBook) {
-    this.props.navigation.push(MainRoutes.Details, { bookId: String(book.id), initialTab: 'children' });
+    getNavigation().push(MainRoutes.Details, { bookId: String(book.id), initialTab: 'children' });
   }
 
   openEditions = () => {
     const { editionIds, editionTranslators } = this.props.book;
 
-    this.props.navigation.push(MainRoutes.Editions, { editionIds, translators: editionTranslators });
+    getNavigation().push(MainRoutes.Editions, { editionIds, translators: editionTranslators });
   };
 
   openTelegram = () => openInTelegram(this.props.book.originalTitle);
@@ -290,7 +272,7 @@ export class DetailsTab extends React.Component<Props> {
   searchInLivelibAction(forceOpen?: boolean) {
     const book = this.props.book;
 
-    this.props.navigation.push(MainRoutes.Search, {
+    getNavigation().push(MainRoutes.Search, {
       query: book.title,
       source: livelib,
       forceOpen,
@@ -317,7 +299,7 @@ export class DetailsTab extends React.Component<Props> {
 
     ToastAndroid.show('Ассоциировано', ToastAndroid.SHORT);
 
-    this.props.navigation.goBack();
+    getNavigation().goBack();
   };
 }
 
