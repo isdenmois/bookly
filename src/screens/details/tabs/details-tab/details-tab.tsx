@@ -40,6 +40,8 @@ const paths = [
   'book.leave',
   'book.audio',
   'book.withoutTranslation',
+  'isExist',
+  'tab',
 ];
 
 export class DetailsTab extends React.Component<Props> {
