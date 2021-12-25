@@ -1,6 +1,6 @@
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
-import { action, field, date, immutableRelation } from '@nozbe/watermelondb/decorators';
+import { writer, field, date, immutableRelation } from '@nozbe/watermelondb/decorators';
 import { format } from 'utils/date';
 
 type ReviewFields = 'id' | 'date' | 'body';
@@ -18,7 +18,7 @@ export default class Review extends Model {
   @date('date') date: Date;
   @field('body') body: string;
 
-  @action setBody(body: string) {
+  @writer setBody(body: string) {
     return this.update(() => {
       this.body = body;
     });

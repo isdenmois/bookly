@@ -20,7 +20,7 @@ function getAuthorList([status]) {
   const queries = [
     Q.experimentalNestedJoin('book_authors', 'books'),
     Q.on('book_authors', Q.on('books', 'status', status)),
-    Q.experimentalSortBy('name'),
+    Q.sortBy('name'),
   ];
   const authors = database.collections.get<Author>('authors');
 

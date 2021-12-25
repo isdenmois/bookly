@@ -7,6 +7,6 @@ export function dbAction(target, name, descriptor) {
     const ctx = this;
     const args = arguments;
 
-    return database.action(() => method.apply(ctx, args));
+    return database.write(() => method.apply(ctx, args));
   };
 }

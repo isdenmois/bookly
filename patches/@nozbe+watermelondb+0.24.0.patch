@@ -1,0 +1,17 @@
+diff --git a/node_modules/@nozbe/watermelondb/adapters/lokijs/dispatcher.js b/node_modules/@nozbe/watermelondb/adapters/lokijs/dispatcher.js
+index 311d23d..18a2aae 100644
+--- a/node_modules/@nozbe/watermelondb/adapters/lokijs/dispatcher.js
++++ b/node_modules/@nozbe/watermelondb/adapters/lokijs/dispatcher.js
+@@ -4,12 +4,6 @@ exports.__esModule = true;
+ exports.default = void 0;
+ 
+ function createWorker(useWebWorker) {
+-  if (useWebWorker) {
+-    var LokiWebWorker = require('./worker/loki.worker');
+-
+-    return new LokiWebWorker();
+-  }
+-
+   var LokiSynchronousWorker = require('./worker/synchronousWorker').default;
+ 
+   return new LokiSynchronousWorker();

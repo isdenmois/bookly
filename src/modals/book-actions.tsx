@@ -30,5 +30,5 @@ function openBookEditor(bookId) {
 async function deleteBook(bookId) {
   const book = await database.collections.get<Book>('books').find(bookId);
 
-  await database.action(() => book.markAsDeleted());
+  await database.write(() => book.markAsDeleted());
 }

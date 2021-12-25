@@ -18,7 +18,7 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
   const openAuthors = () => navigation.push(MainRoutes.Authors);
   const logout = () => {
     resetSettings();
-    setTimeout(() => database.action(() => database.unsafeResetDatabase()), 500);
+    setTimeout(() => database.write(() => database.unsafeResetDatabase()), 500);
   };
 
   const isWeb = Platform.OS === 'web';

@@ -1,11 +1,11 @@
 import React from 'react';
-import _ from 'lodash';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Q } from '@nozbe/watermelondb';
+
 import { useObservable } from 'utils/use-observable';
-import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/internal/operators/map';
 import { Screen } from 'components';
 import { settings } from 'services';
-import { Q } from '@nozbe/watermelondb';
 import { database } from 'store';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { CURRENT_YEAR, mapBooks, StatBook } from './tabs/shared';

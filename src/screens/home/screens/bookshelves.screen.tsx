@@ -48,7 +48,7 @@ export const BookshelvesScreen: FC = () => {
 
 type ListProps = { mt?: number; query(): Query<Book>; title?: string; onViewAllPress?(); counterTestId?: string };
 function BookList({ mt, title, counterTestId, query, onViewAllPress }: ListProps) {
-  const books = useObservable(() => query().extend(Q.experimentalTake(LIMIT)).observe(), [], []);
+  const books = useObservable(() => query().extend(Q.take(LIMIT)).observe(), [], []);
   const totalCount = useObservable(() => query().observeCount(), 0, []);
 
   return (

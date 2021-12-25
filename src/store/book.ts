@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Model } from '@nozbe/watermelondb';
 import { Associations } from '@nozbe/watermelondb/Model';
-import { action, field, date, children, readonly, json } from '@nozbe/watermelondb/decorators';
+import { writer, field, date, children, readonly, json } from '@nozbe/watermelondb/decorators';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { prepareMissedAuthors } from './author';
 import { prepareBookAuthors } from './book-author';
@@ -65,7 +65,7 @@ export default class Book extends Model {
   @children('list_books') listBooks;
   @children('reviews') reviews;
 
-  @action setData(data: Partial<BookData>) {
+  @writer setData(data: Partial<BookData>) {
     return this.update(() => {
       _.forEach(data, (value, key) => {
         this[key] = value;
@@ -73,13 +73,13 @@ export default class Book extends Model {
     });
   }
 
-  @action setStatus(status: BOOK_STATUSES) {
+  @writer setStatus(status: BOOK_STATUSES) {
     return this.update(() => {
       this.status = status;
     });
   }
 
-  @action setThumbnail(thumbnail: string) {
+  @writer setThumbnail(thumbnail: string) {
     return this.update(() => {
       this.thumbnail = thumbnail ? thumbnail.toString() : null;
     });

@@ -1,15 +1,16 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, ViewStyle, ImageStyle, TextStyle, Platform } from 'react-native';
 import withObservables from '@nozbe/with-observables';
-import { of } from 'rxjs/internal/observable/of';
+import { of } from 'rxjs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
+
 import { getColor, dynamicColor } from 'types/colors';
 import { getNavigation, openModal } from 'services';
 import { Thumbnail } from 'components/thumbnail';
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import Book, { BookData } from 'store/book';
 import { formatDate } from 'utils/date';
-import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 import { MainRoutes, ModalRoutes } from 'navigation/routes';
 
 const NEXT_STATUSES = {

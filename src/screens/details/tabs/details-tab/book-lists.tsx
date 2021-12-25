@@ -37,7 +37,7 @@ export function BookLists({ book }: Props): any {
       {lists.map(list => {
         const value = set.has(list.id);
         const toggle = () =>
-          database.action(() => {
+          database.write(() => {
             if (value) {
               return bookLists.find(l => l.list.id === list.id).markAsDeleted();
             }

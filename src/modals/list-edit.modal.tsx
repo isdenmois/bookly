@@ -18,7 +18,7 @@ export const ListEditModal: FC<Props> = ({ navigation, route }) => {
   };
   const remove = () =>
     confirm(list.name, t('modal.list-remove')).then(() => {
-      database.action(() => list.markAsDeleted());
+      database.write(() => list.markAsDeleted());
       navigation.goBack();
     });
   const enabled = name && name !== list.name;

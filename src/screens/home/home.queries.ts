@@ -1,19 +1,20 @@
+import _ from 'lodash';
 import { Q } from '@nozbe/watermelondb';
-import { map } from 'rxjs/internal/operators/map';
+import { map } from 'rxjs/operators';
+
 import { BOOK_STATUSES } from 'types/book-statuses.enum';
 import { dayOfYear, getStartOfYear, daysAmount } from 'utils/date';
 import { database } from 'store';
 import Book from 'store/book';
 import List from 'store/list';
 import { settings } from 'services';
-import _ from 'lodash';
 
 const INITIAL_SORT = { field: 'title', desc: false };
 const getDefaultSort = () => {
   const sort = settings.defaultSort || INITIAL_SORT;
   const field = _.snakeCase(sort.field);
 
-  return Q.experimentalSortBy(field, sort.desc ? Q.desc : Q.asc);
+  return Q.sortBy(field, sort.desc ? Q.desc : Q.asc);
 };
 
 export function booksReadForecast(read: number, total: number): number {
@@ -26,7 +27,7 @@ export function booksReadForecast(read: number, total: number): number {
 export function currentBooksQuery() {
   return database.collections
     .get<Book>('books')
-    .query(Q.where('status', BOOK_STATUSES.NOW), Q.experimentalSortBy('updated_at', Q.asc));
+    .query(Q.where('status', BOOK_STATUSES.NOW), Q.sortBy('updated_at', Q.asc));
 }
 
 export function wishBooksQuery() {
@@ -35,19 +36,17 @@ export function wishBooksQuery() {
 
 export function readBooksThisYearQuery() {
   const queries = [Q.where('status', BOOK_STATUSES.READ), Q.where('date', Q.gte(getStartOfYear().getTime()))];
-  return database.collections.get<Book>('books').query(Q.and(...queries), Q.experimentalSortBy('date', Q.desc));
+  return database.collections.get<Book>('books').query(Q.and(...queries), Q.sortBy('date', Q.desc));
 }
 
 export function readBooksQuery() {
-  return database.collections
-    .get<Book>('books')
-    .query(Q.where('status', BOOK_STATUSES.READ), Q.experimentalSortBy('date', Q.desc));
+  return database.collections.get<Book>('books').query(Q.where('status', BOOK_STATUSES.READ), Q.sortBy('date', Q.desc));
 }
 
 export function lastReadDateObserver() {
   return database.collections
     .get<Book>('books')
-    .query(Q.where('status', BOOK_STATUSES.READ), Q.experimentalSortBy('date', Q.desc), Q.experimentalTake(1))
+    .query(Q.where('status', BOOK_STATUSES.READ), Q.sortBy('date', Q.desc), Q.take(1))
     .observeWithColumns(['date'])
     .pipe(map(rows => rows[0]?.date));
 }

@@ -1,5 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, action, children } from '@nozbe/watermelondb/decorators';
+import { field, writer, children } from '@nozbe/watermelondb/decorators';
 
 type ListFields = 'id' | 'name';
 
@@ -15,7 +15,7 @@ export default class List extends Model {
   // @lazy books = this.collections.get('books').query(Q.on('list_books', 'list_id', this.id));
   @children('list_books') lists;
 
-  @action setName(name: string) {
+  @writer setName(name: string) {
     return this.update(() => {
       this.name = name;
     });
@@ -30,7 +30,7 @@ export default class List extends Model {
 export function createList(database, name: string) {
   const lists = database.collections.get('lists');
 
-  return database.action(() =>
+  return database.write(() =>
     lists.create(list => {
       list.name = name;
     }),

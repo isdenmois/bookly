@@ -30,7 +30,7 @@
   "dependencies": {
     "@gorhom/portal": "1.0.11",
     "@nanostores/react": "0.1.5",
-    "@nozbe/watermelondb": "0.22.0",
+    "@nozbe/watermelondb": "0.24.0",
     "@nozbe/with-observables": "1.4.0",
     "@react-native-async-storage/async-storage": "1.15.14",
     "@react-native-community/datetimepicker": "5.1.0",
@@ -69,7 +69,7 @@
     "react-native-web": "0.17.5",
     "recyclerlistview": "3.0.5",
     "rn-classnames": "1.0.1",
-    "rxjs": "6.5.3",
+    "rxjs": "7.3.0",
     "setimmediate": "1.0.5",
     "workbox-window": "6.3.0"
   },
@@ -146,8 +146,8 @@
   },
   "resolutions": {
     "**/hoist-non-react-statics": "3.3.2",
-    "**/fbjs": "1.0.0",
-    "**/rxjs": "6.5.3",
+    "**/fbjs": "3.0.0",
+    "**/rxjs": "7.3.0",
     "**/rambdax": "3.7.0",
     "**/isarray": "1.0.0",
     "**/is-arrayish": "0.3.2",

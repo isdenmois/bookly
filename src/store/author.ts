@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { Model, Q } from '@nozbe/watermelondb';
-import { field, action } from '@nozbe/watermelondb/decorators';
+import { field, writer } from '@nozbe/watermelondb/decorators';
 
 type AuthorFields = 'id' | 'name';
 
@@ -17,7 +17,7 @@ export default class Author extends Model {
   @field('add') add: string;
   // @lazy books = this.collections.get('books').query(Q.on('book_authors', 'author_id', this.id));
 
-  @action setFav(fav: boolean, add: string) {
+  @writer setFav(fav: boolean, add: string) {
     return this.update(() => {
       this.fav = fav;
       this.add = fav ? add : null;
@@ -46,7 +46,7 @@ export async function prepareMissedAuthors(database, authors) {
 }
 
 export function createAuthor(db, data) {
-  return db.action(() =>
+  return db.write(() =>
     db.collections.get('authors').create(a => {
       const { id, ...rest } = data;
       a._raw.id = id;
