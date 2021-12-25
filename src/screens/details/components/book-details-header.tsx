@@ -7,9 +7,11 @@ import { TouchIcon } from 'components';
 
 type Props = {
   bookId: string;
+  testID?: boolean;
+  children: any;
 };
 
-export const BookDetailsHeader = memo<Props>(({ bookId, children }) => {
+export const BookDetailsHeader = memo<Props>(({ bookId, testID, children }) => {
   const url = useMemo(
     () =>
       bookId && bookId.startsWith('l_')
@@ -32,7 +34,7 @@ export const BookDetailsHeader = memo<Props>(({ bookId, children }) => {
         color='white'
         onPress={goBack}
         onLongPress={goToHome}
-        testID='goBackButton'
+        testID={testID ? 'goBackButton' : undefined}
       />
       {children}
       <TouchIcon style={s.icon} paddingHorizontal={15} name='globe' size={24} color='white' onPress={openWeb} />

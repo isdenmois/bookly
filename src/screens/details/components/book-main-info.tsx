@@ -42,7 +42,7 @@ export const BookMainInfo = memo<Props>(
       <>
         <Background bookTitle={bookTitle} book={book}>
           <View style={s.darkOverlay} testID={`details${book.id}`}>
-            <Header bookTitle={bookTitle} bookId={book.id} />
+            <Header bookTitle={bookTitle} bookId={book.id} testID />
             <BookAuthor book={book} />
             {!book.thumbnail && <SecondaryData book={book} />}
           </View>
@@ -53,7 +53,7 @@ export const BookMainInfo = memo<Props>(
         {Platform.OS !== 'web' && (
           <CoordinatorPinned>
             <Background bookTitle={bookTitle} book={book}>
-              <View style={s.darkOverlay} testID={`details${book.id}`}>
+              <View style={s.darkOverlay}>
                 <Header bookTitle={bookTitle} bookId={book.id} />
               </View>
             </Background>
@@ -80,7 +80,7 @@ function ThumbnailBackground({ children, book }) {
   );
 }
 
-function Header({ bookTitle, bookId }) {
+function Header({ bookTitle, bookId, testID }) {
   const s = useDynamicStyleSheet(ds);
   const copyBookTitle = () => {
     Clipboard.setString(bookTitle);
@@ -89,7 +89,7 @@ function Header({ bookTitle, bookId }) {
   const openTelegram = () => openInTelegram(bookTitle);
 
   return (
-    <BookDetailsHeader bookId={bookId}>
+    <BookDetailsHeader bookId={bookId} testID={testID}>
       <TouchableOpacity style={s.titleWrapper} onPress={openTelegram} onLongPress={copyBookTitle}>
         <Text style={s.title}>{bookTitle}</Text>
       </TouchableOpacity>

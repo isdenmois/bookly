@@ -17,13 +17,24 @@ export const database = new Database({
   modelClasses: [Book, Author, BookAuthor, Review, List, ListBook] as any,
 });
 
+const isSyncStatusUpdated = model => model.syncStatus && model.syncStatus !== 'synced';
+
 const changes = new Subject();
 
-const isSyncStatusUpdated = model => model.syncStatus && model.syncStatus !== 'synced';
+let timeout: any = null;
+const notify = () => {
+  if (timeout) clearTimeout(timeout);
+
+  timeout = setTimeout(() => {
+    timeout = null;
+
+    changes.next(true);
+  });
+};
 
 patchMethod(database, 'batch', function () {
   if (_.flatten(arguments).some(isSyncStatusUpdated)) {
-    changes.next(true);
+    notify();
   }
 });
 
