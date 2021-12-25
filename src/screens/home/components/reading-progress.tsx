@@ -1,7 +1,7 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { Svg, G, Circle, Text, TSpan } from 'react-native-svg';
-import { useTheme } from 'components/theme';
+import React, { FC, useCallback, useState } from 'react';
+import { Svg, Circle, Text } from 'react-native-svg';
 import { View } from 'react-native';
+import { useTheme } from 'components/theme';
 
 type Props = {
   readCount: number;
@@ -9,10 +9,11 @@ type Props = {
 };
 
 const STROKE_WIDTH = 10;
+let priorSize = 139;
 
 export const ReadingProgress: FC<Props> = ({ readCount, totalBooks }) => {
   const { colors } = useTheme();
-  const [size, setSize] = useState<number>(0);
+  const [size, setSize] = useState<number>(priorSize);
 
   const center = size / 2;
   const radius = size / 2 - STROKE_WIDTH / 2;
@@ -21,8 +22,11 @@ export const ReadingProgress: FC<Props> = ({ readCount, totalBooks }) => {
   const offset = (1 - readCount / totalBooks) * circumference;
   const onLayout = useCallback(
     e => {
-      if (size !== e.nativeEvent.layout.width) {
-        setSize(e.nativeEvent.layout.width);
+      const width = e.nativeEvent.layout.width;
+
+      if (width > 0 && size !== width) {
+        priorSize = width;
+        setSize(priorSize);
       }
     },
     [size],
