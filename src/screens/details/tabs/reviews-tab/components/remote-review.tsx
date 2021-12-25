@@ -1,9 +1,10 @@
 import React, { memo, useRef, useState } from 'react';
-import { Text, View, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid, Linking } from 'react-native';
+import { Text, View, ViewStyle, TextStyle, TouchableOpacity, ToastAndroid, Linking, Platform } from 'react-native';
 import _ from 'lodash';
 import { DynamicStyleSheet } from 'react-native-dynamic';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import { useCoordinator } from 'components/coordinator/coordinator-context';
 import { RemoteReview as IRemoteReview } from 'services/api/fantlab/review-list';
 import { ExpandableText, Thumbnail } from 'components';
 import { formatDate } from 'utils/date';
@@ -21,7 +22,8 @@ const LIVELIB_USER_URL = 'https://www.livelib.ru/reader/';
 
 export const RemoteReview = memo<Props>(({ review }) => {
   const { s, color } = useSColor(ds);
-  const rootRef = useRef();
+  const rootRef = useRef<any>();
+  const scrollContext = useCoordinator();
 
   const [isLiked, setIsLiked] = useState(false);
   const likes = isLiked ? review.likes + 1 : review.likes;
@@ -53,15 +55,18 @@ export const RemoteReview = memo<Props>(({ review }) => {
   };
 
   const scrollToElement = () => {
-    // FIXME: scroll to top of the element
-    // this.rootRef.current.measureLayout(
-    //   this.context.rootId,
-    //   (left, top) => {
-    //     if (Platform.OS === 'web') top = (this.rootRef.current as any).offsetTop;
-    //     this.context.scrollTo(Math.floor(top) - HEADER_HEIGHT - 15, true);
-    //   },
-    //   _.noop,
-    // );
+    if (Platform.OS === 'web') {
+      const commentTop = rootRef.current.offsetTop + rootRef.current.offsetParent.offsetParent.offsetTop;
+      scrollContext.scrollTo(commentTop, true);
+    } else {
+      rootRef.current?.measureLayout(
+        scrollContext.getRoot(),
+        (left, top) => {
+          scrollContext.scrollTo(Math.floor(top - scrollContext.headerHeight / 2), true);
+        },
+        _.noop,
+      );
+    }
   };
 
   return (

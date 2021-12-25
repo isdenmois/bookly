@@ -9,6 +9,8 @@ interface ICoordinatorContext {
   scrollY: Animated.Value<number>;
   onScroll: any;
   onScrollEnd: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  getRoot(): any;
+  scrollTo(offset: number, animated?: boolean): void;
   ref: (node: any, key: string) => void;
 }
 

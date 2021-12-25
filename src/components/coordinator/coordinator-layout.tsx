@@ -29,6 +29,8 @@ export class CoordinatorLayout extends PureComponent {
           ref: this.setController,
           onTabChange: this.onTabChange,
           scrollY: this.scrollY,
+          scrollTo: this.scrollTo,
+          getRoot: this.getCurrentScrollView,
         }}
       >
         <PortalProvider>
@@ -77,5 +79,13 @@ export class CoordinatorLayout extends PureComponent {
         value.scrollTo({ y: this.listFixedHeight, animated: false });
       });
     }
+  };
+
+  getCurrentScrollView = () => {
+    return this.listRefArr.find(item => item.key === this.tableKey)?.value;
+  };
+
+  scrollTo = (y: number, animated?: boolean) => {
+    this.getCurrentScrollView().scrollTo({ y, animated });
   };
 }

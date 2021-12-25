@@ -1,6 +1,7 @@
 import React, { FC, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PortalHost, PortalProvider } from '@gorhom/portal';
 
+import { CoordinatorContext } from 'components/coordinator/coordinator-context';
 import { Box, Text, useTheme } from 'components/theme';
 import Book from 'store/book';
 import { BookExtended } from 'types/book-extended';
@@ -18,15 +19,26 @@ interface Props {
 
 export const BookDetails: FC<Props> = ({ tabs, book, initialTab, isExist, fantlabId, navigation }) => {
   const extraProps = useMemo(() => ({ book, isExist, fantlabId, navigation }), [book, fantlabId, isExist]);
+  const scrollRef = useRef<HTMLDivElement>();
+  const scrollContext = useMemo<any>(
+    () => ({
+      scrollTo(y: number) {
+        scrollRef.current.scrollTop = y;
+      },
+    }),
+    [],
+  );
 
   return (
-    <PortalProvider>
-      <Box style={s.container}>
-        <BookMainInfo book={book} />
-        <Tabs tabs={tabs} initialTab={initialTab} extraProps={extraProps} />
-        <PortalHost name='fixed' />
-      </Box>
-    </PortalProvider>
+    <CoordinatorContext.Provider value={scrollContext}>
+      <PortalProvider>
+        <Box style={s.container} ref={scrollRef}>
+          <BookMainInfo book={book} />
+          <Tabs tabs={tabs} initialTab={initialTab} extraProps={extraProps} />
+          <PortalHost name='fixed' />
+        </Box>
+      </PortalProvider>
+    </CoordinatorContext.Provider>
   );
 };
 
