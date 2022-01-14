@@ -11,7 +11,7 @@ Bookly is a book manager where you can:
 
 The app is available in English and Russian languages.
 
-![Home screen](./dev-tools/docs/home.png)
-![Home screen dark](./dev-tools/docs/home-dark.png)
+![Home screen](./docs/home.png)
+![Home screen dark](./docs/home-dark.png)
 
-## [Other screens](./dev-tools/docs/screens.md)
+## [Other screens](./docs/screens.md)

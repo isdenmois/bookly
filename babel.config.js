@@ -5,8 +5,7 @@ module.exports = api => {
 
   const config = {
     presets: [
-      !inProduction && 'module:metro-react-native-babel-preset',
-      inProduction && ['@rnx-kit/babel-preset-metro-react-native', { unstable_transformProfile: 'esbuild' }],
+      'module:metro-react-native-babel-preset',
       process.env.NODE_ENV === 'test' && ['@babel/preset-env', { targets: { node: 'current' } }],
     ].filter(preset => preset),
 

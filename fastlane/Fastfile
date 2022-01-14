@@ -1,0 +1,80 @@
+default_platform(:android)
+
+ENV['NODE_ENV'] = 'production'
+
+platform :android do
+  desc 'Upload a new version'
+  lane :upload do
+    upload_to_server(
+      endPoint: ENV['SERVER_URL'],
+      multipartPayload: {
+        :fileFormFieldName => 'file'
+      }
+    )
+  end
+
+  desc 'Print apk size'
+  lane :print_apk_size do
+    puts("Apk size: #{File.size(lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]) / 1048576}Mb")
+  end
+
+  desc 'Build'
+  lane :build_apk do
+    delete_files(file_pattern: '**/*.apk')
+    gradle(
+      task: "assembleRelease",
+      project_dir: "android",
+      properties: {
+          "android.injected.signing.store.file" => ENV["KEY_STORE_FILE"],
+          "android.injected.signing.store.password" => ENV["KEY_PASSWORD"],
+          "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+          "android.injected.signing.key.password" => ENV["KEY_PASSWORD"],
+      }
+    )
+    print_apk_size
+  end
+
+  desc 'Build E2E version'
+  lane :build_e2e do
+    ENV['RN_SRC_EXT'] = "e2e.ts"
+    gradle(
+      task: "assembleRelease assembleAndroidTest -DtestBuildType=release",
+      project_dir: "android",
+      properties: {
+          "android.injected.signing.store.file" => ENV["KEY_STORE_FILE"],
+          "android.injected.signing.store.password" => ENV["KEY_PASSWORD"],
+          "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+          "android.injected.signing.key.password" => ENV["KEY_PASSWORD"],
+      }
+    )
+  end
+
+  desc 'Build E2E version'
+  lane :build_e2e_debug do
+    ENV['RN_SRC_EXT'] = "e2e.ts"
+    gradle(
+      task: "assembleDebug assembleAndroidTest -DtestBuildType=debug",
+      project_dir: "android"
+    )
+  end
+
+  desc 'Deploy a new version'
+  lane :deploy do
+    build_apk
+    upload
+    print_apk_size
+  end
+end
+
+platform :web do
+  desc 'Build a new version'
+  lane :build do
+    yarn(command: "web:build")
+  end
+
+  desc 'Deploy a new version'
+  lane :deploy do
+    build
+    sh("vercel", "deploy", "--prod")
+  end
+end

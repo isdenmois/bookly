@@ -153,16 +153,6 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release {
-            def Properties localProps = new Properties()
-            localProps.load(new FileInputStream(file('../local.properties')))
-            assert localProps['KEY_STORE_FILE'];
-
-            storeFile file(localProps['KEY_STORE_FILE'])
-            storePassword localProps['KEY_PASSWORD']
-            keyAlias localProps['KEY_ALIAS']
-            keyPassword localProps['KEY_PASSWORD']
-        }
     }
     buildTypes {
         debug {
@@ -174,7 +164,6 @@ android {
             }
         }
         release {
-            signingConfig signingConfigs.release
             minifyEnabled isRelease && enableProguardInReleaseBuilds
             shrinkResources isRelease
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

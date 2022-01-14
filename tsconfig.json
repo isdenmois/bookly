@@ -18,5 +18,5 @@
       "api": ["./src/services/api"]
     }
   },
-  "exclude": ["dev-tools", "node_modules", "babel.config.js", "metro.config.js"]
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }

@@ -9,17 +9,16 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --quiet",
     "lint:fix": "yarn lint --fix",
     "clean": "android/gradlew -p android clean",
-    "build": "NODE_ENV=production node dev-tools/release --skip-version --web=false",
-    "release": "NODE_ENV=production node dev-tools/release --clean --upload",
+    "build": "fastlane build_apk",
+    "release": "fastlane android deploy && fastlane web deploy",
     "cucumber": "cross-env NODE_ENV=test cucumber-js e2e/screens --format=progress-bar --exit",
     "e2e": "yarn e2e:build && yarn e2e:run",
     "e2e:run": "yarn cucumber --configuration=android.emu.release",
     "e2e:build": "NODE_ENV=production detox build -c android.emu.release",
     "e2e:debug": "yarn e2e:debug:build && npm run e2e:debug:run",
     "e2e:debug:run": "yarn cucumber --configuration=android.emu.debug",
-    "e2e:debug:build": "node dev-tools/release --test --type=debug",
+    "e2e:debug:build": "fastlane build_e2e_debug",
     "e2e:metro": "cross-env NODE_ENV=test RN_SRC_EXT=e2e.ts react-native start --reset-cache",
-    "changelog": "node dev-tools/changelog --type=debug",
     "web": "webpack serve --host 0.0.0.0",
     "web:build": "cross-env NODE_ENV=production webpack --progress",
     "web:stats": "cross-env NODE_ENV=production JSON=1 webpack -p --json > dist/stats.json",
@@ -158,7 +157,7 @@
     "configurations": {
       "android.emu.debug": {
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "node dev-tools/release --test --type=debug",
+        "build": "fastlane build_e2e_debug",
         "type": "android.attached",
         "device": {
           "adbName": "emulator-5554"
@@ -166,7 +165,7 @@
       },
       "android.emu.release": {
         "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
-        "build": "node dev-tools/release --clean --test",
+        "build": "fastlane build_e2e",
         "type": "android.attached",
         "device": {
           "adbName": "emulator-5554"
