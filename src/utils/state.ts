@@ -5,9 +5,11 @@ export type State<T> = T & {
   getState(): T;
   set<K extends keyof T>(field: K, value: T[K]): void;
   multiSet(value: Partial<T>): void;
+  watch<K extends keyof T>(field: K, callback: WatchCallback<T, K>);
   watchAll(callback: WatchAllCallback<T>): void;
 };
 
+type WatchCallback<T, K extends keyof T> = (value?: T[K]) => void;
 type WatchAllCallback<T> = (field?: keyof T, value?: T[typeof field]) => void;
 export type UseValue<T, K extends keyof T> = (field: K, defaultValue?: T[K]) => T[K];
 
@@ -18,6 +20,7 @@ export function createState<T>(initialState: T): [State<T>, UseValue<T, any>] {
   const obj: State<T> = Object.assign({}, initialState, {
     set,
     multiSet,
+    watch,
     watchAll,
     getState,
   });

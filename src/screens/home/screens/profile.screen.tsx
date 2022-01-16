@@ -1,18 +1,22 @@
 import React, { FC } from 'react';
 import { Platform, ScrollView, StyleSheet, ViewStyle } from 'react-native';
+import { useStore } from '@nanostores/react';
+
+import { $isAuthorsEnabled } from 'entities/settings';
+import { RemoveDeletedLineItem } from 'features/profile/remove-deleted';
+
+import { database, settings, t } from 'services';
+import { resetSettings } from 'services/settings';
+import { clearCache } from 'services/api/base/create-api';
+import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
 import { Button, ListItem, Screen } from 'components';
-import { MainRoutes, MainScreenProps } from 'navigation/routes';
-import { RemoveDeleted } from 'screens/home/components/remove-deleted';
-import { clearCache } from 'services/api/base/create-api';
-import { database, settings, t } from 'services';
 import { Box, Text } from 'components/theme';
-import { resetSettings, useSetting } from 'services/settings';
 
 type Props = MainScreenProps<MainRoutes.Home>;
 
 export const ProfileScreen: FC<Props> = ({ navigation }) => {
-  const authorsEnabled = useSetting('authors');
+  const isAuthorsEnabled = useStore($isAuthorsEnabled);
   const openSettings = () => navigation.push(MainRoutes.Settings);
   const openLists = () => navigation.push(MainRoutes.Lists);
   const openAuthors = () => navigation.push(MainRoutes.Authors);
@@ -32,9 +36,9 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
       <ScrollView contentContainerStyle={s.content}>
         <ListItem label='nav.settings' onPress={openSettings} />
         <ListItem label='headers.lists' onPress={openLists} />
-        {authorsEnabled && <ListItem label='nav.authors' onPress={openAuthors} />}
+        {isAuthorsEnabled && <ListItem label='nav.authors' onPress={openAuthors} />}
 
-        <RemoveDeleted />
+        <RemoveDeletedLineItem />
 
         {isWeb && <ListItem label='Версия' value={process.env.VERSION} onPress={() => (global as any).wb.update()} />}
         {__DEV__ && <ListItem label='Очистить API Cache' onPress={clearCache} last />}
