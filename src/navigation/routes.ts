@@ -75,6 +75,7 @@ export enum ModalRoutes {
   ListBookSelect = 'list-book-select',
   BookActions = 'book-actions',
   BookEditor = 'book-editor',
+  SelectNextBook = 'select-next-book',
 }
 
 export type ModalParamList = {
@@ -97,6 +98,7 @@ export type ModalParamList = {
   [ModalRoutes.ListBookSelect]: { listId: string };
   [ModalRoutes.BookActions]: { bookId: string };
   [ModalRoutes.BookEditor]: { bookId: string };
+  [ModalRoutes.SelectNextBook]: { bookId: string };
 };
 
 export type ModalScreenProps<RouteName extends ModalRoutes> = StackScreenProps<ModalParamList, RouteName>;

@@ -29,6 +29,7 @@ import { ListEditModal } from 'modals/list-edit.modal';
 import { ListBookSelectModal } from 'modals/list-book-select.modal';
 import { BookActionsModal } from 'modals/book-actions';
 import { BookEditorModal } from 'modals/book-editor/book-editor.modal';
+import { SelectNextBook } from 'modals/select-next-book';
 
 import { ModalRoutes } from './routes';
 
@@ -100,6 +101,7 @@ export function MainNavigator() {
         <Stack.Screen name={ModalRoutes.ListBookSelect} component={ListBookSelectModal} />
         <Stack.Screen name={ModalRoutes.BookActions} component={BookActionsModal} />
         <Stack.Screen name={ModalRoutes.BookEditor} component={BookEditorModal} />
+        <Stack.Screen name={ModalRoutes.SelectNextBook} component={SelectNextBook} />
       </Stack.Group>
     </Stack.Navigator>
   );

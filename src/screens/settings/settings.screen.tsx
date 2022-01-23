@@ -35,6 +35,7 @@ const LINES: SettingLine[] = [
   { type: SettingType.Toggler, param: 'paper' },
   { type: SettingType.Toggler, param: 'topRate' },
   { type: SettingType.Toggler, param: 'authors' },
+  { type: SettingType.Toggler, param: 'selectNextBook' },
 ];
 
 export function SettingsScreen() {

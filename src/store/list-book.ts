@@ -1,5 +1,6 @@
 import { Model, Q, Database } from '@nozbe/watermelondb';
 import { immutableRelation } from '@nozbe/watermelondb/decorators';
+import field from '@nozbe/watermelondb/decorators/field';
 import { Associations } from '@nozbe/watermelondb/Model';
 
 export default class ListBook extends Model {
@@ -9,11 +10,12 @@ export default class ListBook extends Model {
     books: { type: 'belongs_to', key: 'book_id' },
   };
 
+  @field('list_id') lisrId: string;
   @immutableRelation('lists', 'list_id') list;
   @immutableRelation('books', 'book_id') book;
 }
 
-export function prepareListBooks(database, bookId, lists) {
+export function prepareListBooks(database, bookId, lists: string[]) {
   const listBooks = database.collections.get('list_books');
 
   return lists.map(listId =>

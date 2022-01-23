@@ -93,7 +93,7 @@ export default class Book extends Model {
   }
 }
 
-export async function createBook(database, data, lists) {
+export async function createBook(database, data, lists: string[]) {
   const record = database.collections.get('books').prepareCreate(book => {
     book._raw.id = data.id;
     _.forEach(FIELDS, f => {

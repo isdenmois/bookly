@@ -31,6 +31,7 @@ export interface ChildBook {
   title: string;
   type: string;
   year?: number;
+  author?: string;
   children?: ChildBook[];
 }
 

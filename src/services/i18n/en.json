@@ -139,7 +139,8 @@
     "topRate": "Book top chart",
     "authors": "Interesting authors",
     "mode": "Theme",
-    "defaultSort": "Default sort"
+    "defaultSort": "Default sort",
+    "selectNextBook": "Select next book"
   },
   "modal": {
     "edit": "Edit the title",

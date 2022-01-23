@@ -8,7 +8,7 @@ const THUMBNAIL_ID = /(\d+)($|\?)/;
 const response = {
   id: 'work_id',
   title: w => w.work_name || w.work_name_orig,
-  author: w => _.map(w.authors, a => a.name).join(', '),
+  author,
   authors: w => _.map(w.authors, a => ({ id: a.id.toString(), name: a.name })),
   // TODO: попробовать вытянуть без regexp
   thumbnail: w => w.image?.match(THUMBNAIL_ID)?.[1] || w.image || null,
@@ -36,6 +36,10 @@ const response = {
 export type Params = { bookId: string };
 
 export default api.get<Params>('/work/:bookId/extended').response(response);
+
+function author(w) {
+  return _.map(w.authors, a => a.name).join(', ');
+}
 
 function editionCount(work) {
   const paperBlocks = _.filter(work.editions_blocks, { block: 'paper' });
@@ -75,17 +79,20 @@ function parent(w) {
 }
 
 function children(w) {
+  const parentAuthor = author(w);
   const result = [];
   const parents = [];
   let prev = null;
   let deep = 1;
 
   _.forEach(w.children, c => {
+    const childAuthor = c.authors && author(c);
     const item = {
       id: c.work_id ? String(c.work_id) : null,
       title: c.work_name || c.work_name_alt || c.work_name_orig,
       type: _.capitalize(c.work_type) || 'Другое',
       year: c.work_year,
+      author: childAuthor && parentAuthor !== childAuthor ? childAuthor : null,
     };
 
     if (!c.deep || c.deep <= 1) {

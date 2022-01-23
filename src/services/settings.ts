@@ -22,6 +22,7 @@ const INITIAL_SETTINGS = <const>{
   authors: false,
   fantlabAuth: '',
   minYear: INITIAL_YEAR,
+  selectNextBook: false,
 };
 
 export type Setting = keyof typeof INITIAL_SETTINGS;

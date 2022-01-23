@@ -37,8 +37,9 @@ export class ChangeStatusModal extends React.Component<Props> {
     statusEditable: true,
     dateEditable: false,
     initialLists: [],
-    lists: new Set(),
+    lists: new Set<string>(),
     reread: false,
+    inProgress: false,
   };
 
   statusMap = {
@@ -81,6 +82,10 @@ export class ChangeStatusModal extends React.Component<Props> {
   }
 
   get disabled() {
+    if (this.state.inProgress) {
+      return true;
+    }
+
     if (this.state.status === BOOK_STATUSES.READ) {
       return !this.state.rating;
     }
@@ -308,9 +313,8 @@ export class ChangeStatusModal extends React.Component<Props> {
     return createBook(database, book, this.getLists());
   }
 
-  save = () => {
+  save = async () => {
     defaultDate = this.state.date;
-    this.props.navigation.goBack();
 
     if (this.isCreation) {
       this.createBook();
@@ -319,9 +323,40 @@ export class ChangeStatusModal extends React.Component<Props> {
     }
 
     if (this.isFantlab && this.state.status === BOOK_STATUSES.READ && settings.withFantlab) {
-      api.markWork(this.props.route.params.book.id, this.state.rating);
+      this.setState({ inProgress: true });
+      try {
+        await api.markWork(this.props.route.params.book.id, this.state.rating);
+      } catch (e) {
+        console.log(e);
+      }
     }
+
+    if (settings.selectNextBook && this.isFantlab && this.state.status === BOOK_STATUSES.READ) {
+      this.setState({ inProgress: true });
+
+      try {
+        const hasParents = await this.checkBookForParents();
+
+        if (hasParents) {
+          this.props.navigation.replace(ModalRoutes.SelectNextBook, { bookId: this.props.route.params.book.id });
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+
+      this.setState({ inProgress: false });
+    }
+
+    this.props.navigation.goBack();
   };
+
+  async checkBookForParents() {
+    const book = this.props.route.params.book;
+    const bookData = await api.book({ bookId: book.id });
+
+    return !!bookData.parent?.length;
+  }
 }
 
 const ds = new DynamicStyleSheet({

@@ -54,6 +54,10 @@ export const theme = createTheme({
       lineHeight: 18,
       color: 'notBlack',
     },
+    error: {
+      fontSize: 16,
+      color: 'ErrorText',
+    },
 
     button_primary: {},
     button_outlined: {},
