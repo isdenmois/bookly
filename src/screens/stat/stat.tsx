@@ -12,6 +12,7 @@ import { ByYear } from './tabs/by-year.factory';
 import { ByAuthor } from './tabs/by-author.factory';
 import { ByType } from './tabs/by-type.factory';
 import { CURRENT_YEAR, StatBook, StatTab, TABS, byYear, Sort, IRow } from './tabs/shared';
+import { $readBookCountThisYear } from 'entities/book';
 
 const STAT_GROUPS: Record<string, StatTab> = {
   MONTH: ByMonth,
@@ -56,7 +57,7 @@ export function Stat({ books, minYear }: Props) {
 
 function useStatParams() {
   const [type, setTypeRaw] = useState(TABS.MONTH);
-  const [year, setYearRaw] = useState(CURRENT_YEAR);
+  const [year, setYearRaw] = useState($readBookCountThisYear.get() > 0 ? CURRENT_YEAR : CURRENT_YEAR - 1);
   const [sort, setSortRaw] = useState<Sort>(null);
 
   const setType = useCallback(value => {

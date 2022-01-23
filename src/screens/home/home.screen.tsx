@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 import { setNavigation } from 'services/navigation';
 import { MainRoutes, MainScreenProps } from 'navigation/routes';
 
-import { MainScreen } from './screens/main.screen';
+import { MainScreen } from './screens/main';
 import { BookshelvesScreen } from './screens/bookshelves.screen';
 import { HomeSearchScreen } from './screens/search.screen';
 import { ProfileScreen } from './screens/profile.screen';

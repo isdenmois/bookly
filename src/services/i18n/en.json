@@ -26,7 +26,8 @@
     "empty": {
       "noBooks": "What are you reading?",
       "choose": "Select the book that you are currently reading",
-      "select": "Select a book"
+      "select": "Select a book",
+      "statistics": "Watch the statistics from the previous year"
     },
     "challenge": {
       "title": "Reading challenge",
