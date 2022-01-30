@@ -24,4 +24,5 @@ export interface BookFilters {
   paper: string;
   list: List;
   reads: string[];
+  audio: 'y' | 'n';
 }

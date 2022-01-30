@@ -15,7 +15,8 @@
     "fromy": "From {{year}}",
     "collapse": "Collapse",
     "read-more": "Read more",
-    "translated": "{{name}} [source {{lang}}]"
+    "translated": "{{name}} [source {{lang}}]",
+    "read-as-audio": "Read as audio"
   },
   "authors": {
     "not-found": "No author is found",

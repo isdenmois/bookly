@@ -15,7 +15,7 @@ import Book from 'store/book';
 import { ColorSchemeContext, DynamicStyleSheet } from 'react-native-dynamic';
 import { MainRoutes, MainScreenProps, ModalRoutes } from 'navigation/routes';
 
-const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'paper', 'isLiveLib'];
+const READ_LIST_FILTERS = ['title', 'year', 'author', 'type', 'date', 'rating', 'paper', 'isLiveLib', 'audio'];
 
 const READ_LIST_SORTS = ['date', 'title', 'rating', 'author', 'id'];
 

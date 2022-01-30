@@ -15,7 +15,8 @@
     "fromy": "С {{year}}",
     "collapse": "Свернуть",
     "read-more": "Читать далее",
-    "translated": "{{name}} [источник {{lang}}]"
+    "translated": "{{name}} [источник {{lang}}]",
+    "read-as-audio": "Слушала"
   },
   "authors": {
     "not-found": "Автор не найден",
