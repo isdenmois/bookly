@@ -16,6 +16,7 @@ import {
   ViewLineTouchable,
   ViewLineModelRemove,
   ViewLineAction,
+  ViewMultiline,
 } from './book-details-lines';
 import { BookLists } from './book-lists';
 import { t, database, openModal, getNavigation } from 'services';
@@ -63,9 +64,7 @@ export class DetailsTab extends React.Component<Props> {
     const notLL = !all && !isLivelib;
     const hasPaper = book.paper;
     const isRead = book.status === BOOK_STATUSES.READ;
-    const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR)
-      .filter(t => t !== book.title)
-      .join('\n');
+    const otherTitles = _.split(book.otherTitles, TITLE_SEPARATOR).filter(title => title !== book.title);
     const showLists = isExist && book.status === BOOK_STATUSES.WISH;
 
     return (
@@ -111,7 +110,7 @@ export class DetailsTab extends React.Component<Props> {
           />
         )}
 
-        {!!otherTitles && <ViewLine title={t('details.other-titles')} value={otherTitles} />}
+        {!!otherTitles && this.renderOtherTitles(otherTitles)}
 
         {all && book.classification?.length > 0 && this.renderClassification()}
 
@@ -172,6 +171,10 @@ export class DetailsTab extends React.Component<Props> {
     const title = t(translators.length > 1 ? 'details.translators' : 'details.translator');
 
     return <ViewLine title={title} value={translators.join('\n')} />;
+  }
+
+  renderOtherTitles(titles: string[]) {
+    return <ViewMultiline title={t('details.other-titles')} items={titles} onPress={openInTelegram} />;
   }
 
   renderClassification() {

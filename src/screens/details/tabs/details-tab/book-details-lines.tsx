@@ -42,6 +42,12 @@ interface ViewLineActionProps {
   onLongPress?: () => void;
 }
 
+interface ViewMultilineProps {
+  title: string;
+  items: string[];
+  onPress?: (item: string) => void;
+}
+
 const hitSlop: Insets = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export const BookDescriptionLine = (props: Props) => {
@@ -111,6 +117,22 @@ export function ViewLineAction({ title, onPress, onLongPress }: ViewLineActionPr
       <TouchableOpacity onPress={onPress} onLongPress={onLongPress} style={s.value} hitSlop={hitSlop}>
         <Text style={s.actionText}>{title}</Text>
       </TouchableOpacity>
+    </View>
+  );
+}
+
+export function ViewMultiline({ title, items, onPress }: ViewMultilineProps) {
+  const s = useDynamicStyleSheet(ds);
+
+  return (
+    <View style={s.row}>
+      <Text style={s.title}>{title}</Text>
+
+      {items.map(item => (
+        <TouchableOpacity key={item} onPress={() => onPress(item)} style={s.value}>
+          <Text style={s.value}>{item}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }
