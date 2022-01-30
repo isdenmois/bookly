@@ -6,4 +6,5 @@ module.exports = {
   ],
   testEnvironment: 'node',
   moduleFileExtensions: ['mock.ts', 'web.js', 'web.ts', 'js', 'json', 'jsx', 'ts', 'tsx'],
+  setupFiles: ['<rootDir>/tests/setup.js'],
 };
