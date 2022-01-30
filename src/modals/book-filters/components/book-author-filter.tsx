@@ -43,7 +43,9 @@ export const BookAuthorFilter = memo(({ status }: Props) => {
   );
 
   if (name) {
-    authors = authors.filter(a => a.name.toLowerCase().indexOf(name) >= 0);
+    const toSearch = name.toLowerCase();
+
+    authors = authors.filter(a => a.name.toLowerCase().includes(toSearch));
   }
 
   const { s, color } = useSColor(ds);
