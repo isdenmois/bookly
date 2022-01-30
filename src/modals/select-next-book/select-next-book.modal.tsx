@@ -7,7 +7,7 @@ import { useApi } from 'shared/lib/fetcher';
 import { ModalRoutes, ModalScreenProps } from 'navigation/routes';
 import { Button, Dialog } from 'components';
 import { t } from 'services';
-import { api } from 'api';
+import { api } from 'services';
 import { ActivityIndicator } from 'components/activity-indicator';
 import { Text } from 'components/theme';
 

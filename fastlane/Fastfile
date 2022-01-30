@@ -72,9 +72,16 @@ platform :web do
     yarn(command: "web:build")
   end
 
+  desc 'Upload a new version'
+  lane :upload do
+    Dir.chdir("../dist") do
+      sh("vercel", "deploy", "--prod")
+    end
+  end
+
   desc 'Deploy a new version'
   lane :deploy do
     build
-    sh("vercel", "deploy", "--prod")
+    upload
   end
 end
