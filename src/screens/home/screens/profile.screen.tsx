@@ -45,7 +45,7 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
       </ScrollView>
 
       <Box position='absolute' bottom={24} left={0} right={0} alignItems='center'>
-        <Button label={t('button.apply')} onPress={logout} />
+        <Button label={t('button.logout')} onPress={logout} />
       </Box>
     </Screen>
   );

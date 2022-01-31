@@ -56,7 +56,8 @@
     "update": "Обновить",
     "book-search": "Найти во Flibusta",
     "more": "Еще",
-    "ive-finished": "Прочитала"
+    "ive-finished": "Прочитала",
+    "logout": "Выйти"
   },
   "nav": {
     "read": "Прочитанные",

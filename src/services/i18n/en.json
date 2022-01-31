@@ -56,7 +56,8 @@
     "update": "Update",
     "book-search": "Search in App",
     "more": "More",
-    "ive-finished": "I've finished"
+    "ive-finished": "I've finished",
+    "logout": "Log out"
   },
   "nav": {
     "read": "Read books",
