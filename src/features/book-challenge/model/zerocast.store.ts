@@ -7,6 +7,7 @@ import { t } from 'services/i18n';
 import { dayOfYear, daysAmount } from 'utils/date';
 
 import { formatDate } from '../lib';
+import { getSpeed } from 'features/book-challenge/model/speed';
 
 export const $zerocastMessage = computed([$readBookCountThisYear, $totalBooks, $lastReadDate], getZerocastMessage);
 
@@ -16,7 +17,7 @@ export function getZerocastMessage(readCount: number, totalBooks: number, lastRe
   const last = dayOfYear(lastRead);
   const remainDays = total - last;
   const getForecast = d => ((last + d) / total) * totalBooks;
-  let speed = remainDays / (totalBooks - readCount);
+  let speed = getSpeed(remainDays, totalBooks - readCount);
 
   if (speed < 3.5 || readCount >= Math.floor(getForecast(0))) return null;
 

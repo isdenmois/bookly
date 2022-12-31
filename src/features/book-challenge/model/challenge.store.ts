@@ -11,6 +11,7 @@ import { getNegativeProgress } from './negative-progress.store';
 import { getProgressDate, getProgressMessage } from './progress.store';
 import { getZerocastMessage } from './zerocast.store';
 import { getForecastMessage } from './forecast.store';
+import { getSpeed } from './speed';
 
 export const $challengeMessage = computed([$readBookCountThisYear, $totalBooks, $lastReadDate], getChallengeMessage);
 
@@ -19,7 +20,7 @@ export function getChallengeMessage(readCount: number, totalBooks: number, lastR
     return t('home.challenge.youve-completed');
   }
 
-  const speed = (daysAmount() - dayOfYear()) / (totalBooks - readCount);
+  const speed = getSpeed(daysAmount() - dayOfYear(), totalBooks - readCount);
 
   if (speed < 3) {
     return t('home.challenge.cantdoit');

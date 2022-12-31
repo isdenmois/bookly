@@ -7,6 +7,7 @@ import { t } from 'services/i18n';
 import { dayOfYear, daysAmount, getCurrentYear, getStartOfYear } from 'utils/date';
 
 import { formatDate } from '../lib';
+import { getSpeed } from './speed';
 
 export const $negativeProgressDate = computed(
   [$readBookCountThisYear, $totalBooks, $lastReadDate],
@@ -30,13 +31,13 @@ export function getNegativeProgressDate(readCount: number, totalBooks: number, l
 
   const remainDays = amount - today;
   const toRead = totalBooks - readCount;
-  let speed = remainDays / toRead;
+  let speed = getSpeed(remainDays, toRead);
 
   let last = dayOfYear(lastRead) + speed;
 
   while (today > last) {
     last += speed;
-    speed = (amount - last) / toRead;
+    speed = getSpeed(amount - last, toRead);
   }
 
   lastRead = new Date(lastRead);
@@ -62,13 +63,13 @@ export function getNegativeProgress(readCount: number, totalBooks: number, lastR
 
   const remainDays = amount - today;
   const toRead = totalBooks - readCount;
-  let speed = remainDays / toRead;
+  let speed = getSpeed(remainDays, toRead);
 
   let last = dayOfYear(lastRead) + speed;
 
   while (today > last) {
     last += speed;
-    speed = (amount - last) / toRead;
+    speed = getSpeed(amount - last, toRead);
   }
 
   lastRead = new Date(lastRead);

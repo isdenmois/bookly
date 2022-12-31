@@ -7,6 +7,7 @@ import { dayOfYear, daysAmount } from 'utils/date';
 import { t } from 'services/i18n';
 
 import { formatDate } from '../lib';
+import { getSpeed } from 'features/book-challenge/model/speed';
 
 export const $forecastMessage = computed([$readBookCountThisYear, $totalBooks, $lastReadDate], getForecastMessage);
 
@@ -20,14 +21,14 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
   const total = daysAmount();
   const last = dayOfYear(lastRead);
   let willRead = Math.round((total / last) * readCount);
-  let speed = last / readCount;
+  let speed = getSpeed(last, readCount);
 
   let dueDate = ((readCount + 1) * total) / willRead;
 
   while (today > dueDate) {
     willRead--;
     dueDate = ((readCount + 1) * total) / willRead;
-    speed = dueDate / readCount;
+    speed = getSpeed(dueDate, readCount);
   }
 
   date.setMonth(0, dueDate);
