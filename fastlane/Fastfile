@@ -6,7 +6,7 @@ platform :android do
   desc 'Upload a new version'
   lane :upload do
     upload_to_server(
-      endPoint: ENV['SERVER_URL'],
+      endPoint: ENV['SERVER_URL'] + 'upload',
       multipartPayload: {
         :fileFormFieldName => 'file'
       }
