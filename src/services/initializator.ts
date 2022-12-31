@@ -12,7 +12,7 @@ export const Initializator = ({ children }) => {
   useEffect(() => {
     init().finally(() => {
       setIniting(false);
-      SplashScreen?.hide();
+      SplashScreen && SplashScreen.hide();
     });
   }, []);
 
