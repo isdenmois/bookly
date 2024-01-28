@@ -52,7 +52,7 @@ export function SettingsScreen() {
           return <Component key={line.param} title={`settings.${line.param}`} param={line.param} />;
         })}
 
-        {isWeb && <LanguageSelector />}
+        <LanguageSelector />
         <ThemeSelector />
         <BookListSort />
       </ScrollView>

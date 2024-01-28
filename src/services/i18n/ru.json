@@ -32,9 +32,9 @@
     },
     "challenge": {
       "totalBooks": "Книжный вызов",
-      "challengeAudio": "Audio challenge",
-      "challengePaper": "Paper challenge",
-      "challengeWithoutTranslation": "English challenge",
+      "challengeAudio": "Аудио вызов",
+      "challengePaper": "Бумажный вызов",
+      "challengeWithoutTranslation": "Английский вызов",
       "plan": "План чтения",
       "ahead": "опережение",
       "read-before": "прочитайте до",
@@ -151,6 +151,9 @@
     "mode": "Тема",
     "defaultSort": "Сортировка по-умолчанию",
     "selectNextBook": "Выбрать следующую книгу"
+  },
+  "profile": {
+    "clean": "Почистить удаленные записи на сервере"
   },
   "modal": {
     "edit": "Редактирование",

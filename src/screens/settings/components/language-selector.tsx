@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EditableListItem } from 'modals/book-filters/components/editable-list-item';
-import { STORAGE_KEY, DEFAULT_LANG } from 'services/i18n/language-detector.web';
+import { STORAGE_KEY } from 'services/i18n/language-detector.web';
 import { i18n } from 'services/i18n';
 
 const LANGUAGES = {
@@ -8,16 +9,13 @@ const LANGUAGES = {
   en: 'Английский',
 };
 
-let lang = window.localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
-
 function setLanguage(value) {
-  lang = value;
-  window.localStorage.setItem(STORAGE_KEY, value);
+  AsyncStorage.setItem(STORAGE_KEY, value);
   i18n.setLang(value);
 }
 
 export function LanguageSelector() {
-  const [selected, setSelected] = useState(lang);
+  const [selected, setSelected] = useState(i18n.getLocale());
   const setLang = useCallback(value => {
     setLanguage(value);
     setSelected(value);

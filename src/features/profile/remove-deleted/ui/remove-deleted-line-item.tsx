@@ -6,5 +6,5 @@ import { $isRemoving, removeDeleted } from '../model';
 export const RemoveDeletedLineItem: FC = () => {
   const isRemoving = useStore($isRemoving);
 
-  return <ListItem label='Почистить удаленные записи на сервере' onPress={removeDeleted} disabled={isRemoving} />;
+  return <ListItem label='profile.clean' onPress={removeDeleted} disabled={isRemoving} />;
 };

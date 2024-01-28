@@ -152,6 +152,9 @@
     "defaultSort": "Default sort",
     "selectNextBook": "Select next book"
   },
+  "profile": {
+    "clean": "Clean deleted records on the server"
+  },
   "modal": {
     "edit": "Edit the title",
     "enter-title": "Enter the book title",
