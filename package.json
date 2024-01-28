@@ -42,7 +42,7 @@
     "i18next": "21.6.3",
     "i18next-react-native-language-detector": "1.0.2",
     "lodash": "4.17.21",
-    "nanostores": "0.5.8",
+    "nanostores": "0.5.13",
     "pluralize-ru": "1.0.1",
     "quagga": "0.12.1",
     "rambdax": "3.7.0",

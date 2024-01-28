@@ -1,6 +1,6 @@
 import { computed } from 'nanostores';
 
-import { $lastReadDate, $readBookCountThisYear } from 'entities/book';
+import { $lastReadDate, $readBooksCountByChallenge } from 'entities/book';
 import { $totalBooks } from 'entities/settings';
 
 import { t } from 'services/i18n';
@@ -9,7 +9,7 @@ import { dayOfYear, daysAmount } from 'utils/date';
 import { formatDate } from '../lib';
 import { getSpeed } from 'features/book-challenge/model/speed';
 
-export const $zerocastMessage = computed([$readBookCountThisYear, $totalBooks, $lastReadDate], getZerocastMessage);
+export const $zerocastMessage = computed([$readBooksCountByChallenge, $totalBooks, $lastReadDate], getZerocastMessage);
 
 export function getZerocastMessage(readCount: number, totalBooks: number, lastRead: Date): string {
   const total = daysAmount();

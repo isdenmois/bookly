@@ -31,7 +31,10 @@
       "statistics": "Watch the statistics from the previous year"
     },
     "challenge": {
-      "title": "Reading challenge",
+      "totalBooks": "Reading challenge",
+      "challengeAudio": "Audio challenge",
+      "challengePaper": "Paper challenge",
+      "challengeWithoutTranslation": "English challenge",
       "plan": "Reading plan",
       "ahead": "ahead",
       "read-before": "read before",
@@ -66,7 +69,8 @@
     "stat": "Reading stats",
     "profile": "Profile",
     "authors": "Favorite authors",
-    "settings": "Settings"
+    "settings": "Settings",
+    "challenge": "Challenge"
   },
   "headers": {
     "book-select": "Book selecting",
@@ -132,7 +136,10 @@
     "empty": "Not enough data for comparison"
   },
   "settings": {
-    "totalBooks": "Reading challenge",
+    "totalBooks": "Total books",
+    "challengePaper": "In paper",
+    "challengeAudio": "Audiobooks",
+    "challengeWithoutTranslation": "Without translation",
     "minYear": "Stats min year",
     "withFantlab": "Sync with FantLab",
     "saveDateInChangeStatus": "Save date in change status dialog",

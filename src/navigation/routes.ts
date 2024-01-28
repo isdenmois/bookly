@@ -32,6 +32,7 @@ export enum MainRoutes {
   Authors = 'authors',
   AuthorSearch = 'author-search',
   Settings = 'settings',
+  Challenge = 'challenge',
   Lists = 'lists',
 }
 
@@ -55,6 +56,7 @@ type MainParamList = {
   [MainRoutes.Authors]: null;
   [MainRoutes.AuthorSearch]: { query: string };
   [MainRoutes.Settings]: null;
+  [MainRoutes.Challenge]: null;
   [MainRoutes.Lists]: null;
 };
 

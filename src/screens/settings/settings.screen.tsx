@@ -26,7 +26,6 @@ const COMPONENTS: Record<SettingType, any> = {
 };
 
 const LINES: SettingLine[] = [
-  { type: SettingType.Editor, param: 'totalBooks' },
   { type: SettingType.Editor, param: 'minYear' },
   { type: SettingType.Toggler, param: 'withFantlab' },
   { type: SettingType.Toggler, param: 'saveDateInChangeStatus' },

@@ -9,7 +9,7 @@ interface Props {
 
 export function SettingsEditor({ title, param }: Props) {
   const [value, setValue] = useState(settings[param].toString());
-  const save = useCallback(() => +value && settings.set(param, +value), [value]);
+  const save = useCallback(() => +value >= 0 && settings.set(param, +value), [value]);
 
   return (
     <ListItem

@@ -10,6 +10,9 @@ const INITIAL_YEAR = 2012;
 const INITIAL_SETTINGS = <const>{
   userId: null,
   totalBooks: INITIAL_BOOKS_COUNT,
+  challengePaper: 0,
+  challengeAudio: 0,
+  challengeWithoutTranslation: 0,
   withFantlab: false,
   saveDateInChangeStatus: false,
   audio: false,

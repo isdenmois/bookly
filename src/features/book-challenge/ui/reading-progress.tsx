@@ -3,16 +3,16 @@ import { Svg, Circle, Text } from 'react-native-svg';
 import { View } from 'react-native';
 import { useStore } from '@nanostores/react';
 
-import { $readBookCountThisYear } from 'entities/book';
-import { $totalBooks } from 'entities/settings';
+import { $readBooksCountByChallenge } from 'entities/book';
+import { $challengeCount } from 'entities/settings';
 import { useTheme } from 'components/theme';
 
 const STROKE_WIDTH = 10;
 let priorSize = 139;
 
 export const ReadingProgress: FC = () => {
-  const readCount = useStore($readBookCountThisYear);
-  const totalBooks = useStore($totalBooks);
+  const readCount = useStore($readBooksCountByChallenge);
+  const challengeCount = useStore($challengeCount);
 
   const { colors } = useTheme();
   const [size, setSize] = useState<number>(priorSize);
@@ -21,7 +21,7 @@ export const ReadingProgress: FC = () => {
   const radius = size / 2 - STROKE_WIDTH / 2;
   const circumference = 2 * Math.PI * radius;
 
-  const offset = (1 - readCount / totalBooks) * circumference;
+  const offset = (1 - readCount / challengeCount) * circumference;
   const onLayout = useCallback(
     e => {
       const width = e.nativeEvent.layout.width;
@@ -68,7 +68,7 @@ export const ReadingProgress: FC = () => {
           strokeWidth='1px'
           dy='.3em'
         >
-          {`${readCount} / ${totalBooks}`}
+          {`${readCount} / ${challengeCount}`}
         </Text>
       </Svg>
     </View>

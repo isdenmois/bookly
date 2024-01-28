@@ -1,6 +1,6 @@
 import { computed } from 'nanostores';
 
-import { $lastReadDate, $readBookCountThisYear } from 'entities/book';
+import { $lastReadDate, $readBooksCountByChallenge } from 'entities/book';
 import { $totalBooks } from 'entities/settings';
 
 import { dayOfYear, daysAmount } from 'utils/date';
@@ -9,7 +9,7 @@ import { t } from 'services/i18n';
 import { formatDate } from '../lib';
 import { getSpeed } from 'features/book-challenge/model/speed';
 
-export const $forecastMessage = computed([$readBookCountThisYear, $totalBooks, $lastReadDate], getForecastMessage);
+export const $forecastMessage = computed([$readBooksCountByChallenge, $totalBooks, $lastReadDate], getForecastMessage);
 
 export function getForecastMessage(readCount: number, totalBooks: number, lastRead: Date): string {
   if (readCount === 0 || !lastRead) {
@@ -41,7 +41,7 @@ export function getForecastMessage(readCount: number, totalBooks: number, lastRe
   return t('home.challenge.forecast', { date: formatDate(date), rate: speed, count: willRead, postProcess: 'rp' });
 }
 
-export const $readingForecast = computed([$readBookCountThisYear, $totalBooks], getBooksReadForecast);
+export const $readingForecast = computed([$readBooksCountByChallenge, $totalBooks], getBooksReadForecast);
 
 export function getBooksReadForecast(read: number, total: number): number {
   const yearProgress = dayOfYear() / daysAmount();

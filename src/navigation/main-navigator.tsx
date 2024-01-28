@@ -14,6 +14,7 @@ import { TopRateScreen } from 'screens/top-rate/top-rate.screen';
 import { AuthorsScreen } from 'screens/authors/authors.screen';
 import { AuthorSearchScreen } from 'screens/authors/author-search.screen';
 import { SettingsScreen } from 'screens/settings/settings.screen';
+import { ChallengeScreen } from 'screens/challenge/challenge.screen';
 import { ListsScreen } from 'screens/lists/lists.screen';
 
 import { ChangeStatusModal } from 'modals/change-status/change-status.modal';
@@ -83,6 +84,11 @@ export function MainNavigator() {
           name={MainRoutes.Settings}
           component={SettingsScreen}
           options={{ headerTitle: t('nav.settings') }}
+        />
+        <Stack.Screen
+          name={MainRoutes.Challenge}
+          component={ChallengeScreen}
+          options={{ headerTitle: t('nav.challenge') }}
         />
         <Stack.Screen name={MainRoutes.Lists} component={ListsScreen} options={{ headerTitle: t('headers.lists') }} />
       </Stack.Group>

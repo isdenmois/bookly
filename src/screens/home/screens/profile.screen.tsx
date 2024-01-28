@@ -18,6 +18,7 @@ type Props = MainScreenProps<MainRoutes.Home>;
 export const ProfileScreen: FC<Props> = ({ navigation }) => {
   const isAuthorsEnabled = useStore($isAuthorsEnabled);
   const openSettings = () => navigation.push(MainRoutes.Settings);
+  const openChallenge = () => navigation.push(MainRoutes.Challenge);
   const openLists = () => navigation.push(MainRoutes.Lists);
   const openAuthors = () => navigation.push(MainRoutes.Authors);
   const logout = () => {
@@ -35,6 +36,7 @@ export const ProfileScreen: FC<Props> = ({ navigation }) => {
 
       <ScrollView contentContainerStyle={s.content}>
         <ListItem label='nav.settings' onPress={openSettings} />
+        <ListItem label='nav.challenge' onPress={openChallenge} />
         <ListItem label='headers.lists' onPress={openLists} />
         {isAuthorsEnabled && <ListItem label='nav.authors' onPress={openAuthors} />}
 

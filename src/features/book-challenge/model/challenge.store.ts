@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { computed } from 'nanostores';
 
-import { $lastReadDate, $readBookCountThisYear } from 'entities/book';
-import { $totalBooks } from 'entities/settings';
+import { $lastReadDate, $readBooksCountByChallenge } from 'entities/book';
+import { $challengeCount } from 'entities/settings';
 
 import { t } from 'services/i18n';
 import { dayOfYear, daysAmount } from 'utils/date';
@@ -13,7 +13,10 @@ import { getZerocastMessage } from './zerocast.store';
 import { getForecastMessage } from './forecast.store';
 import { getSpeed } from './speed';
 
-export const $challengeMessage = computed([$readBookCountThisYear, $totalBooks, $lastReadDate], getChallengeMessage);
+export const $challengeMessage = computed(
+  [$readBooksCountByChallenge, $challengeCount, $lastReadDate],
+  getChallengeMessage,
+);
 
 export function getChallengeMessage(readCount: number, totalBooks: number, lastRead: Date): string {
   if (readCount >= totalBooks) {

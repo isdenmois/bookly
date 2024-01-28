@@ -31,7 +31,10 @@
       "statistics": "Посмотреть статистику за прошлый год"
     },
     "challenge": {
-      "title": "Книжный вызов",
+      "totalBooks": "Книжный вызов",
+      "challengeAudio": "Audio challenge",
+      "challengePaper": "Paper challenge",
+      "challengeWithoutTranslation": "English challenge",
       "plan": "План чтения",
       "ahead": "опережение",
       "read-before": "прочитайте до",
@@ -66,7 +69,8 @@
     "stat": "Статистика",
     "profile": "Профиль",
     "authors": "Интересные авторы",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "challenge": "Книжный вызов"
   },
   "headers": {
     "book-select": "Выбор книги",
@@ -133,6 +137,9 @@
   },
   "settings": {
     "totalBooks": "Хочу читать книг в год",
+    "challengePaper": "В бумаге",
+    "challengeAudio": "Аудиокниг",
+    "challengeWithoutTranslation": "В оригинале",
     "minYear": "Вести статистику с",
     "withFantlab": "Синхронизировать с Fantlab",
     "saveDateInChangeStatus": "Сохранять дату в диалоге смене статуса",

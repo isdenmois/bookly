@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useStore } from '@nanostores/react';
 
-import { $readBookCountThisYear } from 'entities/book';
+import { $readBooksCountByChallenge } from 'entities/book';
 import { CurrentBook } from 'features/current-books';
 import { BookChallenge } from 'features/book-challenge';
 import { YearStatisticsTile } from 'features/statistics';
@@ -12,7 +12,7 @@ import { Box } from 'components/theme';
 import { OpenStatisticsTile } from './open-statistics-tile';
 
 export const MainScreen: FC = () => {
-  const readBookCountThisYear = useStore($readBookCountThisYear);
+  const readBooksCountByChallenge = useStore($readBooksCountByChallenge);
 
   return (
     <ScrollView testID='homeScreen'>
@@ -23,9 +23,9 @@ export const MainScreen: FC = () => {
       <Box backgroundColor='homeBlock' pt={1} pb={2} style={s.homeBlock}>
         <BookChallenge />
 
-        {readBookCountThisYear > 0 && <YearStatisticsTile />}
-        {readBookCountThisYear > 0 && <ReadBooksTile />}
-        {readBookCountThisYear === 0 && <OpenStatisticsTile />}
+        {readBooksCountByChallenge > 0 && <YearStatisticsTile />}
+        {readBooksCountByChallenge > 0 && <ReadBooksTile />}
+        {readBooksCountByChallenge === 0 && <OpenStatisticsTile />}
       </Box>
     </ScrollView>
   );
