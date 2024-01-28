@@ -26,7 +26,7 @@ export const RatingSelect = memo(({ size = SIZE, value, style, onChange }: Props
           key={index}
           style={s.star}
           name='star'
-          size={20}
+          size={19}
           solid={index < value}
           onPress={() => onChange(index + 1)}
         />
