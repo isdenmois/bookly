@@ -1,7 +1,7 @@
 import { computed } from 'nanostores';
 
 import { $lastReadDate, $readBooksCountByChallenge } from 'entities/book';
-import { $totalBooks } from 'entities/settings';
+import { $challengeCount } from 'entities/settings';
 
 import { t } from 'services/i18n';
 import { dayOfYear, daysAmount, getCurrentYear, getStartOfYear } from 'utils/date';
@@ -10,11 +10,11 @@ import { formatDate } from '../lib';
 import { getSpeed } from './speed';
 
 export const $negativeProgressDate = computed(
-  [$readBooksCountByChallenge, $totalBooks, $lastReadDate],
+  [$readBooksCountByChallenge, $challengeCount, $lastReadDate],
   getNegativeProgressDate,
 );
 export const $negativeProgressMessage = computed(
-  [$readBooksCountByChallenge, $totalBooks, $lastReadDate],
+  [$readBooksCountByChallenge, $challengeCount, $lastReadDate],
   getNegativeProgress,
 );
 

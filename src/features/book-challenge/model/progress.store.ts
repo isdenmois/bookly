@@ -1,14 +1,14 @@
 import { computed } from 'nanostores';
 
 import { $readBooksCountByChallenge } from 'entities/book';
-import { $totalBooks } from 'entities/settings';
+import { $challengeCount } from 'entities/settings';
 
 import { t } from 'services/i18n';
 import { dayOfYear, daysAmount } from 'utils/date';
 
 import { formatDate } from '../lib';
 
-export const $progressDate = computed([$readBooksCountByChallenge, $totalBooks], getProgressDate);
+export const $progressDate = computed([$readBooksCountByChallenge, $challengeCount], getProgressDate);
 
 export const $progressMessage = computed($progressDate, getProgressMessage);
 
