@@ -21,6 +21,6 @@ function response(r) {
 }
 
 export default api
-  .get<Params>('/books')
+  .get<Params>('/search/books')
   .query(({ q, page }) => ({ q, andyll: LIVELIB_APIKEY, start: page, count: 24, fields }))
   .response(response);
