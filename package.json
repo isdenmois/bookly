@@ -9,8 +9,6 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --quiet",
     "lint:fix": "yarn lint --fix",
     "clean": "android/gradlew -p android clean",
-    "build": "fastlane build_apk",
-    "release": "fastlane android deploy && fastlane web deploy",
     "cucumber": "cross-env NODE_ENV=test cucumber-js e2e/screens --format=progress-bar --exit",
     "e2e": "yarn e2e:build && yarn e2e:run",
     "e2e:run": "yarn cucumber --configuration=android.emu.release",
